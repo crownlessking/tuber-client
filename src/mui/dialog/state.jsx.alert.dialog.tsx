@@ -17,10 +17,7 @@ export default function StateJsxAlertDialog(props: IAlertDialogProps) {
   const { def: dialog } = props
   const dispatch = useDispatch<AppDispatch>()
   const open = useSelector((state: RootState) => state.dialog.open ?? false)
-
-  const handleClose = () => {
-    dispatch({ type: 'dialog/dialogClose' })
-  }
+  const handleClose = () => dispatch({ type: 'dialog/dialogClose' })
 
   return (
     <Dialog
@@ -40,7 +37,7 @@ export default function StateJsxAlertDialog(props: IAlertDialogProps) {
         {/* <div dangerouslySetInnerHTML={{ __html: dialog.content }} /> */}
         { parse(dialog.content) }
       </DialogContent>
-      <DialogActions {...dialog.actionProps}>
+      <DialogActions {...dialog.actionsProps}>
         <StateJsxDialogAction def={dialog.actions} parent={dialog} />
       </DialogActions>
     </Dialog>

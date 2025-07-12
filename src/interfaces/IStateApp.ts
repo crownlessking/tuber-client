@@ -1,4 +1,4 @@
-import { TThemeMode } from '.'
+import { TThemeMode } from '.';
 
 /**
  * App information state.
@@ -8,41 +8,41 @@ export default interface IStateApp {
    * Whether the app can retrieve state from server when not available.
    * Don't forget to set your enpoints in `pathnames`.
    */
-  fetchingStateAllowed?: boolean
+  fetchingStateAllowed?: boolean;
   /** If app is in debug mode or not. */
-  inDebugMode?: boolean
+  inDebugMode?: boolean;
   /** If `true`, can show helpful tips. */
-  inDevelMode?: boolean
+  inDevelMode?: boolean;
   /** Route of the page to be displayed. */
-  route?: string
+  route?: string;
   /** web page title: It will be displayed if a logo was NOT provided. */
-  title?: string
+  title?: string;
   /**
    * URL of the server to which the app will make requests and receive
    * responses.
    */
-  origin?: string
-  showSpinner?: boolean
-  spinnerDisabled?: boolean
-  status?: string
+  origin?: string;
+  showSpinner?: boolean;
+  spinnerDisabled?: boolean;
+  status?: string;
   /** Image src of appbar logo. */
-  logoUri?: string
-  logoTag?: 'img' | 'div'
+  logoUri?: string;
+  logoTag?: 'img' | 'div';
   /**
    * Specify image logo height.
    *
    * Highly recommended, logo will most likely not be displayed properly
    * without it.
    */
-  logoHeight?: number
+  logoHeight?: number;
   /**
    * Specify image logo width.
    *
    * Highly recommended, logo will most likely not be displayed properly
    * without it.
    */
-  logoWidth?: number
-  lastRoute?: string
+  logoWidth?: number;
+  lastRoute?: string;
   /**
    * Key of page that will be used as the home page.
    *
@@ -50,12 +50,12 @@ export default interface IStateApp {
    *        I'm trying to no longer use the 'route' property to set the default
    *        page. We will use the `homePage` property instead.
    */
-  homePage?: string
+  homepage?: string;
   /** Indicates whether the app needs to be bootstrapped */
-  isBootstrapped?: boolean
+  isBootstrapped?: boolean;
   /** Custom fetch message  */
-  fetchMessage?: string
+  fetchMessage?: string;
   /** Indicates the currently rendered theme mode */
-  themeMode?: TThemeMode
+  themeMode?: TThemeMode;
 }
 

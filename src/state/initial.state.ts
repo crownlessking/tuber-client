@@ -1,6 +1,6 @@
-import { get_head_meta_content } from '../business.logic'
-import { orange } from '@mui/material/colors'
-import IState from '../interfaces/IState'
+import { get_head_meta_content } from '../business.logic';
+import { orange } from '@mui/material/colors';
+import IState from '../interfaces/IState';
 
 /*
  * WARNING: Be careful what you import in here. It might cause WEBPACK errors.
@@ -19,22 +19,22 @@ import IState from '../interfaces/IState'
  */
 const _get_global_var = <T=any>(varName: string): T => {
   try {
-    return window[varName]
+    return window[varName];
   } catch (e: any) {
-    const message = `Global variable "${varName}" does not exist.`
-    console.error(message)
+    const message = `Global variable "${varName}" does not exist.`;
+    console.error(message);
   }
-  return { } as T
+  return { } as T;
 }
 
 /** Allows you to rename global variables to prevent conflicts. */
-const GLOBAL_PREFIX = get_head_meta_content('web-ui')
+const GLOBAL_PREFIX = get_head_meta_content('web-ui');
 
 /**
  * Default background color  
  * History: `#af74b0`
  */
-export const DEFAULT_BACKGROUND_COLOR = '#72A0C1'
+export const DEFAULT_BACKGROUND_COLOR = '#72A0C1';
 
 /**
  * Raw data obtained from server will be stored in this object as an
@@ -73,7 +73,7 @@ export default {
    */
   'app': {
     /** Whether the app can retrieve state from server when not available */
-    'fetchingStateAllowed': false,
+    'fetchingStateAllowed': true,
 
     /** Whether the app is in debugging mode or not */
     'inDebugMode': false,
@@ -146,6 +146,8 @@ export default {
     ..._get_global_var(`${GLOBAL_PREFIX}Typography`)
   },
 
+  'icons': { ..._get_global_var(`${GLOBAL_PREFIX}Icons`)},
+
   'dialog': {
     'title': 'Dialog Title',
     'label': '',
@@ -168,8 +170,8 @@ export default {
     ..._get_global_var(`${GLOBAL_PREFIX}Dialogs`)
   },
 
-  'dialogsLight': {},
-  'dialogsDark': {},
+  'dialogsLight': { ..._get_global_var(`${GLOBAL_PREFIX}DialogsLignt`) },
+  'dialogsDark': { ..._get_global_var(`${GLOBAL_PREFIX}DialogsDark`) },
 
   /**
    * Drawer general state
@@ -297,7 +299,7 @@ export default {
   'errors': [],
 
   'pagesData': {},
-  'chip': {},
+  'chips': {},
 
   /**
    * After creating a form, when it is displayed, and the user fills it in,
@@ -336,11 +338,7 @@ export default {
   'themeLight': {},
   'themeDark': {},
 
-  'net': {
-    // TODO Insert default values here.
-
-    ..._get_global_var(`${GLOBAL_PREFIX}Net`)
-  },
+  'net': {},
 
   /** 
    * Use for making request to a server if a dialog, form, or page state was
@@ -355,4 +353,7 @@ export default {
 
   /** Use to let the app know where to find your states. */
   'stateRegistry': {},
-} as IState
+
+  /** Bootstrap prefix/key for app initialization */
+  'bootstrapPrefix': '',
+} as IState;

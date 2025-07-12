@@ -17,7 +17,7 @@ export default class StateCardComplex extends StateCard {
       ...this.cardState.headerProps
     }
   }
-  get avatarProps(): Required<IStateCard>['avatarProps'] {
+  get avatarProps(): any {
     return {
       alt: 'Avatar',
       ...this.cardState.avatarProps

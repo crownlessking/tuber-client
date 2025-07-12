@@ -1,4 +1,4 @@
-import store from "."
+import store from '.';
 
 /**
  * Temporarily holds the handle id of a `setTimeout` function which has been
@@ -7,7 +7,7 @@ import store from "."
  * The variable's purpose is to prevent functions from running after they have
  * been scheduled to do so via `setTimeout`
  */
-let handle: any
+let handle: any;
 
 /**
  * We don't want to spinner to show up right away, so we schedule it to appear
@@ -17,8 +17,8 @@ let handle: any
  */
 export function schedule_spinner(time = 200): void {
   if (!handle) {
-    const callback = () => store.dispatch({ type: 'app/appShowSpinner' })
-    handle = setTimeout(callback, time)
+    const callback = () => store.dispatch({ type: 'app/appShowSpinner' });
+    handle = setTimeout(callback, time);
     // _auto_hide_spinner()
   }
 }
@@ -37,8 +37,8 @@ export function schedule_spinner(time = 200): void {
  */
 export function cancel_spinner(): void {
   if (handle) {
-    clearTimeout(handle)
-    handle = null
+    clearTimeout(handle);
+    handle = null;
   }
 }
 
@@ -46,7 +46,7 @@ export function cancel_spinner(): void {
 export function auto_hide_spinner(): void {
   setTimeout(() => {
     if (store.getState().app.showSpinner) {
-      store.dispatch({ type: 'app/appHideSpinner' })
+      store.dispatch({ type: 'app/appHideSpinner' });
     }
-  }, 10000)
+  }, 10000);
 }

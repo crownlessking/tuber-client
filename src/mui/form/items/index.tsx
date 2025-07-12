@@ -1,72 +1,72 @@
-import { Fragment, useEffect, MouseEvent } from 'react'
-import { useDispatch } from 'react-redux'
-import JsonSelect from './state.jsx.select/default'
-import StateJsxSelectNative from './state.jsx.select/native'
-import StateJsxRadio from './state.jsx.radio'
-import StateJsxSingleSwitch from './state.jsx.single.switch'
-import StateJsxSwitch from './state.jsx.switch'
-import StateJsxCheckboxes from './state.jsx.checkboxes'
-import StateJsxTextfield from './state.jsx.textfield'
-import JsonPicker from './state.jsx.picker'
-import * as C from '../../../constants'
-import { post_req_state } from '../../../state/net.actions'
-import { ICheckboxesData, update_checkboxes } from './_items.common.logic'
+import { Fragment, useEffect, MouseEvent, useMemo, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
+import JsonSelect from './state.jsx.select/default';
+import StateJsxSelectNative from './state.jsx.select/native';
+import StateJsxRadio from './state.jsx.radio';
+import StateJsxSingleSwitch from './state.jsx.single.switch';
+import StateJsxSwitch from './state.jsx.switch';
+import StateJsxCheckboxes from './state.jsx.checkboxes';
+import StateJsxTextfield from './state.jsx.textfield';
+import JsonPicker from './state.jsx.picker';
+import * as C from '../../../constants';
+import { post_req_state } from '../../../state/net.actions';
+import { ICheckboxesData, update_checkboxes } from './_items.common.logic';
 import {
   BOOL_TRUEFALSE,
   BOOL_ONOFF,
   BOOL_YESNO,
-} from '../../../constants'
-import StateForm from '../../../controllers/StateForm'
-import StateFormItem from '../../../controllers/StateFormItem'
-import StateJsxFormItemGroup from '../state.jsx.form.item.group'
-import StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect'
-import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio'
-import { StateJsxIcon } from '../../state.jsx.icons'
-import { AppDispatch, default_callback } from '../../../state'
-import { formsDataClear } from '../../../slices/formsData.slice'
-import StateFormItemGroup from '../../../controllers/StateFormItemGroup'
-import IStateFormItemGroup from '../../../interfaces/IStateFormItemGroup'
-import FormLabel from '@mui/material/FormLabel'
-import FormHelperText from '@mui/material/FormHelperText'
-import InputLabel from '@mui/material/InputLabel'
-import set_all_default_values from './_items.default.values.common.logic'
-import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch'
-import StateFormItemInput from '../../../controllers/templates/StateFormItemInput'
-import StateJsxPhoneInput from './state.jsx.phone.input'
-import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox'
-import { remember_exception } from '../../../business.logic/errors'
+} from '../../../constants';
+import StateForm from '../../../controllers/StateForm';
+import StateFormItem from '../../../controllers/StateFormItem';
+import StateJsxFormItemGroup from '../state.jsx.form.item.group';
+import StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect';
+import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
+import { StateJsxIcon } from '../../state.jsx.icons';
+import { AppDispatch, default_callback } from '../../../state';
+import { formsDataClear } from '../../../slices/formsData.slice';
+import StateFormItemGroup from '../../../controllers/StateFormItemGroup';
+import IStateFormItemGroup from '../../../interfaces/IStateFormItemGroup';
+import FormLabel from '@mui/material/FormLabel';
+import FormHelperText from '@mui/material/FormHelperText';
+import InputLabel from '@mui/material/InputLabel';
+import set_all_default_values from './_items.default.values.common.logic';
+import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
+import StateJsxPhoneInput from './state.jsx.phone.input';
+import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox';
+import { remember_exception } from '../../../business.logic/errors';
 import {
   get_styled_div,
   StateJsxHtmlA,
   StateJsxHtml,
   StateJsxHtmlTag
-} from './state.jsx.html'
-import { get_bool_type } from '../_form.common.logic'
-import StateJsxButton from './state.jsx.button'
-import { log } from '../../../business.logic/logging'
+} from './state.jsx.html';
+import { get_bool_type } from '../_form.common.logic';
+import StateJsxButton from './state.jsx.button';
+import { log } from '../../../business.logic/logging';
 
 interface IRecursiveFormBuilder {
-  form: StateForm
-  items?: StateFormItem['items']
-  depth?: number
+  form: StateForm;
+  items?: StateFormItem['items'];
+  depth?: number;
 }
 
 interface IItemTable {
   [constant: string]: (
     item: StateFormItem,
     key: string | number
-  ) => JSX.Element | JSX.Element[]
+  ) => JSX.Element | JSX.Element[];
 }
 
-const itemsWithDefaultValues: StateFormItem[] = []
+const itemsWithDefaultValues: StateFormItem[] = [];
 
 const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
-  const form = props.form
-  const depth = props.depth ?? 0
-  const dispatch = useDispatch<AppDispatch>()
+  const form = props.form;
+  const depth = props.depth ?? 0;
+  const dispatch = useDispatch<AppDispatch>();
 
   /** Saves texfield value to the store */
-  const onUpdateInputData = (form: StateForm) =>
+  const onUpdateInputData = useCallback((form: StateForm) =>
     (input: StateFormItem) =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
   dispatch({
@@ -76,10 +76,10 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       name: input.name,
       value: e.target.value
     }
-  })
+  }), [dispatch]);
 
   /** Saves the form field value to the store. */
-  const onUpdateFormData = (form: StateForm) =>
+  const onUpdateFormData = useCallback((form: StateForm) =>
     (name: string) =>
     (e: any) =>
   dispatch({
@@ -89,31 +89,29 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       name,
       value: e.target.value
     }
-  })
+  }), [dispatch]);
 
   /** Saves the date value to the store. */
-  const onUpdateFormDatetime = (form: StateForm) => 
+  const onUpdateFormDatetime = useCallback((form: StateForm) => 
     (name: string) =>
     (date: Date) =>
-  {
-    dispatch({
-      type: 'formsData/formsDataUpdate',
-      payload: {
-        formName: form.name,
-        name,
-        value: date.toLocaleString('en-US')
-      }
-    })
-  }
+  dispatch({
+    type: 'formsData/formsDataUpdate',
+    payload: {
+      formName: form.name,
+      name,
+      value: date.toLocaleString('en-US')
+    }
+  }), [dispatch]);
 
   /** Saves checkboxes values to the Redux store. */
-  const onHandleCheckbox = (form: StateForm) =>
+  const onHandleCheckbox = useCallback((form: StateForm) =>
     (name: string, data: ICheckboxesData) =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
   {
-    data.value = e.target.name
-    data.checked = e.target.checked
-    update_checkboxes(data)
+    data.value = e.target.name;
+    data.checked = e.target.checked;
+    update_checkboxes(data);
     dispatch({
       type: 'formsData/formsDataUpdate',
       payload: {
@@ -121,11 +119,11 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
         name,
         value: data.checkedValues
       }
-    })
-  }
+    });
+  }, [dispatch]);
 
   /** Save switches value to the Redux store. */
-  const handleChangeSingleSwitch = (form: StateForm) =>
+  const handleChangeSingleSwitch = useCallback((form: StateForm) =>
     (name: string, value: any) =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
   {
@@ -162,17 +160,17 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
           value: e.target.checked
         }
       })
-    }
-    map[get_bool_type(value)]()
-  }
+    };
+    map[get_bool_type(value)]();
+  }, [dispatch]);
 
-  const handleChangeMultipleSwitches = (form: StateForm) =>
+  const handleChangeMultipleSwitches = useCallback((form: StateForm) =>
     (name: string, data: ICheckboxesData) =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
   {
-    data.value = e.target.name
-    data.checked = e.target.checked
-    update_checkboxes(data)
+    data.value = e.target.name;
+    data.checked = e.target.checked;
+    update_checkboxes(data);
     dispatch({
       type: 'formsData/formsDataUpdate',
       payload: {
@@ -180,49 +178,52 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
         name,
         value: data.checkedValues
       }
-    })
-  }
+    });
+  }, [dispatch]);
 
   /** A default form submission callback if none was provided */
-  const onFormSubmitDefault = (form: StateForm) =>
+  const onFormSubmitDefault = useCallback((form: StateForm) =>
     () =>
     (e: MouseEvent) =>
   {
-    e.preventDefault()
+    e.preventDefault();
 
     // if there are errors, do not submit the form
-    const errors = form.parent.parent.formsDataErrors
+    const errors = form.parent.parent.formsDataErrors;
     if (errors.getCount(form.name) > 0) {
-      return
+      return;
     }
 
     // if there are no errors, submit the form
-    const formsData = form.parent.parent.formsData
-    const body = formsData.get(form.name)
+    const formsData = form.parent.parent.formsData;
+    const body = formsData.get(form.name);
     if (formsData.state[form.name] === undefined) {
-      return
+      return;
     }
     if (body) {
-      dispatch(post_req_state(form.endpoint, body))
-      dispatch(formsDataClear(form.name))
+      dispatch(post_req_state(form.endpoint, body));
+      dispatch(formsDataClear(form.name));
     }
-  }
+  }, [dispatch]);
 
-  const textItem = (item: StateFormItem, key: string|number) => {
-    item.onChange = onUpdateInputData(form)
-    return <StateJsxTextfield key={`json-text-field${depth}-${key}`} def={item} />
-  }
+  // Memoize the text item renderer
+  const textItem = useCallback((item: StateFormItem, key: string|number) => {
+    item.onChange = onUpdateInputData(form);
+    return <StateJsxTextfield key={`json-text-field${depth}-${key}`} def={item} />;
+  }, [onUpdateInputData, form, depth]);
 
-  const dateTimePickerItem = (item: StateFormItem, key: string|number) => {
-    item.onChange = onUpdateFormDatetime(form)
-    return <JsonPicker key={`datetime-picker${depth}-${key}`} def={item} />
-  }
+  // Memoize the date time picker item renderer
+  const dateTimePickerItem = useCallback((item: StateFormItem, key: string|number) => {
+    item.onChange = onUpdateFormDatetime(form);
+    return <JsonPicker key={`datetime-picker${depth}-${key}`} def={item} />;
+  }, [onUpdateFormDatetime, form, depth]);
 
-  const groupItem = (def: StateFormItem, key: string|number) => {
+  // Memoize the group item renderer
+  const groupItem = useCallback((def: StateFormItem, key: string|number) => {
     const groupItemDef = new StateFormItemGroup(
       def.state as IStateFormItemGroup,
       def.parent
-    )
+    );
     return (
       <StateJsxFormItemGroup key={`group${depth}-${key}`} def={groupItemDef}>
         <RecursiveFormItems
@@ -232,10 +233,11 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
           depth={depth + 1}
         />
       </StateJsxFormItemGroup>
-    )
-  }
+    );
+  }, [form, depth]);
 
-  const itemsTable: IItemTable = {
+  // Memoize the items table to prevent re-creation on every render
+  const itemsTable: IItemTable = useMemo(() => ({
     [C.HTML]: (item: StateFormItem, key: string|number) => (
       <StateJsxHtml key={`html${depth}-${key}`} def={item} />
     ),
@@ -245,14 +247,14 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
     [C.A]: (item: StateFormItem, key: string|number) => {
       item.onClick = item.hasNoOnClickCallback
         ? default_callback
-        : item.onClick
-      return <StateJsxHtmlA def={item} key={`a${depth}-${key}`} />
+        : item.onClick;
+      return <StateJsxHtmlA def={item} key={`a${depth}-${key}`} />;
     },
     [C.SUBMIT]: (item: StateFormItem, key: string|number) => {
       item.onClick = item.hasNoOnClickCallback
         ? onFormSubmitDefault(form)
-        : item.onClick
-        return <StateJsxButton key={`submit${depth}-${key}`} def={item} />
+        : item.onClick;
+        return <StateJsxButton key={`submit${depth}-${key}`} def={item} />;
     },
     [C.STATE_BUTTON]: (item: StateFormItem, key: string|number) => (
       <StateJsxButton key={`json-button${depth}-${key}`} def={item} />
@@ -264,24 +266,24 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       <hr key={`horizontal-line${depth}-${key}`} />
     ),
     [C.STATE_SELECT]: (item: StateFormItem, key: string|number) => {
-      const jsonSelectDef = new StateFormItemSelect(item.state, item.parent)
-      jsonSelectDef.onChange = onUpdateFormData(form)
+      const jsonSelectDef = new StateFormItemSelect(item.state, item.parent);
+      jsonSelectDef.onChange = onUpdateFormData(form);
       return (
         <JsonSelect
           key={`json-select${depth}-${key}`}
           def={jsonSelectDef}
         />
-      )
+      );
     },
     [C.STATE_SELECT_NATIVE]: (item: StateFormItem, key: string|number) => {
-      const jsonSelectDef = new StateFormItemSelect(item.state, item.parent)
-      jsonSelectDef.onChange = onUpdateFormData(form)
+      const jsonSelectDef = new StateFormItemSelect(item.state, item.parent);
+      jsonSelectDef.onChange = onUpdateFormData(form);
       return (
         <StateJsxSelectNative
           key={`json-select${depth}-${key}`}
           def={jsonSelectDef}
         />
-      )
+      );
     },
     [C.TEXT]: textItem,
     [C.NUMBER]: textItem,
@@ -289,49 +291,49 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
     [C.TEXTFIELD]: textItem,
     [C.TEXTAREA]: textItem,
     [C.PHONE_INPUT]: (def: StateFormItem, key: string|number) => {
-      const inputDef = new StateFormItemInput(def.state, def.parent)
-      inputDef.onChange = onUpdateFormData(form)
+      const inputDef = new StateFormItemInput(def.state, def.parent);
+      inputDef.onChange = onUpdateFormData(form);
       return (
         <StateJsxPhoneInput
           def={inputDef}
           key={`phone${depth}-${key}`}
         />
-      )
+      );
     },
     [C.RADIO_BUTTONS]: (item: StateFormItem, key: string|number) => {
-      const radioDef = new StateFormItemRadio(item.state, item.parent)
-      radioDef.onChange = onUpdateFormData(form)
+      const radioDef = new StateFormItemRadio(item.state, item.parent);
+      radioDef.onChange = onUpdateFormData(form);
       return (
         <StateJsxRadio
           key={`radio-button${depth}-${key}`}
           def={radioDef}
         />
-      )
+      );
     },
     [C.CHECKBOXES]: (item: StateFormItem, key: string|number) => {
-      const checkboxesDef = new StateFormItemCheckbox(item.state, item.parent)
-      checkboxesDef.onChange = onHandleCheckbox(form)
+      const checkboxesDef = new StateFormItemCheckbox(item.state, item.parent);
+      checkboxesDef.onChange = onHandleCheckbox(form);
       return (
         <StateJsxCheckboxes
           key={`json-checkboxes${depth}-${key}`}
           def={checkboxesDef}
         />
-      )
+      );
     },
     [C.SWITCH]: (item: StateFormItem, key: string|number) => {
-      const switchDef = new StateFormItemSwitch(item.state, item.parent)
-      switchDef.onChange = handleChangeMultipleSwitches(form)
-      return <StateJsxSwitch key={`switch${depth}-${key}`} def={switchDef} />
+      const switchDef = new StateFormItemSwitch(item.state, item.parent);
+      switchDef.onChange = handleChangeMultipleSwitches(form);
+      return <StateJsxSwitch key={`switch${depth}-${key}`} def={switchDef} />;
     },
     [C.SINGLE_SWITCH]: (item: StateFormItem, key: string|number) => {
-      const switchDef = new StateFormItemSwitch(item.state, item.parent)
-      switchDef.onChange = handleChangeSingleSwitch(form)
+      const switchDef = new StateFormItemSwitch(item.state, item.parent);
+      switchDef.onChange = handleChangeSingleSwitch(form);
       return (
         <StateJsxSingleSwitch
           key={`switch${depth}-${key}`}
           def={switchDef}
         />
-      )
+      );
     },
     [C.DESKTOP_DATE_TIME_PICKER]: dateTimePickerItem,
     [C.MOBILE_DATE_TIME_PICKER]: dateTimePickerItem,
@@ -370,7 +372,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       <StateJsxIcon key={`icon${depth}-${key}`} def={item.has} />
     ),
     [C.DIV]: (item: StateFormItem, key: string|number) => {
-      const StyledDiv = get_styled_div()
+      const StyledDiv = get_styled_div();
       return (
         <StyledDiv key={`div${depth}-${key}`} {...item.props}>
           <RecursiveFormItems
@@ -380,39 +382,71 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
             depth={depth + 1}
           />
         </StyledDiv>
-      )},
+      );
+    },
     [C.BAD_FORM_ITEM]: (item: StateFormItem, key: string|number) => (
       <div key={key}>BAD FORM ITEM {item.name}</div>
     )
-  }
+  }), [
+    depth,
+    form,
+    onFormSubmitDefault,
+    onUpdateFormData,
+    onHandleCheckbox,
+    handleChangeMultipleSwitches,
+    handleChangeSingleSwitch,
+    textItem,
+    dateTimePickerItem,
+    groupItem
+  ]);
+
+  // Memoize the items array to process
+  const itemsToRender = useMemo(() => 
+    props.items || form.items, 
+    [props.items, form.items]
+  );
+
+  // Memoize the rendered form items
+  const renderedItems = useMemo(() => {
+    return itemsToRender.map((item, i) => {
+      try {
+        item.has.defaultValue && itemsWithDefaultValues.push(item)
+        return itemsTable[item.type.toLowerCase()](item, i)
+      } catch (e: any) {
+        const message = `Form item type (${item.type}) does not exist.`;
+        remember_exception(e);
+        log(message);
+        return (
+          <div key={`bad-field${depth}-${i}`}>
+            ❌ BAD FIELD <em>"{item.type}"</em>
+          </div>
+        );
+      }
+    });
+  }, [itemsToRender, itemsTable, depth]);
 
   return (
     <Fragment>
-      {(props.items || form.items).map((item, i) => {
-        try {
-          item.has.defaultValue && itemsWithDefaultValues.push(item)
-          return itemsTable[item.type.toLowerCase()](item, i)
-        } catch (e: any) {
-          const message = `Form item type (${item.type}) does not exist.`
-          remember_exception(e)
-          log(message)
-          return (
-            <div key={`bad-field${depth}-${i}`}>
-              ❌ BAD FIELD <em>"{item.type}"</em>
-            </div>
-          )
-        }
-      })}
+      {renderedItems}
     </Fragment>
   )
 }
 
 export default function FormItems ({ def: form }:{ def: StateForm }) {
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
  
-  useEffect(() => {
-    set_all_default_values(itemsWithDefaultValues)
-  }, [ dispatch ])
+  // Memoize the default values effect to prevent unnecessary re-runs
+  const memoizedDefaultValues = useMemo(() => itemsWithDefaultValues, []);
 
-  return <RecursiveFormItems form={form} />
+  useEffect(() => {
+    set_all_default_values(memoizedDefaultValues);
+  }, [memoizedDefaultValues, dispatch]);
+
+  // Memoize the recursive form items component
+  const memoizedRecursiveFormItems = useMemo(() => 
+    <RecursiveFormItems form={form} />, 
+    [form]
+  );
+
+  return memoizedRecursiveFormItems;
 }

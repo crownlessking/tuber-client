@@ -35,7 +35,7 @@ export default function DialogSelectDefault (props: IDialogSelectDefault) {
         ))}
       </Select>
       <FormHelperText {...select.formHelperTextProps}>
-        { select.has.helpText }
+        { select.has.helperText }
       </FormHelperText>
     </FormControl>
   )

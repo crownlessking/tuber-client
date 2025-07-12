@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 // import logger from 'redux-logger'// TODO Uncomment when debugging Redux
 import infoReducer, { appActions } from '../slices/app.slice';
 import appbarReducer, { appbarActions } from '../slices/appbar.slice';
+import iconsReducer, { iconsActions } from '../slices/icons.slice';
 import metaReducer, { metaActions } from '../slices/meta.slice';
 import appbarQueriesReducer, { appbarQueriesActions } from '../slices/appbarQueries.slice';
 import backgroundReducer, { backgroundActions } from '../slices/background.slice';
@@ -33,7 +34,7 @@ import pagesLightReducer, { pagesLightActions } from '../slices/pagesLight.slice
 import pagesDarkReducer, { pagesDarkActions } from '../slices/pagesDark.slice';
 import themeLightReducer, { themeLightActions } from '../slices/themeLight.slice';
 import themeDarkReducer, { themeDarkActions } from '../slices/themeDark.slice';
-import chipReducer, { chipActions } from '../slices/chip.slice';
+import chipsReducer, { chipsActions } from '../slices/chips.slice';
 import {
   DRAWER_DEFAULT_WIDTH,
   NET_STATE_PATCH,
@@ -52,6 +53,7 @@ const appReducer = combineReducers({
   appbar: appbarReducer,
   appbarQueries: appbarQueriesReducer,
   background: backgroundReducer,
+  icons: iconsReducer,
   data: dataReducer,
   dataPagesRange: dataLoadedPagesSlice,
   dialog: dialogReducer,
@@ -71,7 +73,7 @@ const appReducer = combineReducers({
   pagesLight: pagesLightReducer,
   pagesDark: pagesDarkReducer,
   pagesData: pagesDataReducer,
-  chip: chipReducer,
+  chips: chipsReducer,
   snackbar: snackbarReducer,
   theme: themeReducer,
   themeLight: themeLightReducer,
@@ -188,6 +190,7 @@ export const actions = {
   ...appbarActions,
   ...appbarQueriesActions,
   ...backgroundActions,
+  ...iconsActions,
   ...dataActions,
   ...dataLoadedPagesActions,
   ...dialogActions,
@@ -201,7 +204,7 @@ export const actions = {
   ...netActions,
   ...pagesActions,
   ...pagesDataActions,
-  ...chipActions,
+  ...chipsActions,
   ...snackbarActions,
   ...themeActions,
   ...themeLightActions,
@@ -243,8 +246,21 @@ export const redux: IRedux = {
   route: ''
 };
 
-/** Type for callback that needs to access the redux store and actions. */
-export type TReduxCallback = (redux: IRedux) => TCallback;
+/**
+ * Type for callback that needs to access the redux store and actions in
+ * addition to the event object.
+ */
+export type TReduxHandle = (redux: IRedux) => TCallback;
+/** Type that gives access to the redux store and actions. */
+export type TReduxCallback = (redux: IRedux) => void;
+/**
+ * Type that gives access to the redux store, actions, and the response from
+ * the server.
+ */
+export type TReduxNetCallback<T=any> = (
+  response: T,
+  redux: IRedux
+) => Promise<void>;
 
 /**
  * Get the default drawer width.
@@ -253,9 +269,9 @@ export type TReduxCallback = (redux: IRedux) => TCallback;
 export const get_drawer_width = (): number => {
   return store.getState().drawer.width
     ?? DRAWER_DEFAULT_WIDTH;
-}
+};
 
-/** Get the bootstrap key from head tag. */
+/** Get the bootstrap key from meta tag. */
 export function get_bootstrap_key(): string {
   const savedKey = Config.read('bootstrap_key', '');
   if (savedKey) { return savedKey; }
@@ -294,20 +310,61 @@ export function default_callback ({store, actions, route}:IRedux): TCallback {
   };
 }
 
-const BOOTSTRAP_CALLBACK_LIST: ((redux: IRedux) => void)[] = [];
+/**
+ * Contains all callback which were registered to run when app is initialized.
+ */
+const INIT_CALLBACK_LIT: {
+  callback: TReduxCallback,
+  maxRun?: number
+}[] = [];
 
-/** Register a callback to run when app is bootstrapped. */
-export const on_bootstrap_run = (callback: (redux: IRedux) => void) => {
-  BOOTSTRAP_CALLBACK_LIST.push(callback);
+/**
+ * Register a callback to run when app is initialized.
+ * @param callback callback to run when app is initialized.
+ */
+export const on_init_run = (callback: TReduxCallback) => {
+  INIT_CALLBACK_LIT.push({ callback });
 }
+
+/**
+ * Run all callbacks that were registered with `on_init_run()`.
+ */
+export const initialize = () => {
+  INIT_CALLBACK_LIT.forEach(obj => obj.callback(redux));
+};
+
+const BOOTSTRAP_CALLBACK_LIST: {
+  callback: TReduxNetCallback,
+  maxRun?: number
+}[] = [];
+
+/**
+ * Register a callback to run when app is bootstrapped.
+ * @param callback callback to run when app is bootstrapped.
+ * @param maxRun maximum number of times to run the callback.
+ *               If not provided, the callback will run on every bootstrap
+ *               forever.
+ * @returns void
+ */
+export const on_bootstrap_run = (
+  callback: TReduxNetCallback,
+  maxRun?: number
+) => {
+  BOOTSTRAP_CALLBACK_LIST.push({ callback, maxRun });
+};
 
 /** Run all callbacks that were registered with onBoostrapRun(). */
-export const bootstrap = () => {
-  BOOTSTRAP_CALLBACK_LIST.forEach(callback => callback(redux));
-  for (let i = 0; BOOTSTRAP_CALLBACK_LIST.length > i; i++) {
-    BOOTSTRAP_CALLBACK_LIST.pop();
-  }
-}
+export const bootstrap = (response: any) => {
+  BOOTSTRAP_CALLBACK_LIST.forEach((obj, i) => {
+    obj.callback(response, redux);
+    if (obj.maxRun) {
+      obj.maxRun--;
+      if (obj.maxRun <= 0) {
+        BOOTSTRAP_CALLBACK_LIST.splice(i, 1);
+      }
+    }
+  });
+};
 
 /** Schedule callback run */
 export const schedule_callback_run = (
@@ -317,7 +374,7 @@ export const schedule_callback_run = (
   setTimeout(() => {
     callback(redux);
   }, time);
-}
+};
 
 interface IOnNetLoadCallbackList {
   [_id: string]: ((redux: IRedux) => void)[];

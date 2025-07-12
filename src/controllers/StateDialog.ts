@@ -32,7 +32,7 @@ export default class StateDialog<T = any> extends AbstractState implements IStat
   }
   get open(): boolean { return this.dialogState.open ?? false }
   get titleProps() { return this.dialogState.titleProps }
-  get actionProps() { return this.dialogState.actionsProps }
+  get actionsProps() { return this.dialogState.actionsProps }
   get contentProps() { return this.dialogState.contentProps }
   get contentTextProps() { return this.dialogState.contentTextProps }
   get list() {

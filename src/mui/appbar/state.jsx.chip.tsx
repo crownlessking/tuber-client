@@ -1,29 +1,28 @@
-import Chip from '@mui/material/Chip'
-import { useDispatch, useSelector } from 'react-redux'
-import { get_base_route } from 'src/controllers'
-import store, { AppDispatch, RootState, actions, IRedux } from '../../state'
-import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip'
+import Chip from '@mui/material/Chip';
+import { useDispatch, useSelector } from 'react-redux';
+import store, { AppDispatch, RootState, actions, IRedux } from '../../state';
+import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip';
 
 interface IStateJsxChipProps {
-  def: StateFormItemCustomChip<any>[]
+  def: StateFormItemCustomChip<any>[];
 }
 
 export default function StateJsxChip ({ def: chips }: IStateJsxChipProps) {
-  const dispatch = useDispatch<AppDispatch>()
-  const rawRoute = useSelector((rootState: RootState) => rootState.app.route)
-  const chipState = useSelector((rootState: RootState) => rootState.chip)
-  const baseRoute = get_base_route(rawRoute)
-  const redux = { store, dispatch, actions, route: baseRoute } as IRedux
+  const dispatch = useDispatch<AppDispatch>();
+  const route = useSelector(
+    (rootState: RootState) => rootState.app.route ?? ''
+  );
+  const chipsState = useSelector((rootState: RootState) => rootState.chips);
+  const routeChipsState = chipsState[route];
+  const redux = { store, dispatch, actions, route } as IRedux;
 
-  // [TODO] chips can contain chip that are incomplete, and should not be rendered
-  //        You need to retrieve the chips remaining from the redux store if it exists
   const fixedChips = chips.map(chip => {
-    const cState = chipState[chip.label]
+    const cState = routeChipsState[chip.id];
     return new StateFormItemCustomChip({
       ...chip,
       ...cState,
-    }, {})
-  })
+    }, {});
+  });
 
   return (
     <>
@@ -39,6 +38,6 @@ export default function StateJsxChip ({ def: chips }: IStateJsxChipProps) {
         />
       ))}
     </>
-  )
+  );
 
 }

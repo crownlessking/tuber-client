@@ -85,4 +85,4 @@ export type TIconName = 'phone_outline'
  | 'public_outline'
  | 'travelexploreoutlined'
  | 'travel_explore_outline'
- | 'none'
+ | 'none';

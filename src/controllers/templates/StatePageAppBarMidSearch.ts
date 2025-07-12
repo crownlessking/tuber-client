@@ -1,19 +1,44 @@
 
 import { IconButtonProps } from '@mui/material/IconButton';
+import { TStateAllChips } from 'src/interfaces/IState';
 import IStateAppbar from '../../interfaces/IStateAppbar';
+import StateAppbarInputChip from '../StateAppbarInputChip';
 import StateFormItemCustom from '../StateFormItemCustom';
 import StateLink from '../StateLink';
 import StateFormItemCustomChip from './StateFormItemCustomChip';
 import StatePageAppbar from './StatePageAppbar';
 
+interface TConfigure {
+  chips?: TStateAllChips;
+  route?: string;
+  template?: string;
+}
+
 /** Appbar template for Middle Search Field app bars. */
 export default class StatePageAppbarMidSearch extends StatePageAppbar {
-
+  
   protected searchFieldIconButtonDef?: StateLink<this>;
   protected inputChipsDefs?: StateFormItemCustomChip<this>[];
+  protected _chip?: StateAppbarInputChip;
+  protected _route?: string;
+  protected _template?: string;
+
+  configure = ({ chips, route, template }: TConfigure) => {
+    if (chips) {
+      this._chip = new StateAppbarInputChip(chips);
+      this._chip.configure({ route, template });
+    }
+    this._route = route;
+    this._template = template;
+  };
+
+  /** Whether the app bar has any chips in the search field. */
+  get inputHasChips(): boolean {
+    return !!this.inputChipsDefs && this.inputChipsDefs.length > 0;
+  }
 
   get inputHasNoChips(): boolean {
-    return !this.inputHasChips;
+    return !this.inputChipsDefs || this.inputChipsDefs.length === 0;
   }
 
   get menuIconProps(): IconButtonProps {
@@ -35,18 +60,6 @@ export default class StatePageAppbarMidSearch extends StatePageAppbar {
       },
       ...this.appbarState.searchFieldIcon
     }, this);
-  }
-
-  /** Whether the search field icon should be hidden. */
-  get hideSearchFieldIcon(): boolean {
-    return this.appbarState.hideSearchFieldIcon
-      ?? this.inputHasChips
-      ?? false;
-  }
-
-  /** Whether the search field icon should be shown. */
-  get showSearchFieldIcon(): boolean {
-    return !this.hideSearchFieldIcon && !!this.searchFieldIcon;
   }
 
   get searchFieldIconButton(): StateLink<this> {
@@ -90,15 +103,35 @@ export default class StatePageAppbarMidSearch extends StatePageAppbar {
     return this.appbarState.logoContainerProps;
   }
 
-  /** Whether the app bar has any chips in the search field. */
-  get inputHasChips(): boolean {
-    return !!this.appbarState.inputBaseChips?.length;
-  }
-
-  private breakPath(path: string): string[] {
+  private _breakPath(path: string): string[] {
     const fixedPath = path.replace(/^\/|\/$/, '');
     const parts = fixedPath.split('/');
     return parts;
+  }
+
+  /**
+   * Gathers information about the template and route to determine if the
+   * a chip should be added to the search field.  
+   * The template and route must have the same first part and the same number
+   * of parts.
+   *
+   * @param tpl papthnames with placeholders e.g. endpoint/:page/:id
+   * @param route current route pathnames
+   * @returns 
+   */
+  private _tplRouteAnal(tpl: string, route: string): {
+    tplParts: string[],
+    routeParts: string[],
+    match: boolean
+  } {
+    const anal = {
+      'tplParts': this._breakPath(tpl),
+      'routeParts': this._breakPath(route),
+      'match': false
+    };
+    anal.match = anal.tplParts.length === anal.routeParts.length
+      && anal.tplParts[0] === anal.routeParts[0];
+    return anal;
   }
 
   /**
@@ -108,20 +141,15 @@ export default class StatePageAppbarMidSearch extends StatePageAppbar {
    * @param route current route
    * @returns array of input chips definitions
    */
-  getChipFromPaths(route?: string) {
+  get chips() {
     if (this.inputChipsDefs) { return this.inputChipsDefs; }
-    if (!route) { return this.inputChips; }
-    const routeParts = this.breakPath(route);
-    if (routeParts.length < 2) { return this.inputChips; }
-    routeParts.shift();
-    this.inputChipsDefs = [];
-    for (const label of routeParts) {
-      this.inputChipsDefs.push(
-        new StateFormItemCustomChip({
-          'label': decodeURIComponent(label.replace(/\+/g, '%20')),
-        }, this)
+    if (!this._route || !this._template || !this._chip) {
+      return this.ler(
+        'call StatePageAppbarMidSearch.configure() first.',
+        this.inputChips
       );
     }
+    this.inputChipsDefs = [ ...this._chip.alwaysGet() ];
     for (const ic of this.appbarState.inputBaseChips ?? []) {
       this.inputChipsDefs.push(
         new StateFormItemCustomChip(ic, this)

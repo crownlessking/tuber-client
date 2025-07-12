@@ -1,21 +1,22 @@
-import * as C from "src/constants"
-import IStateDialog from "../../interfaces/IStateDialog"
-import IStateFormItem from "../../interfaces/IStateFormItem"
+import { TBoolVal } from 'src/common.types';
+import * as C from 'src/constants';
+import IStateDialog from '../../interfaces/IStateDialog';
+import IStateFormItem from '../../interfaces/IStateFormItem';
 
 /** 
  * Regular expression identifying a `true` or `false` boolean value.
  */
-const BOOL_TF_R = /^true|false$/i
+const BOOL_TF_R = /^true|false$/i;
 
 /** 
  * Regular expression identifying a `on` or `off` boolean value.
  */
-const BOOL_OO_R = /^on|off$/i
+const BOOL_OO_R = /^on|off$/i;
 
 /**
  * Regular expression identifying a `yes` or `no` boolean value.
  */
-const BOOL_YN_R = /^yes|no$/i
+const BOOL_YN_R = /^yes|no$/i;
 
 /**
  * If the string is length 45 character or less.
@@ -23,7 +24,7 @@ const BOOL_YN_R = /^yes|no$/i
  * @param value 
  */
 function str_is_45_or_less(value: string) {
-  return value.length <= 45 ? C.TEXTFIELD : C.TEXTAREA
+  return value.length <= 45 ? C.TEXTFIELD : C.TEXTAREA;
 }
 
 /**
@@ -33,7 +34,7 @@ function str_is_45_or_less(value: string) {
  * @param previousType 
  */
 function str_is_number(value: string, previousType: string) {
-  return /^\d+$/.test(value) ? 'number' : previousType
+  return /^\d+$/.test(value) ? 'number' : previousType;
 }
 
 /**
@@ -43,7 +44,7 @@ function str_is_number(value: string, previousType: string) {
  * @param previousType 
  */
 function is_true_or_false(value: string, previousType: string) {
-  return BOOL_TF_R.test(value) ? C.BOOL_TRUEFALSE : previousType
+  return BOOL_TF_R.test(value) ? C.BOOL_TRUEFALSE : previousType;
 }
 
 /**
@@ -53,7 +54,7 @@ function is_true_or_false(value: string, previousType: string) {
  * @param previousType 
  */
 function is_on_or_off(value: string, previousType: string) {
-  return BOOL_OO_R.test(value) ? C.BOOL_ONOFF : previousType
+  return BOOL_OO_R.test(value) ? C.BOOL_ONOFF : previousType;
 }
 
 /**
@@ -63,7 +64,7 @@ function is_on_or_off(value: string, previousType: string) {
  * @param previousType 
  */
 function is_yes_or_no(value: string, previousType: string) {
-  return BOOL_YN_R.test(value) ? C.BOOL_YESNO : previousType
+  return BOOL_YN_R.test(value) ? C.BOOL_YESNO : previousType;
 }
 
 type TSwitchBool = 'number' 
@@ -76,7 +77,7 @@ type TSwitchBool = 'number'
   | typeof C.BOOL_TRUEFALSE
   | typeof C.BOOL_ONOFF
   | typeof C.BOOL_YESNO
-  | typeof C.DEFAULT
+  | typeof C.DEFAULT;
 
 /**
  * Identifies whether a string is a boolean value:
@@ -89,17 +90,17 @@ type TSwitchBool = 'number'
  * @param value 
  */
 export function get_bool_type (value: any): TSwitchBool {
-  const type = typeof value
+  const type = typeof value;
   if (typeof type === 'string') {
     if (BOOL_TF_R.test(value)) {
-      return C.BOOL_TRUEFALSE
+      return C.BOOL_TRUEFALSE;
     } else if (BOOL_OO_R.test(value)) {
-      return C.BOOL_ONOFF
+      return C.BOOL_ONOFF;
     } else if (BOOL_YN_R.test(value)) {
-      return C.BOOL_YESNO
+      return C.BOOL_YESNO;
     }
   }
-  return C.DEFAULT
+  return C.DEFAULT;
 }
 
 /**
@@ -107,19 +108,17 @@ export function get_bool_type (value: any): TSwitchBool {
  *
  * @param value
  */
-export function to_bool_val(value: string) {
-  const bool: any = {
+export function to_bool_val(value: TBoolVal) {
+  const bool: Record<TBoolVal, boolean> = {
     'true': true,
     'false': false,
     'on': true,
     'off': false,
     'yes': true,
     'no': false
-  }
-  const booleanValue = bool[value]
-  return typeof booleanValue === 'boolean'
-    ? booleanValue
-    : !!value
+  };
+  const booleanValue = bool[value] ?? false;
+  return booleanValue;
 }
 
 /**
@@ -131,19 +130,19 @@ export function to_bool_val(value: string) {
  * @param value 
  */
 function get_field_type(value: any) {
-  let customType: string
-  const type = typeof value
+  let customType: string;
+  const type = typeof value;
   if (type === 'string') {
-    customType = str_is_45_or_less(value)
+    customType = str_is_45_or_less(value);
     if (customType === C.TEXTFIELD) {
-      customType = str_is_number(value, customType)
-      customType = is_true_or_false(value, customType)
-      customType = is_on_or_off(value, customType)
-      customType = is_yes_or_no(value, customType)
+      customType = str_is_number(value, customType);
+      customType = is_true_or_false(value, customType);
+      customType = is_on_or_off(value, customType);
+      customType = is_yes_or_no(value, customType);
     }
-    return customType
+    return customType;
   }
-  return type
+  return type;
 }
 
 /**
@@ -153,7 +152,7 @@ function get_field_type(value: any) {
  * @param key 
  */
 function get_item_def(rowData: any, key: string) {
-  const value = rowData[key]
+  const value = rowData[key];
   switch (get_field_type(value)) {
   case C.TEXTFIELD:
     return {
@@ -162,7 +161,7 @@ function get_item_def(rowData: any, key: string) {
       'label': key,
       'margin': 'normal',
       value
-    }
+    };
   case C.TEXTAREA:
     return {
       'type': 'textarea',
@@ -171,7 +170,7 @@ function get_item_def(rowData: any, key: string) {
       'margin': 'normal',
       'fullWidth': true,
       value
-    }
+    };
   case C.BOOL_TRUEFALSE:
   case C.BOOL_ONOFF:
   case C.BOOL_YESNO:
@@ -182,7 +181,7 @@ function get_item_def(rowData: any, key: string) {
         'label': key,
         'defaultValue': value
       }
-    }
+    };
   case 'number':
     return {
       'type': 'number',
@@ -190,7 +189,7 @@ function get_item_def(rowData: any, key: string) {
       'label': key,
       'margin': 'normal',
       value
-    }
+    };
   default:
     return {
       'type': 'textfield',
@@ -198,7 +197,7 @@ function get_item_def(rowData: any, key: string) {
       'label': key,
       'disabled': true,
       'placeholder': 'Unprocessable entity value'
-    }
+    };
   }
 }
 
@@ -215,22 +214,22 @@ function get_item_def(rowData: any, key: string) {
  */
 export function gen_state_form({ rowData }: any): IStateDialog {
   if (rowData) {
-    const initItems = Object.keys(rowData).map(key => get_item_def(rowData, key))
-    const items = initItems as IStateFormItem[] // breakFormItems(initItems)
-    return { items }
+    const initItems = Object.keys(rowData).map(key => get_item_def(rowData, key));
+    const items = initItems as IStateFormItem[]; // breakFormItems(initItems)
+    return { items };
   }
-  return { items: [] }
+  return { items: [] };
 }
 
 /**
  * Gather item values as an array of incomplete form item definition object.
  */
 export function set_form_values(dialog: IStateDialog, { rowData }: any) {
-  const items = dialog.items || []
+  const items = dialog.items || [];
   for (let i = 0; i < items.length; i++) {
-    const item = items[i]
+    const item = items[i];
     if (item.name) {
-      item.value = rowData[item.name]
+      item.value = rowData[item.name];
     }
   }
 } //*/

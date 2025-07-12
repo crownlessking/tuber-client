@@ -1,5 +1,5 @@
-import devCallbacks from './dev.callbacks'
-import prodCallbacks from './prod.callbacks'
+import devCallbacks from './dev.callbacks';
+import prodCallbacks from './prod.callbacks';
 
 export default function tuber_register_callbacks() {
   Object.defineProperty(window, 'tuberCallbacks', {
@@ -8,5 +8,5 @@ export default function tuber_register_callbacks() {
       ...devCallbacks
     },
     writable: false
-  })
+  });
 }

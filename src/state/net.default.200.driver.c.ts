@@ -1,27 +1,26 @@
-import { Dispatch } from 'redux'
+import { Dispatch } from 'redux';
 import {
   dataLimitQueueCol,
   dataLimitStackCol,
-} from '../slices/data.slice'
-import { metaAdd } from '../slices/meta.slice'
-import { topLevelLinksStore } from '../slices/topLevelLinks.slice'
-import { appRequestSuccess, appRequestFailed } from '../slices/app.slice'
-import { bootstrap, RootState } from '.'
+} from '../slices/data.slice';
+import { metaAdd } from '../slices/meta.slice';
+import { topLevelLinksStore } from '../slices/topLevelLinks.slice';
+import { appRequestSuccess, appRequestFailed } from '../slices/app.slice';
+import { bootstrap, RootState } from '.';
 import {
   IJsonapiAbstractResponse,
   IJsonapiResponse
-} from '../interfaces/IJsonapi'
-import StateDataPagesRange from '../controllers/StateDataPagesRange'
-import JsonapiPaginationLinks from '../controllers/Jsonapi.pagination.links'
-import { safely_get_as } from '../business.logic'
-import { remember_jsonapi_errors } from '../business.logic/errors'
-import { is_object } from '../business.logic'
-import Config from '../config'
-import { BOOTSTRAP_ATTEMPTS } from 'src/constants'
-import { dataUpdateRange } from 'src/slices/dataLoadedPages.slice'
-import execute_directives from './net.directives.c'
-import { net_patch_state } from './actions'
-import StateNet from 'src/controllers/StateNet'
+} from '../interfaces/IJsonapi';
+import StateDataPagesRange from '../controllers/StateDataPagesRange';
+import JsonapiPaginationLinks from '../controllers/Jsonapi.pagination.links';
+import { safely_get_as } from '../business.logic';
+import { remember_jsonapi_errors } from '../business.logic/errors';
+import { is_object } from '../business.logic';
+import Config from '../config';
+import { BOOTSTRAP_ATTEMPTS } from 'src/constants';
+import { dataUpdateRange } from 'src/slices/dataLoadedPages.slice';
+import execute_directives from './net.directives.c';
+import { net_patch_state } from './actions';
 
 // [TODO] The `included` state does not exist yet and needs to be created
 
@@ -34,47 +33,47 @@ export default function net_default_200_driver (
   endpoint: string,
   response: IJsonapiAbstractResponse
 ): void {
-  const doc = response as IJsonapiResponse
+  const doc = response as IJsonapiResponse;
   if (!!(doc.meta || doc.data || doc.links || doc.state)) {
-    dispatch(appRequestSuccess())
+    dispatch(appRequestSuccess());
   } else {
-    dispatch(appRequestFailed())
+    dispatch(appRequestFailed());
   }
-  let insertPosition: 'beginning' | 'end' | '' = 'end'
+  let insertPosition: 'beginning' | 'end' | '' = 'end';
   const maxLoadedPages = parseInt(safely_get_as(
     doc.meta,
     'max_loaded_pages',
     '4'
-  ))
-  const dataManager = new StateDataPagesRange(getState().dataPagesRange)
-  dataManager.configure({ endpoint })
-  let currentPageNumber = 1
-  let pageSize = 25
+  ));
+  const dataManager = new StateDataPagesRange(getState().dataPagesRange);
+  dataManager.configure({ endpoint });
+  let currentPageNumber = 1;
+  let pageSize = 25;
 
   // Top level links
   if (is_object(doc.links) && typeof doc.links !== 'undefined') {
-    const links = new JsonapiPaginationLinks(doc.links)
-    pageSize = links.pageSize
+    const links = new JsonapiPaginationLinks(doc.links);
+    pageSize = links.pageSize;
     dataManager.configure({
       endpoint,
       pageSize,
       maxLoadedPages
-    })
+    });
     if (links.selfPageNumber < dataManager.firstPage) {
-      insertPosition = 'beginning'
+      insertPosition = 'beginning';
     } else if (dataManager.isPageInRange(links.selfPageNumber)) {
-      insertPosition = ''
+      insertPosition = '';
     }
     if (insertPosition) {
-      dispatch(topLevelLinksStore({ endpoint, links: doc.links }))
+      dispatch(topLevelLinksStore({ endpoint, links: doc.links }));
     }
-    currentPageNumber = links.selfPageNumber
+    currentPageNumber = links.selfPageNumber;
   }
 
   // meta member
   if (doc.meta && insertPosition) {
-    dispatch(metaAdd({ endpoint, meta: doc.meta }))
-    execute_directives(dispatch, doc.meta)
+    dispatch(metaAdd({ endpoint, meta: doc.meta }));
+    execute_directives(dispatch, doc.meta);
   }
 
   // data member
@@ -85,48 +84,40 @@ export default function net_default_200_driver (
         endpoint,
         pageSize,
         limit: dataManager.getMaxLoadedPages()
-      }))
+      }));
     } else if (insertPosition === 'beginning') {
       dispatch(dataLimitStackCol({
         collection: doc.data,
         endpoint,
         pageSize,
         limit: dataManager.getMaxLoadedPages()
-      }))
+      }));
     }
-    const newRange = dataManager.pageToBeLoaded(currentPageNumber)
-      .getNewPageRange()
+    const newRange = dataManager
+      .pageToBeLoaded(currentPageNumber)
+      .getNewPageRange();
     if (newRange) {
       dispatch(dataUpdateRange({
         endpoint,
         pageNumbers: newRange
-      }))
+      }));
     }
   } else if (doc.errors) {
-    remember_jsonapi_errors(doc.errors)
+    remember_jsonapi_errors(doc.errors);
   }
 
-  // This if-condition handles redux state loaded from the server (remote).
+  // Handles redux state loaded from the server (remote).
   if (is_object(doc.state)) {
-    dispatch(net_patch_state(doc.state))
-    // If the response is a state bootstrap
-    if (doc.state?.app?.isBootstrapped) {
-      bootstrap()
-    }
-    // Setting a condition to force app to bootstrap again.
-    else if (doc.state?.app?.isBootstrapped === false) {
-      Config.write(BOOTSTRAP_ATTEMPTS, 0)
-    }
-    if (doc.state?.net) {
-      const net = new StateNet(doc.state.net)
+    dispatch(net_patch_state(doc.state));
 
-      // [TODO] This shouldn't be here. Move it inside a callback that will run when
-      //        the application is bootstrapped.
-      // https://www.tabnine.com/academy/javascript/how-to-set-cookies-javascript/
-      document.cookie = `token=${net.token}`
-      document.cookie = `role=${net.role}`
-      document.cookie = `name=${net.name}`
-      document.cookie = `jwt_version=${net.jwt_version}`
+     // If the response is a state bootstrap
+    if (doc.state?.app?.isBootstrapped) {
+      bootstrap(doc);
+    }
+    // Boolean value `false` will force app to bootstrap again.
+    else if (doc.state?.app?.isBootstrapped === false) {
+      Config.write(BOOTSTRAP_ATTEMPTS, 0);
     }
   }
+
 }

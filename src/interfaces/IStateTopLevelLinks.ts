@@ -1,5 +1,5 @@
-import { IJsonapiPaginationLinks } from './IJsonapi'
+import { IJsonapiPaginationLinks } from './IJsonapi';
 
 export default interface IStateTopLevelLinks {
-  [endpoint: string]: IJsonapiPaginationLinks
+  [endpoint: string]: IJsonapiPaginationLinks;
 }

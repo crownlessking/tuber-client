@@ -1,5 +1,5 @@
-import { TCallback } from '../constants'
-import Config from '../config'
+import { TCallback } from '../constants';
+import Config from '../config';
 
 /**
  * AbstractState is the base class for all state classes.
@@ -13,18 +13,18 @@ export default abstract class AbstractState {
    * a specific value could or should be undefined.
    * Whereas, with the object, values are most likely not undefined.
    */
-  abstract get state(): any
+  abstract get state(): any;
 
   /** Chain-access to parent definition. */
-  abstract get parent(): any
+  abstract get parent(): any;
 
   /**
    * Use to spread properties that are valid component props on a component.
    */
-  abstract get props(): any
+  abstract get props(): any;
 
   /** Use to apply CSS styles. */
-  abstract get theme(): any
+  abstract get theme(): any;
 
   /**
    * Use when it's better to throw an exception.
@@ -33,9 +33,9 @@ export default abstract class AbstractState {
    */
   protected die<T=any>(msg: string, $return: T): T {
     if (Config.DEBUG) {
-      throw new Error(msg)
+      throw new Error(msg);
     }
-    return $return
+    return $return;
   }
 
   /**
@@ -45,9 +45,9 @@ export default abstract class AbstractState {
    */
   protected ler<T=any>(msg: string, $return: T): T {
     if (Config.DEBUG) {
-      console.error(msg)
+      console.error(msg);
     }
-    return $return
+    return $return;
   }
 
   /**
@@ -57,9 +57,9 @@ export default abstract class AbstractState {
    */
   protected warn<T=any>(msg: string, $return: T): T {
     if (Config.DEBUG) {
-      console.warn(msg)
+      console.warn(msg);
     }
-    return $return
+    return $return;
   }
 
   /** 
@@ -69,9 +69,9 @@ export default abstract class AbstractState {
    */
   protected notice<T=any>(msg: string, $return: T): T {
     if (Config.DEBUG) {
-      console.log(msg)
+      console.log(msg);
     }
-    return $return
+    return $return;
   }
 
   /**
@@ -80,7 +80,7 @@ export default abstract class AbstractState {
    */
   protected get_dud_event_callback (): TCallback {
     return (e: any) => {
-      this.ler('No callback was assigned.', undefined)
+      this.ler('No callback was assigned.', undefined);
     }
   }
 }

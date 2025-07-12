@@ -1,9 +1,9 @@
-import StatePage from '../../controllers/StatePage'
+import StatePage from '../../controllers/StatePage';
 
 interface IPageLandingProps {
-  def: StatePage
+  def: StatePage;
 }
 
 export default function PageLanding({ def: page }: IPageLandingProps) {
-  return ( null )
+  return ( null );
 }

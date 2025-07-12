@@ -1,15 +1,15 @@
-import { Fragment } from 'react'
-import { Icon, Button } from '@mui/material'
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import StateFormItem from 'src/controllers/StateFormItem'
-import store, { actions } from 'src/state'
-import { get_font_awesome_icon_prop } from 'src/controllers'
-import StateForm from 'src/controllers/StateForm'
+import { Fragment } from 'react';
+import { Icon, Button } from '@mui/material';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import StateFormItem from 'src/controllers/StateFormItem';
+import store, { actions } from 'src/state';
+import { get_font_awesome_icon_prop } from 'src/controllers';
+import StateForm from 'src/controllers/StateForm';
 
-interface IJsonButtonProps { def: StateFormItem<StateForm> }
+interface IJsonButtonProps { def: StateFormItem<StateForm>; }
 interface IJsonButtonContentProps {
-  def: StateFormItem<StateForm>
+  def: StateFormItem<StateForm>;
 }
 
 export default function StateJsxDialogAction ({ def: button }: IJsonButtonProps) {
@@ -17,8 +17,8 @@ export default function StateJsxDialogAction ({ def: button }: IJsonButtonProps)
     store,
     actions,
     route: button.props.href
-  }
-  const onClick = button.onClick
+  };
+  const onClick = button.onClick;
 
   const ButtonContent = ({ def: button }: IJsonButtonContentProps) => {
     if (button.text) {
@@ -33,7 +33,7 @@ export default function StateJsxDialogAction ({ def: button }: IJsonButtonProps)
               &nbsp;
               <Icon>{ button.has.icon }</Icon>
             </Fragment>
-          )
+          );
         } else if (button.has.faIcon) {
           const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
           return (
@@ -42,9 +42,9 @@ export default function StateJsxDialogAction ({ def: button }: IJsonButtonProps)
               &nbps;
               <FontAwesomeIcon icon={icon} />
             </Fragment>
-          )
+          );
         }
-        break
+        break;
 
       // icon is located on the left of the button title
       case 'left':
@@ -56,7 +56,7 @@ export default function StateJsxDialogAction ({ def: button }: IJsonButtonProps)
               &nbsp;
               { button.text }
             </Fragment>
-          )
+          );
         } else if (button.has.faIcon) {
           const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
           return (
@@ -65,26 +65,26 @@ export default function StateJsxDialogAction ({ def: button }: IJsonButtonProps)
               &nbsp;
               { button.text }
             </Fragment>
-          )
+          );
         }
 
       } // END switch
 
-      return <Fragment>{ button.text }</Fragment>
+      return <Fragment>{ button.text }</Fragment>;
     } else {
       if (button.has.icon) {
-        return <Icon>{ button.has.icon }</Icon>
+        return <Icon>{ button.has.icon }</Icon>;
       } else if (button.has.faIcon) {
-        const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
-        return <FontAwesomeIcon icon={icon} />
+        const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp;
+        return <FontAwesomeIcon icon={icon} />;
       }
     }
     return (
       <Fragment>
         No Text!
       </Fragment>
-    )
-  } // END ButtonContent
+    );
+  }; // END ButtonContent
 
   return (
     <Button
@@ -94,5 +94,5 @@ export default function StateJsxDialogAction ({ def: button }: IJsonButtonProps)
     >
       <ButtonContent def={button} />
     </Button>
-  )
+  );
 }

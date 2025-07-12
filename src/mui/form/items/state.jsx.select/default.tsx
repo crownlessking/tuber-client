@@ -38,9 +38,9 @@ export default function StateJsxSelectDefault (
           </MenuItem>
         ))}
       </Select>
-      {select.has.helpText ? (
+      {select.has.helperText ? (
         <FormHelperText {...select.formHelperTextProps}>
-          { select.has.helpText }
+          { select.has.helperText }
         </FormHelperText>
       ): ( null )}
     </FormControl>

@@ -1,32 +1,32 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Icon, InputAdornment } from '@mui/material'
-import { get_font_awesome_icon_prop } from '../../../controllers'
-import IAdornment from '../../../interfaces/IAdornment'
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Icon, InputAdornment } from '@mui/material';
+import { IAdornment } from '../../../common.types';
+import { get_font_awesome_icon_prop } from '../../../controllers';
 
 interface IGetTextFieldAdornmentProps {
-  startAdornment ?:IAdornment | JSX.Element
-  endAdornment ?:IAdornment | JSX.Element
-  [props: string]: any
+  startAdornment ?:IAdornment | JSX.Element;
+  endAdornment ?:IAdornment | JSX.Element;
+  [props: string]: any;
 }
 
 const getProps = function (adornment :IAdornment) {
-  const props :any = { ...adornment }
-  delete props.icon
-  delete props.faIcon
-  delete props.text
+  const props :any = { ...adornment };
+  delete props.icon;
+  delete props.faIcon;
+  delete props.text;
 
-  return props
+  return props;
 }
 
 const getIcon = function (adornment :IAdornment) {
   if (adornment.icon) {
-    return <Icon>{ adornment.icon }</Icon>
+    return <Icon>{ adornment.icon }</Icon>;
   } else if (adornment.faIcon) {
-    const icon = get_font_awesome_icon_prop(adornment.faIcon)
-    return <FontAwesomeIcon icon={icon as IconProp} />
+    const icon = get_font_awesome_icon_prop(adornment.faIcon);
+    return <FontAwesomeIcon icon={icon as IconProp} />;
   }
-  return ''
+  return '';
 }
 
 /**
@@ -51,7 +51,7 @@ export const getAdornment = function (adornment ?:IAdornment) {
       { getIcon(adornment) }
       { adornment.text ? ' '+adornment.text : '' }
     </InputAdornment>
-  ) : undefined
+  ) : undefined;
 }
 
 /**
@@ -82,9 +82,9 @@ export default function getTextFieldAdornment (
 ) {
   inputProps.startAdornment = getAdornment(
     inputProps.startAdornment as IAdornment
-  )
+  );
   inputProps.endAdornment = getAdornment(
     inputProps.endAdornment as IAdornment
-  )
-  return inputProps
+  );
+  return inputProps;
 }

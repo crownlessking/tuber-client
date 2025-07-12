@@ -1,34 +1,40 @@
-import YouTube, { YouTubeProps } from 'react-youtube'
-import Config from '../../../config'
-import { IBookmarkOrigin } from '../tuber.interfaces'
+import React, { useCallback, useEffect, useMemo } from 'react';
+import YouTube, { YouTubeProps } from 'react-youtube';
+import Config from '../../../config';
+import { IBookmarkOrigin } from '../tuber.interfaces';
 
 interface IYTPlayerProps {
-  bookmark: IBookmarkOrigin
+  bookmark: IBookmarkOrigin;
 }
 
 /** @see https://developers.google.com/youtube/iframe_api_reference?csw=1#Getting_Started */
-export default function YouTubePlayerApi (props: IYTPlayerProps) {
-  const { bookmark: {
+const YouTubePlayerApi = React.memo<IYTPlayerProps>(({ bookmark }) => {
+  const {
     videoid,
     platform,
     start_seconds: start,
     end_seconds: end,
-  } } = props
+  } = bookmark;
 
-  const opts: YouTubeProps['opts'] = {
+  // Memoize YouTube player options
+  const opts: YouTubeProps['opts'] = useMemo(() => ({
     playerVars: { // https://developers.google.com/youtube/player_parameters
       autoplay: 1,
       start,
       end
     },
-  }
+  }), [start, end]);
 
-  const onPlayerReady: YouTubeProps['onReady'] = (event) => {
-    Config.write('player', event.target)
-  }
+  // Memoized onReady callback
+  const onPlayerReady: YouTubeProps['onReady'] = useCallback((event: any) => {
+    Config.write('player', event.target);
+  }, []);
 
-  Config.write('videoid', videoid)
-  Config.write('platform', platform)
+  // Handle config writes with useEffect to avoid side effects during render
+  useEffect(() => {
+    Config.write('videoid', videoid);
+    Config.write('platform', platform);
+  }, [videoid, platform]);
 
   return (
     <YouTube
@@ -38,5 +44,10 @@ export default function YouTubePlayerApi (props: IYTPlayerProps) {
       className='youtube'
       iframeClassName='youtube-iframe'
     />
-  )
-}
+  );
+});
+
+// Set display name for debugging
+YouTubePlayerApi.displayName = 'YouTubePlayerApi';
+
+export default YouTubePlayerApi;

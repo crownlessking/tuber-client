@@ -1,6 +1,7 @@
-import IAbstractState from './IAbstractState'
+import { IAbstractState } from '../common.types';
+
 
 export default interface IStateComponent extends IAbstractState {
-  items?: IStateComponent[]
-  theme?: any
+  items?: IStateComponent[];
+  theme?: any;
 }

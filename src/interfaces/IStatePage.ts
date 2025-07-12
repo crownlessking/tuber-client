@@ -1,11 +1,10 @@
-import { IStatePageDrawer } from './IStateDrawer'
-import IStateBackground from './IStateBackground'
-import IStateComponent from './IStateComponent'
-import IStateTypography from './IStateTypography'
-import { TStatePageLayout } from '../constants'
-import IAbstractState from './IAbstractState'
-import { IGenericObject } from './IState'
-import IStateAppbar from './IStateAppbar'
+import { IStatePageDrawer } from './IStateDrawer';
+import IStateBackground from './IStateBackground';
+import IStateComponent from './IStateComponent';
+import IStateTypography from './IStateTypography';
+import { TStatePageLayout } from '../constants';
+import IStateAppbar from './IStateAppbar';
+import { IAbstractState, IGenericObject } from '../common.types';
 
 /**
  * Page with content, an appbar, background, drawer... etc.
@@ -21,19 +20,19 @@ import IStateAppbar from './IStateAppbar'
  * ```
  */
 export default interface IStatePage extends IAbstractState {
-  _type?: 'generic' | 'complex'
+  _type?: 'generic' | 'complex';
   /** Page title */
-  title?: string
+  title?: string;
   /** If set, only this value will be displayed in the browser tab. */
-  forcedTitle?: string
+  forcedTitle?: string;
   /** Page appbar */
-  appbar?: IStateAppbar
+  appbar?: IStateAppbar;
   /** Page custom appbar */
-  appbarCustom?: IStateComponent
+  appbarCustom?: IStateComponent;
   /** Page background */
-  background?: IStateBackground
+  background?: IStateBackground;
   /** Page's font color and family. */
-  typography?: IStateTypography
+  typography?: IStateTypography;
   /**
    * Content of page represented as a string. e.g.
    * ```ts
@@ -42,47 +41,47 @@ export default interface IStatePage extends IAbstractState {
    * }
    * ```
    */
-  content?: string
+  content?: string;
   /** Page drawer */
-  drawer?: IStatePageDrawer
+  drawer?: IStatePageDrawer;
   /** A valid layout constant. */
-  layout?: TStatePageLayout
+  layout?: TStatePageLayout;
   /** If `true`, the current page appbar will not be rendered. */
-  hideAppbar?: boolean
+  hideAppbar?: boolean;
   /** If `true`, the current page drawer will not be rendered. */
-  hideDrawer?: boolean
+  hideDrawer?: boolean;
   /** If `true`, the page will use the default appbar at `IState.appbar` */
-  useDefaultAppbar?: boolean
+  useDefaultAppbar?: boolean;
   /** If `true`, the page will use the default drawer at `IState.drawer`. */
-  useDefaultDrawer?: boolean
+  useDefaultDrawer?: boolean;
   /** In mobile view, the app bar's link will be moved to the drawer. */
-  generateDefaultDrawer?: boolean
+  generateDefaultDrawer?: boolean;
   /** If `false`, the `IState.background` will NOT be used. */
-  useDefaultBackground?: boolean
+  useDefaultBackground?: boolean;
   /** If `true`, the `IState.typography` will be used. */
-  useDefaultTypography?: boolean
+  useDefaultTypography?: boolean;
   /**
    * Route of a page with a valid appbar and drawer to use.
    *
    * [TODO] Check to see if this property works.
    */
-  inherited?: string
+  inherited?: string;
   /** Inherits the appbar of a page that has a defined appbar. */
-  appbarInherited?: string
+  appbarInherited?: string;
   /** Inherits a valid custom appbar from another page  */
-  appbarCustomInherited?: string
+  appbarCustomInherited?: string;
   /** Route of another page with a valid drawer to use. */
-  drawerInherited?: string
+  drawerInherited?: string;
   /** Route of another page with a valid content to use. */
-  contentInherited?: string
+  contentInherited?: string;
   /** Route of another page with a valid background to use. */
-  backgroundInherited?: string
+  backgroundInherited?: string;
   /** The page can retrieve or possibly store data in this field. */
-  data?: any
+  data?: any;
   /** The page can retrieve or possibly save metadata in this field. */
-  meta?: IGenericObject
+  meta?: IGenericObject;
   /** The page can retrieve or possibly save (Jsonapi) links in this field. */
-  links?: any
+  links?: any;
 }
 
 /**
@@ -91,10 +90,10 @@ export default interface IStatePage extends IAbstractState {
  * @see IStatePage
  */
 export interface IStatePageContent {
-  type: string
-  name: string
+  type: string;
+  name: string;
   /** As of now, endpoint is for form contents.
    * It allows the usage of an automatic callback. */
-  endpoint?: string
-  args?: string
+  endpoint?: string;
+  args?: string;
 }

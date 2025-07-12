@@ -1,16 +1,17 @@
-import { FormControl, FormHelperText } from '@mui/material'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
-import TextField from '@mui/material/TextField'
-import { useSelector } from 'react-redux'
-import { NAME_NOT_SET } from '../../../constants'
-import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch'
-import { RootState } from '../../../state'
-import { to_bool_val } from '../_form.common.logic'
-import { get_redux_store_val } from './_items.common.logic'
+import { FormControl, FormHelperText } from '@mui/material';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
+import { useSelector } from 'react-redux';
+import { TBoolVal } from '../../../common.types';
+import { NAME_NOT_SET } from '../../../constants';
+import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import { RootState } from '../../../state';
+import { to_bool_val } from '../_form.common.logic';
+import { get_redux_store_val } from './_items.common.logic';
 
 interface IJsonSingleSwitch {
-  def: StateFormItemSwitch
+  def: StateFormItemSwitch;
 }
 
 /**
@@ -27,15 +28,17 @@ interface IJsonSingleSwitch {
  * },
  * ```
  */
-export default function StateJsxSingleSwitch({ def: $witch }: IJsonSingleSwitch) {
-  const { name, disabled, onChange: handleChange } = $witch
-  const formsData = useSelector<RootState>(state => state.formsData)
-  const getValue = () => get_redux_store_val(
+export default function StateJsxSingleSwitch({ 
+  def: $witch
+}: IJsonSingleSwitch) {
+  const { name, disabled, onChange: handleChange } = $witch;
+  const formsData = useSelector<RootState>(state => state.formsData);
+  const getValue = () => get_redux_store_val<TBoolVal>(
     formsData,
     $witch.parent.name,
     $witch.name,
     'false'
-  )
+  );
 
   return name ? (
     <FormControl
@@ -58,7 +61,7 @@ export default function StateJsxSingleSwitch({ def: $witch }: IJsonSingleSwitch)
         }
       />
       <FormHelperText {...$witch.formHelperTextProps}>
-        { $witch.has.helpText }
+        { $witch.has.helperText }
       </FormHelperText>
     </FormControl>
   ) : (
@@ -67,5 +70,5 @@ export default function StateJsxSingleSwitch({ def: $witch }: IJsonSingleSwitch)
       value={`SWITCH ${NAME_NOT_SET}`}
       disabled
     />
-  )
+  );
 }

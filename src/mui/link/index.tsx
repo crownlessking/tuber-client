@@ -1,18 +1,18 @@
-import { Fragment } from 'react'
-import Button from '@mui/material/Button'
-import IconButton from '@mui/material/IconButton'
-import Link from '@mui/material/Link'
-import Typography from '@mui/material/Typography'
-import StateLink, { get_formatted_route } from '../../controllers/StateLink'
-import store, { IRedux, actions } from '../../state'
-import { Link as RouterLink } from 'react-router-dom'
-import Chip from '@mui/material/Chip'
-import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip'
-import StateJsxBadgedIcon from '../state.jsx.icons'
+import React, { Fragment, useMemo } from 'react';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import Link from '@mui/material/Link';
+import Typography from '@mui/material/Typography';
+import StateLink, { get_formatted_route } from '../../controllers/StateLink';
+import store, { IRedux, actions } from '../../state';
+import { Link as RouterLink } from 'react-router-dom';
+import Chip from '@mui/material/Chip';
+import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip';
+import StateJsxBadgedIcon from '../state.jsx.icons';
 
 interface IJsonLinkProps {
-  def: StateLink
-  children?: any
+  def: StateLink;
+  children?: React.ReactNode;
 }
 
 /**
@@ -23,31 +23,55 @@ interface IJsonLinkProps {
  *        `state.data`. Then retrieve the content of that property and set it
  *        as the value of badge content.
  */
-export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
-  const { type, color, has } = def
-  const redux: IRedux = { store, actions, route: has.route }
-  const route = get_formatted_route(has)
-  const menuItemsProps = def.parent.menuItemsProps
-  const props = { ...menuItemsProps, ...def.props }
-  const menuItemsSx = def.parent.menuItemsSx
+const StateJsxLink = React.memo<IJsonLinkProps>(({ def, children }) => {
+  const { type, color, has } = def;
+  
+  // Memoize expensive computations
+  const redux: IRedux = useMemo(() => ({ 
+    store, 
+    actions, 
+    route: has.route 
+  }), [has.route]);
+  
+  const route = useMemo(() => get_formatted_route(has), [has]);
+  
+  const menuItemsProps = useMemo(() => def.parent.menuItemsProps, [def.parent.menuItemsProps]);
+  
+  const props = useMemo(() => ({ 
+    ...menuItemsProps, 
+    ...def.props 
+  }), [menuItemsProps, def.props]);
+  
+  const menuItemsSx = useMemo(() => def.parent.menuItemsSx, [def.parent.menuItemsSx]);
+  
+  const commonSx = useMemo(() => ({
+    ...menuItemsSx,
+    fontFamily: def.parent.typography.fontFamily,
+    color: def.parent.typography.color
+  }), [menuItemsSx, def.parent.typography.fontFamily, def.parent.typography.color]);
+  
+  // Memoized onClick handler
+  const handleClick = useMemo(() => def.onClick(redux), [def, redux]);
+  
+  // Memoized chip configuration
+  const chipHas = useMemo(() => 
+    type.toLowerCase() === 'chip' ? new StateFormItemCustomChip(has.state, def) : null,
+    [type, has.state, def]
+  );
 
-  const linkTable: { [link: string]: () => JSX.Element } = {
+  const linkTable: Record<string, () => JSX.Element> = useMemo(() => ({
     // normal link
     'link': () => (
       <Link
         component={RouterLink}
         variant='body2'
         color='inherit'
-        sx={{
-          ...menuItemsSx,
-          fontFamily: def.parent.typography.fontFamily,
-          color: def.parent.typography.color
-        }}
+        sx={commonSx}
         {...props}
         to={route}
-        onClick={def.onClick(redux)}
+        onClick={handleClick}
       >
-        { has.text }
+        {has.text}
       </Link>
     ),
 
@@ -57,16 +81,12 @@ export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
         component={RouterLink}
         color='inherit'
         aria-label={has.label}
-        sx={{
-          ...menuItemsSx,
-          fontFamily: def.parent.typography.fontFamily,
-          color: def.parent.typography.color
-        }}
+        sx={commonSx}
         {...props}
         to={route}
-        onClick={def.onClick(redux)}
+        onClick={handleClick}
       >
-        { has.text }
+        {has.text}
       </Button>
     ),
 
@@ -75,18 +95,14 @@ export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
         component={RouterLink}
         color='inherit'
         aria-label={has.label}
-        sx={{
-          ...menuItemsSx,
-          fontFamily: def.parent.typography.fontFamily,
-          color: def.parent.typography.color
-        }}
+        sx={commonSx}
         {...props}
         to={route}
-        onClick={def.onClick(redux)}
-        style={{textTransform: 'none'}}
+        onClick={handleClick}
+        style={{ textTransform: 'none' }}
       >
         <Typography variant="h6" noWrap>
-          { has.text }
+          {has.text}
         </Typography>
       </Button>
     ),
@@ -96,17 +112,13 @@ export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
         component={RouterLink}
         color='inherit'
         aria-label={has.label}
-        sx={{
-          ...menuItemsSx,
-          fontFamily: def.parent.typography.fontFamily,
-          color: def.parent.typography.color
-        }}
+        sx={commonSx}
         {...props}
         to={route}
-        onClick={def.onClick(redux)}
+        onClick={handleClick}
         style={{ textTransform: 'none' }}
       >
-        { children }
+        {children}
       </IconButton>
     ),
 
@@ -115,19 +127,15 @@ export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
         component={RouterLink}
         color='inherit'
         aria-label={has.label}
-        sx={{
-          ...menuItemsSx,
-          fontFamily: def.parent.typography.fontFamily,
-          color: def.parent.typography.color
-        }}
+        sx={commonSx}
         {...props}
         to={route}
-        onClick={def.onClick(redux)}
+        onClick={handleClick}
         style={{ textTransform: 'none' }}
       >
-        { has.text }
+        {has.text}
         &nbsp;
-        { children }
+        {children}
       </IconButton>
     ),
 
@@ -136,19 +144,15 @@ export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
         component={RouterLink}
         color='inherit'
         aria-label={has.label}
-        sx={{
-          ...menuItemsSx,
-          fontFamily: def.parent.typography.fontFamily,
-          color: def.parent.typography.color
-        }}
+        sx={commonSx}
         {...props}
         to={route}
-        onClick={def.onClick(redux)}
+        onClick={handleClick}
         style={{ textTransform: 'none' }}
       >
-        { children }
+        {children}
         &nbsp;
-        { has.text }
+        {has.text}
       </IconButton>
     ),
 
@@ -158,14 +162,10 @@ export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
         component={RouterLink}
         color={color}
         aria-label={has.label}
-        sx={{
-          ...menuItemsSx,
-          fontFamily: def.parent.typography.fontFamily,
-          color: def.parent.typography.color
-        }}
+        sx={commonSx}
         {...props}
         to={route}
-        onClick={def.onClick(redux)}
+        onClick={handleClick}
       >
         <StateJsxBadgedIcon def={has} />
       </IconButton>
@@ -177,32 +177,25 @@ export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
         component={RouterLink}
         color={color}
         aria-label={has.label}
-        sx={{
-          ...menuItemsSx,
-          fontFamily: def.parent.typography.fontFamily,
-          color: def.parent.typography.color
-        }}
+        sx={commonSx}
         {...props}
         to={route}
-        onClick={def.onClick(redux)}
+        onClick={handleClick}
       >
         <StateJsxBadgedIcon def={has} />
         &nbsp;
-        { has.text }
+        {has.text}
       </IconButton>
     ),
 
     // Capsule or chip with avatar or just text
-    'chip': () => {
-      const chipHas = new StateFormItemCustomChip(has.state, def)
-      return (
-        <Chip
-          label={chipHas.text}
-          color={chipHas.color}
-          { ...props}
-        />
-      )
-    },
+    'chip': () => (
+      <Chip
+        label={chipHas?.text}
+        color={chipHas?.color}
+        {...props}
+      />
+    ),
 
     'default': () => (
       <Link
@@ -210,23 +203,27 @@ export default function StateJsxLink ({ def, children }: IJsonLinkProps) {
         variant='body2'
         color='inherit'
         to={route}
-        sx={{
-          ...menuItemsSx,
-          fontFamily: def.parent.typography.fontFamily,
-          color: def.parent.typography.color
-        }}
+        sx={commonSx}
         {...props}
       >
-        { has.text }
+        {has.text}
       </Link>
     ),
 
     // [TODO] Finish implementing the Dropdown Menu Link
     // It's a link, when clicked (or hovered) will show a drop-down
-    'DROPDOWN': () => (
+    'dropdown': () => (
       <Fragment />
     )
-  }
+  }), [commonSx, props, route, handleClick, has, color, children, chipHas]);
 
-  return linkTable[type.toLowerCase()]()
-}
+  const linkType = type.toLowerCase();
+  const linkRenderer = linkTable[linkType] || linkTable['default'];
+  
+  return linkRenderer();
+});
+
+// Set display name for debugging
+StateJsxLink.displayName = 'StateJsxLink';
+
+export default StateJsxLink;

@@ -1,8 +1,8 @@
-import Config from '../../../config'
-import { IBookmark } from '../tuber.interfaces'
+import Config from '../../../config';
+import { IBookmark } from '../tuber.interfaces';
 
 interface IYTPlayerProps {
-  bookmark: IBookmark
+  bookmark: IBookmark;
 }
 export default function YouTubePlayer (props: IYTPlayerProps) {
   const { bookmark: {
@@ -10,11 +10,11 @@ export default function YouTubePlayer (props: IYTPlayerProps) {
     videoid,
     platform,
     start_seconds
-  } } = props
+  } } = props;
 
-  Config.write('videoid', videoid)
-  Config.write('platform', platform)
-  const start = start_seconds ? `start=${start_seconds}&` : ''
+  Config.write('videoid', videoid);
+  Config.write('platform', platform);
+  const start = start_seconds ? `start=${start_seconds}&` : '';
   return (
     <iframe
       title={`${title} | YouTube`}
@@ -25,5 +25,5 @@ export default function YouTubePlayer (props: IYTPlayerProps) {
       id='yt-player'
       className='youtube-iframe'
     />
-  )
+  );
 }

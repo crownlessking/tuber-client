@@ -1,22 +1,19 @@
-import { styled } from '@mui/material/styles'
-import IStateLink from 'src/interfaces/IStateLink'
-import StateLink from 'src/controllers/StateLink'
-import StatePageAppbar from 'src/controllers/templates/StatePageAppbar'
-import Link from 'src/mui/link'
-import { IResearchToolbarProps } from '../tuber.interfaces'
-import { useSelector } from 'react-redux'
-import { RootState } from 'src/state'
-import StateNet from 'src/controllers/StateNet'
-
-// const Spacing = styled('div')(({ theme }) =>  ({
-//   marginRight: '33%'
-// }))
+import { styled } from '@mui/material/styles';
+import React, { useMemo } from 'react';
+import IStateLink from 'src/interfaces/IStateLink';
+import StateLink from 'src/controllers/StateLink';
+import StatePageAppbar from 'src/controllers/templates/StatePageAppbar';
+import Link from 'src/mui/link';
+import { IResearchToolbarProps } from '../tuber.interfaces';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/state';
+import StateNet from 'src/controllers/StateNet';
 
 interface IToolbarIcon {
   /** Callback to run when the toolbar icon is clicked. */
-  callback: IStateLink['onClick']
+  callback: IStateLink['onClick'];
   /** Parent definition for state links. It is required. */
-  def: StatePageAppbar
+  def: StatePageAppbar;
 }
 
 const Toolbar = styled('div')(({ theme }) => ({
@@ -28,7 +25,7 @@ const Toolbar = styled('div')(({ theme }) => ({
   position: 'fixed',
   bottom: 0,
   right: 0
-}))
+}));
 
 const ToggleWrapper = styled('div')(({ theme: { breakpoints } }) => ({
   [breakpoints.down('md')]: {
@@ -37,11 +34,12 @@ const ToggleWrapper = styled('div')(({ theme: { breakpoints } }) => ({
   [breakpoints.up('md')]: {
     display: 'block'
   }
-}))
+}));
 
 /** When clicked, this icon displays an interface to create a new video bookmark. */
-const AddBookmark = ({ def: appbar }: IToolbarIcon) => {
-  const iconDef = new StateLink({
+const AddBookmark = React.memo<IToolbarIcon>(({ def: appbar }) => {
+  // Memoize the StateLink configuration to prevent recreation
+  const iconDef = useMemo(() => new StateLink({
     'type': 'icon',
     'props': {
       'size': 'small'
@@ -57,12 +55,17 @@ const AddBookmark = ({ def: appbar }: IToolbarIcon) => {
       'onclickHandle': `tuberCallbacks.$3_C_1`,
     },
     // 'onClick': callback
-  }, appbar)
-  return <Link def={iconDef} />
-}
+  }, appbar), [appbar]);
 
-const IntegratedPlayerToggle = ({ callback, def: appbar }: IToolbarIcon) => {
-  const iconDef = new StateLink({
+  return <Link def={iconDef} />;
+});
+
+// Set display name for debugging
+AddBookmark.displayName = 'AddBookmark';
+
+const IntegratedPlayerToggle = React.memo<IToolbarIcon>(({ callback, def: appbar }) => {
+  // Memoize the StateLink configuration to prevent recreation
+  const iconDef = useMemo(() => new StateLink({
     'type': 'icon',
     'props': {
       'size': 'small'
@@ -77,15 +80,21 @@ const IntegratedPlayerToggle = ({ callback, def: appbar }: IToolbarIcon) => {
       },
     },
     'onClick': callback
-  }, appbar)
-  return <Link def={iconDef} />
-}
+  }, appbar), [callback, appbar]);
 
-export default function ResearchToolbarFixed (props: IResearchToolbarProps) {
-  const { def: appbar } = props
-  const { sessionValid } = new StateNet(
-    useSelector((rootState: RootState) => rootState.net)
-  )
+  return <Link def={iconDef} />;
+});
+
+// Set display name for debugging
+IntegratedPlayerToggle.displayName = 'IntegratedPlayerToggle';
+
+const ResearchToolbarFixed = React.memo<IResearchToolbarProps>((props) => {
+  const { def: appbar } = props;
+  
+  // Memoize state selectors
+  const netState = useSelector((rootState: RootState) => rootState.net);
+  const { sessionValid } = useMemo(() => new StateNet(netState), [netState]);
+
   return (
     <Toolbar>
       <ToggleWrapper>
@@ -100,8 +109,13 @@ export default function ResearchToolbarFixed (props: IResearchToolbarProps) {
               def={appbar}
             />
           </>
-        ): ( null )}
+        ) : null}
       </ToggleWrapper>
     </Toolbar>
-  )
-}
+  );
+});
+
+// Set display name for debugging
+ResearchToolbarFixed.displayName = 'ResearchToolbarFixed';
+
+export default ResearchToolbarFixed;

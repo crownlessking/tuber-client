@@ -1,5 +1,5 @@
-import getConfig, { IConfiguration } from './controllers/config.controller'
-import { TThemeMode } from './interfaces'
+import getConfig, { IConfiguration } from './controllers/config.controller';
+import { TThemeMode } from './interfaces';
 
 const initConfObj = {
   /** App default theme mode. */
@@ -10,12 +10,12 @@ const initConfObj = {
   DEV: false,
   // TODO Add your config object values here e.g.
   // MY_CONFIG: 'my config value',
-}
+};
 
-const Config = getConfig()
-Config.init(initConfObj)
+const Config = getConfig();
+Config.init(initConfObj);
 
 // Makes config object key available in suggestions
-export type IAppConfig = IConfiguration & typeof initConfObj
+export type IAppConfig = IConfiguration & typeof initConfObj;
 
-export default Config as IAppConfig
+export default Config as IAppConfig;

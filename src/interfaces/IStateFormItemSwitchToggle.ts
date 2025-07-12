@@ -1,10 +1,10 @@
-import IAbstractState from './IAbstractState'
+import { IAbstractState } from '../common.types';
 
 export default interface IStateFormItemSwitchToggle extends IAbstractState {
   /** Switch label */
-  label?: string
+  label?: string;
   /** Switch value */
-  name?: string
+  name?: string;
   /** Use with switch component group */
-  formControlLabelProps?: any
+  formControlLabelProps?: any;
 }

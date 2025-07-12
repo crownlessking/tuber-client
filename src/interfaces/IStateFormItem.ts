@@ -1,9 +1,9 @@
-import { InputProps } from '@mui/material'
-import { CSSProperties } from 'react'
-import * as C from '../constants'
-import IAbstractState from './IAbstractState'
-import IStateFormItemCustom from './IStateFormItemCustom'
-import IStateLink from './IStateLink'
+import { InputProps } from '@mui/material';
+import { CSSProperties } from 'react';
+import { IAbstractState } from '../common.types';
+import * as C from '../constants';
+import IStateFormItemCustom from './IStateFormItemCustom';
+import IStateLink from './IStateLink';
 
 /**
  * When adding input adornment to a text field, It's the type for `start` and
@@ -21,9 +21,9 @@ import IStateLink from './IStateLink'
  * @see https://mui.com/material-ui/react-text-field/#input-adornments
  */
 export interface IStateFormItemAdornment {
-  icon?: IStateLink
-  text?: string
-  textProps: any
+  icon?: IStateLink;
+  text?: string;
+  textProps?: any;
 }
 
 /**
@@ -38,8 +38,8 @@ export interface IStateFormItemAdornment {
  * @see https://mui.com/material-ui/react-text-field/#input-adornments
  */
 export interface IStateFormItemInputProps extends InputProps {
-  start?: IStateFormItemAdornment
-  end?: IStateFormItemAdornment
+  start?: IStateFormItemAdornment;
+  end?: IStateFormItemAdornment;
 }
 
 /** List of all possible type a form item can be. */
@@ -90,31 +90,31 @@ export type TStateFormItemType = typeof C.BREAK_LINE
   | typeof C.TEXTFIELD
   | typeof C.TEXT_NODE
   | typeof C.TIME_PICKER
-  | typeof C.BAD_FORM_ITEM
+  | typeof C.BAD_FORM_ITEM;
 
 export default interface IStateFormItem extends IAbstractState {
   /** Form field type e.g. textfield, select, radio... etc. */
-  type: TStateFormItemType
+  type?: TStateFormItemType;
   /** Form field `id` */
-  id?: string
+  id?: string;
   /** Form field `name` */
-  name?: string
+  name?: string;
   /** Form field `value` */
-  value?: any
-  href?: string
-  style?: CSSProperties
-  onClick?: any
-  onFocus?: any
-  onKeyDown?: any
-  onChange?: any
-  onBlur?: any
-  label?: string
-  highlight?: string
-  disabled?: boolean
+  value?: any;
+  href?: string;
+  style?: CSSProperties;
+  onClick?: any;
+  onFocus?: any;
+  onKeyDown?: any;
+  onChange?: any;
+  onBlur?: any;
+  label?: string;
+  highlight?: string;
+  disabled?: boolean;
   /** Contains members that are generally not `JSX.Element` props. */
-  has?: IStateFormItemCustom
-  inputProps?: IStateFormItemInputProps
-  items?: Array<IStateFormItem>
+  has?: IStateFormItemCustom;
+  inputProps?: IStateFormItemInputProps;
+  items?: Array<IStateFormItem>;
   /** Disable form item */
-  disableOn?: ('click' | 'change' | 'blur' | 'error')[]
+  disableOn?: ('click' | 'change' | 'blur' | 'error')[];
 }

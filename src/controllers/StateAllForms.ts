@@ -1,48 +1,48 @@
-import Controller from './AbstractState'
-import State from './State'
-import StateForm from './StateForm'
-import IStateAllForms from '../interfaces/IStateAllForms'
-import { log } from '../business.logic/logging'
+import Controller from './AbstractState';
+import State from './State';
+import StateForm from './StateForm';
+import IStateAllForms from '../interfaces/IStateAllForms';
+import { log } from '../business.logic/logging';
 
 export default class StateAllForms extends Controller {
 
-  private _allFormsState: IStateAllForms
-  private _parentDef?: State
-  private _lastFormName: string
+  private _allFormsState: IStateAllForms;
+  private _parentDef?: State;
+  private _lastFormName: string;
 
   constructor (allFormsState: IStateAllForms, parent?: State) {
-    super()
-    this._parentDef = parent
-    this._allFormsState = allFormsState
-    this._lastFormName = ''
+    super();
+    this._parentDef = parent;
+    this._allFormsState = allFormsState;
+    this._lastFormName = '';
   }
 
   /** Get all forms json. */
-  get state(): IStateAllForms { return this._allFormsState }
+  get state(): IStateAllForms { return this._allFormsState; }
   /** Chain-access to root definition. */
-  get parent(): State { return this._parentDef || new State() }
-  get props(): any { return this.die('Not implemented yet.', {}) }
-  get theme(): any { return this.die('Not implemented yet.', {}) }
+  get parent(): State { return this._parentDef || new State(); }
+  get props(): any { return this.die('Not implemented yet.', {}); }
+  get theme(): any { return this.die('Not implemented yet.', {}); }
 
   getForm = (name: string): StateForm | null => {
-    const formName = this.getStateFormName(name)
-    const formState = this._allFormsState[formName]
+    const formName = this.getStateFormName(name);
+    const formState = this._allFormsState[formName];
 
     if (formState) {
-      this._lastFormName = formName
-      const formDef = new StateForm(formState, this)
+      this._lastFormName = formName;
+      const formDef = new StateForm(formState, this);
 
-      return formDef
+      return formDef;
     }
 
-    log(`${formName} not found or misspelled.`)
-    return null
+    log(`${formName} not found or misspelled.`);
+    return null;
   }
 
   /**
    * Get the (`formName`) name of the last form that was retrieved.
    */
-  getLastFormName = (): string => this._lastFormName
+  getLastFormName = (): string => this._lastFormName;
 
   /**
    * Get the form state name
@@ -55,7 +55,7 @@ export default class StateAllForms extends Controller {
    * @param name 
    */
   private getStateFormName = (name: string): string => {
-    return name + 'Form'
-  }
+    return name + 'Form';
+  };
 
 }

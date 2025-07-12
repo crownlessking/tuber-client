@@ -1,9 +1,9 @@
-import { styled } from '@mui/material/styles'
-import React from 'react'
-import { IBookmark } from '../tuber.interfaces'
+import { styled } from '@mui/material/styles';
+import React from 'react';
+import { IBookmark } from '../tuber.interfaces';
 
 interface IVimeoPlayerProps {
-  bookmark: IBookmark
+  bookmark: IBookmark;
 }
 
 const StyledIframeDiv = styled('div')(() => ({
@@ -11,7 +11,7 @@ const StyledIframeDiv = styled('div')(() => ({
   position: 'relative',
   width: '100%',
   height: '100%',
-}))
+}));
 
 const IframeStyled = styled('iframe')(() => ({
   position: 'absolute',
@@ -19,13 +19,13 @@ const IframeStyled = styled('iframe')(() => ({
   left: 0,
   width: '100%',
   height: '100%',
-}))
+}));
 
 /** Example URL: https://vimeo.com/66507747 */
 const VimeoPlayer: React.FC<IVimeoPlayerProps> = ({ bookmark }) => {
-  const { videoid, start_seconds } = bookmark
-  const start = start_seconds ?? 0
-  const src = `https://player.vimeo.com/video/${videoid}?autoplay=1#t=${start}s`
+  const { videoid, start_seconds } = bookmark;
+  const start = start_seconds ?? 0;
+  const src = `https://player.vimeo.com/video/${videoid}?autoplay=1#t=${start}s`;
   return (
     <>
       <StyledIframeDiv>
@@ -39,7 +39,7 @@ const VimeoPlayer: React.FC<IVimeoPlayerProps> = ({ bookmark }) => {
       </StyledIframeDiv>
       <script src="https://player.vimeo.com/api/player.js"></script>
     </>
-  )
-}
+  );
+};
 
-export default VimeoPlayer
+export default VimeoPlayer;

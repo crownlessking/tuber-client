@@ -1,28 +1,28 @@
-import { remember_exception } from '../business.logic/errors'
-import AbstractState from './AbstractState'
-import { IJsonapiPaginationLinks } from '../interfaces/IJsonapi'
+import { remember_exception } from '../business.logic/errors';
+import AbstractState from './AbstractState';
+import { IJsonapiPaginationLinks } from '../interfaces/IJsonapi';
 
-type TLink = IJsonapiPaginationLinks[keyof IJsonapiPaginationLinks]
+type TLink = IJsonapiPaginationLinks[keyof IJsonapiPaginationLinks];
 
 export default class JsonapiPaginationLinks extends AbstractState {
-  private _selfPageNumber?: number
-  private _pageSize?: number
-  private _firstPageNumber?: number
-  private _lastPageNumber?: number
-  private _nextPageNumber?: number
-  private _prevPageNumber?: number
+  private _selfPageNumber?: number;
+  private _pageSize?: number;
+  private _firstPageNumber?: number;
+  private _lastPageNumber?: number;
+  private _nextPageNumber?: number;
+  private _prevPageNumber?: number;
 
   constructor (private _links: IJsonapiPaginationLinks) {
-    super()
+    super();
     if (!this._links) {
-      this._lastPageNumber = 1 // [bugfix]
+      this._lastPageNumber = 1; // [bugfix]
     }
   }
 
-  get parent (): any { return this.die('Not implemented yet.', {}) }
-  get state (): any { return this.die('Not implemented yet.', {}) }
-  get props (): any { return this.die('Not implemented yet.', {}) }
-  get theme (): any { return this.die('Not implemented yet.', {}) }
+  get parent (): any { return this.die('Not implemented yet.', {}); }
+  get state (): any { return this.die('Not implemented yet.', {}); }
+  get props (): any { return this.die('Not implemented yet.', {}); }
+  get theme (): any { return this.die('Not implemented yet.', {}); }
 
   /**
    * Get the query string value by key.
@@ -31,16 +31,16 @@ export default class JsonapiPaginationLinks extends AbstractState {
    * @returns value of the query string key
    */
   private _get_query_val = (url: string, key: string): string => {
-    const query = url.split('?')[1]
-    if (!query) return ''
-    const pairs = query.split('&')
+    const query = url.split('?')[1];
+    if (!query) return '';
+    const pairs = query.split('&');
     for (let i = 0; i < pairs.length; i++) {
-      const pair = pairs[i]
-      const [k, v] = pair.split('=')
-      if (k === key) return v
+      const pair = pairs[i];
+      const [k, v] = pair.split('=');
+      if (k === key) return v;
     }
-    return ''
-  }
+    return '';
+  };
 
   get pageSize(): number {
     try {
@@ -49,10 +49,10 @@ export default class JsonapiPaginationLinks extends AbstractState {
           get_jsonapi_link_url(this._links.self),
           'page[size]'
         ))
-      )
+      );
     } catch (err: any) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: pageSize defaulted to 25.')
-      return this._pageSize = 25
+      remember_exception(err, 'JsonapiPaginationLinks.get: pageSize defaulted to 25.');
+      return this._pageSize = 25;
     }
   }
 
@@ -64,10 +64,10 @@ export default class JsonapiPaginationLinks extends AbstractState {
           get_jsonapi_link_url(this._links.self),
           'page[number]'
         ))
-      )
+      );
     } catch (err: any) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: selfPageNumber defaulted to 1.')
-      return this._selfPageNumber = 1
+      remember_exception(err, 'JsonapiPaginationLinks.get: selfPageNumber defaulted to 1.');
+      return this._selfPageNumber = 1;
     }
   }
 
@@ -78,10 +78,10 @@ export default class JsonapiPaginationLinks extends AbstractState {
           get_jsonapi_link_url(this._links.first),
           'page[number]'
         ))
-      )
+      );
     } catch (err) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: firstPageNumber defaulted to 1.')
-      return this._firstPageNumber = 1
+      remember_exception(err, 'JsonapiPaginationLinks.get: firstPageNumber defaulted to 1.');
+      return this._firstPageNumber = 1;
     }
   }
 
@@ -92,10 +92,10 @@ export default class JsonapiPaginationLinks extends AbstractState {
           get_jsonapi_link_url(this._links.last),
           'page[number]'
         ))
-      )
+      );
     } catch (err) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: lastPageNumber defaulted to 1.')
-      return this._lastPageNumber = 1
+      remember_exception(err, 'JsonapiPaginationLinks.get: lastPageNumber defaulted to 1.');
+      return this._lastPageNumber = 1;
     }
   }
 
@@ -106,10 +106,10 @@ export default class JsonapiPaginationLinks extends AbstractState {
           get_jsonapi_link_url(this._links.next),
           'page[number]'
         ))
-      )
+      );
     } catch (err) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: nextPageNumber defaulted to 1.')
-      return this._nextPageNumber = 1
+      remember_exception(err, 'JsonapiPaginationLinks.get: nextPageNumber defaulted to 1.');
+      return this._nextPageNumber = 1;
     }
   }
 
@@ -120,10 +120,10 @@ export default class JsonapiPaginationLinks extends AbstractState {
           get_jsonapi_link_url(this._links.prev),
           'page[number]'
         ))
-      )
+      );
     } catch (err) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: prevPageNumber defaulted to 1.')
-      return this._prevPageNumber = 1
+      remember_exception(err, 'JsonapiPaginationLinks.get: prevPageNumber defaulted to 1.');
+      return this._prevPageNumber = 1;
     }
   }
 
@@ -133,16 +133,16 @@ export default class JsonapiPaginationLinks extends AbstractState {
     pageSize,
     // TODO Add more query params to update
   }: {pageNumber?: number, pageSize?: number}) {
-    let qs = get_jsonapi_link_url(this._links.self)
-    const params = new URLSearchParams(qs)
+    let qs = get_jsonapi_link_url(this._links.self);
+    const params = new URLSearchParams(qs);
     if (pageNumber) {
-      params.set('page[number]', pageNumber.toString())
+      params.set('page[number]', pageNumber.toString());
     }
     if (pageSize) {
-      params.set('page[size]', pageSize.toString())
+      params.set('page[size]', pageSize.toString());
     }
-    const updatedQs = params.toString()
-    return updatedQs
+    const updatedQs = params.toString();
+    return updatedQs;
   }
 }
 
@@ -150,10 +150,10 @@ export default class JsonapiPaginationLinks extends AbstractState {
 export function get_jsonapi_link_url (link: TLink): string {
   switch (typeof link) {
     case 'string':
-      return link
+      return link;
     case 'object':
-      return link.href
+      return link.href;
     default:
-      return ''
+      return '';
   }
 }

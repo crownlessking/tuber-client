@@ -1,4 +1,4 @@
-import { IBookmark } from './tuber.interfaces'
+import { IBookmark } from './tuber.interfaces';
 
 const BOOKMARK_LIST: IBookmark[] = [
   {
@@ -47,4 +47,4 @@ const BOOKMARK_LIST: IBookmark[] = [
   }
 ]
 
-export default BOOKMARK_LIST
+export default BOOKMARK_LIST;

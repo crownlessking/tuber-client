@@ -1,11 +1,11 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
   APP_CONTENT_VIEW,
   DEFAULT_LANDING_PAGE_VIEW,
-} from '../constants'
-import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi'
-import { IStatePageContent } from '../interfaces/IStatePage'
-import { err, ler } from '../business.logic/logging'
+} from '../constants';
+import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi';
+import { IStatePageContent } from '../interfaces/IStatePage';
+import { err, ler } from '../business.logic/logging';
 
 /**
  * Converts an icon definition to a valid argument for the `FontAwesomeIcon`
@@ -26,17 +26,17 @@ import { err, ler } from '../business.logic/logging'
  * @deprecated
  */
 export function get_font_awesome_icon_prop(iconStr: string): IconProp {
-  const pieces = iconStr.replace(/\s+/,'').split(',')
+  const pieces = iconStr.replace(/\s+/,'').split(',');
 
   if (pieces.length === 2) {
-    return pieces as IconProp
+    return pieces as IconProp;
   } else if (pieces.length === 1) {
-    return ['fas', iconStr] as IconProp
+    return ['fas', iconStr] as IconProp;
   }
 
-  err('bad icon definition. Check your JSON.')
+  err('bad icon definition. Check your JSON.');
 
-  return '' as IconProp
+  return '' as IconProp;
 }
 
 /**
@@ -48,12 +48,12 @@ export function get_font_awesome_icon_prop(iconStr: string): IconProp {
  */
 export function get_viewport_size(): { width: number; height: number }
 {
-  let e: any = window, a = 'inner'
+  let e: any = window, a = 'inner';
   if ( !( 'innerWidth' in window ) ) {
     a = 'client';
     e = document.documentElement || document.body;
   }
-  return { width : e[ a+'Width' ] , height : e[ a+'Height' ] }
+  return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
 }
 
 /**
@@ -68,9 +68,9 @@ export function get_viewport_size(): { width: number; height: number }
  * @deprecated
  */
 export function stretch_to_bottom(bottom: number): number {
-  const height = get_viewport_size().height
+  const height = get_viewport_size().height;
 
-  return height - bottom
+  return height - bottom;
 }
 
 /**
@@ -95,25 +95,25 @@ export function stretch_to_bottom(bottom: number): number {
  */
 export function get_val<T=any>(obj: any, path: string): T|null {
   if (typeof obj === 'undefined' || Array.isArray(obj) || typeof obj !== 'object') {
-    return null
+    return null;
   }
-  const paths = path.split('.')
+  const paths = path.split('.');
   let i = 0,
     key = paths[i],
-    candidate = obj[key]
+    candidate = obj[key];
 
   while (i < paths.length) {
     if (!candidate) {
-      break
+      break;
     } else if (i >= paths.length - 1) {
-      return candidate as T ?? null
+      return candidate as T ?? null;
     }
-    i++
-    key = paths[i]
-    candidate = candidate[key]
+    i++;
+    key = paths[i];
+    candidate = candidate[key];
   }
 
-  return null
+  return null;
 }
 
 /**
@@ -127,7 +127,7 @@ const create_writable_property = (data: any, prop: string, val: any): void => {
   Object.defineProperty(data, prop, {
     value: val,
     writable: true
-  })
+  });
 }
 
 /**
@@ -140,28 +140,28 @@ const create_writable_property = (data: any, prop: string, val: any): void => {
  * @todo NOT TESTED, please test
  */
 export function set_val(obj: any, path: string, val: any): void {
-  const propArray = path.split('.')
+  const propArray = path.split('.');
   let o = obj,
       candidate: any,
-      j = 0
+      j = 0;
 
   do {
-    let prop = propArray[j]
-    candidate = o[prop]
+    let prop = propArray[j];
+    candidate = o[prop];
 
     // if this is the last property
     if (j >= (propArray.length - 1)) {
-      create_writable_property(o, prop, val)
-      return
+      create_writable_property(o, prop, val);
+      return;
 
     // if the property does not exist but a value was provided
     } else if (!candidate) {
-      create_writable_property(o, prop, {})
+      create_writable_property(o, prop, {});
     }
 
-    o = o[prop]
-    j++
-  } while (1)
+    o = o[prop];
+    j++;
+  } while (1);
 }
 
 /**
@@ -171,15 +171,15 @@ export function set_val(obj: any, path: string, val: any): void {
  * @returns value of the query string key
  */
 export function get_query_val(url: string, key: string): string {
-  const query = url.split('?')[1]
-  if (!query) return ''
-  const pairs = query.split('&')
+  const query = url.split('?')[1];
+  if (!query) return '';
+  const pairs = query.split('&');
   for (let i = 0; i < pairs.length; i++) {
-    const pair = pairs[i]
-    const [k, v] = pair.split('=')
-    if (k === key) return v
+    const pair = pairs[i];
+    const [k, v] = pair.split('=');
+    if (k === key) return v;
   }
-  return ''
+  return '';
 }
 
 /**
@@ -188,9 +188,9 @@ export function get_query_val(url: string, key: string): string {
  * @returns array of query string keys
  */
 export function get_query_keys(url: string): string[] {
-  const query = url.split('?')[1]
-  if (!query) return []
-  return query.split('&').map((pair) => pair.split('=')[0])
+  const query = url.split('?')[1];
+  if (!query) return [];
+  return query.split('&').map((pair) => pair.split('=')[0]);
 }
 
 /**
@@ -199,16 +199,16 @@ export function get_query_keys(url: string): string[] {
  * @returns object of query string keys and values
  */
 export function get_query_values(url: string): { [key: string]: string } {
-  const query = url.split('?')[1]
-  if (!query) return {}
-  const values: { [key: string]: string } = {}
-  const pairs = query.split('&')
+  const query = url.split('?')[1];
+  if (!query) return {};
+  const values: { [key: string]: string } = {};
+  const pairs = query.split('&');
   for (let i = 0; i < pairs.length; i++) {
-    const pair = pairs[i]
-    const [k, v] = pair.split('=')
-    values[k] = v
+    const pair = pairs[i];
+    const [k, v] = pair.split('=');
+    values[k] = v;
   }
-  return values
+  return values;
 }
 
 /**
@@ -219,17 +219,17 @@ export function get_query_values(url: string): { [key: string]: string } {
  * @returns new url with the query string key and value
  */
 export function set_url_query_val(url: string, key: string, val?: string) {
-  const urlObj = new URL(url)
-  const query = new URLSearchParams(urlObj.searchParams)
-  const { origin, pathname } = urlObj
+  const urlObj = new URL(url);
+  const query = new URLSearchParams(urlObj.searchParams);
+  const { origin, pathname } = urlObj;
   if (typeof val === 'undefined') {
-    query.delete(key)
-    const newUrl = `${origin}${pathname}?${query.toString()}`
-    return newUrl
+    query.delete(key);
+    const newUrl = `${origin}${pathname}?${query.toString()}`;
+    return newUrl;
   }
-  query.set(key, val.toString())
-  const newUrl = `${origin}${pathname}?${query.toString()}`
-  return newUrl
+  query.set(key, val.toString());
+  const newUrl = `${origin}${pathname}?${query.toString()}`;
+  return newUrl;
 }
 
 /**
@@ -240,7 +240,7 @@ export function set_url_query_val(url: string, key: string, val?: string) {
  * @returns new array with elements removed
  */
 export function delete_range<T>(arr: T[], start: number, end: number): T[] {
-  return arr.slice(0, start).concat(arr.slice(end + 1))
+  return arr.slice(0, start).concat(arr.slice(end + 1));
 }
 
 /**
@@ -250,15 +250,15 @@ export function delete_range<T>(arr: T[], start: number, end: number): T[] {
  * @returns content of the meta tag
  */
 export function get_head_meta_content(name: string): string {
-  const meta = document.querySelector(`meta[name="${name}"]`)
+  const meta = document.querySelector(`meta[name="${name}"]`);
 
   if (meta) {
-    return (meta as HTMLMetaElement).content
+    return (meta as HTMLMetaElement).content;
   }
 
   // err(`Meta with '${name}' name does not exist.`)
 
-  return ''
+  return '';
 }
 
 /**
@@ -269,7 +269,7 @@ export function get_head_meta_content(name: string): string {
  * @returns camel case version of the endpoint
  */
 export function camelize(endpoint: string): string {
-  return endpoint.replace(/-([a-zA-Z])/g, g => g[1].toUpperCase())
+  return endpoint.replace(/-([a-zA-Z])/g, g => g[1].toUpperCase());
 }
 
 /**
@@ -286,27 +286,27 @@ export function camelize(endpoint: string): string {
  * @deprecated
  */
 export function safely_get(obj: any, path = '', _default?: any): any {
-  const value = get_val(obj, path)
+  const value = get_val(obj, path);
 
   if (value !== null) {
-    return value
+    return value;
   }
 
   // force function to return undefined
   if (_default === 'undefined') {
-    return undefined
+    return undefined;
   }
 
   if (_default === undefined) {
   
     // If a path was not provided, we can safely assume that the object is being
     // tested for a valid value
-    if (!path) return {}
+    if (!path) return {};
   
-    return null
+    return null;
   }
 
-  return _default
+  return _default;
 }
 
 /**
@@ -318,9 +318,9 @@ export function safely_get(obj: any, path = '', _default?: any): any {
  * @returns value of `obj[path]` or `_default` if `obj[path]` is undefined
  */
 export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
-  const value = get_val<T>(obj, path)
+  const value = get_val<T>(obj, path);
 
-  return value !== null ? value : _default
+  return value !== null ? value : _default;
 }
 
 /**
@@ -338,30 +338,30 @@ export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
  * @returns `IStatePageContent` object.
  */
 export function get_parsed_page_content(str?: string): IStatePageContent {
-  const content = str ?? ''
-  const options = content.replace(/\s+/g, '').split(':')
+  const content = str ?? '';
+  const options = content.replace(/\s+/g, '').split(':');
   if (options.length <= 1) {
-    ler('get_parsed_page_content: Invalid or missing `page` content definition')
+    ler('get_parsed_page_content: Invalid or missing `page` content definition');
     return {
       type: APP_CONTENT_VIEW,
       name: DEFAULT_LANDING_PAGE_VIEW
-    }
+    };
   }
   const contentObj: IStatePageContent = {
     type: options[0],
     name: options[1]
-  }
+  };
   if (options.length >= 3) {
-    contentObj.endpoint = options[2]
+    contentObj.endpoint = options[2];
   }
   if (options.length >= 4) {
-    contentObj.args = options[3]
+    contentObj.args = options[3];
   }
-  return contentObj
+  return contentObj;
 }
 
 /** Type for event's callback defined with a string. */
-export type THandleEvent = 'onclick' | 'onchange' | 'onkeydown' | 'onblur'
+export type THandleEvent = 'onclick' | 'onchange' | 'onkeydown' | 'onblur';
 
 /**
  * Save array index into the array element.
@@ -381,9 +381,9 @@ export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]): void {
   if (a.length <= 0
     || (a.length > 0 && typeof a[0] !== 'object' && !Array.isArray(a[0]))
   ) {
-    return
+    return;
   }
-  a.map((e, i) => e._index = i)
+  a.map((e, i) => e._index = i);
 }
 
 /**
@@ -392,8 +392,23 @@ export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]): void {
  * @param templateRoute 
  */
 export function get_base_route(templateRoute?: string): string {
-  if (!templateRoute) return ''
-  return templateRoute.replace(/^\/|\/$/g, '').split('/')[0]
+  if (!templateRoute) return '';
+  return templateRoute.replace(/^\/|\/$/g, '').split('/')[0];
+}
+
+/**
+ * Delete path variables from the route.
+ *
+ * @param rawRoute
+ * @param $var 
+ * @returns new route without the path variables
+ */
+export function delete_path_vars(rawRoute: string, $var: string): string {
+  const route = rawRoute.replace(/^\/|\/$/g, '');
+  const pieces = route.split('/');
+  const index = pieces.indexOf($var);
+  if (index === -1) return route;
+  return pieces.slice(0, index).join('/');
 }
 
 /**
@@ -407,26 +422,26 @@ export function get_path_vars(
   rawRoute?: string
 ): { baseRoute: string, params: string[], values: string[] } {
   if (!template || !rawRoute) {
-    return { baseRoute: '',params: [], values: [] }
+    return { baseRoute: '',params: [], values: [] };
   }
   if (rawRoute === '/') {
-    return { baseRoute: rawRoute, params: [], values: [] }
+    return { baseRoute: rawRoute, params: [], values: [] };
   }
-  const values: string[] = []
-  const params: string[] = []
-  const route = rawRoute.replace(/^\/|\/$/g, '')
-  const tpl = template.replace(/^\/|\/$/g, '')
-  const tplPieces = tpl.split('/')
-  const routePieces = route.split('/')
-  let i = 0
+  const values: string[] = [];
+  const params: string[] = [];
+  const route = rawRoute.replace(/^\/|\/$/g, '');
+  const tpl = template.replace(/^\/|\/$/g, '');
+  const tplPieces = tpl.split('/');
+  const routePieces = route.split('/');
+  let i = 0;
   for (const piece of tplPieces) {
     if (piece.startsWith(':')) {
-      params.push(piece.replace(/^:/, ''))
-      values.push(routePieces[i])
+      params.push(piece.replace(/^:/, ''));
+      values.push(routePieces[i]);
     }
-    i++
+    i++;
   }
-  return { baseRoute: routePieces[0], params, values }
+  return { baseRoute: routePieces[0], params, values };
 }
 
 /**
@@ -440,16 +455,16 @@ export function route_match_template(
   rawRoute: string
 ): boolean {
   if (rawRoute === '/') {
-    return template === rawRoute
+    return template === rawRoute;
   }
-  const routePaths = rawRoute.replace(/^\/|\/$/g, '').split('/')
-  const templatePaths = template.replace(/^\/|\/$/g, '').split('/')
+  const routePaths = rawRoute.replace(/^\/|\/$/g, '').split('/');
+  const templatePaths = template.replace(/^\/|\/$/g, '').split('/');
   if (routePaths[0] === templatePaths[0]
     && routePaths.length === templatePaths.length
   ) {
-    return true
+    return true;
   }
-  return false
+  return false;
 }
 
 /**
@@ -459,7 +474,7 @@ export function route_match_template(
  * @see no_path_vars
  */
 export function has_path_vars(rawRoute: string): boolean {
-  return rawRoute.replace(/^\/|\/$/g, '').split('/').length > 1
+  return rawRoute.replace(/^\/|\/$/g, '').split('/').length > 1;
 }
 
 /**
@@ -468,7 +483,7 @@ export function has_path_vars(rawRoute: string): boolean {
  * @returns `true` if the route has NO path variables.
  */
 export function no_path_vars(rawRoute: string): boolean {
-  return !has_path_vars(rawRoute)
+  return !has_path_vars(rawRoute);
 }
 
 /**
@@ -482,5 +497,5 @@ export function no_path_vars(rawRoute: string): boolean {
 export function is_template_route(possibleTemplate: string): boolean {
   return possibleTemplate.replace(/^\/|\/$/g, '').split('/').some(
     piece => piece.startsWith(':')
-  )
+  );
 }

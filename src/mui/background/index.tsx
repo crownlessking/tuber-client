@@ -1,58 +1,38 @@
-import StateBackground from '../../controllers/StateBackground'
-import StatePage from '../../controllers/StatePage'
-import Fade from '@mui/material/Fade'
-import { Box, styled } from '@mui/material'
+import { useMemo, memo } from 'react';
+import StateBackground from '../../controllers/StateBackground';
+import StatePage from '../../controllers/StatePage';
+import Fade from '@mui/material/Fade';
+import { Box, styled } from '@mui/material';
 
+// Memoize the styled component outside of render to prevent recreation
 const BackgroundStyledBox = styled(Box)(() => ({
   height: 'inherit',
   position: 'absolute',
   left: 0,
   right: 0,
   zIndex: -9999,
-}))
+}));
 
 interface IBackgroundProps {
-  def: StateBackground<StatePage>,
-  children?: any
+  def: StateBackground<StatePage>;
+  children?: any;
 }
 
-const Background = function (
+const Background = memo(function Background(
   { def: background, children }: IBackgroundProps
 ) {
+  // Memoize the sx prop to prevent unnecessary recalculations
+  const sx = useMemo(() => background.sx, [background]);
+
   return (
     <Fade in={true}>
       <BackgroundStyledBox
-        sx={background.sx}
+        sx={sx}
       >
         { children }
       </BackgroundStyledBox>
     </Fade>
-  )
-}
+  );
+});
 
-export default Background
-/*
-
-export const Background = function (
-  { def: background, children }: IBackgroundProps
-) {
-  return (
-    <Fade in={true}>
-      <Box
-        sx={{
-          height: 'inherit',
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          zIndex: -9999,
-          ...background.sx
-        }}
-        data-name='Background'
-      >
-        { children }
-      </Box>
-    </Fade>
-  )
-}
-
-*/
+export default Background;

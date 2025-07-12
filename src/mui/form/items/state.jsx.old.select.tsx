@@ -41,7 +41,7 @@ export default function StateJsxSelect ({ def: select }: IJsonSelectProps) {
           </MenuItem>
         ))}
       </Select>
-      <FormHelperText>{ select.has.helpText }</FormHelperText>
+      <FormHelperText>{ select.has.helperText }</FormHelperText>
     </FormControl>
   ) : (
     <TextField value={`SELECT ${NAME_NOT_SET}`} disabled />

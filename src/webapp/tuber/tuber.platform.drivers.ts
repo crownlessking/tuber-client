@@ -1,6 +1,6 @@
-import { remember_error } from 'src/business.logic/errors'
+import { remember_error } from 'src/business.logic/errors';
 import {
-  DIALGO_DAILY_NEW_ID,
+  DIALOG_DAILY_NEW_ID,
   DIALOG_FACEBOOK_NEW_ID,
   DIALOG_ODYSEE_NEW_ID,
   DIALOG_RUMBLE_NEW_ID,
@@ -8,7 +8,7 @@ import {
   DIALOG_UNKNOWN_NEW_ID,
   DIALOG_VIMEO_NEW_ID,
   DIALOG_YOUTUBE_NEW_ID
-} from './tuber.config'
+} from './tuber.config';
 import {
   youtube_get_video_id,
   youtube_get_start_time,
@@ -21,8 +21,8 @@ import {
   twitch_get_start_time,
   daily_get_start_time,
   odysee_get_url_data,
-} from './_tuber.common.logic'
-import { IUrlStatus, IVideoData } from './tuber.interfaces'
+} from './_tuber.common.logic';
+import { IUrlStatus, IVideoData } from './tuber.interfaces';
 
 const DATA_SKELETON: IVideoData = {
   platform: '_blank',
@@ -38,9 +38,9 @@ const DATA_SKELETON: IVideoData = {
   },
   thumbnailUrl: '',
   dialogId: '0'
-}
+};
 
-const NO_START_MSG = 'The video start time is missing.'
+const NO_START_MSG = 'The video start time is missing.';
 
 /**
  * Parse a video URL of supported platforms and return the video data.
@@ -49,38 +49,38 @@ const NO_START_MSG = 'The video start time is missing.'
  * @returns The video data
  */
 export default function parse_platform_video_url(url: string): IVideoData {
-  const { valid, message } = _check_url(url)
+  const { valid, message } = _check_url(url);
   if (!valid) {
     remember_error({
       code: 'invalid_url',
       title: 'Invalid URL',
       detail: message,
       source: { pointer: url }
-    })
+    });
     return {
       ...DATA_SKELETON,
       urlCheck: { message, valid }
-    }
+    };
   }
-  const urlObj = new URL(url)
+  const urlObj = new URL(url);
   switch (urlObj.hostname) {
     case 'youtu.be':
     case 'youtube.com':
-      return _extract_data_from_youTube_url(url)
+      return _extract_data_from_youTube_url(url);
     case 'vimeo.com':
-      return _extract_data_from_vimeo_url(url)
+      return _extract_data_from_vimeo_url(url);
     case 'rumble.com':
-      return _extract_data_from_rumble_url(url)
+      return _extract_data_from_rumble_url(url);
     case 'odysee.com':
-      return _extract_data_from_odysee_url(url)
+      return _extract_data_from_odysee_url(url);
     case 'www.facebook.com':
     case 'fb.watch':
-      return _extract_data_from_facebook_url()
+      return _extract_data_from_facebook_url();
     case 'www.dailymotion.com':
     case 'dai.ly':
-      return _extract_data_from_dailymotion_url(url)
+      return _extract_data_from_dailymotion_url(url);
     case 'www.twitch.tv':
-      return _extract_data_from_twitch_url(url)
+      return _extract_data_from_twitch_url(url);
     default:
       return {
         ...DATA_SKELETON,
@@ -90,7 +90,7 @@ export default function parse_platform_video_url(url: string): IVideoData {
           valid: true // TODO Set this to false to disallow unknown platforms
         },
         dialogId: DIALOG_UNKNOWN_NEW_ID
-      }
+      };
   }
 }
 
@@ -99,16 +99,16 @@ function _check_url(url: string): IUrlStatus {
     return {
       message: 'URL is empty',
       valid: false
-    }
+    };
   }
-  const urlRegex = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/
-  const valid = urlRegex.test(url)
-  const message = valid ? 'OK' : 'Invalid URL'
-  return { message, valid }
+  const urlRegex = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)$/;
+  const valid = urlRegex.test(url);
+  const message = valid ? 'OK' : 'Invalid URL';
+  return { message, valid };
 }
 
 function _extract_data_from_youTube_url(url: string): IVideoData {
-  const id = youtube_get_video_id(url)
+  const id = youtube_get_video_id(url);
   if (!id) {
     remember_error({
       code: 'value_not_found',
@@ -116,10 +116,10 @@ function _extract_data_from_youTube_url(url: string): IVideoData {
       detail: 'The youtube_get_video_id function failed to retrieve the video'
         + ' id from the video URL',
       source: { pointer: url }
-    })
-    return DATA_SKELETON
+    });
+    return DATA_SKELETON;
   }
-  const startStr = youtube_get_start_time(url)
+  const startStr = youtube_get_start_time(url);
   if (!startStr) {
     remember_error({
       code: 'value_not_found',
@@ -127,10 +127,10 @@ function _extract_data_from_youTube_url(url: string): IVideoData {
       detail: `The "youtube_get_video_start_time" function failed to retieve`
         + ` the video start time from the video URL.`,
       source: { pointer: url }
-    })
-    return DATA_SKELETON
+    });
+    return DATA_SKELETON;
   }
-  const start = parseInt(startStr)
+  const start = parseInt(startStr);
   const data: IVideoData = {
     ...DATA_SKELETON,
     platform: 'youtube',
@@ -144,14 +144,14 @@ function _extract_data_from_youTube_url(url: string): IVideoData {
     thumbnailUrl: `https://img.youtube.com/vi/${id}/0.jpg`,
     dialogId: DIALOG_YOUTUBE_NEW_ID
   }
-  return data
+  return data;
 }
 
 /**
  * Example URL: // https://rumble.com/v38vipp-what-is-ai-artificial-intelligence-what-is-artificial-intelligence-ai-in-5-.html
  */
 function _extract_data_from_rumble_url(url: string): IVideoData {
-  const slug  = get_rumble_slug(url)
+  const slug  = get_rumble_slug(url);
   if (!slug) {
     remember_error({
       code: 'value_not_found',
@@ -159,10 +159,10 @@ function _extract_data_from_rumble_url(url: string): IVideoData {
       detail: 'The "rumble_get_slug" function failed to extract the video slug '
         + 'from the URL.',
       source: { pointer: url }
-    })
-    return DATA_SKELETON
+    });
+    return DATA_SKELETON;
   }
-  const start = rumble_get_start_time(url)
+  const start = rumble_get_start_time(url);
   if (!start) {
     remember_error({
       code: 'value_not_found',
@@ -170,14 +170,14 @@ function _extract_data_from_rumble_url(url: string): IVideoData {
       detail: 'The "rumble_get_start_time" function failed to extract the video '
         + 'start time from the URL.',
       source: { pointer: url }
-    })
+    });
     return {
       ...DATA_SKELETON,
       urlCheck: {
         message: NO_START_MSG,
         valid: false
       }
-    }
+    };
   }
   const data: IVideoData = {
     ...DATA_SKELETON,
@@ -189,12 +189,12 @@ function _extract_data_from_rumble_url(url: string): IVideoData {
       valid: true
     },
     dialogId: DIALOG_RUMBLE_NEW_ID
-  }
-  return data
+  };
+  return data;
 }
 
 function _extract_data_from_vimeo_url(url: string): IVideoData {
-  const id = vimeo_get_video_id(url)
+  const id = vimeo_get_video_id(url);
   if (!id) {
     remember_error({
       code: 'value_not_found',
@@ -202,10 +202,10 @@ function _extract_data_from_vimeo_url(url: string): IVideoData {
       detail: 'The "vimeo_get_video_id" function failed to extract the video '
         + 'ID from the URL.',
       source: { pointer: url }
-    })
-    return DATA_SKELETON
+    });
+    return DATA_SKELETON;
   }
-  const start = vimeo_get_start_time(url)
+  const start = vimeo_get_start_time(url);
   if (!start) {
     remember_error({
       code: 'value_not_found',
@@ -213,14 +213,14 @@ function _extract_data_from_vimeo_url(url: string): IVideoData {
       detail: 'The "vimeo_get_start_time" function failed to extract the video '
         + 'start time from the URL.',
       source: { pointer: url }
-    })
+    });
     return {
       ...DATA_SKELETON,
       urlCheck: {
         message: NO_START_MSG,
         valid: false
       }
-    }
+    };
   }
   const data: IVideoData = {
     ...DATA_SKELETON,
@@ -232,12 +232,12 @@ function _extract_data_from_vimeo_url(url: string): IVideoData {
       valid: true
     },
     dialogId: DIALOG_VIMEO_NEW_ID
-  }
-  return data
+  };
+  return data;
 }
 
 function _extract_data_from_dailymotion_url(url: string): IVideoData {
-  const id = daily_get_video_id(url)
+  const id = daily_get_video_id(url);
   if (!id) {
     remember_error({
       code: 'value_not_found',
@@ -245,10 +245,10 @@ function _extract_data_from_dailymotion_url(url: string): IVideoData {
       detail: 'The "daily_get_video_id" function failed to extract the video '
         + 'ID from the URL.',
       source: { pointer: url }
-    })
-    return DATA_SKELETON
+    });
+    return DATA_SKELETON;
   }
-  const start = daily_get_start_time(url)
+  const start = daily_get_start_time(url);
   // if (!start) {
   //   remember_error({
   //     code: 'value_not_found',
@@ -275,14 +275,14 @@ function _extract_data_from_dailymotion_url(url: string): IVideoData {
       valid: true
     },
     thumbnailUrl: `https://www.dailymotion.com/thumbnail/video/${id}`,
-    dialogId: DIALGO_DAILY_NEW_ID
-  }
-  return data
+    dialogId: DIALOG_DAILY_NEW_ID
+  };
+  return data;
 }
 
 /** Example URL: https://odysee.com/@GameolioDan:6/diablo-4-playthrough-part-30-entombed:1?t=368 */
 function _extract_data_from_odysee_url(url: string): IVideoData {
-  const { author, id , start } = odysee_get_url_data(url)
+  const { author, id , start } = odysee_get_url_data(url);
   if (!start) {
     remember_error({
       code: 'value_not_found',
@@ -290,14 +290,14 @@ function _extract_data_from_odysee_url(url: string): IVideoData {
       detail: 'The odysee_get_start_time function failed to extract the video '
         + 'start time from the URL.',
       source: { pointer: url }
-    })
+    });
     return {
       ...DATA_SKELETON,
       urlCheck: {
         message: NO_START_MSG,
         valid: false
       }
-    }
+    };
   }
   if (!author || !id) {
     remember_error({
@@ -306,8 +306,8 @@ function _extract_data_from_odysee_url(url: string): IVideoData {
       detail: 'The "odysee_get_slug" function failed to extract the video ID '
         + 'or author from the URL.',
       source: { pointer: url }
-    })
-    return DATA_SKELETON
+    });
+    return DATA_SKELETON;
   }
   const slug = `${author}/${id}`
   const data: IVideoData = {
@@ -320,12 +320,12 @@ function _extract_data_from_odysee_url(url: string): IVideoData {
       valid: true
     },
     dialogId: DIALOG_ODYSEE_NEW_ID
-  }
-  return data
+  };
+  return data;
 }
 
 function _extract_data_from_twitch_url(url: string): IVideoData {
-  const id = twitch_get_video_id(url)
+  const id = twitch_get_video_id(url);
   if (!id) {
     remember_error({
       code: 'value_not_found',
@@ -333,10 +333,10 @@ function _extract_data_from_twitch_url(url: string): IVideoData {
       detail: 'The "twitch_get_video_id" function failed to extract the video '
         + 'ID from the URL.',
       source: { pointer: url }
-    })
-    return DATA_SKELETON
+    });
+    return DATA_SKELETON;
   }
-  const start = twitch_get_start_time(url)
+  const start = twitch_get_start_time(url);
   if (!start) {
     remember_error({
       code: 'value_not_found',
@@ -344,8 +344,8 @@ function _extract_data_from_twitch_url(url: string): IVideoData {
       detail: 'The "twitch_get_start_time" function failed to extract the video '
         + 'start time from the URL.',
       source: { pointer: url }
-    })
-    return DATA_SKELETON
+    });
+    return DATA_SKELETON;
   }
   const data: IVideoData = {
     ...DATA_SKELETON,
@@ -357,8 +357,8 @@ function _extract_data_from_twitch_url(url: string): IVideoData {
       valid: true
     },
     dialogId: DIALOG_TWITCH_NEW_ID
-  }
-  return data
+  };
+  return data;
 }
 
 /**
@@ -374,6 +374,6 @@ function _extract_data_from_facebook_url(): IVideoData {
       valid: false // TODO set this to true to allow facebook videos
     },
     dialogId: DIALOG_FACEBOOK_NEW_ID
-  }
-  return data
+  };
+  return data;
 }

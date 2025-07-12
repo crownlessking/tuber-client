@@ -26,9 +26,11 @@ export default class StateFormItemRadioButton
   get parent(): StateFormItemRadioCustom { return this._parentDef }
   get props(): any { return this._radioButtonState.props }
   get theme(): any { return this.die('Not implemented yet.', {}) }
-  get name(): string { return this._radioButtonState.name }
+  get name(): string { return this._radioButtonState.name ?? '' }
   get label(): string {
-    return this._radioButtonState.label || this._radioButtonState.name
+    return this._radioButtonState.label
+      ?? this._radioButtonState.name
+      ?? ''
   }
   get color(): Required<IStateFormItemRadioButton>['color'] {
     return this._radioButtonState.color || 'default'

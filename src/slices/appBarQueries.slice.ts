@@ -1,12 +1,13 @@
-import { createSlice } from '@reduxjs/toolkit'
-import initialState from '../state/initial.state'
+import { createSlice } from '@reduxjs/toolkit';
+import initialState from '../state/initial.state';
 
 interface IABSSliceAction {
-  type: string
+  type: string;
   payload: {
     route: string
     value: string
-  }
+    mode?: 'search' | 'filter'
+  };
 }
 
 export const appbarQueriesSlice = createSlice({
@@ -14,19 +15,19 @@ export const appbarQueriesSlice = createSlice({
   initialState: initialState.appbarQueries,
   reducers: {
     appbarQueriesSet: (state, action: IABSSliceAction) => {
-      const { route, value } = action.payload
-      state[route] = value
+      const { route, value, mode } = action.payload;
+      state[route] = { value, mode };
     },
     appbarQueriesDelete: (state, action) => {
-      state[action.payload] = ''
+      delete state[action.payload];
     }
   }
-})
+});
 
-export const appbarQueriesActions = appbarQueriesSlice.actions
+export const appbarQueriesActions = appbarQueriesSlice.actions;
 export const {
   appbarQueriesSet,
   appbarQueriesDelete
-} = appbarQueriesSlice.actions
+} = appbarQueriesSlice.actions;
 
-export default appbarQueriesSlice.reducer
+export default appbarQueriesSlice.reducer;

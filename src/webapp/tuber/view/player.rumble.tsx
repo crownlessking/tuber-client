@@ -1,24 +1,34 @@
-import { styled } from '@mui/material/styles'
-import { IBookmark } from '../tuber.interfaces'
+import { styled } from '@mui/material/styles';
+import React, { useMemo } from 'react';
+import { IBookmark } from '../tuber.interfaces';
 
-interface RumblePlayerProps {
-  bookmark: IBookmark
+interface IRumblePlayerProps {
+  bookmark: IBookmark;
 }
 
 const StyledIframeWrapper = styled('div')(() => ({
   position: 'relative',
   width: '100%',
   height: '100%',
-}))
+}));
 
 const IframeStyled = styled('iframe')(() => ({
   width: '100%',
   height: '100%',
-}))
+}));
 
-const RumblePlayer: React.FC<RumblePlayerProps> = ({ bookmark }) => {
-  const { videoid, start_seconds: start } = bookmark
-  const src = `https://rumble.com/embed/${videoid}?start=${start}`
+const RumblePlayer = React.memo<IRumblePlayerProps>(({ bookmark }) => {
+  const { videoid, start_seconds: start } = bookmark;
+  
+  // Memoize start time calculation
+  const startTime = useMemo(() => start ?? 0, [start]);
+  
+  // Memoize src URL to prevent iframe recreation
+  const src = useMemo(() => 
+    `https://rumble.com/embed/${videoid}?start=${startTime}`,
+    [videoid, startTime]
+  );
+
   return (
     <StyledIframeWrapper>
       <IframeStyled
@@ -29,7 +39,10 @@ const RumblePlayer: React.FC<RumblePlayerProps> = ({ bookmark }) => {
         allowFullScreen
       />
     </StyledIframeWrapper>
-  )
-}
+  );
+});
 
-export default RumblePlayer
+// Set display name for debugging
+RumblePlayer.displayName = 'RumblePlayer';
+
+export default RumblePlayer;

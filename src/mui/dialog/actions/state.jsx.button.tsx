@@ -1,15 +1,15 @@
-import { Fragment } from 'react'
-import { Icon, Button } from '@mui/material'
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import StateFormItem from 'src/controllers/StateFormItem'
-import store, { actions } from 'src/state'
-import { get_font_awesome_icon_prop } from 'src/controllers'
-import StateDialog from '../../../controllers/StateDialog'
+import { Fragment } from 'react';
+import { Icon, Button } from '@mui/material';
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import StateFormItem from 'src/controllers/StateFormItem';
+import store, { actions } from 'src/state';
+import { get_font_awesome_icon_prop } from 'src/controllers';
+import StateDialog from '../../../controllers/StateDialog';
 
-interface IJsonButtonProps { def: StateFormItem<StateDialog> }
+interface IJsonButtonProps { def: StateFormItem<StateDialog>; }
 interface IJsonButtonContentProps {
-  def: StateFormItem<StateDialog>
+  def: StateFormItem<StateDialog>;
 }
 
 export default function StateJsxDialogActionButton (
@@ -19,8 +19,8 @@ export default function StateJsxDialogActionButton (
     store,
     actions,
     route: button.props.href
-  }
-  const onClick = button.onClick
+  };
+  const onClick = button.onClick;
 
   const ButtonContent = ({ def: button }: IJsonButtonContentProps) => {
     if (button.text) {
@@ -86,7 +86,7 @@ export default function StateJsxDialogActionButton (
         No Text!
       </Fragment>
     )
-  } // END ButtonContent
+  }; // END ButtonContent
 
   return (
     <Button
@@ -95,5 +95,5 @@ export default function StateJsxDialogActionButton (
     >
       <ButtonContent def={button} />
     </Button>
-  )
+  );
 }

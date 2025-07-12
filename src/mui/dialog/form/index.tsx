@@ -1,14 +1,14 @@
-import FormHelperText from '@mui/material/FormHelperText'
-import FormLabel from '@mui/material/FormLabel'
-import { Fragment } from 'react'
-import IStateFormItemGroup from '../../../interfaces/IStateFormItemGroup'
-import StateForm from '../../../controllers/StateForm'
-import StateFormItemGroup from '../../../controllers/StateFormItemGroup'
-import StateFormItem from '../../../controllers/StateFormItem'
-import StateFormItemInput from '../../../controllers/templates/StateFormItemInput'
-import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio'
-import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch'
-import { remember_exception } from '../../../business.logic/errors'
+import FormHelperText from '@mui/material/FormHelperText';
+import FormLabel from '@mui/material/FormLabel';
+import { Fragment, useMemo, useCallback } from 'react';
+import IStateFormItemGroup from '../../../interfaces/IStateFormItemGroup';
+import StateForm from '../../../controllers/StateForm';
+import StateFormItemGroup from '../../../controllers/StateFormItemGroup';
+import StateFormItem from '../../../controllers/StateFormItem';
+import StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
+import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
+import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import { remember_exception } from '../../../business.logic/errors';
 import {
   BOX,
   BREAK_LINE,
@@ -34,58 +34,57 @@ import {
   TEXT,
   TEXTAREA,
   TEXTFIELD,
-} from '../../../constants'
-import StateJsxFormItemGroup from '../../form/state.jsx.form.item.group'
-import DialogCheckboxes from './dialog.checkboxes'
-import DialogPhoneInput from './dialog.phone.input'
-import DialogPicker from './dialog.picker'
-import DialogRadio from './dialog.radio'
-import DialogSwitch from './dialog.switch'
-import DialogTextField from './dialog.textfield'
-import DialogSelect from './select'
-import { log } from '../../../business.logic/logging'
+} from '../../../constants';
+import StateJsxFormItemGroup from '../../form/state.jsx.form.item.group';
+import DialogCheckboxes from './dialog.checkboxes';
+import DialogPhoneInput from './dialog.phone.input';
+import DialogPicker from './dialog.picker';
+import DialogRadio from './dialog.radio';
+import DialogSwitch from './dialog.switch';
+import DialogTextField from './dialog.textfield';
+import DialogSelect from './select';
+import { log } from '../../../business.logic/logging';
 
 interface IRecursiveFormBuilder {
-  form: StateForm
-  items?: StateFormItem['items']
-  depth?: number
+  form: StateForm;
+  items?: StateFormItem['items'];
+  depth?: number;
 }
 
 interface IItemTable {
   [constant: string]: (
     item: StateFormItem,
     key: string | number
-  ) => JSX.Element | JSX.Element[]
+  ) => JSX.Element | JSX.Element[];
 }
 
-export type THive = {
-  [prop: string]: any
-}
-
-function getHive(items: StateFormItem[] = []) {
-  const hive: THive = {}
-  items.map(item => {
-    const type_toLowerCase = item.type.toLowerCase()
-    if (type_toLowerCase !== 'json_button' && 'submit' !== type_toLowerCase) {
-      hive[item.name] = item.has.defaultValue ?? ''
-    }
-    return hive[item.name]
-  })
-  return hive
-}
+export type THive = Record<string, any>;
 
 export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
-  const form = props.form
-  const items = props.items
-  const depth = props.depth ?? 0
-  // const dispatch = useDispatch<AppDispatch>()
-  const hive = getHive(items || form.items)
+  const form = props.form;
+  const items = props.items;
+  const depth = props.depth ?? 0;
+  
+  // Memoize the hive computation to avoid recalculating on every render
+  const hive = useMemo(() => {
+    const formItems = items || form.items;
+    const hiveData: THive = {};
+    formItems.map(item => {
+      const type_toLowerCase = item.type.toLowerCase();
+      if (type_toLowerCase !== 'json_button' && 'submit' !== type_toLowerCase) {
+        hiveData[item.name] = item.has.defaultValue ?? '';
+      }
+      return hiveData[item.name];
+    });
+    return hiveData;
+  }, [items, form.items]);
 
-  const groupItem = (def: StateFormItem, key: string|number) => {
+  // Memoize the group item renderer
+  const groupItem = useCallback((def: StateFormItem, key: string|number) => {
     const groupItemDef = new StateFormItemGroup(
       def.state as IStateFormItemGroup,
       def.parent
-    )
+    );
     return (
       <StateJsxFormItemGroup key={`group${depth}-${key}`} def={groupItemDef}>
         <RecursiveFormItems
@@ -95,30 +94,33 @@ export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
           depth={depth + 1}
         />
       </StateJsxFormItemGroup>
-    )
-  }
+    );
+  }, [form, depth]);
 
-  const textItem = (def: StateFormItem, key: string|number) => {
+  // Memoize the text item renderer
+  const textItem = useCallback((def: StateFormItem, key: string|number) => {
     return (
       <DialogTextField
         key={`textfield${depth}-${key}`}
         def={def}
         hive={hive}
       />
-    )
-  }
+    );
+  }, [depth, hive]);
 
-  const dateTimePickerItem = (item: StateFormItem, key: string|number) => {
+  // Memoize the date time picker item renderer
+  const dateTimePickerItem = useCallback((item: StateFormItem, key: string|number) => {
     return (
       <DialogPicker
         key={`datetime-picker-item${depth}-${key}`}
         def={item}
         hive={hive}
       />
-    )
-  }
+    );
+  }, [depth, hive]);
 
-  const itemsTable: IItemTable = {
+  // Memoize the items table to prevent re-creation on every render
+  const itemsTable: IItemTable = useMemo(() => ({
     [BOX]: groupItem,
     [BREAK_LINE]: (_item: StateFormItem, key: string|number) => (
       <br key={`breakline${depth}-${key}`} />
@@ -170,57 +172,74 @@ export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
     [NUMBER]: textItem,
     [PASSWORD]: textItem,
     [RADIO_BUTTONS]: (def: StateFormItem, key: string|number) => {
-      const radioDef = new StateFormItemRadio(def.state, def.parent)
+      const radioDef = new StateFormItemRadio(def.state, def.parent);
       return (
         <DialogRadio
           def={radioDef}
           hive={hive}
           key={`radio${depth}-${key}`}
         />
-      )
+      );
     },
     [STACK]: groupItem,
     [SWITCH]: (def: StateFormItem, key: string|number) => {
-      const switchRef = new StateFormItemSwitch(def.state, def.parent)
+      const switchDef = new StateFormItemSwitch(def.state, def.parent);
       return (
         <DialogSwitch
-          def={switchRef}
+          def={switchDef}
           hive={hive}
           key={`switch${depth}-${key}`}
         />
-      )
+      );
     },
     [TEXT]: textItem,
     [TEXTAREA]: textItem,
     [TEXTFIELD]: textItem,
     [PHONE_INPUT]: (def: StateFormItem, key: string|number) => {
-      const inputDef = new StateFormItemInput(def.state, def.parent)
+      const inputDef = new StateFormItemInput(def.state, def.parent);
       return (
         <DialogPhoneInput
           def={inputDef}
           hive={hive}
           key={`phone${depth}-${key}`}
         />
-      )
+      );
     }
-  }
+  }), [
+    groupItem,
+    depth,
+    hive,
+    dateTimePickerItem,
+    textItem
+  ]);
+
+  // Memoize the items array to process
+  const itemsToRender = useMemo(() => 
+    items || form.items, 
+    [items, form.items]
+  );
+
+  // Memoize the rendered form items
+  const renderedItems = useMemo(() => {
+    return itemsToRender.map((item, i) => {
+      try {
+        return itemsTable[item.type.toLowerCase()](item, i);
+      } catch (e: any) {
+        const message = `Form item type (${item.type}) does not exist.`;
+        remember_exception(e, message);
+        log(message);
+        return (
+          <div key={`bad-field${depth}-${i}`}>
+            ❌ BAD FIELD <em>"{item.type}"</em>
+          </div>
+        );
+      }
+    });
+  }, [itemsToRender, itemsTable, depth]);
 
   return (
     <Fragment>
-      {(items || form.items).map((item, i) => {
-        try {
-          return itemsTable[item.type.toLowerCase()](item, i)
-        } catch (e: any) {
-          const message = `Form item type (${item.type}) does not exist.`
-          remember_exception(e, message)
-          log(message)
-          return (
-            <div key={`bad-field${depth}-${i}`}>
-              ❌ BAD FIELD <em>"{item.type}"</em>
-            </div>
-          )
-        }
-      })}
+      {renderedItems}
     </Fragment>
-  )
+  );
 }

@@ -1,26 +1,27 @@
-import React from 'react'
-import { styled } from '@mui/material/styles'
-import Appbar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import Typography from '@mui/material/Typography'
-import InputBase from '@mui/material/InputBase'
-import MenuIcon from '@mui/icons-material/Menu'
-import MoreIcon from '@mui/icons-material/MoreVert'
-import StatePage from '../../controllers/StatePage'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState, redux } from '../../state'
-import StatePageAppbarMidSearch from '../../controllers/templates/StatePageAppbarMidSearch'
-import StateJsxLogo from './state.jsx.logo'
-import AppbarButton from '../link'
-import InputAdornment from '@mui/material/InputAdornment'
-import { StateJsxIcon } from '../state.jsx.icons'
-import { get_appbar_input_val } from '../../business.logic'
-import Menu from '@mui/material/Menu'
-import StateLink from '../../controllers/StateLink'
-import StateJsxChip from './state.jsx.chip'
-import { appbarQueriesSet } from 'src/slices/appbarQueries.slice'
+import React from 'react';
+import { styled } from '@mui/material/styles';
+import Appbar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import InputBase from '@mui/material/InputBase';
+import MenuIcon from '@mui/icons-material/Menu';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import StatePage from '../../controllers/StatePage';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState, redux } from '../../state';
+import StatePageAppbarMidSearch from '../../controllers/templates/StatePageAppbarMidSearch';
+import StateJsxLogo from './state.jsx.logo';
+import AppbarButton from '../link';
+import InputAdornment from '@mui/material/InputAdornment';
+import { StateJsxIcon } from '../state.jsx.icons';
+import Menu from '@mui/material/Menu';
+import StateLink from '../../controllers/StateLink';
+import StateJsxChip from './state.jsx.chip';
+import { appbarQueriesSet } from 'src/slices/appbarQueries.slice';
+import StateAppbarQueries from 'src/controllers/StateAppbarQueries';
+import { drawerOpen } from '../../slices/drawer.slice';
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
@@ -56,34 +57,36 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-interface IJsonMidSearchAB { def: StatePage }
-
-export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB) {
+export default function StateJsxMidSearchAppbar({ def: page }: { def: StatePage; }) {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
     React.useState<null | HTMLElement>(null);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
   const appbar = new StatePageAppbarMidSearch(page.appbarJson, page);
-  const dispatch = useDispatch<AppDispatch>();
+  const chips = useSelector((rootState: RootState) => rootState.chips);
   const route = page.parent.parent.app.route;
-  const queries = useSelector((rootState: RootState) => rootState.appbarQueries);
-  const value = get_appbar_input_val(queries, route);
+  appbar.configure({ chips, route, template: page._key });
+  const dispatch = useDispatch<AppDispatch>();
+  const queries = new StateAppbarQueries(
+    useSelector((rootState: RootState) => rootState.appbarQueries)
+  );
+  const value = queries.alwaysGet(route).value;
 
   const handleSearchfieldOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(appbarQueriesSet({ route, value: e.target.value }))
+    dispatch(appbarQueriesSet({ route, value: e.target.value }));
   };
 
   const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      appbar.searchFieldIconButton.onClick(redux)(e)
+      appbar.searchFieldIconButton.onClick(redux)(e);
     }
   };
 
   const handleDrawerOpen = () => {
-    dispatch({ type: 'drawer/drawerOpen' })
+    dispatch(drawerOpen());
   };
 
   const handleMobileMenuClose = () => {
-    setMobileMoreAnchorEl(null)
+    setMobileMoreAnchorEl(null);
   };
 
   const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -112,6 +115,8 @@ export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB)
     </Menu>
   );
 
+  const appbarChips = appbar.chips;
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <Appbar {...appbar.props} position="fixed">
@@ -138,7 +143,7 @@ export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB)
             </Typography>
           )}
           <Search {...appbar.searchFieldProps}>
-            {appbar.showSearchFieldIcon ? (
+            {appbarChips.length < 1 ? (
               <UrlIconWrapper>
                 <StateJsxIcon def={appbar.searchFieldIcon} />
               </UrlIconWrapper>
@@ -147,9 +152,7 @@ export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB)
               {...appbar.inputBaseProps}
               startAdornment={appbar.inputHasChips ? (
                 <InputAdornment position='start'>
-                  <StateJsxChip
-                    def={appbar.getChipFromPaths(route)}
-                  />
+                  <StateJsxChip def={appbarChips} />
                 </InputAdornment>
               ) : ( null )}
               endAdornment={
@@ -162,10 +165,10 @@ export default function StateJsxMidSearchAppbar({ def: page }: IJsonMidSearchAB)
                         'iconProps': { 'color': 'error', 'fontSize': 'small' },
                       },
                       'onClick': ({ store, actions }) => () => {
-                        store.dispatch(actions.appbarQueriesDelete(route))
-                        const inputId = appbar.inputBaseProps.id
+                        store.dispatch(actions.appbarQueriesDelete(route));
+                        const inputId = appbar.inputBaseProps.id;
                         if (inputId) {
-                          document.getElementById(inputId)?.focus()
+                          document.getElementById(inputId)?.focus();
                         }
                       }
                     })} />

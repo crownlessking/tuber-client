@@ -1,31 +1,31 @@
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
 import {
   Avatar, CardActionArea, CardActions, CardHeader, Collapse, IconButton,
   IconButtonProps, styled
-} from '@mui/material'
-import StateCard from '../../controllers/StateCard'
-import StateJsxCardActionButton from './state.jsx.card.action.button'
+} from '@mui/material';
+import StateCard from '../../controllers/StateCard';
+import StateJsxCardActionButton from './state.jsx.card.action.button';
 import StateCardMultiActionArea
-  from '../../controllers/templates/StateCardMultiActionArea'
-import StateCardBasic from '../../controllers/templates/StateCardBasic'
-import StateCardComplex from 'src/controllers/templates/StateCardComplex'
+  from '../../controllers/templates/StateCardMultiActionArea';
+import StateCardBasic from '../../controllers/templates/StateCardBasic';
+import StateCardComplex from 'src/controllers/templates/StateCardComplex';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert'
-import React from 'react'
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import React from 'react';
 
 interface ICardProps {
-  def: StateCard
-  avatarText?: string
-  avatarIcon?: string
-  avatarImage?: string
+  def: StateCard;
+  avatarText?: string;
+  avatarIcon?: string;
+  avatarImage?: string;
 }
 
 interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean
+  expand: boolean;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {

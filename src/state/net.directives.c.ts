@@ -1,21 +1,21 @@
-import { Dispatch } from 'redux'
-import { TJsonapiMeta } from '../interfaces/IJsonapi'
-import { state_reset } from './actions'
+import { Dispatch } from 'redux';
+import { TJsonapiMeta } from '../interfaces/IJsonapi';
+import { state_reset } from './actions';
 
 const ACTIONS = {
   '8711cf8b0f4e8935e34e794ddc23b0ef': (
     dispatch: Dispatch
   ) => dispatch(state_reset()),
   
-} as Record<string, ((dispatch: Dispatch<any>, meta?: Record<string, any>) => void)>
+} as Record<string, ((dispatch: Dispatch<any>, meta?: Record<string, any>) => void)>;
 
 export default function execute_directives(
   dispatch: Dispatch<any>,
   meta?: TJsonapiMeta
 ): void {
   const directives = meta?.directives
-  if (!directives || !Array.isArray(directives)) return
-  (directives as string[]).forEach(directive => ACTIONS[directive](dispatch))
+  if (!directives || !Array.isArray(directives)) return;
+  (directives as string[]).forEach(directive => ACTIONS[directive](dispatch));
 }
   // 'f866ed292f69fc90b731314678648332': () => {},
   // '4ae299b72252d965d700f6c3ba8028f0': () => {},

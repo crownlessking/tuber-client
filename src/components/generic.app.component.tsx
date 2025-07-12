@@ -1,23 +1,31 @@
-import { Fragment } from 'react'
-import Appbar from '../mui/appbar'
-import Drawer from '../mui/drawer'
-import Layout from './layout.component'
-import Content from './content'
-import Background from '../mui/background'
-import Dialog from '../mui/dialog'
-import Spinner from './spinner.component'
-import Snackbar from '../mui/snackbar'
-import StatePage from 'src/controllers/StatePage'
+import { Fragment, useEffect, useMemo } from 'react';
+import Appbar from '../mui/appbar';
+import Drawer from '../mui/drawer';
+import Layout from './layout.component';
+import Content from './content';
+import Background from '../mui/background';
+import Dialog from '../mui/dialog';
+import Spinner from './spinner.component';
+import Snackbar from '../mui/snackbar';
+import StatePage from 'src/controllers/StatePage';
 
 interface IGenericAppProps {
-  def: StatePage
+  def: StatePage;
 }
 
 export default function GenericApp ({ def: page }: IGenericAppProps) {
-  page.setTabTitle()
+
+  // Move side effect to useEffect to prevent it running on every render
+  useEffect(() => {
+    page.setTabTitle();
+  }, [page]);
+
+  // Memoize background to prevent unnecessary recalculation
+  const background = useMemo(() => page.background, [page.background]);
+
   return (
     <Fragment>
-      <Background def={page.background} />
+      <Background def={background} />
       <Appbar def={page} />
       <Drawer def={page} />
       <Layout def={page}>
@@ -27,5 +35,5 @@ export default function GenericApp ({ def: page }: IGenericAppProps) {
       <Snackbar />
       <Spinner />
     </Fragment>
-  )
+  );
 }

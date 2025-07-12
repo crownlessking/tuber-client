@@ -1,21 +1,21 @@
-import { TWithOptional } from '.'
-import IAbstractState from './IAbstractState'
-import IStateLink from './IStateLink'
+import { IAbstractState } from '../common.types';
+import { TWithOptional } from '.';
+import IStateLink from './IStateLink';
 
 export default interface IStateDrawer extends IAbstractState {
   /** drawer type. */
-  anchor?: 'bottom' | 'left' | 'right' | 'top'
+  anchor?: 'bottom' | 'left' | 'right' | 'top';
   _type?: 'mini' | 'persistent' | 'responsive' | 'temporary' | 'swipeable'
-    | 'none'
+    | 'none';
   /** List of icons with the descriptions */
-  items?: IStateLink[]
+  items?: IStateLink[];
   /** Whether the drawer is open or not. */
-  open?: boolean
+  open?: boolean;
   /** Drawer's width in pixels. */
-  width?: number
+  width?: number;
 }
 
 /** Type for a drawer defined within a page. */
 export interface IStatePageDrawer extends TWithOptional<IStateDrawer, 'width'> {
-  constent?: String[]
+  content?: String[];
 }

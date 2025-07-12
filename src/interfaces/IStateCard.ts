@@ -1,81 +1,81 @@
-import { SxProps } from '@mui/material/styles'
-import { CSSProperties } from 'react'
-import { IHtmlAttributes } from '.'
-import IAbstractState from './IAbstractState'
-import IStateFormItem from './IStateFormItem'
+import { SxProps } from '@mui/material/styles';
+import { CSSProperties } from 'react';
+import { IAbstractState } from '../common.types';
+import { IHtmlAttributes } from '.';
+import IStateFormItem from './IStateFormItem';
 
 export interface IStateCardProps {
-  children?: any
-  classes?: Record<string, string>
-  raised?: boolean
-  sx?: SxProps
+  children?: any;
+  classes?: Record<string, string>;
+  raised?: boolean;
+  sx?: SxProps;
 }
 
 export interface IStateCardContentTypographyProps extends IHtmlAttributes {
-  gutterBottom?: boolean
-  variant?: string
+  gutterBottom?: boolean;
+  variant?: string;
 }
 
 export interface IStateCardContentProps {
-  children?: any
-  classes?: Record<string, string>
-  component?: string
-  sx?: SxProps
-  typographyProps?: IHtmlAttributes
+  children?: any;
+  classes?: Record<string, string>;
+  component?: string;
+  sx?: SxProps;
+  typographyProps?: IHtmlAttributes;
 }
 
 export interface IStateCardActionAreaProps {
-  children?: any
-  classes?: Record<string, string>
-  sx?: SxProps
+  children?: any;
+  classes?: Record<string, string>;
+  sx?: SxProps;
 }
 
 export interface IStateCardActionsProps {
-  children?: any
-  classes?: Record<string, string>
-  disableSpacing?: boolean
-  sx?: SxProps
+  children?: any;
+  classes?: Record<string, string>;
+  disableSpacing?: boolean;
+  sx?: SxProps;
 }
 
 export interface ICardMediaProps extends IHtmlAttributes {
-  children?: any
-  classes?: Record<string, string>
-  component?: string | JSX.Element
-  image?: string
+  children?: any;
+  classes?: Record<string, string>;
+  component?: string | JSX.Element;
+  image?: string;
   /** use when `component` is `img` */
-  width?: string
+  width?: string;
   /** use when `component` is `img` */
-  height?: string
+  height?: string;
   /** use when `component` is `img` */
-  alt?: string
-  translate?: 'yes' | 'no'
-  inputMode?: "search" | "text" | "none" | "tel" | "url" | "email" | "numeric" | "decimal"
-  style?: CSSProperties
+  alt?: string;
+  translate?: 'yes' | 'no';
+  inputMode?: 'search' | 'text' | 'none' | 'tel' | 'url' | 'email' | 'numeric' | 'decimal';
+  style?: CSSProperties;
 }
 
 export interface IAvatarProps extends IHtmlAttributes {
-  alt?: string
-  children?: any
-  classes?: Record<string, string>
-  imgProps?: IHtmlAttributes
-  sizes?: string
-  src?: string
-  srcSet?: string
-  sx?: SxProps
-  variant?: 'circular' | 'rounded' | 'square'
+  alt?: string;
+  children?: any;
+  classes?: Record<string, string>;
+  imgProps?: IHtmlAttributes;
+  sizes?: string;
+  src?: string;
+  srcSet?: string;
+  sx?: SxProps;
+  variant?: 'circular' | 'rounded' | 'square';
 }
 
 export interface ICardHeaderProps {
-  action?: JSX.Element
-  avatar?: JSX.Element
-  classes?: Record<string, string>
-  subheader?: string
-  component?: string | JSX.Element
-  disableTypography?: boolean
-  subheaderTypographyProps?: Record<string, any>
-  sx?: SxProps
-  title?: string
-  titleTypographyProps?: Record<string, any>
+  action?: JSX.Element;
+  avatar?: JSX.Element;
+  classes?: Record<string, string>;
+  subheader?: string;
+  component?: string | JSX.Element;
+  disableTypography?: boolean;
+  subheaderTypographyProps?: Record<string, any>;
+  sx?: SxProps;
+  title?: string;
+  titleTypographyProps?: Record<string, any>;
 }
 
 export default interface IStateCard extends IAbstractState {
@@ -84,15 +84,15 @@ export default interface IStateCard extends IAbstractState {
     | 'complex'
     | 'media'
     | 'image_media'
-    | 'multi_action_area'
-  props?: IStateCardProps
-  mediaProps?: ICardMediaProps
-  contentProps?: IStateCardContentProps
-  actionArea?: IStateCardActionAreaProps
-  actionsProps?: IStateCardActionsProps
-  actions?: IStateFormItem[]
-  headerProps?: ICardHeaderProps
-  avatarProps?: IAvatarProps
-  title?: string
-  fullText?: string
+    | 'multi_action_area';
+  props?: IStateCardProps;
+  mediaProps?: ICardMediaProps;
+  contentProps?: IStateCardContentProps;
+  actionArea?: IStateCardActionAreaProps;
+  actionsProps?: IStateCardActionsProps;
+  actions?: IStateFormItem[];
+  headerProps?: ICardHeaderProps;
+  avatarProps?: IAvatarProps;
+  title?: string;
+  fullText?: string;
 }

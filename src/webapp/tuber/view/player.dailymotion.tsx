@@ -1,9 +1,9 @@
-import { styled } from '@mui/material/styles'
-import React from 'react'
-import { IBookmark } from '../tuber.interfaces'
+import { styled } from '@mui/material/styles';
+import React, { useMemo } from 'react';
+import { IBookmark } from '../tuber.interfaces';
 
 interface IDailyPlayerProps {
-  bookmark: IBookmark
+  bookmark: IBookmark;
 }
 
 const StyledIframeDiv = styled('div')(() => ({
@@ -12,7 +12,7 @@ const StyledIframeDiv = styled('div')(() => ({
   position: 'relative',
   width: '100%',
   height: '100%',
-}))
+}));
 
 const IframeStyled = styled('iframe')(() => ({
   position: 'absolute',
@@ -21,30 +21,39 @@ const IframeStyled = styled('iframe')(() => ({
   overflow: 'hidden',
   width: '100%',
   height: '100%',
-}))
+}));
 
 /**
  * [TODO] You have to let user enter the start time in seconds.
  */
-const DailyPlayer: React.FC<IDailyPlayerProps> = ({ bookmark }) => {
-  const { videoid, start_seconds } = bookmark
-  const start = start_seconds ?? 0
-  const src = `https://www.dailymotion.com/embed/video/${videoid}?autoplay=1&start=${start}`
-  return (
-    <>
-      <StyledIframeDiv>
-        <IframeStyled
-          title="Dailymotion Video Player"
-          src={src}
-          width="100%"
-          height="100%"
-          frameBorder="0"
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowFullScreen
-        ></IframeStyled>
-      </StyledIframeDiv>
-    </>
-  )
-}
+const DailyPlayer = React.memo<IDailyPlayerProps>(({ bookmark }) => {
+  const { videoid, start_seconds } = bookmark;
+  
+  // Memoize start time calculation
+  const start = useMemo(() => start_seconds ?? 0, [start_seconds]);
+  
+  // Memoize src URL to prevent iframe recreation
+  const src = useMemo(() => 
+    `https://www.dailymotion.com/embed/video/${videoid}?autoplay=1&start=${start}`,
+    [videoid, start]
+  );
 
-export default DailyPlayer
+  return (
+    <StyledIframeDiv>
+      <IframeStyled
+        title="Dailymotion Video Player"
+        src={src}
+        width="100%"
+        height="100%"
+        frameBorder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowFullScreen
+      />
+    </StyledIframeDiv>
+  );
+});
+
+// Set display name for debugging
+DailyPlayer.displayName = 'DailyPlayer';
+
+export default DailyPlayer;

@@ -1,11 +1,11 @@
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline'
-import StatePage from '../../controllers/StatePage'
-import { styled } from '@mui/material'
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import StatePage from '../../controllers/StatePage';
+import { styled } from '@mui/material';
 
 const MsgDiv = styled('div')(() => ({
   width: '100%',
   textAlign: 'center'
-}))
+}));
 
 /**
  * Displays a generic page that indicates a successful operation.
@@ -31,7 +31,7 @@ export default function PageSuccess ({ def: page }:{ def: StatePage }) {
     page.parent.parent.app.route,
     'message',
     page.data.message
-  )
+  );
 
   return (
     <>
@@ -43,6 +43,6 @@ export default function PageSuccess ({ def: page }:{ def: StatePage }) {
         <h1>{ msg }</h1>
       </MsgDiv>
     </>
-  )
+  );
 
 }

@@ -81,7 +81,7 @@ export default class StatePage extends AbstractState implements IStatePage {
   get _id(): string { return this._pageId || (this._pageId = mongo_object_id()) }
   get _type(): Required<IStatePage>['_type'] { return this._pageState._type || 'generic' }
   get _key(): string { return this._pageState._key ?? '' }
-  get title(): string { return this._pageState.title ?? '' }
+  get title(): string { return this._pageState.title ?? this._key }
   get forcedTitle(): string { return this._pageState.forcedTitle ?? '' }
 
   /** Chain-access to the page appbar definition. */

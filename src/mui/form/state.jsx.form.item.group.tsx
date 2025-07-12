@@ -1,10 +1,10 @@
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
   Box, FormControl, FormControlLabel, FormGroup, Stack,
-} from '@mui/material'
-import { Fragment } from 'react'
-import StateFormItemGroup from '../../controllers/StateFormItemGroup'
+} from '@mui/material';
+import React, { Fragment, useMemo } from 'react';
+import StateFormItemGroup from '../../controllers/StateFormItemGroup';
 import {
   BOX,
   STACK,
@@ -15,40 +15,39 @@ import {
   INDETERMINATE,
   DIV,
   NONE
-} from '../../constants'
+} from '../../constants';
 
 interface IFormItemGroupProps {
-  def: StateFormItemGroup
-  children: any
+  def: StateFormItemGroup;
+  children: React.ReactNode;
 }
 
-export default function StateJsxFormItemGroup (
-  { def: item, children }: IFormItemGroupProps
-) {
-  const table: {[type: string]: () => JSX.Element} = {
+const StateJsxFormItemGroup = React.memo<IFormItemGroupProps>(({ def: item, children }) => {
+  // Memoize the table to prevent recreation on every render
+  const table: Record<string, () => JSX.Element> = useMemo(() => ({
     [BOX]: () => (
       <Box {...item.props}>
-        { children }
+        {children}
       </Box>
     ),
     [STACK]: () => (
       <Stack {...item.props}>
-        { children }
+        {children}
       </Stack>
     ),
     [LOCALIZED]: () => (
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        { children }
+        {children}
       </LocalizationProvider>
     ),
     [FORM_GROUP]: () => (
       <FormGroup {...item.props}>
-        { children }
+        {children}
       </FormGroup>
     ),
     [FORM_CONTROL]: () => (
       <FormControl {...item.props}>
-        { children }
+        {children}
       </FormControl>
     ),
     [FORM_CONTROL_LABEL]: () => (
@@ -58,28 +57,40 @@ export default function StateJsxFormItemGroup (
       />
     ),
     [INDETERMINATE]: () => {
-      const parent = (children as JSX.Element[]).shift()
+      const childrenArray = Array.isArray(children) ? [...children] : [children];
+      const parent = childrenArray.shift();
       return (
         <div>
           <FormControlLabel
             {...item.props}
             control={parent}
           />
-          { children }
+          {childrenArray}
         </div>
-      )
+      );
     },
     [DIV]: () => (
       <div {...item.props}>
-        { children }
+        {children}
       </div>
     ),
     [NONE]: () => (
       <Fragment>
-        { children }
+        {children}
       </Fragment>
     )
-  }
+  }), [item.props, children]);
 
-  return table[item.type.toLowerCase()]()
-}
+  // Memoize the type lookup
+  const itemType = useMemo(() => item.type.toLowerCase(), [item.type]);
+  
+  // Get the renderer function, with fallback to Fragment
+  const renderer = table[itemType] || table[NONE];
+  
+  return renderer();
+});
+
+// Set display name for debugging
+StateJsxFormItemGroup.displayName = 'StateJsxFormItemGroup';
+
+export default StateJsxFormItemGroup;

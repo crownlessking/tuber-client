@@ -1,5 +1,5 @@
 
 export default interface IStateFormSelectOption {
-  title?: string
-  value: string
+  title?: string;
+  value: string;
 }

@@ -1,6 +1,6 @@
 
 export default interface IStateFormItemSelectOption {
-  label?: boolean
-  title?: string
-  value: string
+  label?: string;
+  title?: string;
+  value?: string;
 }

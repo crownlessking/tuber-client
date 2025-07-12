@@ -1,13 +1,13 @@
-import { FC, Fragment } from 'react'
-import * as Icons from '@mui/icons-material'
-import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined'
-import { TIconName } from 'src/interfaces/TIconName'
+import { FC, Fragment } from 'react';
+import * as Icons from '@mui/icons-material';
+import BuildOutlinedIcon from '@mui/icons-material/BuildOutlined';
+import { TObj } from '../common.types';
 
 export default function getImportedSvgIcon (
-  iconName: TIconName,
+  iconName: string,
   props?: any
 ) {
-  const iconTable: Record<TIconName, JSX.Element> = {
+  const iconTable: TObj<JSX.Element> = {
     'phone_outline': <Icons.PhoneOutlined {...props} />,
     'call_outline': <Icons.PhoneOutlined {...props} />,
     'personaddoutlined': <Icons.PersonAddOutlined {...props} />,
@@ -94,14 +94,16 @@ export default function getImportedSvgIcon (
     'public_outline': <Icons.PublicOutlined {...props} />,
     'travelexploreoutlined': <Icons.TravelExploreOutlined {...props} />,
     'travel_explore_outline': <Icons.TravelExploreOutlined {...props} />,
+    'filterlistoutlined': <Icons.FilterListOutlined />,
+    'filter_list_outline': <Icons.FilterListOutlined />,
     'none': <Fragment />
-  }
-  return iconTable[iconName] ?? null
+  };
+  return iconTable[iconName] ?? null;
 }
 
-export const ImportedSvgIcon: FC<{iconName:TIconName;props?:any}> = ({
+export const ImportedSvgIcon = (({
   iconName,
   props
 }) => {
-  return <>{ getImportedSvgIcon(iconName, props) }</>
-}
+  return <>{ getImportedSvgIcon(iconName, props) }</>;
+}) as FC<{iconName:string;props?:any}>;

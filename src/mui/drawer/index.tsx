@@ -1,46 +1,55 @@
-import { Fragment } from 'react'
-import Config from '../../config'
-import { LAST_DRAWER_STATE } from '../../constants'
-import IStateDrawer from '../../interfaces/IStateDrawer'
-import StatePage from '../../controllers/StatePage'
-import StateDrawerResponsive from '../../controllers/templates/StateDrawerResponsive'
-import MiniDrawer from './mini-variant.drawer'
-import PersistentDrawer from './persistent.drawer'
-import ResponsiveDrawer from './responsive.drawer'
-import TempDrawer from './temporary.drawer'
+import { Fragment, useMemo, useCallback } from 'react';
+import Config from '../../config';
+import { LAST_DRAWER_STATE } from '../../constants';
+import IStateDrawer from '../../interfaces/IStateDrawer';
+import StatePage from '../../controllers/StatePage';
+import StateDrawerResponsive from '../../controllers/templates/StateDrawerResponsive';
+import MiniDrawer from './mini-variant.drawer';
+import PersistentDrawer from './persistent.drawer';
+import ResponsiveDrawer from './responsive.drawer';
+import TempDrawer from './temporary.drawer';
 
 interface IJsonDrawerProps {
-  def: StatePage
+  def: StatePage;
 }
 
-// let lastStateDrawer: IStateDrawer | undefined
-
 export default function StateJsxDrawer({ def: page }: IJsonDrawerProps) {
-  if (page.hideDrawer) {
-    return ( null )
-  }
+  // Memoize the last drawer state reading to avoid unnecessary Config.read calls
+  const lastDrawerJson = useMemo(() => {
+    return Config.read<IStateDrawer|undefined>(LAST_DRAWER_STATE);
+  }, []);
 
-  const lastDrawerJson = Config.read<IStateDrawer|undefined>(LAST_DRAWER_STATE)
-  if (lastDrawerJson) {
-    page.setDrawer(lastDrawerJson)
-  }
-  // if (lastStateDrawer) {
-  //   page.setDrawer(lastStateDrawer)
-  // }
+  // Use useCallback to memoize the drawer state setting logic
+  const setDrawerState = useCallback((drawerState: IStateDrawer) => {
+    page.setDrawer(drawerState);
+  }, [page]);
 
-  if (page.hasDrawer) {
-    // lastStateDrawer = page.drawer.json
-    Config.write(LAST_DRAWER_STATE, page.drawer.state)
-    const drawerTable: {[props: string]: JSX.Element } = {
+  // Memoize the drawer table to avoid recreating JSX elements on every render
+  const drawerTable = useMemo(() => {
+    const table: {[key: string]: JSX.Element} = {
       'mini': <MiniDrawer def={page.drawer} />,
       'persistent': <PersistentDrawer def={page.drawer} />,
       'responsive': <ResponsiveDrawer def={page.drawer as StateDrawerResponsive} />,
       'temporary': <TempDrawer def={page.drawer} />,
       'swipeable': <TempDrawer def={page.drawer} />,
       'none': <Fragment />
-    }
-    return drawerTable[page.drawer._type.toLowerCase()]
+    };
+    return table;
+  }, [page.drawer]);
+
+  if (page.hideDrawer) {
+    return ( null );
   }
 
-  return ( null )
+  // Apply last drawer state if it exists
+  if (lastDrawerJson) {
+    setDrawerState(lastDrawerJson);
+  }
+
+  if (page.hasDrawer) {
+    Config.write(LAST_DRAWER_STATE, page.drawer.state);
+    return drawerTable[page.drawer._type.toLowerCase()];
+  }
+
+  return ( null );
 }

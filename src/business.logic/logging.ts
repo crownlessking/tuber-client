@@ -1,4 +1,4 @@
-import Config from '../config'
+import Config from '../config';
 
 /** Helps to shorten error message */
 let _msgPrefix = '';
@@ -17,7 +17,7 @@ export const msg = (msg: string): string => {
  */
 export const pre = (msg?: string) => {
   if (Config.DEBUG) {
-    _msgPrefix = msg ?? ''
+    _msgPrefix = msg ?? '';
   }
 }
 
@@ -27,7 +27,7 @@ export const pre = (msg?: string) => {
  */
 export const log = (...args: any[]) => {
   if (Config.DEBUG) {
-    console.log(_msgPrefix, ...args)
+    console.log(_msgPrefix, ...args);
   }
 }
 
@@ -37,7 +37,7 @@ export const log = (...args: any[]) => {
  */
 export const ler = (...args: any[]) => {
   if (Config.DEBUG) {
-    console.error(_msgPrefix, ...args)
+    console.error(_msgPrefix, ...args);
   }
 }
 
@@ -47,7 +47,7 @@ export const ler = (...args: any[]) => {
  */
 export const lwr = (...args: any[]) => {
   if (Config.DEBUG) {
-    console.warn(_msgPrefix, ...args)
+    console.warn(_msgPrefix, ...args);
   }
 }
 
@@ -57,6 +57,6 @@ export const lwr = (...args: any[]) => {
  */
 export const err = (msg: string) => {
   if (Config.DEBUG) {
-    throw new Error(`${_msgPrefix}${msg}`)
+    throw new Error(`${_msgPrefix}${msg}`);
   }
 }

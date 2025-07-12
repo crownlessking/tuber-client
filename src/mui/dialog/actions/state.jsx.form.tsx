@@ -16,9 +16,9 @@ export default function StateJsxDialogAction({
 }: IFieldItemProps) {
   return (
     <Fragment>
-      {formItems.map((json, i) => {
-        if (json.type.toLowerCase() !== STATE_BUTTON) { return ( null ) }
-        const item = new StateFormItem(json, parent)
+      {formItems.map((state, i) => {
+        if (state.type?.toLowerCase() !== STATE_BUTTON) { return ( null ) }
+        const item = new StateFormItem(state, parent)
         return <StateJsxDialogActionButton def={item} key={`dialgo-action-${i}`} />
       })}
     </Fragment>

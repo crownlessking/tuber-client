@@ -1,14 +1,14 @@
-import Grid from '@mui/material/Grid'
-import { styled } from '@mui/material/styles'
-import { FC } from 'react'
-import StateLink from 'src/controllers/StateLink'
-import StateJsxLink from 'src/mui/link'
-import { dev_fix_missing_thumbnails } from '../../callbacks/dev.get.video.thumbnail'
-import { IBookmark } from '../../tuber.interfaces'
+import Grid from '@mui/material/Grid';
+import { styled } from '@mui/material/styles';
+import { FC } from 'react';
+import StateLink from 'src/controllers/StateLink';
+import StateJsxLink from 'src/mui/link';
+import { dev_fix_missing_thumbnails } from '../../callbacks/dev.get.video.thumbnail';
+import { IBookmark } from '../../tuber.interfaces';
 
 interface IThumbnailProps {
-  i: number
-  bookmark: IBookmark
+  i: number;
+  bookmark: IBookmark;
 }
 
 const ThumbnailGrid = styled(Grid)(({ theme: { spacing, palette } }) => ({
@@ -23,7 +23,7 @@ const ThumbnailGrid = styled(Grid)(({ theme: { spacing, palette } }) => ({
   width: 148,
   height: 83,
   backgroundSize: 'cover',
-}))
+}));
 
 const BookmarkThumbnail: FC<IThumbnailProps> = ({ i, bookmark }) => {
   return (
@@ -44,7 +44,7 @@ const BookmarkThumbnail: FC<IThumbnailProps> = ({ i, bookmark }) => {
         })} />
       ) : ( null )}
     </ThumbnailGrid>
-  )
-}
+  );
+};
 
-export default BookmarkThumbnail
+export default BookmarkThumbnail;

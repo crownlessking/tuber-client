@@ -1,24 +1,32 @@
-import { Fragment } from 'react'
-import Box from '@mui/material/Box'
-import Appbar from '../mui/appbar'
-import Drawer from '../mui/drawer'
-import StatePage from '../controllers/StatePage'
-import Background from '../mui/background'
-import Dialog from '../mui/dialog'
-import Layout from './layout.component'
-import Content from './content'
-import Spinner from './spinner.component'
-import Snackbar from '../mui/snackbar'
+import { Fragment, useEffect, useMemo } from 'react';
+import Box from '@mui/material/Box';
+import Appbar from '../mui/appbar';
+import Drawer from '../mui/drawer';
+import StatePage from '../controllers/StatePage';
+import Background from '../mui/background';
+import Dialog from '../mui/dialog';
+import Layout from './layout.component';
+import Content from './content';
+import Spinner from './spinner.component';
+import Snackbar from '../mui/snackbar';
 
 interface IComplexAppProps {
-  def: StatePage
+  def: StatePage;
 }
 
 export default function ComplexApp ({ def: page }: IComplexAppProps) {
-  page.setTabTitle()
+
+  // Move side effect to useEffect to prevent it running on every render
+  useEffect(() => {
+    page.setTabTitle();
+  }, [page]);
+
+  // Memoize background to prevent unnecessary recalculation
+  const background = useMemo(() => page.background, [page.background]);
+
   return (
     <Fragment>
-      <Background def={page.background} />
+      <Background def={background} />
       <Box sx={{ display: 'flex' }}>
         <Appbar def={page} />
         <Drawer def={page} />
@@ -30,5 +38,5 @@ export default function ComplexApp ({ def: page }: IComplexAppProps) {
       <Snackbar />
       <Spinner />
     </Fragment>
-  )
+  );
 }

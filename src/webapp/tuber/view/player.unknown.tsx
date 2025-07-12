@@ -1,33 +1,33 @@
-import { styled } from '@mui/material/styles'
-import { IBookmark } from '../tuber.interfaces'
+import { styled } from '@mui/material/styles';
+import { IBookmark } from '../tuber.interfaces';
 
-interface IUnknown {
-  bookmark: IBookmark
+interface IUnknownPlayerProps {
+  bookmark: IBookmark;
 }
 
 const IframeWrapperStyled = styled('div')(() => ({
   position: 'relative',
   width: '100%',
   height: '100%'
-}))
+}));
 
 const IframeStyled = styled('iframe')(() => ({
   width: '100%',
   height: '100%'
-}))
+}));
 
 const VideoContainerStyled = styled('div')(({ theme }) => ({
   width: '100%',
   height: '100%',
   backgroundColor: theme.palette.background.default,
-}))
+}));
 
 const VideoStyled = styled('video')(() => ({
   width: '100%',
-}))
+}));
 
-const PlaybackSwitch: React.FC<IUnknown> = ({ bookmark }) => {
-  const { embed_url } = bookmark
+const PlaybackSwitch: React.FC<IUnknownPlayerProps> = ({ bookmark }) => {
+  const { embed_url } = bookmark;
   if (embed_url?.slice(-4) === '.mp4') {
     return (
       <VideoContainerStyled>
@@ -35,7 +35,7 @@ const PlaybackSwitch: React.FC<IUnknown> = ({ bookmark }) => {
           <source src={embed_url} type='video/mp4' />
         </VideoStyled>
       </VideoContainerStyled>
-    )
+    );
   }
   return (
     <IframeWrapperStyled>
@@ -48,11 +48,11 @@ const PlaybackSwitch: React.FC<IUnknown> = ({ bookmark }) => {
         allowFullScreen
       />
     </IframeWrapperStyled>
-  )
-}
+  );
+};
 
-const UnknownPlayer: React.FC<IUnknown> = ({ bookmark }) => (
+const UnknownPlayer: React.FC<IUnknownPlayerProps> = ({ bookmark }) => (
   <PlaybackSwitch bookmark={bookmark} />
-)
+);
 
-export default UnknownPlayer
+export default UnknownPlayer;

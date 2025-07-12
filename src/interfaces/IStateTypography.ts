@@ -4,7 +4,7 @@
  */
 export default interface IStateTypography {
   /** Any valid CSS color. */
-  color?: string
+  color?: string;
   /** Any valid value for the `font-family` CSS property. */
-  fontFamily?: string
+  fontFamily?: string;
 }

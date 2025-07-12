@@ -1,6 +1,6 @@
-import { SelectProps } from '@mui/material'
-import IStateFormItemCustom from './IStateFormItemCustom'
+import ISelectProps from './ISelectProps';
+import IStateFormItemCustom from './IStateFormItemCustom';
 
-export default interface IStateFormSelect extends SelectProps {
+export default interface IStateFormSelect extends ISelectProps {
   has?: IStateFormItemCustom
 }

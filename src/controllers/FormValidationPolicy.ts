@@ -1,12 +1,12 @@
 // import store from '../state'
-import { IRedux } from '../state'
-import { IStateFormsDataErrors } from '../interfaces/IState'
-import StateFormsDataErrors from './StateFormsDataErrors'
+import { IRedux } from '../state';
+import { IStateFormsDataErrors } from '../interfaces/IState';
+import StateFormsDataErrors from './StateFormsDataErrors';
 
 interface IValidation<T> {
-  name: keyof T
-  error: boolean
-  message?: string
+  name: keyof T;
+  error: boolean;
+  message?: string;
 }
 
 /**
@@ -14,17 +14,17 @@ interface IValidation<T> {
  */
 export default class FormValidationPolicy<T=any> {
   /** Short for formsDataErrorsState */
-  private _state: IStateFormsDataErrors
-  private _e: StateFormsDataErrors<T>
-  private _formData: any
+  private _state: IStateFormsDataErrors;
+  private _e: StateFormsDataErrors<T>;
+  private _formData: any;
 
   constructor (private _redux: IRedux, private _formName: string) {
-    this._state = _redux.store.getState().formsDataErrors
-    this._e = new StateFormsDataErrors<T>(this._state)
-    this._e.configure({ formName: this._formName })
+    this._state = _redux.store.getState().formsDataErrors;
+    this._e = new StateFormsDataErrors<T>(this._state);
+    this._e.configure({ formName: this._formName });
   }
 
-  get e(): StateFormsDataErrors<T> { return this._e }
+  get e(): StateFormsDataErrors<T> { return this._e; }
 
   /**
    * Displays error message on form field.
@@ -41,7 +41,7 @@ export default class FormValidationPolicy<T=any> {
         error: true,
         message
       }
-    })
+    });
   }
 
   /**
@@ -56,7 +56,7 @@ export default class FormValidationPolicy<T=any> {
         formName: this._formName,
         name: field
       }
-    })
+    });
   }
 
   /**
@@ -65,7 +65,7 @@ export default class FormValidationPolicy<T=any> {
    * @example const formData = formValidationPolicy.getFilteredData()
    */
   getFilteredData(): T {
-    return this._getFormData() as T
+    return this._getFormData() as T;
   }
 
   /**
@@ -74,7 +74,7 @@ export default class FormValidationPolicy<T=any> {
    * @example const formData = formValidationPolicy.getFormData()
    */
   getFormData(): T {
-    return this._getFormData() as T
+    return this._getFormData() as T;
   }
 
   /**
@@ -84,10 +84,10 @@ export default class FormValidationPolicy<T=any> {
    */
   private _filterData(value: any) {
     if (typeof value === 'string') {
-      return value.trim()
+      return value.trim();
              // TODO apply other fixes here
     }
-    return value
+    return value;
   }
 
   /**
@@ -97,18 +97,18 @@ export default class FormValidationPolicy<T=any> {
    */
   private _getFormData() {
     if (this._formData) {
-      return this._formData
+      return this._formData;
     }
-    this._formData = {}
-    const formData = this._redux.store.getState().formsData[this._formName]
+    this._formData = {};
+    const formData = this._redux.store.getState().formsData[this._formName];
     if (!formData) {
-      return this._formData
+      return this._formData;
     }
-    const names = Object.keys(formData)
+    const names = Object.keys(formData);
     Object.values(formData).forEach((value, i) => {
-      this._formData[names[i]] = this._filterData(value)
-    })
-    return this._formData
+      this._formData[names[i]] = this._filterData(value);
+    });
+    return this._formData;
   }
 
   /**
@@ -117,23 +117,23 @@ export default class FormValidationPolicy<T=any> {
    * @example const validationSchemes = formValidationPolicy.getValidationSchemes()
    */
   getValidationSchemes(): IValidation<T>[] | null {
-    const formsData = this._getFormData()
-    if (!formsData) { return null }
-    const formErrorProfiles = this._e.state[this._formName]
-    const vError: IValidation<T>[] = []
+    const formsData = this._getFormData();
+    if (!formsData) { return null; }
+    const formErrorProfiles = this._e.state[this._formName];
+    const vError: IValidation<T>[] = [];
     Object.entries(formErrorProfiles).forEach(key => {
-      const [name, profile] = key
-      const value = formsData[name]
+      const [name, profile] = key;
+      const value = formsData[name];
       if (typeof value === 'undefined'
         && !profile.required
       ) {
-        return null
+        return null;
       } else if (profile.required === true && !value) {
         vError.push({
           name: name as keyof T,
           error: true,
           message: profile.requiredMessage
-        })
+        });
       } else if (typeof profile.maxLength !== 'undefined'
         && value.length > profile.maxLength
       ) {
@@ -141,7 +141,7 @@ export default class FormValidationPolicy<T=any> {
           name: name as keyof T,
           error: true,
           message: profile.maxLengthMessage
-        })
+        });
       } else if (profile.invalidationRegex
         && new RegExp(profile.invalidationRegex).test(value)
       ) {
@@ -149,7 +149,7 @@ export default class FormValidationPolicy<T=any> {
           name: name as keyof T,
           error: true,
           message: profile.invalidationMessage
-        })
+        });
       } else if (profile.validationRegex
         && !new RegExp(profile.validationRegex).test(value)
       ) {
@@ -157,10 +157,10 @@ export default class FormValidationPolicy<T=any> {
           name: name as keyof T,
           error: true,
           message: profile.validationMessage
-        })
+        });
       }
     })
-    return vError.length > 0 ? vError : null
+    return vError.length > 0 ? vError : null;
   }
 
 }

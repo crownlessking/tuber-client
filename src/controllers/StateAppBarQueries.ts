@@ -1,32 +1,57 @@
-import { remember_exception } from 'src/business.logic/errors'
-import AbstractState from './AbstractState'
-import IStateAppbarQueries from '../interfaces/IStateAppbarQueries'
-import State from './State'
-import { ler } from '../business.logic/logging'
+import AbstractState from './AbstractState';
+import {
+  TStateAppbarQueries,
+  IStateAppbarQuery
+} from '../interfaces/IStateAppbarQueries';
+import State from './State';
+import { TWithRequired } from '../interfaces';
 
 export default class StateAppbarQueries extends AbstractState {
-  protected searchesState: IStateAppbarQueries
-  protected parentDef?: State
 
-  constructor(searchesState: IStateAppbarQueries, parent?: State) {
-    super()
-    this.searchesState = searchesState
-    this.parentDef = parent
+  constructor(
+    protected searchesState: TStateAppbarQueries,
+    protected parentDef?: State
+  ) {
+    super();
   }
 
-  get state(): IStateAppbarQueries { return this.searchesState }
-  get parent(): State { return this.parentDef || new State() }
-  get props(): any { return this.die('\'props\' not implemented yet.', {}) }
-  get theme(): any { return this.die('\'theme\' not implemented yet.', {}) }
+  get state(): TStateAppbarQueries { return this.searchesState; }
+  get parent(): State { return this.parentDef || new State(); }
+  get props(): any { return this.die('\'props\' not implemented yet.', {}); }
+  get theme(): any { return this.die('\'theme\' not implemented yet.', {}); }
 
-  public getSearchQuery = (route: string): string => {
-    try {
-      return this.searchesState[route]
-    } catch (e) {
-      const message = `StateAppbarQueries.getSearchQuery: Page route '${route}' NOT found.`
-      ler(message)
-      remember_exception(e, message)
-    }
-    return ''
+  /**
+   * Get a search query state.
+   *
+   * @param route the specified page route.
+   * @returns the search query state or null if not found.
+   */
+  get = (route: string): TWithRequired<
+    IStateAppbarQuery,
+    'value'
+  >|null => {
+    const queryState =  this.searchesState[route]
+      ?? this.searchesState[`/${route}`]
+      ?? null;
+    if (!queryState) return null;
+    return {
+      value: '',
+      ...queryState
+    } as TWithRequired<IStateAppbarQuery, 'value'>;
+  }
+
+  /**
+   * Always get a search query state.
+   *
+   * @param route the specified page route.
+   * @returns the search query state.
+   */
+  alwaysGet = (route: string): TWithRequired<
+    IStateAppbarQuery,
+    'value'
+  > => {
+    const queryState = this.get(route);
+    if (!queryState) return { value: '' };
+    return queryState;
   }
 }

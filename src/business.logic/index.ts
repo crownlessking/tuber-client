@@ -4,28 +4,46 @@
  * Holds the last rendered content so that if a new one was not provided,
  * that one can be used.
  */
-let currentContentJsx: JSX.Element | null
+let currentContentJsx: JSX.Element | null;
+
+let currentRefreshKey: number;
 
 /** Get the last rendered content. */
 export function get_last_content_jsx(): JSX.Element | null {
-  return currentContentJsx
+  return currentContentJsx;
 }
 
 /** Save the newly rendered content. */
 export function save_content_jsx(content: JSX.Element | null): void {
-  currentContentJsx = content
+  currentContentJsx = content;
 }
 
 export function clear_last_content_jsx(): void {
-  currentContentJsx = null
+  currentContentJsx = null;
+}
+
+/**
+ * Part of the force re-render mechanism. Record's a re-render attempt by
+ * saving the refresh key.
+ */
+export function save_content_refresh_key(key = 0): void {
+  currentRefreshKey = key;
+}
+
+/** 
+ * Indicates whether a force re-render occurred by returning a number greater
+ * than -1.
+ */
+export function get_content_refresh_key(): number {
+  return currentRefreshKey ?? -1;
 }
 
 /** Returns `true` if the argument is an object. */
 export const is_object = (obj: any) => {
   if (typeof obj === 'object' && obj !== null && !Array.isArray(obj)) {
-    return true
+    return true;
   }
-  return false
+  return false;
 }
 
 /**
@@ -35,9 +53,9 @@ export const is_object = (obj: any) => {
  * @returns string
  */
 export function get_head_meta_content(name: string, $default = 'app'): string {
-  const element = document.querySelector(`meta[name="${name}"]`)
-  const meta = element as HTMLMetaElement | null
-  return meta && meta.content ? meta.content : $default
+  const element = document.querySelector(`meta[name="${name}"]`);
+  const meta = element as HTMLMetaElement | null;
+  return meta && meta.content ? meta.content : $default;
 }
 
 /**
@@ -45,12 +63,15 @@ export function get_head_meta_content(name: string, $default = 'app'): string {
  * @param queries state containing search queries
  * @param route current route or the key to the search query
  * @returns string
+ * @deprecated
  */
 export function get_appbar_input_val(
-  queries: Record<string, string>,
+  queries: Record<string,{value?:string,mode?:'search'|'filter'}>,
   route: string
-): string {
-  return queries[route] ?? queries[`/${route}`] ?? ''
+): {value?:string,mode?:'search'|'filter'}|null {
+  const queryObj = queries[route] ?? queries[`/${route}`] ?? null;
+  if (!queryObj) { return null; }
+  return queryObj;
 }
 
 /**
@@ -63,13 +84,15 @@ export function get_appbar_input_val(
  * @param varName string representation of in-code variable identifier.
  * @returns object or throws an exception
  * @throws an exception if the global variable name is invalid.
+ * 
+ * @deprecated Not in use!
  */
 export function get_global_var(varName: string): any {
   try {
-    return window[varName]
+    return window[varName];
   } catch (e: any) {
-    const message = `Global variable "${varName}" does not exist.`
-    console.error(message)
+    const message = `Global variable "${varName}" does not exist.`;
+    console.error(message);
   }
   return { }
 }
@@ -94,25 +117,25 @@ export function get_global_var(varName: string): any {
  */
 export function get_val<T=any>(obj: any, path: string): T|null {
   if (typeof obj === 'undefined' || Array.isArray(obj) || typeof obj !== 'object') {
-    return null
+    return null;
   }
-  const paths = path.split('.')
+  const paths = path.split('.');
   let i = 0,
     key = paths[i],
-    candidate = obj[key]
+    candidate = obj[key];
 
   while (i < paths.length) {
     if (!candidate) {
-      break
+      break;
     } else if (i >= paths.length - 1) {
-      return candidate
+      return candidate;
     }
-    i++
-    key = paths[i]
-    candidate = candidate[key]
+    i++;
+    key = paths[i];
+    candidate = candidate[key];
   }
 
-  return null
+  return null;
 }
 
 /**
@@ -122,9 +145,9 @@ export function get_val<T=any>(obj: any, path: string): T|null {
  */
 export function get_origin_ending_fixed(origin?: string): string {
   if (origin) {
-    return origin.slice(-1) === '/' ? origin : origin + '/'
+    return origin.slice(-1) === '/' ? origin : origin + '/';
   }
-  return window.location.origin + '/'
+  return window.location.origin + '/';
 }
 
 /**
@@ -132,12 +155,14 @@ export function get_origin_ending_fixed(origin?: string): string {
  *
  * @returns string
  * @returns fixed endpoint
+ * 
+ * @deprecated Not in use.
  */
 export function get_endpoint_ending_fixed(endpoint?: string): string {
   if (endpoint) {
-    return endpoint.slice(-1) === '/' ? endpoint : endpoint + '/'
+    return endpoint.slice(-1) === '/' ? endpoint : endpoint + '/';
   }
-  return ''
+  return '';
 }
 
 /**
@@ -148,17 +173,17 @@ export function get_endpoint_ending_fixed(endpoint?: string): string {
  */
 export function clean_endpoint_ending(endpoint?: string): string {
   if (endpoint) {
-    return endpoint.slice(-1) === '/' ? endpoint.slice(0, -1) : endpoint
+    return endpoint.slice(-1) === '/' ? endpoint.slice(0, -1) : endpoint;
   }
-  return ''
+  return '';
 }
 
 /** Ensures that question mark symbol is included query string. */
 export function get_query_starting_fixed(query?: string): string {
   if (query) {
-    return query.charAt(0) === '?' ? query : '?' + query
+    return query.charAt(0) === '?' ? query : '?' + query;
   }
-  return ''
+  return '';
 }
 
 /**
@@ -175,9 +200,9 @@ export function safely_get_as<T=any>(
   path = '',
   _default: T
 ): T {
-  const value = get_val<T>(obj, path)
+  const value = get_val<T>(obj, path);
 
-  return value !== null ? value : _default
+  return value !== null ? value : _default;
 }
 
 /**
@@ -185,19 +210,21 @@ export function safely_get_as<T=any>(
  *
  * @param url 
  * @returns string
+ * 
+ * @deprecated Not in use
  */
 export function set_url_query_val(url: string, param: string, val?: string) {
-  const urlObj = new URL(url)
-  const query = new URLSearchParams(urlObj.searchParams)
-  const { origin, pathname } = urlObj
+  const urlObj = new URL(url);
+  const query = new URLSearchParams(urlObj.searchParams);
+  const { origin, pathname } = urlObj;
   if (typeof val === 'undefined') {
-    query.delete(param)
-    const newUrl = `${origin}${pathname}?${query.toString()}`
-    return newUrl
+    query.delete(param);
+    const newUrl = `${origin}${pathname}?${query.toString()}`;
+    return newUrl;
   }
   query.set(param, val.toString())
-  const newUrl = `${origin}${pathname}?${query.toString()}`
-  return newUrl
+  const newUrl = `${origin}${pathname}?${query.toString()}`;
+  return newUrl;
 }
 
 /**
@@ -207,7 +234,7 @@ export function set_url_query_val(url: string, param: string, val?: string) {
  * @returns string
  */
 export function get_state_form_name(name: string): string {
-  return name.slice(-4) === 'Form' ? name : name + 'Form'
+  return name.slice(-4) === 'Form' ? name : name + 'Form';
 }
 
 /**
@@ -215,21 +242,23 @@ export function get_state_form_name(name: string): string {
  *
  * @param {string} name 
  * @returns {string}
+ * 
+ * @deprecated Not in use
  */
 export function get_state_dialog_name(name: string): string {
-  return name.slice(-6) === 'Dialog' ? name : name + 'Dialog'
+  return name.slice(-6) === 'Dialog' ? name : name + 'Dialog';
 }
 
 /**
- * Generates a mongodb ObjectId
+ * Generates a mongodb ObjectId.
  *
  * @see https://gist.github.com/solenoid/1372386
  */
 export function mongo_object_id(): string {
-  const timestamp = (new Date().getTime() / 1000 | 0).toString(16)
+  const timestamp = (new Date().getTime() / 1000 | 0).toString(16);
   return timestamp + 'xxxxxxxxxxxxxxxx'.replace(/[x]/g, function() {
-      return (Math.random() * 16 | 0).toString(16)
-  }).toLowerCase()
+      return (Math.random() * 16 | 0).toString(16);
+  }).toLowerCase();
 }
 
 /**
@@ -238,16 +267,16 @@ export function mongo_object_id(): string {
  * @param str 
  */
 export function trim_slashes(str: string): string {
-  let s = str
+  let s = str;
   while(s.charAt(0) === '/' || s.charAt(0) === '\\')
   {
     s = s.substring(1);
   }
   while (s.charAt(s.length - 1) === '/' || s.charAt(s.length - 1) === '\\')
   {
-    s = s.substring(0, s.length - 1)
+    s = s.substring(0, s.length - 1);
   }
-  return s
+  return s;
 }
 
 /**
@@ -262,13 +291,13 @@ export function trim_slashes(str: string): string {
  */
 export function get_endpoint(pathname: string): string {
   let pname = trim_slashes(pathname);
-  const argsIndex = pathname.indexOf('?')
+  const argsIndex = pathname.indexOf('?');
   if (argsIndex >= 0) {
-    pname = pathname.substring(0, argsIndex)
+    pname = pathname.substring(0, argsIndex);
   }
-  const params = pname.split(/\/|\\/)
+  const params = pname.split(/\/|\\/);
 
-  return params[params.length - 1]
+  return params[params.length - 1];
 }
 
 /**
@@ -279,12 +308,12 @@ export function get_endpoint(pathname: string): string {
  * @param theUrl 
  *
  * @see https://stackoverflow.com/questions/10642289/return-html-content-as-a-string-given-url-javascript-function
- * @deprecated
+ * @deprecated Not in use
  */
 export function http_get(theUrl: string): void
 {
   // code for IE7+, Firefox, Chrome, Opera, Safari
-  const xmlhttp = new XMLHttpRequest()
+  const xmlhttp = new XMLHttpRequest();
 
   xmlhttp.onreadystatechange = function () {
     if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
@@ -310,9 +339,9 @@ export function get_themed_state<T=any>(
   dark: any
 ): T {
   if (light && dark) {
-    return mode === 'dark' ? dark : light
+    return mode === 'dark' ? dark : light;
   }
-  return main
+  return main;
 }
 
 /**
@@ -321,15 +350,15 @@ export function get_themed_state<T=any>(
  * @returns object
  */
 export function parse_cookies() {
-  const cookies = {} as Record<string, string>
-  const pairs = document.cookie.split(';')
+  const cookies = {} as Record<string, string>;
+  const pairs = document.cookie.split(';');
 
   pairs.forEach(pair => {
-    const [key, value] = pair.split('=').map(s => s.trim())
-    cookies[key] = value
+    const [key, value] = pair.split('=').map(s => s.trim());
+    cookies[key] = value;
   })
 
-  return cookies
+  return cookies;
 }
 
 /**
@@ -338,9 +367,9 @@ export function parse_cookies() {
  * @returns T
  */
 export function get_cookie<T=string>(name: string): T {
-  const cookies = parse_cookies()
-  const cookie = cookies[name] ?? ''
-  return cookie as unknown as T
+  const cookies = parse_cookies();
+  const cookie = cookies[name] ?? '';
+  return cookie as unknown as T;
 }
 
 /**
@@ -381,13 +410,15 @@ export function get_cookie<T=string>(name: string): T {
  *   unexpected nesting.
  *
  * As more cases are discovered, they should be added to this list.
+ * 
+ * @deprecated Not in use
  */
 export function resolve_unexpected_nesting (response: any) {
   if (response.response) {// Case of nested response
-    return response.response
+    return response.response;
   }
 
   // ... other cases
 
-  return response
+  return response;
 }

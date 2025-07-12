@@ -1,6 +1,6 @@
-import IStatePage from './IStatePage'
+import IStatePage from './IStatePage';
 
 /** Contains all page states. */
 export default interface IStateAllPages {
-  [prop: string]: IStatePage
+  [prop: string]: IStatePage;
 }

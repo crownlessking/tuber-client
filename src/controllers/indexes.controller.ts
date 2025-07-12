@@ -1,10 +1,10 @@
-import { remember_exception } from '../business.logic/errors'
-import { IJsonapiResponseResource } from '../interfaces/IJsonapi'
+import { remember_exception } from '../business.logic/errors';
+import { IJsonapiResponseResource } from '../interfaces/IJsonapi';
 
 export interface IIndexes {
   [endpoint: string]: {
-    [id: string]: IJsonapiResponseResource
-  } | undefined
+    [id: string]: IJsonapiResponseResource;
+  } | undefined;
 }
 
 /**
@@ -28,7 +28,7 @@ export interface IIndexes {
  * Note: One caveat, indexes needs to be updated whenever the content of
  *       `state.data` is changed.
  */
-const indexes: IIndexes = {}
+const indexes: IIndexes = {};
 
 /**
  * Use this method to convert an array (of objects) to an object containing
@@ -52,15 +52,15 @@ const indexes: IIndexes = {}
  * @param key 
  */
 export function index_by_id(array: IJsonapiResponseResource[], collection: string): void {
-  const object: {[i: string]: IJsonapiResponseResource} = {}
+  const object: {[i: string]: IJsonapiResponseResource} = {};
   array.forEach(obj => {
-    object[obj.id] = obj
-  })
-  indexes[collection] = object
+    object[obj.id] = obj;
+  });
+  indexes[collection] = object;
 }
 
 export function drop_index(collection: string): void {
-  delete indexes[collection]
+  delete indexes[collection];
 }
 
 /**
@@ -73,7 +73,7 @@ export function drop_index(collection: string): void {
  */
 export function select(endpoint: string, id: string): any {
   try {
-    return indexes?.[endpoint]?.[id]
+    return indexes?.[endpoint]?.[id];
   } catch (e: any) {
     remember_exception({
       'code': '404',
@@ -82,6 +82,6 @@ export function select(endpoint: string, id: string): any {
       'source': {
         parameter: `${endpoint}/${id}`
       }
-    })
+    });
   }
 }

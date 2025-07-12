@@ -1,13 +1,13 @@
-import { FC } from 'react'
-import StatePage from '../../controllers/StatePage'
-import TubeResearcher from '../../webapp/tuber/view/default'
+import { FC } from 'react';
+import StatePage from '../../controllers/StatePage';
+import TubeResearcher from '../../webapp/tuber/view/default';
 
 export interface IWebApps {
-  [app: string]: JSX.Element
+  [app: string]: JSX.Element;
 }
 
 interface IWebAppsProps {
-  def: StatePage
+  def: StatePage;
 }
 
 /**
@@ -24,9 +24,9 @@ const WebApps: FC<IWebAppsProps> = ({ def: page }) => {
     tubeResearcher: <TubeResearcher def={page} />,
 
     // TODO Add more web apps here
-  }
+  };
 
-  return webAppsMap[page.contentName] || ( null )
+  return webAppsMap[page.contentName] || ( null );
 }
 
-export default WebApps
+export default WebApps;

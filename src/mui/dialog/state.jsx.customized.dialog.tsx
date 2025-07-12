@@ -75,7 +75,7 @@ export default function StateJsxCustomizedDialog(props: ICustomizedDialogProps) 
       <DialogContent {...dialog.contentProps}>
         { dialog.content }
       </DialogContent>
-      <DialogActions {...dialog.actionProps}>
+      <DialogActions {...dialog.actionsProps}>
         <StateJsxDialogAction def={dialog.actions} parent={dialog} />
       </DialogActions>
     </BootstrapDialog>

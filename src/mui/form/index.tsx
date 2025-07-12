@@ -1,64 +1,90 @@
-import { Fragment } from 'react'
-import { Box, Paper, Stack } from '@mui/material'
-import StateForm from '../../controllers/StateForm'
-import { remember_exception } from '../../business.logic/errors'
-import { log } from '../../business.logic/logging'
+import { Fragment, useMemo, useCallback } from 'react';
+import { Box, Paper, Stack } from '@mui/material';
+import StateForm from '../../controllers/StateForm';
+import { remember_exception } from '../../business.logic/errors';
+import { log } from '../../business.logic/logging';
 
 interface IJsonFormProps {
-  def: StateForm
-  children: any
+  def: StateForm;
+  children: any;
 }
 
 function ConditionalPaper (
-  { form, children }:{ form: StateForm, children: any }
+  { form, children }:{ form: StateForm; children: any; }
 ) {
-  if (form.paperBackground) {
-    return (
-      <Paper {...form.paperProps}>
-        { children }
-      </Paper>
-    )
-  } else {
-    return (
-      <Fragment>
-        { children }
-      </Fragment>
-    )
-  }
+  // Memoize the conditional paper rendering to avoid unnecessary re-renders
+  const paperContent = useMemo(() => {
+    if (form.paperBackground) {
+      return (
+        <Paper {...form.paperProps}>
+          { children }
+        </Paper>
+      );
+    } else {
+      return (
+        <Fragment>
+          { children }
+        </Fragment>
+      );
+    }
+  }, [form.paperBackground, form.paperProps, children]);
+
+  return paperContent;
 }
 
 export default function StateJsxForm (
   { def: form, children }: IJsonFormProps
 ) {
-  const map: {[constant: string]: () => JSX.Element} = {
-    'box': () => (
-      <ConditionalPaper form={form}>
-        <Box
-          {...form.props}
-        >
-          { children }
-        </Box>
-      </ConditionalPaper>
-    ),
-    'stack': () => (
-      <ConditionalPaper form={form}>
-        <Stack {...form.props}>
-          { children }
-        </Stack>
-      </ConditionalPaper>
-    ),
-    'none': () => (
-      <ConditionalPaper form={form}>
+  // Memoize the box component to prevent re-creation on every render
+  const BoxComponent = useCallback(() => (
+    <ConditionalPaper form={form}>
+      <Box
+        {...form.props}
+      >
         { children }
-      </ConditionalPaper>
-    )
-  }
+      </Box>
+    </ConditionalPaper>
+  ), [form, children]);
 
-  try {
-    return map[form._type]()
-  } catch (e: any) {
-    remember_exception(e)
-    log(e.message)
-  }
-  return map['box']()
+  // Memoize the stack component to prevent re-creation on every render
+  const StackComponent = useCallback(() => (
+    <ConditionalPaper form={form}>
+      <Stack {...form.props}>
+        { children }
+      </Stack>
+    </ConditionalPaper>
+  ), [form, children]);
+
+  // Memoize the none component to prevent re-creation on every render
+  const NoneComponent = useCallback(() => (
+    <ConditionalPaper form={form}>
+      { children }
+    </ConditionalPaper>
+  ), [form, children]);
+
+  // Memoize the component map to prevent re-creation on every render
+  const map: {[constant: string]: () => JSX.Element} = useMemo(() => ({
+    'box': BoxComponent,
+    'stack': StackComponent,
+    'none': NoneComponent
+  }), [BoxComponent, StackComponent, NoneComponent]);
+
+  // Memoize the final result to avoid unnecessary re-computations
+  const result = useMemo(() => {
+    try {
+      const componentRenderer = map[form._type];
+      if (componentRenderer) {
+        return componentRenderer();
+      }
+      // Fallback to box if type is not found
+      return map['box']();
+    } catch (e: any) {
+      remember_exception(e);
+      log(e.message);
+      // Return box component as fallback
+      return map['box']();
+    }
+  }, [map, form._type]);
+
+  return result;
 }
