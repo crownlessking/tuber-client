@@ -31,7 +31,6 @@ const NoteWrapper = styled('div')(() => ({
 
 const Note = styled('div')(({ theme }) => ({
   marginLeft: theme.spacing(3),
-  // maxWidth: theme.spacing(50),
 }));
 
 const TitleWrapper = styled('div')(() => ({
@@ -62,8 +61,6 @@ const PlatformIcon = styled('img')(() => ({
   width: '1.5rem',
   height: '1.5rem',
   margin: '0.25rem 0.5rem 0 0',
-  // position: 'absolute',
-  // top: 0,
 }));
 
 // Optimized BookmarkWithThumbnail component with React.memo for performance

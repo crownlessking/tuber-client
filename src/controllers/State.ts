@@ -1,5 +1,6 @@
 import store, { RootState } from '../state';
 import StateAllPages from './StateAllPages';
+import StateAllIcons from './StateAllIcons';
 import AbstractState from './AbstractState';
 import StateBackground from './StateBackground';
 import StateApp from './StateApp';
@@ -29,6 +30,7 @@ export default class State extends AbstractState {
   private _appbarQueriesDef?: StateAppbarQueries;
   private _backgroundDef?: StateBackground;
   private _typographyDef?: StateTypography;
+  private _allIconsDef?: StateAllIcons;
   private _dataDef?: StateData;
   private _dialogDef?: StateDialog;
   private _allDialogsDef?: StateAllDialogs;
@@ -118,6 +120,19 @@ export default class State extends AbstractState {
           this
         ));
   }
+
+  /**
+   * Chain-access to all icon definitions.
+   */
+  get allIcons(): StateAllIcons {
+    return this._allIconsDef
+      || (this._allIconsDef = new StateAllIcons(
+          store.getState().icons,
+          this
+        ));
+  }
+
+  get icons(): StateAllIcons { return this.allIcons; }
 
   get data(): StateData {
     return this._dataDef

@@ -15,9 +15,11 @@ export default interface IStateFormItemCustom<T = any> {
    * work with React/Redux.
    */
   defaultValue?: string;
-  /** Display a Material UI icon */
+  /** Display a state icon */
   icon?: string;
   /** Display a Material UI icon */
+  muiIcon?: string;
+  /** Display a SVG icon */
   svgIcon?: string;
   /** Display a Font-Awesome icon */
   faIcon?: string;

@@ -146,7 +146,32 @@ export default {
     ..._get_global_var(`${GLOBAL_PREFIX}Typography`)
   },
 
-  'icons': { ..._get_global_var(`${GLOBAL_PREFIX}Icons`)},
+  'icons': {
+    'no_icon': {
+      viewBox: '0 0 24 24',
+      width: 24,
+      height: 24,
+      fill: 'currentColor',
+      rects: [
+        {
+          width: 20,
+          height: 20,
+          fill: 'none'
+        }
+      ],
+      paths: [
+        {
+          d: 'M2 2h20v20H2V2zm2 2v16h16V4H4z',
+          fill: 'currentColor'
+        },
+        {
+          d: 'M6 8h12v2H6V8zm0 4h12v2H6v-2zm0 4h8v2H6v-2z',
+          fill: 'currentColor'
+        }
+      ]
+    },
+    ..._get_global_var(`${GLOBAL_PREFIX}Icons`)
+  },
 
   'dialog': {
     'title': 'Dialog Title',

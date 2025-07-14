@@ -15,7 +15,7 @@ import StatePageAppbarMidSearch from '../../controllers/templates/StatePageAppba
 import StateJsxLogo from './state.jsx.logo';
 import AppbarButton from '../link';
 import InputAdornment from '@mui/material/InputAdornment';
-import { StateJsxIcon } from '../state.jsx.icons';
+import { JsxUnifiedIconProvider } from '../state.jsx.icons';
 import Menu from '@mui/material/Menu';
 import StateLink from '../../controllers/StateLink';
 import StateJsxChip from './state.jsx.chip';
@@ -50,8 +50,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
   '& .MuiInputBase-input': {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    // paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create('width'),
     width: '100%',
   },
@@ -145,7 +143,7 @@ export default function StateJsxMidSearchAppbar({ def: page }: { def: StatePage;
           <Search {...appbar.searchFieldProps}>
             {appbarChips.length < 1 ? (
               <UrlIconWrapper>
-                <StateJsxIcon def={appbar.searchFieldIcon} />
+                <JsxUnifiedIconProvider def={appbar.searchFieldIcon} />
               </UrlIconWrapper>
             ) : ( null )}
             <StyledInputBase

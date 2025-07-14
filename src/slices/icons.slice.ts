@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import IStateAllIcons, { IStateIcon } from '../interfaces/IStateAllIcons';
+import IStateAllIcons from '../interfaces/IStateAllIcons';
+import IStateIcon from '../interfaces/IStateIcon';
+import mainInitialState from '../state/initial.state';
 
-const initialState: IStateAllIcons = {};
+const initialState: IStateAllIcons = mainInitialState.icons;
 
 const iconsSlice = createSlice({
   name: 'icons',

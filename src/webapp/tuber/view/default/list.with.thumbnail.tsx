@@ -26,11 +26,11 @@ const StyledList = styled(List)(({ theme }) => ({
 
 export default function TuberThumbnailedBookmarkList(props: ITTBList) {
   const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props.props;
-  
+
   // Memoize state selectors
   const dataState = useSelector((state: RootState) => state.data);
   const data = useMemo(() => new StateData(dataState), [dataState]);
-  
+
   // Memoize bookmark collection
   const bookmarks = useMemo(() => {
     return data.configure({ endpoint: 'bookmarks' })

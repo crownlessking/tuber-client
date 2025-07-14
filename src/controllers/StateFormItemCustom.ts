@@ -32,6 +32,7 @@ export default class StateFormItemCustom<P, T = any>
   get defaultValue(): string { return this.hasState.defaultValue ?? ''; }
   get faIcon(): string { return this.hasState.faIcon ?? ''; }
   get icon(): string { return this.hasState.icon ?? ''; }
+  get muiIcon(): string { return this.hasState.muiIcon ?? ''; }
   get svgIcon(): Required<IStateFormItemCustom<T>>['svgIcon'] {
     return this.hasState.svgIcon ?? 'none';
   }

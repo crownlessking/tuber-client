@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import store, { actions, AppDispatch, RootState } from 'src/state'
 import { Link as RouterLink } from 'react-router-dom'
 import StatePageDrawer from 'src/controllers/templates/StatePageDrawer'
-import { StateJsxIcon } from '../state.jsx.icons'
+import { JsxUnifiedIconProvider } from '../state.jsx.icons'
 import { get_formatted_route } from 'src/controllers/StateLink'
 
 interface ITempDrawerProps {
@@ -48,7 +48,7 @@ export default function TempDrawer({ def: drawer }: ITempDrawerProps) {
             to={get_formatted_route(item.has)}
           >
             <ListItemIcon>
-              <StateJsxIcon def={item.has} />
+              <JsxUnifiedIconProvider def={item.has} />
             </ListItemIcon>
             <ListItemText primary={item.has.state.text} />
           </ListItem>

@@ -4,6 +4,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import getSvgIcon from './state.jsx.imported.svg.icons';
 import StateFormItemCustom from '../controllers/StateFormItemCustom';
 import { FC, Fragment, useMemo, useCallback } from 'react';
+import StateAllIcons from 'src/controllers/StateAllIcons';
+import { useSelector } from 'react-redux';
+import { RootState } from 'src/state';
+import StateJsxIcon from './icon';
 
 interface IJsonIconProps {
   def: StateFormItemCustom<any>; // StateFormItem | StateLink
@@ -20,16 +24,24 @@ interface IJsonIconProps {
  * }
  * ```
  */
-export const StateJsxIcon = (({ def: has }) => {
+export const JsxUnifiedIconProvider = (({ def: has }) => {
+  const iconsState = useSelector((state: RootState) => state.icons);
+
+  const renderIcon = useCallback(() => {
+    const allIcons = new StateAllIcons(iconsState);
+    const svg = allIcons.getIcon(has.icon);
+    return <StateJsxIcon def={has} svgDef={svg} />;
+  }, [iconsState, has]);
+
   const renderSvgIcon = useCallback(() => 
     getSvgIcon(has.svgIcon, has.iconProps) || 
     <Icon {...has.iconProps}>{ has.svgIcon }</Icon>
   , [has.svgIcon, has.iconProps]);
 
-  const renderIcon = useCallback(() => 
-    getSvgIcon(has.icon, has.iconProps) || 
-    <Icon {...has.iconProps}>{ has.icon }</Icon>
-  , [has.icon, has.iconProps]);
+  const renderMuiIcon = useCallback(() => 
+    getSvgIcon(has.muiIcon, has.iconProps) || 
+    <Icon {...has.iconProps}>{ has.muiIcon }</Icon>
+  , [has.muiIcon, has.iconProps]);
 
   const renderFaIcon = useCallback(() => {
     const faProps: any = { size: 'lg', ...has.iconProps };
@@ -40,11 +52,12 @@ export const StateJsxIcon = (({ def: has }) => {
   const renderNone = useCallback(() => <Fragment>❌</Fragment>, []);
 
   const map = useMemo(() => ({
-    svgIcon: renderSvgIcon,
     icon: renderIcon,
+    svgIcon: renderSvgIcon,
+    muiIcon: renderMuiIcon,
     faIcon: renderFaIcon,
     none: renderNone
-  }), [renderSvgIcon, renderIcon, renderFaIcon, renderNone]);
+  }), [renderIcon, renderSvgIcon, renderMuiIcon, renderFaIcon, renderNone]);
 
   const type = useMemo(() => {
     if (has.svgIcon && has.svgIcon !== 'none') return 'svgIcon';
@@ -63,7 +76,7 @@ export const StateJsxBadgedIcon = (({ def: has }) => {
     badgeContent: '-'
   }), [has.badge]);
 
-  const iconComponent = useMemo(() => <StateJsxIcon def={has} />, [has]);
+  const iconComponent = useMemo(() => <JsxUnifiedIconProvider def={has} />, [has]);
 
   return (
     <Fragment>

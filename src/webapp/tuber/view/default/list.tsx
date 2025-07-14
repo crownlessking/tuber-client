@@ -24,38 +24,6 @@ const StyledList = styled(List)(({ theme }) => ({
   paddingLeft: theme.spacing(1),
 }));
 
-// Optimized bookmark item component
-// const BookmarkItem = React.memo<{
-//   bookmark: IBookmark;
-//   index: number;
-//   onBookmarkClick: (bookmark: IBookmark) => void;
-//   expandedNotes: Set<number>;
-//   onToggleExpand: (index: number) => void;
-// }>(({ bookmark, index, onBookmarkClick, expandedNotes, onToggleExpand }) => {
-//   const isExpanded = expandedNotes.has(index);
-  
-//   const handleClick = useCallback((e: React.MouseEvent) => {
-//     e.preventDefault();
-//     onBookmarkClick(bookmark);
-//   }, [bookmark, onBookmarkClick]);
-
-//   const handleExpandClick = useCallback((e: React.MouseEvent) => {
-//     e.preventDefault();
-//     onToggleExpand(index);
-//   }, [index, onToggleExpand]);
-
-//   return (
-//     <Bookmark
-//       handleOnClick={() => handleClick}
-//       handleExpandDetailIconOnClick={() => handleExpandClick}
-//       index={index}
-//       isExpanded={isExpanded}
-//     >
-//       {bookmark}
-//     </Bookmark>
-//   );
-// });
-
 export default function TuberBookmarkList(props: ITBList) {
   const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props.props;
   

@@ -1,4 +1,4 @@
-import store from '../../../state'
+import store from '../../../state';
 import {
   TEXTFIELD,
   TEXTAREA,
@@ -16,13 +16,13 @@ import {
   STATE_SELECT_NATIVE,
   CHECKBOXES,
   DESKTOP_DATE_TIME_PICKER
-} from '../../../constants'
+} from '../../../constants';
 import {
   formsDataUpdate,
   IFormsDataArgs
-} from '../../../slices/formsData.slice'
-import StateFormItem from '../../../controllers/StateFormItem'
-import { remember_exception } from 'src/business.logic/errors'
+} from '../../../slices/formsData.slice';
+import StateFormItem from '../../../controllers/StateFormItem';
+import { remember_exception } from 'src/business.logic/errors';
 
 /**
  * Insert form data to the Redux store.
@@ -30,7 +30,7 @@ import { remember_exception } from 'src/business.logic/errors'
  * @param payload 
  */
 function save_form_data(payload: IFormsDataArgs): void {
-  store.dispatch(formsDataUpdate(payload))
+  store.dispatch(formsDataUpdate(payload));
 }
 
 /**
@@ -48,11 +48,11 @@ function no_form_data_exist (formName: string, name?: string): boolean {
   try {
     if (name) {
       // == null catches both undefined and null at the same time.
-      return store.getState().formsData[formName][name] == null
+      return store.getState().formsData[formName][name] == null;
     }
-  } catch (e) { remember_exception(e) }
+  } catch (e) { remember_exception(e); }
 
-  return true
+  return true;
 }
 
 /**
@@ -66,7 +66,7 @@ export function set_default_value(field: StateFormItem, formName: string): void 
     && field.name
     && no_form_data_exist(formName, field.name)
   ) {
-    const { type, name, has: { defaultValue : value } } = field
+    const { type, name, has: { defaultValue : value } } = field;
     switch (type.toLowerCase()) {
 
     // TODO Add more cases here to enable default values on additional types
@@ -87,8 +87,8 @@ export function set_default_value(field: StateFormItem, formName: string): void 
     case MOBILE_DATE_PICKER:
     case TIME_PICKER:
     case DATE_TIME_PICKER:
-      save_form_data({formName, name, value})
-      break
+      save_form_data({formName, name, value});
+      break;
 
     }
   }
@@ -101,7 +101,7 @@ export function store_default_values<T extends object>(obj: T, formName: string)
       name,
       value: obj[name as (keyof typeof obj)]
     })
-  )
+  );
 }
 
 /**
@@ -119,5 +119,5 @@ export function store_default_values<T extends object>(obj: T, formName: string)
  * @param items array of form field definition
  */
 export default function set_all_default_values (items: StateFormItem[]) {
-  items.map(field => set_default_value(field, field.parent.name))
+  items.map(field => set_default_value(field, field.parent.name));
 }
