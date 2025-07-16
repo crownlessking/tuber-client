@@ -1,7 +1,7 @@
 import FormItems from '../../mui/form/items';
 import Form from '../../mui/form';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../state';
+import type { AppDispatch, RootState } from '../../state';
 import { useEffect, useMemo } from 'react';
 import Config from '../../config';
 import {
@@ -16,9 +16,9 @@ import { get_state_form_name } from '../../business.logic';
 import { TThemeMode } from 'src/interfaces';
 
 interface IFormContent {
-  def: StateForm | null,
-  formName?: string
-  type?: 'page' | 'dialog'
+  def: StateForm | null;
+  formName?: string;
+  type?: 'page' | 'dialog';
 }
 
 export default function FormContent ({ def, formName, type }: IFormContent) {

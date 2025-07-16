@@ -1,18 +1,18 @@
-import { createSlice } from '@reduxjs/toolkit'
-import IStatePage from '../interfaces/IStatePage'
-import initialState from '../state/initial.state'
+import { createSlice } from '@reduxjs/toolkit';
+import IStatePage from '../interfaces/IStatePage';
+import initialState from '../state/initial.state';
 
-export const PAGES_ADD = 'pages/pagesAdd'
-export const PAGES_REMOVE = 'pages/pagesRemove'
+export const PAGES_ADD = 'pages/pagesAdd';
+export const PAGES_REMOVE = 'pages/pagesRemove';
 
 export interface IPagesArgs {
-  route: string
-  page: IStatePage
+  route: string;
+  page: IStatePage;
 }
 
 interface IArgs {
-  type: string
-  payload: IPagesArgs
+  type: string;
+  payload: IPagesArgs;
 }
 
 export const pagesSlice = createSlice({
@@ -20,22 +20,22 @@ export const pagesSlice = createSlice({
   initialState: initialState.pages,
   reducers: {
     pagesAddMultiple: (state, action) => {
-      const pages = action.payload
+      const pages = action.payload;
       Object.keys(pages).forEach(key => {
-        state[key] = pages[key]
+        state[key] = pages[key];
       })
     },
     pagesAdd: (state, action: IArgs) => {
-      const { route, page } = action.payload
-      state[route] = page as any
+      const { route, page } = action.payload;
+      state[route] = page as any;
     },
     pagesRemove: (state, action) => {
-      delete state[action.payload]
+      delete state[action.payload];
     },
   }
-})
+});
 
-export const pagesActions = pagesSlice.actions
-export const { pagesAddMultiple, pagesAdd, pagesRemove } = pagesSlice.actions
+export const pagesActions = pagesSlice.actions;
+export const { pagesAddMultiple, pagesAdd, pagesRemove } = pagesSlice.actions;
 
-export default pagesSlice.reducer
+export default pagesSlice.reducer;

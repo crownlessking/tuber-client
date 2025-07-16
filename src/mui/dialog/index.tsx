@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { RootState } from '../../state';
+import type { RootState } from '../../state';
 import StateDialog from '../../controllers/StateDialog';
 import StateDialogAlert from '../../controllers/templates/StateDialogAlert';
 import StateDialogCustomized from '../../controllers/templates/StateDialogCustomized';

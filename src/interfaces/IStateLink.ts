@@ -1,5 +1,5 @@
 import { IAbstractState } from '../common.types';
-import { IRedux } from '../state';
+import { type IRedux } from '../state';
 import IStateFormItemCustom from './IStateFormItemCustom';
 
 export default interface IStateLink<T=any> extends IAbstractState {

@@ -1,5 +1,5 @@
-import { DrawerProps } from '@mui/material'
-import StatePageDrawer from './StatePageDrawer'
+import { type DrawerProps } from '@mui/material';
+import StatePageDrawer from './StatePageDrawer';
 
 export default class StateDrawerResponsive extends StatePageDrawer {
   private container = window !== undefined
@@ -22,7 +22,7 @@ export default class StateDrawerResponsive extends StatePageDrawer {
         },
       },
       ...this.drawerState.props
-    }
+    };
   }
 
   /** `props` for permanent drawer. */
@@ -37,6 +37,6 @@ export default class StateDrawerResponsive extends StatePageDrawer {
         },
       },
       open: true
-    }
+    };
   }
 }

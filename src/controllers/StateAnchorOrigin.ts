@@ -1,5 +1,5 @@
 
-import StateSnackbar from './StateSnackbar';
+import type StateSnackbar from './StateSnackbar';
 import AbstractState from './AbstractState';
 import IStateAnchorOrigin, {
   AnchorHorizontal, AnchorVertical

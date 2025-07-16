@@ -1,6 +1,6 @@
 import AbstractState from './AbstractState';
 import StateLink from './StateLink';
-import State from './State';
+import type State from './State';
 import IStateDrawer from '../interfaces/IStateDrawer';
 
 export default class StateDrawer<P = State>

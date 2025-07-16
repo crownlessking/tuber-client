@@ -1,6 +1,6 @@
 import { safely_get_as } from 'src/controllers';
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 import {
   remember_error,
   remember_exception,

@@ -6,8 +6,8 @@ import GenericApp from './generic.app.component';
 import StateApp from 'src/controllers/StateApp';
 
 interface IGenericAppProps {
-  def: StateAllPages,
-  info: StateApp
+  def: StateAllPages;
+  info: StateApp;
 }
 
 export default function AppPage({

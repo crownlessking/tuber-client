@@ -15,7 +15,7 @@ interface IRemove {
   type: string;
   payload: {
     route: string;
-    id: string
+    id: string;
   };
 }
 

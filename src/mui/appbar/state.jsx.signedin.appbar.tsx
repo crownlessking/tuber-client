@@ -1,10 +1,10 @@
 import { styled } from '@mui/material';
-import StatePage from '../../controllers/StatePage';
+import type StatePage from '../../controllers/StatePage';
 import Avatar from '@mui/material/Avatar';
 import { grey } from '@mui/material/colors';
 
 interface IProps {
-  def: StatePage
+  def: StatePage;
 }
 
 const CustomChip = styled('div')(() => ({

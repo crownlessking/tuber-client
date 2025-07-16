@@ -19,7 +19,6 @@ export function schedule_spinner(time = 200): void {
   if (!handle) {
     const callback = () => store.dispatch({ type: 'app/appShowSpinner' });
     handle = setTimeout(callback, time);
-    // _auto_hide_spinner()
   }
 }
 

@@ -1,5 +1,5 @@
 import { IAbstractState } from '../common.types';
-import { TWithOptional } from '.';
+import { type TWithOptional } from '.';
 import IStateLink from './IStateLink';
 
 export default interface IStateDrawer extends IAbstractState {

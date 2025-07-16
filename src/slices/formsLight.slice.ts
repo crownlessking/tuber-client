@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit'
-import IStateForm from '../interfaces/IStateForm'
-import initialState from '../state/initial.state'
+import { createSlice } from '@reduxjs/toolkit';
+import IStateForm from '../interfaces/IStateForm';
+import initialState from '../state/initial.state';
 
 export interface IFormsArgs {
-  name: string
-  form: IStateForm
+  name: string;
+  form: IStateForm;
 }
 
 export const formsLightSlice = createSlice({
@@ -14,14 +14,14 @@ export const formsLightSlice = createSlice({
 
     formsLightClear: (state) => {
       for (const key in state) {
-        delete state[key]
+        delete state[key];
       }
     }
 
   }
-})
+});
 
-export const formsLightActions = formsLightSlice.actions
-export const { formsLightClear } = formsLightSlice.actions
+export const formsLightActions = formsLightSlice.actions;
+export const { formsLightClear } = formsLightSlice.actions;
 
-export default formsLightSlice.reducer
+export default formsLightSlice.reducer;

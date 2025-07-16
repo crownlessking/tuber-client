@@ -2,7 +2,7 @@ import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import CardMedia from '@mui/material/CardMedia'
 import { Button, CardActionArea, CardActions } from '@mui/material'
-import StateCardMultiActionArea
+import type StateCardMultiActionArea
   from 'src/controllers/templates/StateCardMultiActionArea'
 
 interface ICardProps {

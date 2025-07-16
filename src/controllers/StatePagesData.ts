@@ -1,4 +1,4 @@
-import { IGenericObject } from '../common.types';
+import { TObj } from '../common.types';
 import AbstractState from './AbstractState';
 import State from './State';
 
@@ -7,15 +7,15 @@ import State from './State';
  */
 export default class StatePagesData extends AbstractState {
   private _parentDef?: State;
-  private _pagesDataState: IGenericObject;
+  private _pagesDataState: TObj;
 
-  constructor(pagesDataState: IGenericObject, parent?: State) {
+  constructor(pagesDataState: TObj, parent?: State) {
     super();
     this._parentDef = parent;
     this._pagesDataState = pagesDataState;
   }
 
-  get state(): IGenericObject { return this._pagesDataState; }
+  get state(): TObj { return this._pagesDataState; }
   /** Chain-access to the root definition. */
   get parent(): State { return this._parentDef || new State(); }
   get props(): any { return this.die('Not implemented yet.', {}); }

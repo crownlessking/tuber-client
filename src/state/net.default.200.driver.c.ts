@@ -6,7 +6,7 @@ import {
 import { metaAdd } from '../slices/meta.slice';
 import { topLevelLinksStore } from '../slices/topLevelLinks.slice';
 import { appRequestSuccess, appRequestFailed } from '../slices/app.slice';
-import { bootstrap, RootState } from '.';
+import { bootstrap, type RootState } from '.';
 import {
   IJsonapiAbstractResponse,
   IJsonapiResponse

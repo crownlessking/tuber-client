@@ -1,7 +1,7 @@
 import { Fragment } from 'react';
 import { Icon, Button } from '@mui/material';
 import store, { actions } from 'src/state';
-import StateFormItemCardAction from 'src/controllers/templates/StateFormItemCardAction';
+import type StateFormItemCardAction from 'src/controllers/templates/StateFormItemCardAction';
 
 type TMapIcon = {
   [K in 'icon'|'faIcon'|'none']: () => JSX.Element;

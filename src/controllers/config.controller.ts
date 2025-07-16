@@ -184,6 +184,6 @@ const config: IConfiguration = {
   }
 }
 
-export default function getConfig() {
+export default function get_config() {
   return config;
 }

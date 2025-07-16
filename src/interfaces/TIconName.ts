@@ -1,4 +1,5 @@
 
+/** @deprecated */
 export type TIconName = 'phone_outline'
  | 'call_outline'
  | 'personaddoutlined'

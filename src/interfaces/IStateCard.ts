@@ -1,5 +1,5 @@
-import { SxProps } from '@mui/material/styles';
-import { CSSProperties } from 'react';
+import { type SxProps } from '@mui/material/styles';
+import { type CSSProperties } from 'react';
 import { IAbstractState } from '../common.types';
 import { IHtmlAttributes } from '.';
 import IStateFormItem from './IStateFormItem';

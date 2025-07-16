@@ -1,6 +1,11 @@
 import Chip from '@mui/material/Chip';
 import { useDispatch, useSelector } from 'react-redux';
-import store, { AppDispatch, RootState, actions, IRedux } from '../../state';
+import store, {
+  type AppDispatch,
+  type RootState,
+  actions,
+  type IRedux
+} from '../../state';
 import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip';
 
 interface IStateJsxChipProps {

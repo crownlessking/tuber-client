@@ -1,21 +1,21 @@
-import FormControl from '@mui/material/FormControl'
-import Input from '@mui/material/Input'
-import InputLabel from '@mui/material/InputLabel'
-import { forwardRef } from 'react'
-import { IMaskInput } from 'react-imask'
-import { useSelector } from 'react-redux'
-import StateFormItemInput from '../../../controllers/templates/StateFormItemInput'
-import { RootState } from '../../../state'
-import { get_field_value } from './_items.common.logic'
+import FormControl from '@mui/material/FormControl';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import { forwardRef } from 'react';
+import { IMaskInput } from 'react-imask';
+import { useSelector } from 'react-redux';
+import type StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
+import { type RootState } from '../../../state';
+import { get_field_value } from './_items.common.logic';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string
+  name: string;
 }
 
 const TextMaskCustom = forwardRef<HTMLElement, CustomProps>(
   function TextMaskCustom(props, ref) {
-    const { onChange, ...other } = props
+    const { onChange, ...other } = props;
     return (
       <IMaskInput
         {...other}
@@ -27,18 +27,18 @@ const TextMaskCustom = forwardRef<HTMLElement, CustomProps>(
         onAccept={(value: any) => onChange({ target: { name: props.name, value } })}
         overwrite
       />
-    )
+    );
   },
 )
 
 interface IDialogPhoneInput {
-  def: StateFormItemInput
+  def: StateFormItemInput;
 }
 
 export default function StateJsxPhoneInput({ def: input }: IDialogPhoneInput) {
-  input.configure('phone')
-  const formsData = useSelector<RootState>(state => state.formsData)
-  const value = get_field_value(formsData, input.parent.name, input.name)
+  input.configure('phone');
+  const formsData = useSelector<RootState>(state => state.formsData);
+  const value = get_field_value(formsData, input.parent.name, input.name);
 
   return (
     <FormControl {...input.formControlProps}>
@@ -51,5 +51,5 @@ export default function StateJsxPhoneInput({ def: input }: IDialogPhoneInput) {
         inputComponent={TextMaskCustom as any}
       />
     </FormControl>
-  )
+  );
 }

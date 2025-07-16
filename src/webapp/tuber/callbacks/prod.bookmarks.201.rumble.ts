@@ -1,6 +1,6 @@
 import { log } from 'src/business.logic/logging';
 import JsonapiRequest from 'src/controllers/jsonapi.request';
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 import { post_req_state } from 'src/state/net.actions';
 import { DIALOG_RUMBLE_NEW_ID, FORM_RUMBLE_NEW_ID } from '../tuber.config';
 import { IBookmark } from '../tuber.interfaces';

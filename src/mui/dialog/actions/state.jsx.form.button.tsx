@@ -1,8 +1,8 @@
 import { Fragment } from 'react';
 import { Icon, Button } from '@mui/material';
-import StateFormItem from 'src/controllers/StateFormItem';
+import type StateFormItem from 'src/controllers/StateFormItem';
 import store, { actions } from 'src/state';
-import StateForm from 'src/controllers/StateForm';
+import type StateForm from 'src/controllers/StateForm';
 
 interface IJsonButtonProps { def: StateFormItem<StateForm>; }
 interface IJsonButtonContentProps {

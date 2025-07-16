@@ -1,8 +1,8 @@
-import { CSSProperties } from 'react';
-import { SxProps } from '@mui/material';
+import { type CSSProperties } from 'react';
+import { type SxProps } from '@mui/material';
 import AbstractState from './AbstractState';
 import IStateBackground from '../interfaces/IStateBackground';
-import State from './State';
+import type State from './State';
 
 export default class StateBackground<P = State>
   extends AbstractState implements IStateBackground {

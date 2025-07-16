@@ -1,7 +1,7 @@
 import { get_parsed_page_content } from 'src/controllers';
 import { IJsonapiResponseResource } from 'src/interfaces/IJsonapi';
 import StateTmp from 'src/controllers/StateTmp';
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 import { remember_error, remember_exception } from 'src/business.logic/errors';
 import { delete_req_state, get_dialog_state } from 'src/state/net.actions';
 import { get_state_form_name } from '../../../business.logic';

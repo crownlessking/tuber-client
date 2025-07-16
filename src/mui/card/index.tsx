@@ -5,7 +5,7 @@ import {
   Avatar, CardActionArea, CardActions, CardHeader, Collapse, IconButton,
   IconButtonProps, styled
 } from '@mui/material';
-import StateCard from '../../controllers/StateCard';
+import type StateCard from '../../controllers/StateCard';
 import StateJsxCardActionButton from './state.jsx.card.action.button';
 import StateCardMultiActionArea
   from '../../controllers/templates/StateCardMultiActionArea';

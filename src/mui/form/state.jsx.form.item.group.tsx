@@ -4,7 +4,7 @@ import {
   Box, FormControl, FormControlLabel, FormGroup, Stack,
 } from '@mui/material';
 import React, { Fragment, useMemo } from 'react';
-import StateFormItemGroup from '../../controllers/StateFormItemGroup';
+import type StateFormItemGroup from '../../controllers/StateFormItemGroup';
 import {
   BOX,
   STACK,

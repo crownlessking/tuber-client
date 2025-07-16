@@ -1,6 +1,6 @@
 import { Fragment, useMemo, useCallback } from 'react';
 import { Box, Paper, Stack } from '@mui/material';
-import StateForm from '../../controllers/StateForm';
+import type StateForm from '../../controllers/StateForm';
 import { remember_exception } from '../../business.logic/errors';
 import { log } from '../../business.logic/logging';
 

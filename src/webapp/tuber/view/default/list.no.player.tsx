@@ -4,7 +4,7 @@ import List from '@mui/material/List';
 import React, { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import StateData from 'src/controllers/StateData';
-import { RootState } from 'src/state';
+import { type RootState } from 'src/state';
 import { gen_video_url, shorten_text } from '../../_tuber.common.logic';
 import { IBookmark, ITTBList } from '../../tuber.interfaces';
 import LoadMoreBookmarksFromServer, {

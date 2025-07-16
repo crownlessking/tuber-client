@@ -1,4 +1,4 @@
-import { IRedux, TReduxHandle } from '../../../state';
+import { type IRedux, type TReduxHandle } from '../../../state';
 import form_submit_sign_in, { sign_out } from './prod.authentication';
 import form_submit_new_youtube_bookmark from './prod.bookmarks.201.youtube';
 import form_submit_delete_bookmark from './prod.bookmarks.actions';

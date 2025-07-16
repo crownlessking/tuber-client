@@ -1,56 +1,56 @@
-import StateForm from '../StateForm'
-import StateFormItem from '../StateFormItem'
-import StateFormItemSwitchToggle from '../StateFormItemSwitchToggle'
+import type StateForm from '../StateForm';
+import StateFormItem from '../StateFormItem';
+import type StateFormItemSwitchToggle from '../StateFormItemSwitchToggle';
 
 export interface ISwitchConfig {
-  formControlLabelProps?: any
-  formControlProps?: any
-  formGroupProps?: any
-  formLabelProps?: any
-  formHelperTextProps?: any
+  formControlLabelProps?: any;
+  formControlProps?: any;
+  formGroupProps?: any;
+  formLabelProps?: any;
+  formHelperTextProps?: any;
 }
 
 export default class StateFormItemSwitch extends StateFormItem<
   StateForm,
   StateFormItemSwitchToggle
 > {
-  private config?: ISwitchConfig
+  private _config?: ISwitchConfig;
 
-  private getConfig() { return this.config || (this.config = {}) }
+  private _getConfig() { return this._config || (this._config = {}); }
 
   get formControlProps(): any {
     return {
-      ...this.getConfig().formControlProps,
+      ...this._getConfig().formControlProps,
       ...this.itemHasState.formControlProps
-    }
+    };
   }
 
   get formGroupProps(): any {
     return {
-      ...this.getConfig().formGroupProps,
+      ...this._getConfig().formGroupProps,
       ...this.itemHasState.formGroupProps
-    }
+    };
   }
 
   get formLabelProps(): any {
     return {
-      ...this.getConfig().formLabelProps,
+      ...this._getConfig().formLabelProps,
       ...this.itemHasState.formLabelProps
-    }
+    };
   }
 
   get formControlLabelProps(): any {
     return {
-      ...this.getConfig().formControlLabelProps,
+      ...this._getConfig().formControlLabelProps,
       ...this.itemHasState.formControlLabelProps
-    }
+    };
   }
 
   get formHelperTextProps(): any {
     return {
-      ...this.getConfig().formHelperTextProps,
+      ...this._getConfig().formHelperTextProps,
       ...this.itemHasState.formHelperTextProps
-    }
+    };
   }
 
 }

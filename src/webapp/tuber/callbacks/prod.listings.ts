@@ -1,4 +1,4 @@
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 
 export default function create_new_listing(redux: IRedux) {
   return async () => {

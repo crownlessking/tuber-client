@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import initialState from '../state/initial.state'
+import { createSlice } from '@reduxjs/toolkit';
+import initialState from '../state/initial.state';
 
 export const themeDarkSlice = createSlice({
   name: 'themeDark',
@@ -7,14 +7,14 @@ export const themeDarkSlice = createSlice({
   reducers: {
     themeDarkClear: (state) => {
       for (const key in state) {
-        const themeOptionsKey = key as keyof typeof state
-        delete state[themeOptionsKey]
+        const themeOptionsKey = key as keyof typeof state;
+        delete state[themeOptionsKey];
       }
     }
   }
-})
+});
 
-export const themeDarkActions = themeDarkSlice.actions
-export const { themeDarkClear } = themeDarkSlice.actions
+export const themeDarkActions = themeDarkSlice.actions;
+export const { themeDarkClear } = themeDarkSlice.actions;
 
-export default themeDarkSlice.reducer
+export default themeDarkSlice.reducer;

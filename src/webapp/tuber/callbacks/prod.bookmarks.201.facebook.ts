@@ -1,5 +1,5 @@
 import JsonapiRequest from 'src/controllers/jsonapi.request';
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 import { post_req_state } from 'src/state/net.actions';
 import { get_state_form_name } from '../../../business.logic';
 import { FORM_FACEBOOK_NEW_ID } from '../tuber.config';

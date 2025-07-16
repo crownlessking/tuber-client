@@ -1,4 +1,4 @@
-import store, { RootState } from '../state';
+import store, { type RootState } from '../state';
 import StateAllPages from './StateAllPages';
 import StateAllIcons from './StateAllIcons';
 import AbstractState from './AbstractState';

@@ -3,7 +3,7 @@ import AbstractState from './AbstractState';
 import IStateAllPages from '../interfaces/IStateAllPages';
 import IStatePage from '../interfaces/IStatePage';
 import State from './State';
-import StateApp from './StateApp';
+import type StateApp from './StateApp';
 import StatePage from './StatePage';
 import { no_path_vars, route_match_template } from '.';
 import { log } from '../business.logic/logging';

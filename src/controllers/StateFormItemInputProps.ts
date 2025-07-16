@@ -3,7 +3,7 @@ import {
   IStateFormItemAdornment,
   IStateFormItemInputProps
 } from '../interfaces/IStateFormItem';
-import StateFormItem from './StateFormItem';
+import type StateFormItem from './StateFormItem';
 
 export default class StateFormItemInputProps<P=StateFormItem>
   extends AbstractState

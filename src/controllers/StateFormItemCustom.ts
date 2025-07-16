@@ -1,5 +1,5 @@
 import { get_val } from '.';
-import { dummy_callback, IRedux, TReduxHandle } from '../state';
+import { dummy_callback, type IRedux, type TReduxHandle } from '../state';
 import AbstractState from './AbstractState';
 import IStateFormItemCustom, { THandleCallback } from '../interfaces/IStateFormItemCustom';
 import { ler } from '../business.logic/logging';

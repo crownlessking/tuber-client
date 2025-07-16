@@ -1,7 +1,7 @@
 import AbstractState from './AbstractState'
 import State from './State'
 import IStateDialog from '../interfaces/IStateDialog'
-import StateDialogSelectionItem from './templates/StateDialogSelectionItem'
+import type StateDialogSelectionItem from './templates/StateDialogSelectionItem'
 import IStateFormItem from '../interfaces/IStateFormItem'
 
 export default class StateDialog<T = any> extends AbstractState implements IStateDialog<T> {

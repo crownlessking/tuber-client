@@ -3,7 +3,7 @@ import { remember_error } from 'src/business.logic/errors';
 import { ler, pre } from 'src/business.logic/logging';
 import { get_parsed_page_content } from 'src/controllers';
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
-import { IRedux, RootState } from 'src/state';
+import { type IRedux, type RootState } from 'src/state';
 
 interface IFormData<T=any> {
   formData: T;

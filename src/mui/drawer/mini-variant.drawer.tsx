@@ -4,7 +4,7 @@ import {
 } from '@mui/material';
 import MuiDrawer from '@mui/material/Drawer';
 import { useDispatch, useSelector } from 'react-redux';
-import StatePageDrawer from 'src/controllers/templates/StatePageDrawer';
+import type StatePageDrawer from 'src/controllers/templates/StatePageDrawer';
 import store, { actions } from 'src/state';
 import type { RootState, AppDispatch } from 'src/state';
 import { Link as RouterLink } from 'react-router-dom';

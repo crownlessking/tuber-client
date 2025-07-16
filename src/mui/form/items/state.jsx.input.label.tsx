@@ -1,10 +1,10 @@
-import { InputLabel } from '@mui/material'
-import StateFormItem from '../../../controllers/StateFormItem'
+import { InputLabel } from '@mui/material';
+import type StateFormItem from '../../../controllers/StateFormItem';
 
 interface IJsonInputLabelProps {
-  def: StateFormItem
+  def: StateFormItem;
 }
 
 export default function StateJsxInputLabel ({ def: label }: IJsonInputLabelProps) {
-  return <InputLabel {...label.props}>{ label.text }</InputLabel>
+  return <InputLabel {...label.props}>{ label.text }</InputLabel>;
 }

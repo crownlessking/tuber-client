@@ -1,25 +1,25 @@
-import { createSlice } from '@reduxjs/toolkit'
-import { ILoadedPagesRange } from '../interfaces/IState'
-import initialState from '../state/initial.state'
+import { createSlice } from '@reduxjs/toolkit';
+import { ILoadedPagesRange } from '../interfaces/IState';
+import initialState from '../state/initial.state';
 
 export interface IDataLoadedPagesPayload {
-  type: string
+  type: string;
   payload: {
-    endpoint: string,
-    pageNumber: string
+    endpoint: string;
+    pageNumber: string;
   }
 }
 
 export interface IEndpointRemove {
-  type: string
-  payload: string // endpoint
+  type: string;
+  payload: string; // endpoint
 }
 
 export interface IPageNumbersUpdate {
-  type: string
+  type: string;
   payload: {
-    endpoint: string,
-    pageNumbers: ILoadedPagesRange
+    endpoint: string;
+    pageNumbers: ILoadedPagesRange;
   }
 }
 
@@ -29,17 +29,17 @@ export const dataLoadedPagesSlice = createSlice({
   reducers: {
     /** Insert or update the loaded page ranges of endpoint. */
     dataUpdateRange: (state, action: IPageNumbersUpdate) => {
-      const { endpoint, pageNumbers } = action.payload
-      state[endpoint] = pageNumbers
+      const { endpoint, pageNumbers } = action.payload;
+      state[endpoint] = pageNumbers;
     },
     /** Deletes all page number for an endpoint. */
     dataClearRange: (state, action: IEndpointRemove) => {
-      delete state[action.payload]
+      delete state[action.payload];
     }
   }
 })
 
-export const dataLoadedPagesActions = dataLoadedPagesSlice.actions
-export const { dataUpdateRange, dataClearRange } = dataLoadedPagesSlice.actions
+export const dataLoadedPagesActions = dataLoadedPagesSlice.actions;
+export const { dataUpdateRange, dataClearRange } = dataLoadedPagesSlice.actions;
 
-export default dataLoadedPagesSlice.reducer
+export default dataLoadedPagesSlice.reducer;

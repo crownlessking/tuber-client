@@ -1,15 +1,15 @@
-import { IStateFormItemRadioButton } from '../../interfaces/IFormChoices'
-import StateForm from '../StateForm'
-import StateFormItem from '../StateFormItem'
-import StateFormItemRadioCustom from './StateFormItemRadioCustom'
+import { IStateFormItemRadioButton } from '../../interfaces/IFormChoices';
+import type StateForm from '../StateForm';
+import StateFormItem from '../StateFormItem';
+import StateFormItemRadioCustom from './StateFormItemRadioCustom';
 
-export type TRadioStyle = 'default' | 'row'
+export type TRadioStyle = 'default' | 'row';
 
 export interface IRadioConfig {
-  id?: string
-  props?: any
-  formControlProps?: any
-  formLabelProps?: any
+  id?: string;
+  props?: any;
+  formControlProps?: any;
+  formLabelProps?: any;
 }
 
 /**
@@ -22,58 +22,58 @@ export default class StateFormItemRadio extends StateFormItem<
   StateForm,
   IStateFormItemRadioButton
 > {
-  private itemRadioHas?: StateFormItemRadioCustom
+  private itemRadioHas?: StateFormItemRadioCustom;
   get has(): StateFormItemRadioCustom {
     return this.itemRadioHas || (
       this.itemRadioHas = new StateFormItemRadioCustom(this.itemHasState, this)
-    )
+    );
   }
-  get hasLabel(): boolean { return !!this.itemHasState.label }
-  private config?: IRadioConfig
-  private getConfig() { return this.config || (this.config = {}) }
+  get hasLabel(): boolean { return !!this.itemHasState.label; }
+  private _config?: IRadioConfig;
+  private _getConfig() { return this._config || (this._config = {}); }
   get props() {
     return {
-      ...this.getConfig().props,
+      ...this._getConfig().props,
       ...this.itemState.props
-    }
+    };
   }
   get formControlProps(): any {
     return {
-      ...this.getConfig().formControlProps,
+      ...this._getConfig().formControlProps,
       ...this.itemHasState.formControlProps
-    }
+    };
   }
   get formLabelProps(): any {
     return {
-      ...this.getConfig().formLabelProps,
+      ...this._getConfig().formLabelProps,
       ...this.itemHasState.formLabelProps
-    }
+    };
   }
   get config_id(): string | undefined {
-    return this.getConfig().id
+    return this._getConfig().id;
   }
   private applyDefaultConfig() {
-    const config = this.getConfig()
-    config.id = 'demo-radio-buttons-group-label'
-    config.formLabelProps = { id: config.id }
+    const config = this._getConfig();
+    config.id = 'demo-radio-buttons-group-label';
+    config.formLabelProps = { id: config.id };
     config.props = {
       'aria-labelledby': config.id
-    }
+    };
   }
-  private applyRowConfig() {
-    const config = this.getConfig()
-    config.id = 'demo-radio-buttons-group-label'
-    config.formLabelProps = { id: config.id }
+  private _applyRowConfig() {
+    const config = this._getConfig();
+    config.id = 'demo-radio-buttons-group-label';
+    config.formLabelProps = { id: config.id };
     config.props = {
       'aria-labelledby': config.id,
       row: true
-    }
+    };
   }
   configure (type: TRadioStyle) {
     const table: {[type: string]: () => void} = {
       'default': this.applyDefaultConfig,
-      'row': this.applyRowConfig
-    }
-    table[type.toLowerCase()]()
+      'row': this._applyRowConfig
+    };
+    table[type.toLowerCase()]();
   }
 }

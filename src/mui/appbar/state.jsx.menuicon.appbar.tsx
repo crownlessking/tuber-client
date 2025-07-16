@@ -1,5 +1,5 @@
 import { IconButton } from '@mui/material';
-import StatePageAppbar from '../../controllers/templates/StatePageAppbar';
+import type StatePageAppbar from '../../controllers/templates/StatePageAppbar';
 import { StateJsxIcon } from '../icon';
 import { memo } from 'react';
 

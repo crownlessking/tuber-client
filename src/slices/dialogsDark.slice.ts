@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import initialState from '../state/initial.state'
+import { createSlice } from '@reduxjs/toolkit';
+import initialState from '../state/initial.state';
 
 export const dialogsDarkSlice = createSlice({
   name: 'dialogsDark',
@@ -8,14 +8,14 @@ export const dialogsDarkSlice = createSlice({
   
     dialogsDarkClear: (state) => {
       for (const key in state) {
-        delete state[key]
+        delete state[key];
       }
     }
 
   }
-})
+});
 
-export const dialogsDarkActions = dialogsDarkSlice.actions
-export const { dialogsDarkClear } = dialogsDarkSlice.actions
+export const dialogsDarkActions = dialogsDarkSlice.actions;
+export const { dialogsDarkClear } = dialogsDarkSlice.actions;
 
-export default dialogsDarkSlice.reducer
+export default dialogsDarkSlice.reducer;

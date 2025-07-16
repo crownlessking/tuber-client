@@ -1,14 +1,14 @@
-import StateAvatar from '../StateAvatar'
+import StateAvatar from '../StateAvatar';
 
 export interface IStateAvatarImageProps {
-  alt: string
-  src: string
+  alt: string;
+  src: string;
 }
 
 export default class StateAvatarImage extends StateAvatar {
 
   get props(): IStateAvatarImageProps {
-    const avatarJsonProps = this.avatarState.props || {}
+    const avatarJsonProps = this.avatarState.props || {};
     return {
       alt: avatarJsonProps.alt || this.die(
         `\`StateAvatarImage.props.alt\` is undefined.`,
@@ -18,6 +18,6 @@ export default class StateAvatarImage extends StateAvatar {
         `\`StateAvatarImage.props.src\` is undefined.`,
         ''
       )
-    }
+    };
   }
 }

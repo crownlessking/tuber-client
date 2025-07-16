@@ -1,5 +1,5 @@
-import { CSSProperties } from 'react';
-import { SxProps } from '@mui/material/styles';
+import { type CSSProperties } from 'react';
+import { type SxProps } from '@mui/material/styles';
 
 export interface IHtmlAttributes {
   accept?: string;

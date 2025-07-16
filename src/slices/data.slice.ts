@@ -6,9 +6,9 @@ export interface IDataAdd {
   type: string;
   payload: {
     /** Collection of resources retrieved from server. */
-    data: any
+    data: any;
     /** The endpoint at which the collection was retrieved. */
-    endpoint: string
+    endpoint: string;
   };
 }
 
@@ -139,12 +139,12 @@ export const dataSlice = createSlice({
       }
     },
     dataUpdateByName: (state, action: {
-      type: string
+      type: string;
       payload: {
-        collectionName: string
-        name: string
-        resource: IJsonapiResource<any>
-      }
+        collectionName: string;
+        name: string;
+        resource: IJsonapiResource<any>;
+      };
     }) => {
       const { collectionName, name, resource } = action.payload;
       const collection = state[collectionName]

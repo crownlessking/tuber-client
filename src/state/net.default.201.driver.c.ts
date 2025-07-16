@@ -8,7 +8,7 @@ import {
   appRequestFailed,
   appRequestSuccess
 } from '../slices/app.slice';
-import { RootState } from '.';
+import { type RootState } from '.';
 import { dataStackCol, dataStack } from '../slices/data.slice';
 import { metaAdd } from '../slices/meta.slice';
 import { net_patch_state } from './actions';

@@ -1,17 +1,17 @@
-import FormControl from '@mui/material/FormControl'
-import FormGroup from '@mui/material/FormGroup'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import Switch from '@mui/material/Switch'
-import TextField from '@mui/material/TextField'
-import { RootState } from '../../../state'
-import { get_redux_store_val, ICheckboxesData } from './_items.common.logic'
-import { useSelector } from 'react-redux'
-import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch'
-import FormLabel from '@mui/material/FormLabel'
-import { NAME_NOT_SET } from '../../../constants'
+import FormControl from '@mui/material/FormControl';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Switch from '@mui/material/Switch';
+import TextField from '@mui/material/TextField';
+import { type RootState } from '../../../state';
+import { get_redux_store_val, ICheckboxesData } from './_items.common.logic';
+import { useSelector } from 'react-redux';
+import type StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import FormLabel from '@mui/material/FormLabel';
+import { NAME_NOT_SET } from '../../../constants';
 
 interface IJsonSwitchProps {
-  def: StateFormItemSwitch
+  def: StateFormItemSwitch;
 }
 
 /**
@@ -39,21 +39,21 @@ interface IJsonSwitchProps {
  * @returns 
  */
 export default function StateJsxSwitch (props: IJsonSwitchProps) {
-  const switchGroup = props.def
-  const { name } = switchGroup
-  const formsData = useSelector<RootState>(state => state.formsData)
+  const switchGroup = props.def;
+  const { name } = switchGroup;
+  const formsData = useSelector<RootState>(state => state.formsData);
   const values = get_redux_store_val<string[]>(
     formsData,
     switchGroup.parent.name,
     name,
     []
-  )
+  );
   const data: ICheckboxesData = {
     checkedValues: values,
     value: '',
     checked: false,
     statuses: {}
-  }
+  };
 
   return name ? (
     <FormControl {...switchGroup.formControlProps}>
@@ -82,5 +82,5 @@ export default function StateJsxSwitch (props: IJsonSwitchProps) {
     </FormControl>
   ) : (
     <TextField value={`SWITCH ${NAME_NOT_SET}`} disabled />
-  )
+  );
 }

@@ -2,7 +2,7 @@ import { Dispatch } from 'redux';
 import { mongo_object_id } from '../business.logic';
 import { IJsonapiResponse } from '../interfaces/IJsonapi';
 import { appRequestFailed } from '../slices/app.slice';
-import { RootState } from '.';
+import { type RootState } from '.';
 import {
   remember_error,
   remember_jsonapi_errors,

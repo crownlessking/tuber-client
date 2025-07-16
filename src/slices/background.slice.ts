@@ -1,10 +1,10 @@
-import { createSlice } from '@reduxjs/toolkit'
-import IStateBackground from '../interfaces/IStateBackground'
-import initialState from '../state/initial.state'
+import { createSlice } from '@reduxjs/toolkit';
+import IStateBackground from '../interfaces/IStateBackground';
+import initialState from '../state/initial.state';
 
 interface ISBAction {
-  type: string
-  payload: IStateBackground
+  type: string;
+  payload: IStateBackground;
 }
 
 export const backgroundSlice = createSlice({
@@ -18,9 +18,9 @@ export const backgroundSlice = createSlice({
       state.repeat = repeat
     },
   },
-})
+});
 
-export const backgroundActions = backgroundSlice.actions
-export const { backgroundSet } = backgroundSlice.actions
+export const backgroundActions = backgroundSlice.actions;
+export const { backgroundSet } = backgroundSlice.actions;
 
-export default backgroundSlice.reducer
+export default backgroundSlice.reducer;

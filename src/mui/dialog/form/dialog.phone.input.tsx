@@ -1,19 +1,19 @@
-import FormControl from '@mui/material/FormControl'
-import Input from '@mui/material/Input'
-import InputLabel from '@mui/material/InputLabel'
-import { forwardRef, useState } from 'react'
-import { IMaskInput } from 'react-imask'
-import { THive } from '.'
-import StateFormItemInput from '../../../controllers/templates/StateFormItemInput'
+import FormControl from '@mui/material/FormControl';
+import Input from '@mui/material/Input';
+import InputLabel from '@mui/material/InputLabel';
+import { forwardRef, useState } from 'react';
+import { IMaskInput } from 'react-imask';
+import { THive } from '.';
+import type StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
-  name: string
+  name: string;
 }
 
 const TextMaskCustom = forwardRef<HTMLElement, CustomProps>(
   function TextMaskCustom(props, ref) {
-    const { onChange, ...other } = props
+    const { onChange, ...other } = props;
     return (
       <IMaskInput
         {...other}
@@ -25,26 +25,26 @@ const TextMaskCustom = forwardRef<HTMLElement, CustomProps>(
         onAccept={(value: any) => onChange({ target: { name: props.name, value } })}
         overwrite
       />
-    )
-  },
+    );
+  }
 )
 
 interface IDialogPhoneInput {
-  def: StateFormItemInput
-  hive: THive
+  def: StateFormItemInput;
+  hive: THive;
 }
 
 export default function DialogPhoneInput(props: IDialogPhoneInput) {
-  const hive  = props.hive
-  const input = props.def
-  input.configure('phone')
+  const hive  = props.hive;
+  const input = props.def;
+  input.configure('phone');
 
-  const [value, setValue] = useState<string>(hive[input.name])
+  const [value, setValue] = useState<string>(hive[input.name]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const v = e.target.value
-    setValue(v)
-    hive[input.name] = v
+    const v = e.target.value;
+    setValue(v);
+    hive[input.name] = v;
   }
 
   return (
@@ -58,5 +58,5 @@ export default function DialogPhoneInput(props: IDialogPhoneInput) {
         inputComponent={TextMaskCustom as any}
       />
     </FormControl>
-  )
+  );
 }

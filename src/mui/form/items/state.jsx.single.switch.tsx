@@ -5,8 +5,8 @@ import TextField from '@mui/material/TextField';
 import { useSelector } from 'react-redux';
 import { TBoolVal } from '../../../common.types';
 import { NAME_NOT_SET } from '../../../constants';
-import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
-import { RootState } from '../../../state';
+import type StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import { type RootState } from '../../../state';
 import { to_bool_val } from '../_form.common.logic';
 import { get_redux_store_val } from './_items.common.logic';
 

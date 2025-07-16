@@ -1,4 +1,4 @@
-import getConfig, { IConfiguration } from './controllers/config.controller';
+import get_config, { IConfiguration } from './controllers/config.controller';
 import { TThemeMode } from './interfaces';
 
 const initConfObj = {
@@ -12,7 +12,7 @@ const initConfObj = {
   // MY_CONFIG: 'my config value',
 };
 
-const Config = getConfig();
+const Config = get_config();
 Config.init(initConfObj);
 
 // Makes config object key available in suggestions

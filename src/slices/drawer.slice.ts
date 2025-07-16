@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit'
-import initialState from '../state/initial.state'
+import { createSlice } from '@reduxjs/toolkit';
+import initialState from '../state/initial.state';
 
 export const drawerSlice = createSlice({
   name: 'drawer',
@@ -18,14 +18,14 @@ export const drawerSlice = createSlice({
       state.width = action.payload
     },
   },
-})
+});
 
-export const drawerActions = drawerSlice.actions
+export const drawerActions = drawerSlice.actions;
 export const {
   drawerClose,
   drawerItemsUpdate,
   drawerOpen,
   drawerWidthUpdate
-} = drawerSlice.actions
+} = drawerSlice.actions;
 
-export default drawerSlice.reducer
+export default drawerSlice.reducer;

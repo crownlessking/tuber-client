@@ -1,4 +1,4 @@
-import { get_bootstrap_key, IRedux } from '../../../state';
+import { get_bootstrap_key, type IRedux } from '../../../state';
 import { DIALOG_LOGIN_ID, FORM_LOGIN_ID } from '../tuber.config';
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
 import { remember_error } from 'src/business.logic/errors';

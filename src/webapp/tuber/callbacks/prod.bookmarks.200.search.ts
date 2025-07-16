@@ -1,4 +1,4 @@
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 import { mongo_object_id } from 'src/business.logic';
 import { get_req_state } from 'src/state/net.actions';
 import { APP_IS_FETCHING_BOOKMARKS, PAGE_RESEARCH_APP_ID } from '../tuber.config';

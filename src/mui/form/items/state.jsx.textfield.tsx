@@ -1,7 +1,7 @@
 import { InputProps, TextField } from '@mui/material';
-import { AppDispatch, redux, RootState } from '../../../state';
+import { type AppDispatch, redux, type RootState } from '../../../state';
 import getTextFieldAdornment from './state.jsx.input.adornment';
-import StateFormItem from '../../../controllers/StateFormItem';
+import type StateFormItem from '../../../controllers/StateFormItem';
 import { useDispatch, useSelector } from 'react-redux';
 import { NAME_NOT_SET } from '../../../constants';
 import StateJsxTextfieldInputProps from './state.jsx.textfield.input.props';

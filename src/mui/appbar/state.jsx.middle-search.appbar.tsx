@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
 import StatePage from '../../controllers/StatePage';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState, redux } from '../../state';
+import { type AppDispatch, type RootState, redux } from '../../state';
 import StatePageAppbarMidSearch from '../../controllers/templates/StatePageAppbarMidSearch';
 import StateJsxLogo from './state.jsx.logo';
 import AppbarButton from '../link';

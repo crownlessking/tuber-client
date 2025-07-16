@@ -1,9 +1,9 @@
-import { AppBarProps, IconButtonProps } from '@mui/material'
-import IStateAppbar from '../../interfaces/IStateAppbar'
-import State from '../State'
-import StateAppbar from '../StateAppbar'
-import StateAppbarBackground from './StateAppbarBackground'
-import StateAppbarTypography from './StateAppbarTypography'
+import type { AppBarProps, IconButtonProps } from '@mui/material';
+import IStateAppbar from '../../interfaces/IStateAppbar';
+import type State from '../State';
+import StateAppbar from '../StateAppbar';
+import StateAppbarBackground from './StateAppbarBackground';
+import StateAppbarTypography from './StateAppbarTypography';
 
 export default class StateAppbarDefault
   extends StateAppbar<State> implements IStateAppbar
@@ -11,16 +11,16 @@ export default class StateAppbarDefault
   get props(): AppBarProps {
     return {
       ...this.appbarState.props
-    }
+    };
   }
 
   get logoTag(): Required<IStateAppbar>['logoTag'] {
-    return this.appbarState.logoTag || 'div'
+    return this.appbarState.logoTag || 'div';
   }
   get toolbarProps(): Required<IStateAppbar>['toolbarProps'] {
-    return this.appbarState.toolbarProps || {}
+    return this.appbarState.toolbarProps || {};
   }
-  get logoProps(): any { return this.appbarState.logoProps }
+  get logoProps(): any { return this.appbarState.logoProps; }
 
   get menuIconProps(): IconButtonProps {
     return {
@@ -30,7 +30,7 @@ export default class StateAppbarDefault
       'aria-label': 'open drawer',
       sx: { mr: 2, color: this.typography.color },
       ...this.appbarState.menuIconProps
-    }
+    };
   }
 
   get searchFieldProps(): any {
@@ -38,43 +38,43 @@ export default class StateAppbarDefault
       placeholder: 'Search…',
       inputProps: { 'aria-label': 'search' },
       ...this.appbarState.searchFieldProps
-    }
+    };
   }
 
   get desktopMenuItemsProps(): Required<IStateAppbar>['desktopMenuItemsProps'] {
     return {
       sx : { display: { xs: 'none', md: 'flex' } },
       ...this.appbarState.desktopMenuItemsProps
-    }
+    };
   }
 
   get desktopMenuItems2Props(): Required<IStateAppbar>['desktopMenuItems2Props'] {
     return {
       ...this.desktopMenuItemsProps,
       ...this.appbarState.desktopMenuItems2Props
-    }
+    };
   }
 
   get mobileMenuItemsProps(): Required<IStateAppbar>['mobileMenuItemsProps'] {
     return {
       sx : { display: { xs: 'flex', md: 'none' } },
       ...this.appbarState.mobileMenuItemsProps
-    }
+    };
   }
 
   get mobileMenuItems2Props(): Required<IStateAppbar>['mobileMenuItems2Props'] {
     return {
       ...this.mobileMenuItemsProps,
       ...this.appbarState.mobileMenuItems2Props
-    }
+    };
   }
 
   get mobileMenuIconProps(): Required<IStateAppbar>['mobileMenuIconProps'] {
-    return this.appbarState.mobileMenuIconProps || {}
+    return this.appbarState.mobileMenuIconProps || {};
   }
 
   get mobileMenuIcon2Props(): Required<IStateAppbar>['mobileMenuIcon2Props'] {
-    return this.appbarState.mobileMenuIcon2Props || {}
+    return this.appbarState.mobileMenuIcon2Props || {};
   }
 
   get mobileMenuProps(): any {
@@ -89,7 +89,7 @@ export default class StateAppbarDefault
         horizontal: 'right',
       },
       ...this.appbarState.mobileMenuProps
-    }
+    };
   }
 
   get mobileMenu2Props(): any {
@@ -104,22 +104,22 @@ export default class StateAppbarDefault
         horizontal: 'right',
       },
       ...this.appbarState.mobileMenu2Props
-    }
+    };
   }
 
   get menuId(): string {
-    return this.appbarState.menuId || 'primary-search-account-menu'
+    return this.appbarState.menuId || 'primary-search-account-menu';
   }
 
   get mobileMenuId(): string {
-    return this.appbarState.mobileMenuId || 'primary-menu-mobile'
+    return this.appbarState.mobileMenuId || 'primary-menu-mobile';
   }
 
   get mobileMenu2Id(): string {
-    return this.appbarState.mobileMenu2Id || 'primary-menu2-mobile'
+    return this.appbarState.mobileMenu2Id || 'primary-menu2-mobile';
   }
 
-  get menuItemsSx(): any { return this.appbarState.menuItemsSx }
+  get menuItemsSx(): any { return this.appbarState.menuItemsSx; }
 
   get textLogoProps(): any {
     return {
@@ -131,7 +131,7 @@ export default class StateAppbarDefault
         color: this.typography.color
       },
       ...this.appbarState.textLogoProps
-    }
+    };
   }
 
   get logoContainerProps(): any {
@@ -141,7 +141,7 @@ export default class StateAppbarDefault
         flexGrow: 1,
         ...this.appbarState.logoContainerProps?.sx
       },
-    }
+    };
   }
 
   /**
@@ -152,7 +152,7 @@ export default class StateAppbarDefault
       || (this.appbarBackground = new StateAppbarBackground<State>(
         this.appbarBackgroundState,
         this
-      ))
+      ));
   }
 
   /**
@@ -163,7 +163,7 @@ export default class StateAppbarDefault
       || (this.appbarTypography = new StateAppbarTypography<State>(
         this.appbarTypographyState,
         this
-      ))
+      ));
   }
 
 }

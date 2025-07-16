@@ -1,5 +1,5 @@
 import JsonapiRequest from 'src/controllers/jsonapi.request';
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 import { post_req_state } from 'src/state/net.actions';
 import { DIALOG_UNKNOWN_NEW_ID, FORM_UNKNOWN_NEW_ID } from '../tuber.config';
 import { get_iframe_url_src } from '../_tuber.common.logic';

@@ -1,6 +1,6 @@
-import { BadgeProps } from '@mui/material';
+import { type BadgeProps } from '@mui/material';
 import { IAdornment } from '../common.types';
-import { IRedux, TReduxHandle } from '../state';
+import type { IRedux, TReduxHandle } from '../state';
 import { IStateFormItemInputProps } from './IStateFormItem';
 
 export default interface IStateFormItemCustom<T = any> {

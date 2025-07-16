@@ -1,9 +1,9 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
-import StateForm from '../../../controllers/StateForm';
-import StateFormItem from '../../../controllers/StateFormItem';
-import { RootState } from '../../../state';
+import type StateForm from '../../../controllers/StateForm';
+import type StateFormItem from '../../../controllers/StateFormItem';
+import { type RootState } from '../../../state';
 import parse from 'html-react-parser';
 import { Fragment } from 'react';
 import store, { actions } from '../../../state';

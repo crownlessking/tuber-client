@@ -1,4 +1,4 @@
-import { TCallback } from '../constants';
+import { type TCallback } from '../constants';
 import Config from '../config';
 
 /**

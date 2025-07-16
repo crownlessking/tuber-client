@@ -1,6 +1,6 @@
 import { get_parsed_page_content } from 'src/controllers';
 import StateTmp from 'src/controllers/StateTmp';
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 import { remember_error, remember_exception } from 'src/business.logic/errors';
 import { put_req_state } from 'src/state/net.actions';
 import { get_state_form_name } from '../../../business.logic';

@@ -1,6 +1,6 @@
 import JsonapiRequest from '../../../controllers/jsonapi.request';
 import { post_req_state } from '../../../state/net.actions';
-import { IRedux } from '../../../state';
+import { type IRedux } from '../../../state';
 import { DIALOG_YOUTUBE_NEW_ID, FORM_YOUTUBE_NEW_ID } from '../tuber.config';
 import { IBookmark } from '../tuber.interfaces';
 import {

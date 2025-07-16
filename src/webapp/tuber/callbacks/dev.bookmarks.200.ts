@@ -1,5 +1,5 @@
 import { get_req_state, post_req_state } from 'src/state/net.actions';
-import { IRedux } from '../../../state';
+import { type IRedux } from '../../../state';
 
 /** Get collection of bookmarks from server using a get request */
 export function dev_get_bookmarks_callback (redux: IRedux, args = '') {

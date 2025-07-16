@@ -21,7 +21,7 @@ import {
   formsDataUpdate,
   IFormsDataArgs
 } from '../../../slices/formsData.slice';
-import StateFormItem from '../../../controllers/StateFormItem';
+import type StateFormItem from '../../../controllers/StateFormItem';
 import { remember_exception } from 'src/business.logic/errors';
 
 /**

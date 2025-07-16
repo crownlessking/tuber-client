@@ -6,7 +6,7 @@ import {
 } from 'src/business.logic/errors';
 import { IJsonapiResponse } from 'src/interfaces/IJsonapi';
 import { appRequestFailed } from 'src/slices/app.slice';
-import { RootState } from '.';
+import { type RootState } from '.';
 import execute_directives from './net.directives.c';
 import { net_patch_state, state_reset } from './actions';
 import { ler } from '../business.logic/logging';

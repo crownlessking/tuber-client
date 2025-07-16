@@ -1,6 +1,6 @@
 import AbstractState from './AbstractState';
 import IStateFormItemSwitchToggle from '../interfaces/IStateFormItemSwitchToggle';
-import StateFormItemSwitch from './templates/StateFormItemSwitch';
+import type StateFormItemSwitch from './templates/StateFormItemSwitch';
 
 export default class StateFormItemSwitchToggle
   extends AbstractState

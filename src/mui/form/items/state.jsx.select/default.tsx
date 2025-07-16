@@ -1,25 +1,25 @@
-import FormHelperText from '@mui/material/FormHelperText'
-import FormControl from '@mui/material/FormControl'
-import InputLabel from '@mui/material/InputLabel'
-import MenuItem from '@mui/material/MenuItem'
-import Select from '@mui/material/Select'
-import StateFormItemSelect from '../../../../controllers/templates/StateFormItemSelect'
-import { get_field_value } from '../_items.common.logic'
-import TextField from '@mui/material/TextField'
-import { useSelector } from 'react-redux'
-import { RootState } from '../../../../state'
-import { NAME_NOT_SET } from '../../../../constants'
+import FormHelperText from '@mui/material/FormHelperText';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import type StateFormItemSelect from '../../../../controllers/templates/StateFormItemSelect';
+import { get_field_value } from '../_items.common.logic';
+import TextField from '@mui/material/TextField';
+import { useSelector } from 'react-redux';
+import type { RootState } from '../../../../state';
+import { NAME_NOT_SET } from '../../../../constants';
 
 interface IDialogSelectDefault {
-  def: StateFormItemSelect
+  def: StateFormItemSelect;
 }
 
 export default function StateJsxSelectDefault (
   { def: select }: IDialogSelectDefault
 ) {
-  const { name, parent: { name: formName } } = select
-  const formsData = useSelector<RootState>(state => state.formsData)
-  const getValue = () => get_field_value(formsData, formName, name)
+  const { name, parent: { name: formName } } = select;
+  const formsData = useSelector<RootState>(state => state.formsData);
+  const getValue = () => get_field_value(formsData, formName, name);
 
   return name ? (
     <FormControl {...select.formControlProps}>
@@ -46,5 +46,5 @@ export default function StateJsxSelectDefault (
     </FormControl>
   ) : (
     <TextField value={`SELECT ${NAME_NOT_SET}`} disabled />
-  )
+  );
 }

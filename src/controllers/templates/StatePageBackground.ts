@@ -1,7 +1,7 @@
-import IStateBackground from '../../interfaces/IStateBackground'
-import IStatePage from '../../interfaces/IStatePage'
-import StateBackground from '../StateBackground'
-import StatePage from '../StatePage'
+import IStateBackground from '../../interfaces/IStateBackground';
+import IStatePage from '../../interfaces/IStatePage';
+import StateBackground from '../StateBackground';
+import type StatePage from '../StatePage';
 
 export default class StatePageBackground extends StateBackground<StatePage> {
   /**
@@ -19,15 +19,15 @@ export default class StatePageBackground extends StateBackground<StatePage> {
     _default?: IStateBackground
   ): IStateBackground => {
     if (pageState) {
-      let backgroundState: IStateBackground = {}
+      let backgroundState: IStateBackground = {};
       if (pageState.useDefaultBackground === true) {
-        backgroundState =  { ..._default }
+        backgroundState =  { ..._default };
       } if (pageState.backgroundInherited) {
         // [TODO] Implement inheriting the background of another page here.
       }
-      pageState.background = { ...backgroundState, ...pageState.background }
-      return pageState.background
+      pageState.background = { ...backgroundState, ...pageState.background };
+      return pageState.background;
     }
-    return {}
+    return {};
   }
 }

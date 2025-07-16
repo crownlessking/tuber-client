@@ -17,7 +17,7 @@ import {
   DIV
 } from '../constants';
 import StateFormItemCustom from './StateFormItemCustom';
-import { dummy_callback, IRedux, TReduxHandle } from '../state';
+import { dummy_callback, type IRedux, type TReduxHandle } from '../state';
 import IStateFormItem from '../interfaces/IStateFormItem';
 import IStateFormItemCustom from '../interfaces/IStateFormItemCustom';
 import StateFormItemInputProps from './StateFormItemInputProps';

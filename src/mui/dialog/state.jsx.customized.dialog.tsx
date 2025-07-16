@@ -5,7 +5,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
-import StateDialogCustomized from '../../controllers/templates/StateDialogCustomized';
+import type StateDialogCustomized from '../../controllers/templates/StateDialogCustomized';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../state';
 import StateJsxDialogAction from './actions/state.jsx';

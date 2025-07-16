@@ -48,7 +48,7 @@ import StateJsxForm from '../mui/form';
 import StateForm from '../controllers/StateForm';
 import StateJsxTextfield from '../mui/form/items/state.jsx.textfield';
 import { post_req_state } from '../state/net.actions';
-import { AppDispatch } from '../state';
+import type { AppDispatch } from '../state';
 import { useDispatch } from 'react-redux';
 import store from '../state';
 import { remember_exception } from '../business.logic/errors';

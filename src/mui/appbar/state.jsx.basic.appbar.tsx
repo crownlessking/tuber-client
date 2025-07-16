@@ -4,7 +4,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import { useDispatch } from 'react-redux';
-import StatePage from '../../controllers/StatePage';
+import type StatePage from '../../controllers/StatePage';
 import { AppDispatch } from '../../state';
 import AppbarButton from '../link';
 import StateJsxLogo from './state.jsx.logo';

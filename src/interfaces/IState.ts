@@ -13,7 +13,7 @@ import IStateSnackbar from './IStateSnackbar';
 import IStateTopLevelLinks from './IStateTopLevelLinks';
 import IStateTypography from './IStateTypography';
 import IStateFormItemCustom from './IStateFormItemCustom';
-import { ThemeOptions } from '@mui/material';
+import { type ThemeOptions } from '@mui/material';
 import IStateAllIcons from './IStateAllIcons';
 
 export interface ILoadedPagesRange {

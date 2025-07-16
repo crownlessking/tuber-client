@@ -1,5 +1,5 @@
-import { DrawerProps } from '@mui/material'
-import StatePageDrawer from './StatePageDrawer'
+import { type DrawerProps } from '@mui/material';
+import StatePageDrawer from './StatePageDrawer';
 
 export default class StateDrawerPersistent extends StatePageDrawer {
   
@@ -14,7 +14,7 @@ export default class StateDrawerPersistent extends StatePageDrawer {
         },
       },
       variant: "persistent"
-    }
+    };
   }
 
 }

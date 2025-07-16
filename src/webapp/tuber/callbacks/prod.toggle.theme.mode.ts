@@ -2,7 +2,7 @@ import { clear_last_content_jsx } from 'src/business.logic';
 import Config from 'src/config';
 import { THEME_DEFAULT_MODE, THEME_MODE } from 'src/constants';
 import { TThemeMode } from 'src/interfaces';
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 
 /** @id 44_C_1 */
 export default function toggle_theme_mode (redux: IRedux) {

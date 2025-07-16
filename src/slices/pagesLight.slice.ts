@@ -7,7 +7,7 @@ export const pagesLightSlice = createSlice({
   reducers: {
     pagesLightClear: (state) => {
       for (const key in state) {
-        delete state[key]
+        delete state[key];
       }
     }
   }

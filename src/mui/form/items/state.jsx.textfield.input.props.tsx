@@ -1,11 +1,11 @@
-import { InputProps } from '@mui/material'
-import InputAdornment from '@mui/material/InputAdornment'
-import { 
+import { InputProps } from '@mui/material';
+import InputAdornment from '@mui/material/InputAdornment';
+import {
   IStateFormItemAdornment
-} from '../../../interfaces/IStateFormItem'
-import StateFormItemInputProps from '../../../controllers/StateFormItemInputProps'
-import StateLink from '../../../controllers/StateLink'
-import StateJsxLink from '../../link'
+} from '../../../interfaces/IStateFormItem';
+import type StateFormItemInputProps from '../../../controllers/StateFormItemInputProps';
+import StateLink from '../../../controllers/StateLink';
+import StateJsxLink from '../../link';
 
 /**
  * Get adornment for textfield. Adornment is an icon or text that appears at
@@ -31,14 +31,14 @@ export default function StateJsxTextfieldInputProps({
   props
 }: StateFormItemInputProps) {
   const AdornmentSymbol = ({ state }: { state: IStateFormItemAdornment }) => {
-    if (!state) return null
-    const { icon, text, textProps } = state
+    if (!state) return null;
+    const { icon, text, textProps } = state;
     if (icon) {
-      return <StateJsxLink def={new StateLink(icon)} />
+      return <StateJsxLink def={new StateLink(icon)} />;
     } else if (text) {
-      return <span {...textProps}>{ text }</span>
+      return <span {...textProps}>{ text }</span>;
     }
-    return ( null )
+    return ( null );
   }
   const getAdornment = (
     position: 'start' | 'end',
@@ -48,15 +48,15 @@ export default function StateJsxTextfieldInputProps({
       <InputAdornment position={position}>
         <AdornmentSymbol state={state} />
       </InputAdornment>
-    )
+    );
   }
-  const adornment: InputProps = props
+  const adornment: InputProps = props;
   if (start) {
-    adornment.startAdornment = getAdornment('start', start)
+    adornment.startAdornment = getAdornment('start', start);
   }
   if (end) {
-    adornment.endAdornment = getAdornment('end', end)
+    adornment.endAdornment = getAdornment('end', end);
   }
   
-  return adornment
+  return adornment;
 }

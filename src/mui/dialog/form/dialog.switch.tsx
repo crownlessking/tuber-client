@@ -1,39 +1,39 @@
-import FormControl from '@mui/material/FormControl'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import FormGroup from '@mui/material/FormGroup'
-import Switch from '@mui/material/Switch'
-import { useState } from 'react'
-import { THive } from '.'
-import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch'
+import FormControl from '@mui/material/FormControl';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormGroup from '@mui/material/FormGroup';
+import Switch from '@mui/material/Switch';
+import { useState } from 'react';
+import { THive } from '.';
+import type StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
 import {
   ICheckboxesData,
   update_checkboxes,
   update_switches_statuses
-} from '../../form/items/_items.common.logic'
+} from '../../form/items/_items.common.logic';
 
 interface IDialogSwitch {
-  def: StateFormItemSwitch,
-  hive: THive
+  def: StateFormItemSwitch;
+  hive: THive;
 }
 
 export default function DialogSwitch (props: IDialogSwitch) {
-  const switchGroup = props.def
-  const hive   = props.hive
+  const switchGroup = props.def;
+  const hive   = props.hive;
 
-  const [value, setValue] = useState<string[]>(hive[switchGroup.name])
+  const [value, setValue] = useState<string[]>(hive[switchGroup.name]);
   const data: ICheckboxesData = {
     checkedValues: value,
     value: '',
     checked: false,
     statuses: {}
-  }
-  update_switches_statuses(data)
+  };
+  update_switches_statuses(data);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    data.value = e.target.name
-    data.checked = e.target.checked
-    update_checkboxes(data)
-    setValue(data.checkedValues)
+    data.value = e.target.name;
+    data.checked = e.target.checked;
+    update_checkboxes(data);
+    setValue(data.checkedValues);
   }
 
   return (
@@ -49,5 +49,5 @@ export default function DialogSwitch (props: IDialogSwitch) {
         ))}
       </FormGroup>
     </FormControl>
-  )
+  );
 }

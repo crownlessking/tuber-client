@@ -16,8 +16,8 @@ import {
   BOOL_ONOFF,
   BOOL_YESNO,
 } from '../../../constants';
-import StateForm from '../../../controllers/StateForm';
-import StateFormItem from '../../../controllers/StateFormItem';
+import type StateForm from '../../../controllers/StateForm';
+import type StateFormItem from '../../../controllers/StateFormItem';
 import StateJsxFormItemGroup from '../state.jsx.form.item.group';
 import StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect';
 import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';

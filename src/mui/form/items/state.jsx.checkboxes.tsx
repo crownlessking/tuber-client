@@ -5,8 +5,8 @@ import FormGroup from '@mui/material/FormGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
 import { useSelector } from 'react-redux';
-import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox';
-import { RootState } from '../../../state';
+import type StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox';
+import { type RootState } from '../../../state';
 import {
   get_redux_store_val,
   get_statuses,

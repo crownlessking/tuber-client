@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 
 /**
  * Background color, image, gradient... etc. Any valid CSS background.

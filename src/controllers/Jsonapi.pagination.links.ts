@@ -1,6 +1,6 @@
 import { remember_exception } from '../business.logic/errors';
 import AbstractState from './AbstractState';
-import { IJsonapiPaginationLinks } from '../interfaces/IJsonapi';
+import { type IJsonapiPaginationLinks } from '../interfaces/IJsonapi';
 
 type TLink = IJsonapiPaginationLinks[keyof IJsonapiPaginationLinks];
 

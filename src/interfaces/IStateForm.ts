@@ -1,4 +1,4 @@
-import { PaperProps } from '@mui/material';
+import { type PaperProps } from '@mui/material';
 import { IAbstractState } from '../common.types';
 import IStateFormItem from './IStateFormItem';
 

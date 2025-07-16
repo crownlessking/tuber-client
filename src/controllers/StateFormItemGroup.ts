@@ -1,6 +1,6 @@
 import AbstractState from './AbstractState';
 import IStateFormItemGroup, { TItemGroup } from '../interfaces/IStateFormItemGroup';
-import StateForm from './StateForm';
+import type StateForm from './StateForm';
 import StateFormItem from './StateFormItem';
 
 export default class StateFormItemGroup

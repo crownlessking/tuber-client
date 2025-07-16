@@ -12,6 +12,7 @@ interface IEval {
 type TParsingType = 'value' | 'property';
 type TThemeFuncArgs = string | number | (string | number)[];
 
+/** @deprecated */
 export default class ThemeParser {
 
   private _theme?: Theme;

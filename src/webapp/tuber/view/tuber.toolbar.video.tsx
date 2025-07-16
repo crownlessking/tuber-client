@@ -3,10 +3,10 @@ import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import IStateLink from 'src/interfaces/IStateLink';
 import StateLink from 'src/controllers/StateLink';
-import StatePageAppbar from 'src/controllers/templates/StatePageAppbar';
+import type StatePageAppbar from 'src/controllers/templates/StatePageAppbar';
 import Link from 'src/mui/link';
 import { IResearchToolbarProps } from '../tuber.interfaces';
-import { RootState } from 'src/state';
+import { type RootState } from 'src/state';
 import StateNet from 'src/controllers/StateNet';
 
 interface IToolbarIcon {

@@ -1,5 +1,5 @@
-import IStateCard from '../../interfaces/IStateCard'
-import StateCard from '../StateCard'
+import IStateCard from '../../interfaces/IStateCard';
+import StateCard from '../StateCard';
 
 export default class StateCardBasic extends StateCard {
   get props(): Required<IStateCard>['props'] {
@@ -8,6 +8,6 @@ export default class StateCardBasic extends StateCard {
         minWidth: 275,
       },
       ...this.cardState.props
-    }
+    };
   }
 }

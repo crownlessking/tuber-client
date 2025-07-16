@@ -1,19 +1,19 @@
-import { IGenericObject } from '../common.types';
+import { TObj } from '../common.types';
 import AbstractState from './AbstractState';
 import State from './State';
 
 export default class StateFormsData extends AbstractState {
 
-  private _formsDataState: IGenericObject;
+  private _formsDataState: TObj;
   private _parentDef?: State;
 
-  constructor (formsDataState: IGenericObject, parent?: State) {
+  constructor (formsDataState: TObj, parent?: State) {
     super();
     this._parentDef = parent;
     this._formsDataState = formsDataState;
   }
 
-  get state(): IGenericObject { return this._formsDataState; }
+  get state(): TObj { return this._formsDataState; }
   get parent(): State { return this._parentDef || new State(); }
   get props(): any { return this.die('Not implemented yet.', {}); }
   get theme(): any { return this.die('Not implemented yet.', {}); }

@@ -3,9 +3,9 @@ import {
   ListItemText
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../state';
-import StateDialogSelection from '../../controllers/templates/StateDialogSelection';
-import StateDialogSelectionItem from '../../controllers/templates/StateDialogSelectionItem';
+import type { AppDispatch, RootState } from '../../state';
+import type StateDialogSelection from '../../controllers/templates/StateDialogSelection';
+import type StateDialogSelectionItem from '../../controllers/templates/StateDialogSelectionItem';
 import { StateJsxUnifiedIconProvider } from '../icon';
 
 /*

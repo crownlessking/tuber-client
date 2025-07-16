@@ -5,7 +5,7 @@ import {
   IJsonapiErrorResponse
 } from 'src/interfaces/IJsonapi';
 import { appRequestFailed } from 'src/slices/app.slice';
-import { RootState } from '.';
+import { type RootState } from '.';
 import {
   remember_error,
   remember_jsonapi_errors

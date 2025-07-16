@@ -1,5 +1,5 @@
 import { get_parsed_page_content, safely_get_as } from 'src/controllers';
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 import { remember_error, remember_exception } from 'src/business.logic/errors';
 import { URL_DIALOG_ID_NEW } from '../tuber.config';
 import parse_platform_video_url from '../tuber.platform.drivers';

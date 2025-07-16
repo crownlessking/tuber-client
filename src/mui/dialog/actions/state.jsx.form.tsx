@@ -1,13 +1,13 @@
-import { Fragment } from 'react'
-import { STATE_BUTTON } from '../../../constants'
-import StateForm from 'src/controllers/StateForm'
-import IStateFormItem from '../../../interfaces/IStateFormItem'
-import StateFormItem from '../../../controllers/StateFormItem'
-import StateJsxDialogActionButton from './state.jsx.form.button'
+import { Fragment } from 'react';
+import { STATE_BUTTON } from '../../../constants';
+import type StateForm from 'src/controllers/StateForm';
+import IStateFormItem from '../../../interfaces/IStateFormItem';
+import StateFormItem from '../../../controllers/StateFormItem';
+import StateJsxDialogActionButton from './state.jsx.form.button';
 
 interface IFieldItemProps {
-  def: IStateFormItem[]
-  parent: StateForm
+  def: IStateFormItem[];
+  parent: StateForm;
 }
 
 export default function StateJsxDialogAction({
@@ -22,5 +22,5 @@ export default function StateJsxDialogAction({
         return <StateJsxDialogActionButton def={item} key={`dialgo-action-${i}`} />
       })}
     </Fragment>
-  )
+  );
 }

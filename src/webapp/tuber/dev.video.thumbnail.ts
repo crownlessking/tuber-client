@@ -1,4 +1,4 @@
-import { IRedux } from 'src/state';
+import { type IRedux } from 'src/state';
 import { get_req_state } from 'src/state/net.actions';
 
 /**

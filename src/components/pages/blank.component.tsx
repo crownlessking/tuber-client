@@ -2,7 +2,7 @@ import { Fragment, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { post_req_state } from '../../state/net.actions';
 import StatePage from '../../controllers/StatePage';
-import { AppDispatch } from '../../state';
+import type { AppDispatch } from '../../state';
 import Config from '../../config';
 import {
   ALLOWED_ATTEMPTS,

@@ -1,4 +1,4 @@
-import { 
+import type { 
   AppBarProps as AppbarProps, ToolbarProps, IconButtonProps, BoxProps, InputBaseProps,
 } from '@mui/material';
 import { IAbstractState } from '../common.types';

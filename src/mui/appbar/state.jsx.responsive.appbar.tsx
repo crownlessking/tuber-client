@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import StateJsxMenuIcon from './state.jsx.menuicon.appbar';
-import StatePage from '../../controllers/StatePage';
+import type StatePage from '../../controllers/StatePage';
 
 interface IJRAppbarProps {
   def: StatePage;

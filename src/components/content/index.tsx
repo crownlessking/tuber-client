@@ -1,8 +1,8 @@
-import React, { useMemo, useCallback } from 'react';
+import { useMemo, useCallback } from 'react';
 import View from '../view.component';
 import StatePage from '../../controllers/StatePage';
 import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../state';
+import type { AppDispatch } from '../../state';
 import { post_req_state } from '../../state/net.actions';
 import IStateApp from '../../interfaces/IStateApp';
 import IStateAllForms from '../../interfaces/IStateAllForms';

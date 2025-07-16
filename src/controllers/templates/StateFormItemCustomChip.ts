@@ -1,5 +1,5 @@
 import { get_base_route } from '..';
-import { IRedux, TReduxHandle } from '../../state';
+import type { IRedux, TReduxHandle } from '../../state';
 import StateFormItemCustom from '../StateFormItemCustom';
 
 export default class StateFormItemCustomChip<P> extends StateFormItemCustom<P> {

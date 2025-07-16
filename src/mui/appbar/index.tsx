@@ -1,4 +1,4 @@
-import StatePage from '../../controllers/StatePage';
+import type StatePage from '../../controllers/StatePage';
 import BasicAppbar from './state.jsx.basic.appbar';
 import MiniAppbar from './state.jsx.mini.appbar';
 import ResponsiveAppbar from './state.jsx.responsive.appbar';

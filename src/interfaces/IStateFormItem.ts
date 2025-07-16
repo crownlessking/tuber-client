@@ -1,5 +1,5 @@
-import { InputProps } from '@mui/material';
-import { CSSProperties } from 'react';
+import { type InputProps } from '@mui/material';
+import { type CSSProperties } from 'react';
 import { IAbstractState } from '../common.types';
 import * as C from '../constants';
 import IStateFormItemCustom from './IStateFormItemCustom';

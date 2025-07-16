@@ -2,7 +2,7 @@ import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
 import React, { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState } from 'src/state';
+import { type RootState } from 'src/state';
 import { gen_video_url } from '../../_tuber.common.logic';
 import LoadMoreBookmarksFromServer, {
   LoadEarlierBookmarksFromServer

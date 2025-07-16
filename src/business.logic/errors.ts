@@ -71,8 +71,6 @@ function _color_json_code_regex_highlight(jsonStr: string): string {
     .replace(/(:\s*)(\d+)/g, (_, m1, m2) => `${m1}<span class="json-number">${m2}</span>`)
     .replace(/(:\s*)(true|false)/g, (_, m1, m2) => `${m1}<span class="json-boolean">${m2}</span>`)
     .replace(/(:\s*)(null)/g, (_, m1, m2) => `${m1}<span class="json-null">${m2}</span>`)
-    //.replace(/(:\s*)(\{|\[)/g, (_, m1, m2) => `${m1}<span class="json-brace">${m2}</span>`)
-    //.replace(/(\}|\])(,?)/g, (_, m1, m2) => `<span class="json-brace">${m1}</span>${m2}`)
     .replace(/(,)/g, '<span class="json-comma">,</span>');
 }
 

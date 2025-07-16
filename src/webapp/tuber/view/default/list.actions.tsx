@@ -5,7 +5,7 @@ import React, { useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import StateLink from 'src/controllers/StateLink';
 import StateJsxLink from 'src/mui/link';
-import { RootState } from 'src/state';
+import { type RootState } from 'src/state';
 import { dialog_edit_bookmark, dialog_delete_bookmark } from '../../callbacks/prod.bookmarks.actions';
 import { IBookmark } from '../../tuber.interfaces';
 import { get_ratio_color } from './_default.common.logic';

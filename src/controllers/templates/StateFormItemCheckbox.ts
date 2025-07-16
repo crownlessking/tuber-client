@@ -1,19 +1,19 @@
-import StateForm from '../StateForm';
+import type StateForm from '../StateForm';
 import StateFormItem from '../StateFormItem';
-import { IStateFormItemCheckboxBox } from '../StateFormItemCheckboxBox';
+import { type IStateFormItemCheckboxBox } from '../StateFormItemCheckboxBox';
 import StateFormItemCheckboxCustom from './StateFormItemCheckboxCustom';
 
 export default class StateFormItemCheckbox extends StateFormItem<
   StateForm,
   IStateFormItemCheckboxBox
 > {
-  private itemCheckboxHas?: StateFormItemCheckboxCustom;
+  private _itemCheckboxHas?: StateFormItemCheckboxCustom;
   get has(): StateFormItemCheckboxCustom {
-    return this.itemCheckboxHas || (
-      this.itemCheckboxHas = new StateFormItemCheckboxCustom(
+    return this._itemCheckboxHas || (
+      this._itemCheckboxHas = new StateFormItemCheckboxCustom(
         this.itemHasState,
         this
       )
     );
-  };
+  }
 }
