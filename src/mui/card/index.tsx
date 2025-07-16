@@ -11,11 +11,8 @@ import StateCardMultiActionArea
   from '../../controllers/templates/StateCardMultiActionArea';
 import StateCardBasic from '../../controllers/templates/StateCardBasic';
 import StateCardComplex from 'src/controllers/templates/StateCardComplex';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import React from 'react';
+import React, { memo } from 'react';
+import { StateJsxIcon } from '../icon';
 
 interface ICardProps {
   def: StateCard;
@@ -29,20 +26,25 @@ interface ExpandMoreProps extends IconButtonProps {
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props
-  return <IconButton {...other} />
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
 })(({ theme, expand }) => ({
   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
   marginLeft: 'auto',
   transition: theme.transitions.create('transform', {
     duration: theme.transitions.duration.shortest,
   }),
-}))
+}));
+
+const MoreVertIcon = memo(() => <StateJsxIcon name='more_vert' />);
+const ExpandMoreIcon = memo(() => <StateJsxIcon name='expand_more' />);
+const ShareIcon = memo(() => <StateJsxIcon name='share' />);
+const FavoriteIcon = memo(() => <StateJsxIcon name='favorite_border' />);
 
 export default function StateJsxCard({ def: card }: ICardProps) {
   const map: { [key in typeof card._type]: () => JSX.Element | null } = {
     'basic': () => {
-      const basic = new StateCardBasic(card.state)
+      const basic = new StateCardBasic(card.state);
       return (
         <Card {...basic.props}>
           <CardContent {...basic.contentProps}>
@@ -57,13 +59,13 @@ export default function StateJsxCard({ def: card }: ICardProps) {
             ))}
           </CardActions>
         </Card>
-      )
+      );
     },
     'card': () => null,
     'image_media': () => null,
     'media': () => null,
     'multi_action_area': () => {
-      const multi = new StateCardMultiActionArea(card.state)
+      const multi = new StateCardMultiActionArea(card.state);
       return (
         <Card {...multi.props}>
           <CardActionArea {...multi.actionArea}>
@@ -81,14 +83,14 @@ export default function StateJsxCard({ def: card }: ICardProps) {
             ))}
           </CardActions>
         </Card>
-      )
+      );
     },
     'complex': () => <StateJsxCardComplex def={card} />,
   }
 
-  const CardMap = map[card._type]
+  const CardMap = map[card._type];
 
-  return <CardMap />
+  return <CardMap />;
 }
 
 /**
@@ -99,9 +101,9 @@ export default function StateJsxCard({ def: card }: ICardProps) {
 const StateJsxCardComplex: React.FC<{ def: StateCard }> = ({ def: card }) => {
   const [expanded, setExpanded] = React.useState(false);
   const handleExpandClick = () => {
-    setExpanded(!expanded)
+    setExpanded(!expanded);
   }
-  const complex = new StateCardComplex(card.state)
+  const complex = new StateCardComplex(card.state);
 
   return (
     <Card {...complex.props}>
@@ -149,23 +151,23 @@ const StateJsxCardComplex: React.FC<{ def: StateCard }> = ({ def: card }) => {
         </CardContent>
       </Collapse>
     </Card>
-  )
-}
+  );
+};
 
 export interface IStateCardAvatarTypeProps {
-  img?: string
-  icon?: string
-  text?: string
+  img?: string;
+  icon?: string;
+  text?: string;
 }
 
 export function StateCardAvatar(props: IStateCardAvatarTypeProps) {
   if (props.img) {
-    return <img src={props.img} alt={props.text} />
+    return <img src={props.img} alt={props.text} />;
   }
   if (props.icon) {
-    return <img src={props.icon} alt={props.text} />
+    return <img src={props.icon} alt={props.text} />;
   }
   if (props.text) {
-    return <span>{props.text}</span>
+    return <span>{props.text}</span>;
   }
 }

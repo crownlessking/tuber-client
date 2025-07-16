@@ -1,4 +1,3 @@
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import Grid from '@mui/material/Grid';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -9,6 +8,7 @@ import { SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config';
 import { IBookmark } from '../../tuber.interfaces';
 import { get_platform_icon_src, shorten_text } from '../../_tuber.common.logic';
 import BookmarkActionsToolbar from './list.actions';
+import { StateJsxIcon } from 'src/mui/icon';
 
 interface IBookmarkProps {
   children: IBookmark;
@@ -34,7 +34,6 @@ const NoteWrapper = styled('div')(() => ({
 
 const Note = styled('div')(({ theme }) => ({
   marginLeft: theme.spacing(3),
-  // maxWidth: theme.spacing(50),
 }));
 
 const TitleWrapper = styled('div')(() => ({
@@ -60,8 +59,6 @@ const PlatformIcon = styled('img')(() => ({
   width: '1.5rem',
   height: '1.5rem',
   margin: '0.25rem 0.5rem 0 0',
-  // position: 'absolute',
-  // top: 0,
 }));
 
 const ExpandNoteIconWrapper = styled('a')(({ theme }) => ({
@@ -76,10 +73,12 @@ const ExpandNoteIconWrapper = styled('a')(({ theme }) => ({
   color: theme.palette.grey[500],
 }));
 
-const ExpandNoteIcon = styled(PlayArrowIcon)(() => ({
-  width: '1.5rem',
-  height: '1.5rem',
-}));
+// const ExpandNoteIcon = styled(PlayArrowIcon)(() => ({
+//   width: '1.5rem',
+//   height: '1.5rem',
+// }));
+
+const ExpandNoteIcon = React.memo(() => <StateJsxIcon name='play_arrow_outline' />);
 
 // Optimized Bookmark component with React.memo for performance
 const Bookmark = React.memo<IBookmarkProps>(({ children: bookmark, index: i, handleOnClick, handleExpandDetailIconOnClick }) => {

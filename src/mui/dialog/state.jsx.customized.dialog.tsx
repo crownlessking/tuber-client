@@ -1,15 +1,15 @@
-import * as React from 'react'
-import { styled } from '@mui/material/styles'
-import Dialog from '@mui/material/Dialog'
-import DialogTitle from '@mui/material/DialogTitle'
-import DialogContent from '@mui/material/DialogContent'
-import DialogActions from '@mui/material/DialogActions'
-import IconButton from '@mui/material/IconButton'
-import CloseIcon from '@mui/icons-material/Close'
-import StateDialogCustomized from '../../controllers/templates/StateDialogCustomized'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../state'
-import StateJsxDialogAction from './actions/state.jsx'
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import IconButton from '@mui/material/IconButton';
+import StateDialogCustomized from '../../controllers/templates/StateDialogCustomized';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../state';
+import StateJsxDialogAction from './actions/state.jsx';
+import { StateJsxIcon } from '../icon';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -18,13 +18,15 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogActions-root': {
     padding: theme.spacing(1),
   },
-}))
+}));
 
 export interface DialogTitleProps {
   id: string;
-  children?: React.ReactNode
-  onClose: () => void
-}
+  children?: React.ReactNode;
+  onClose: () => void;
+};
+
+const CloseIcon = React.memo(() => <StateJsxIcon name='close' />);
 
 function BootstrapDialogTitle(props: DialogTitleProps) {
   const { children, onClose, ...other } = props;
@@ -51,17 +53,17 @@ function BootstrapDialogTitle(props: DialogTitleProps) {
 }
 
 interface ICustomizedDialogProps {
-  def: StateDialogCustomized
+  def: StateDialogCustomized;
 }
 
 export default function StateJsxCustomizedDialog(props: ICustomizedDialogProps) {
-  const { def: dialog } = props
-  const dispatch = useDispatch<AppDispatch>()
-  const open = useSelector((state: RootState) => state.dialog.open ?? false)
+  const { def: dialog } = props;
+  const dispatch = useDispatch<AppDispatch>();
+  const open = useSelector((state: RootState) => state.dialog.open ?? false);
 
   const handleClose = () => {
-    dispatch({ type: 'dialog/dialogClose' })
-  }
+    dispatch({ type: 'dialog/dialogClose' });
+  };
 
   return (
     <BootstrapDialog
@@ -79,5 +81,5 @@ export default function StateJsxCustomizedDialog(props: ICustomizedDialogProps) 
         <StateJsxDialogAction def={dialog.actions} parent={dialog} />
       </DialogActions>
     </BootstrapDialog>
-  )
+  );
 }

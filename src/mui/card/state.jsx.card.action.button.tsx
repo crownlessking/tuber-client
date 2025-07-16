@@ -1,18 +1,15 @@
-import { Fragment } from 'react'
-import { Icon, Button } from '@mui/material'
-import store, { actions } from 'src/state'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { get_font_awesome_icon_prop } from '../../controllers'
-import { IconProp } from '@fortawesome/fontawesome-svg-core'
-import StateFormItemCardAction from 'src/controllers/templates/StateFormItemCardAction'
+import { Fragment } from 'react';
+import { Icon, Button } from '@mui/material';
+import store, { actions } from 'src/state';
+import StateFormItemCardAction from 'src/controllers/templates/StateFormItemCardAction';
 
 type TMapIcon = {
-  [K in 'icon'|'faIcon'|'none']: () => JSX.Element
-}
+  [K in 'icon'|'faIcon'|'none']: () => JSX.Element;
+};
 
 type TMapPosition = {
-  [K in 'left'|'right']: TMapIcon
-}
+  [K in 'left'|'right']: TMapIcon;
+};
 
 export default function StateJsxCardActionButton (
   { def: button }: { def: StateFormItemCardAction }
@@ -21,8 +18,8 @@ export default function StateJsxCardActionButton (
     store,
     actions,
     route: button.props.href
-  }
-  const onClick = button.onClick
+  };
+  const onClick = button.onClick;
 
   const mapRight: TMapIcon = {
     icon: () => (
@@ -33,12 +30,10 @@ export default function StateJsxCardActionButton (
       </Fragment>
     ),
     faIcon: () => {
-      const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
       return (
         <Fragment>
           { button.value }
           &nbps;
-          <FontAwesomeIcon icon={icon} />
         </Fragment>
       )
     },
@@ -47,7 +42,7 @@ export default function StateJsxCardActionButton (
         { button.text }
       </Fragment>
     )
-  }
+  };
 
   const mapLeft: TMapIcon = {
     icon: () => (
@@ -58,10 +53,8 @@ export default function StateJsxCardActionButton (
       </Fragment>
     ),
     faIcon: () => {
-      const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
       return (
         <Fragment>
-          <FontAwesomeIcon icon={icon} />
           &nbsp;
           { button.text }
         </Fragment>
@@ -72,19 +65,19 @@ export default function StateJsxCardActionButton (
         { button.text }
       </Fragment>
     )
-  }
+  };
 
   const map: TMapPosition = {
     left: mapLeft,
     right: mapRight
-  }
+  };
 
   if (button.text) {
-    const iconPosition = button.has.iconPosition ?? 'left'
+    const iconPosition = button.has.iconPosition ?? 'left';
     const iconType = button.has.faIcon
       ? 'faIcon'
-      : button.has.icon ? 'icon' : 'none'
-    const buttonContent = map[iconPosition][iconType]()
+      : button.has.icon ? 'icon' : 'none';
+    const buttonContent = map[iconPosition][iconType]();
     return (
       <Button
         {...button.props}
@@ -92,7 +85,7 @@ export default function StateJsxCardActionButton (
       >
         { buttonContent }
       </Button>
-    )
+    );
   }
   if (button.has.icon) {
     return (
@@ -102,18 +95,17 @@ export default function StateJsxCardActionButton (
       >
         <Icon>{ button.has.icon }</Icon>
       </Button>
-    )
+    );
   }
   if (button.has.faIcon) {
-    const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
     return (
       <Button
         {...button.props}
         onClick={onClick(redux)}
       >
-        <FontAwesomeIcon icon={icon} />
+        { button.text }
       </Button>
-    )
+    );
   }
   return (
     <Button
@@ -122,5 +114,5 @@ export default function StateJsxCardActionButton (
     >
       ❌ No Text!
     </Button>
-  )
+  );
 }

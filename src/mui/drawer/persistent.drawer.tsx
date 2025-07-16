@@ -1,23 +1,21 @@
 import {
   Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText,
   styled, useTheme
-} from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import StateDrawerPersistent from 'src/controllers/templates/StateDrawerPersistent'
-import store, { AppDispatch, RootState, actions } from 'src/state'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { Link as RouterLink } from 'react-router-dom'
-import { JsxUnifiedIconProvider } from '../state.jsx.icons'
-import { Fragment } from 'react'
-import { get_formatted_route } from 'src/controllers/StateLink'
+} from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import StateDrawerPersistent from 'src/controllers/templates/StateDrawerPersistent';
+import store, { AppDispatch, RootState, actions } from 'src/state';
+import { Link as RouterLink } from 'react-router-dom';
+import { StateJsxIcon, StateJsxUnifiedIconProvider } from '../icon';
+import { Fragment, memo } from 'react';
+import { get_formatted_route } from 'src/controllers/StateLink';
 
 /*
   [TODO] Duplicate this code so the drawer can appear on the right
 */
 
 interface PerDrawerProps {
-  def: StateDrawerPersistent
+  def: StateDrawerPersistent;
 }
 
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -27,16 +25,19 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
-}))
+}));
+
+const ChevronLeftIcon = memo(() => <StateJsxIcon name={'chevron_left'} />);
+const ChevronRightIcon = memo(() => <StateJsxIcon name={'chevron_right'} />);
 
 export default function PersistentDrawer({def: drawer }: PerDrawerProps) {
-  const open = useSelector((state: RootState) => state.drawer.open)
-  const dispatch = useDispatch<AppDispatch>()
-  const theme = useTheme()
+  const open = useSelector((state: RootState) => state.drawer.open);
+  const dispatch = useDispatch<AppDispatch>();
+  const theme = useTheme();
 
   const handleDrawerClose = () => {
-    dispatch({ type: 'drawer/drawerClose' })
-  }
+    dispatch({ type: 'drawer/drawerClose' });
+  };
 
   return (
     <Drawer
@@ -65,12 +66,12 @@ export default function PersistentDrawer({def: drawer }: PerDrawerProps) {
             to={get_formatted_route(item.has)}
           >
             <ListItemIcon>
-              <JsxUnifiedIconProvider def={item.has} />
+              <StateJsxUnifiedIconProvider def={item.has} />
             </ListItemIcon>
             <ListItemText primary={item.has.state.text} />
           </ListItem>
         )) }
       </List>
     </Drawer>
-  )
+  );
 }

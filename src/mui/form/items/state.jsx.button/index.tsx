@@ -1,15 +1,13 @@
-import { Fragment } from 'react'
-import { Icon, Button } from '@mui/material'
-import { get_font_awesome_icon_prop } from 'src/controllers'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import store, { actions } from '../../../../state'
-import StateFormItem from '../../../../controllers/StateFormItem'
-import { get_button_content_code, TCombinations } from './_button.common.logic'
+import { Fragment } from 'react';
+import { Icon, Button } from '@mui/material';
+import store, { actions } from '../../../../state';
+import StateFormItem from '../../../../controllers/StateFormItem';
+import { get_button_content_code, TCombinations } from './_button.common.logic';
 
-interface IJsonButtonProps { def: StateFormItem }
+interface IJsonButtonProps { def: StateFormItem; }
 
 type TMapIcon = {
-  [K in TCombinations]: () => JSX.Element | null
+  [K in TCombinations]: () => JSX.Element | null;
 }
 
 export default function StateJsxButton ({ def: button }: IJsonButtonProps) {
@@ -17,8 +15,8 @@ export default function StateJsxButton ({ def: button }: IJsonButtonProps) {
     store,
     actions,
     route: button.props.href
-  }
-  const onClick = button.onClick || button.has.callback
+  };
+  const onClick = button.onClick || button.has.callback;
 
   const map: TMapIcon = {
     textrighticon: () => (
@@ -32,9 +30,6 @@ export default function StateJsxButton ({ def: button }: IJsonButtonProps) {
       <Fragment>
         { button.text }
         &nbsp;
-        <FontAwesomeIcon
-          icon={get_font_awesome_icon_prop(button.has.faIcon)}
-        />
       </Fragment>
     ),
     textlefticon: () => (
@@ -46,23 +41,16 @@ export default function StateJsxButton ({ def: button }: IJsonButtonProps) {
     ),
     textleftfaicon: () => (
       <Fragment>
-        <FontAwesomeIcon
-          icon={get_font_awesome_icon_prop(button.has.faIcon)}
-        />
         &nbsp;
         { button.text }
       </Fragment>
     ),
     icon: () => <Icon>{ button.has.icon }</Icon>,
-    faicon: () => (
-      <FontAwesomeIcon
-        icon={get_font_awesome_icon_prop(button.has.faIcon)}
-      />
-    ),
+    faicon: () => ( null ),
     text: () => <Fragment>{ button.text }</Fragment>,
     none: () => <Fragment>❌ No Text!</Fragment>
   }
-  const code = get_button_content_code(button)
+  const code = get_button_content_code(button);
   return (
     <Button
       {...button.props}
@@ -70,5 +58,5 @@ export default function StateJsxButton ({ def: button }: IJsonButtonProps) {
     >
       { map[code]() }
     </Button>
-  )
+  );
 }

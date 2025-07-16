@@ -20,6 +20,7 @@ export interface IStateIconGroup extends IStateIconGroupAttributes {
 export interface IStateIconPath {
   fill?: string;
   d?: string;
+  opacity?: number;
 }
 
 export interface IStateIconPolygon {
@@ -54,6 +55,7 @@ export default interface IStateIcon {
   height?: number;
   /** Icon fill color */
   fill?: string;
+  opacity?: number;
   /** Icon stroke color */
   stroke?: string;
   /** Icon stroke width */

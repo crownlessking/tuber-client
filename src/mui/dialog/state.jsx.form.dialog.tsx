@@ -1,7 +1,6 @@
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -10,8 +9,12 @@ import StateDialogForm from '../../controllers/templates/StateDialogForm';
 import { AppDispatch, RootState } from '../../state';
 import StateJsxDialogAction from './actions/state.jsx.form';
 import FormContent from '../../components/content/form.component';
+import { memo } from 'react';
+import { StateJsxIcon } from '../icon';
 
 interface IDialogForm { def: StateDialogForm; }
+
+const CloseIcon = memo(() => <StateJsxIcon name='close' />);
 
 export default function StateJsxDialogForm({ def: dialog }: IDialogForm) {
   const dispatch = useDispatch<AppDispatch>();

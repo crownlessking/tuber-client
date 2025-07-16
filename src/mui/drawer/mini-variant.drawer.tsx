@@ -1,18 +1,17 @@
 import {
   CSSObject, Divider, IconButton, List, ListItem, ListItemIcon, ListItemText,
   styled, Theme, useTheme
-} from '@mui/material'
-import MuiDrawer from '@mui/material/Drawer'
-import { useDispatch, useSelector } from 'react-redux'
-import StatePageDrawer from 'src/controllers/templates/StatePageDrawer'
-import store, { AppDispatch, RootState, actions } from 'src/state'
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft'
-import ChevronRightIcon from '@mui/icons-material/ChevronRight'
-import { Link as RouterLink } from 'react-router-dom'
-import { JsxUnifiedIconProvider } from '../state.jsx.icons'
-import { get_drawer_width } from '../../state'
-import { Fragment } from 'react'
-import { get_formatted_route } from 'src/controllers/StateLink'
+} from '@mui/material';
+import MuiDrawer from '@mui/material/Drawer';
+import { useDispatch, useSelector } from 'react-redux';
+import StatePageDrawer from 'src/controllers/templates/StatePageDrawer';
+import store, { actions } from 'src/state';
+import type { RootState, AppDispatch } from 'src/state';
+import { Link as RouterLink } from 'react-router-dom';
+import { StateJsxIcon, StateJsxUnifiedIconProvider } from '../icon';
+import { get_drawer_width } from '../../state';
+import { Fragment, memo } from 'react';
+import { get_formatted_route } from 'src/controllers/StateLink';
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: get_drawer_width(),
@@ -21,7 +20,7 @@ const openedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.enteringScreen,
   }),
   overflowX: 'hidden',
-})
+});
 
 const closedMixin = (theme: Theme): CSSObject => ({
   transition: theme.transitions.create('width', {
@@ -33,7 +32,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(8)} + 1px)`,
   },
-})
+});
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
@@ -42,7 +41,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
-}))
+}));
 
 const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -59,14 +58,17 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
       '& .MuiDrawer-paper': closedMixin(theme),
     }),
   }),
-)
+);
+
+const ChevronLeftIcon = memo(() => <StateJsxIcon name={'chevron_left'} />);
+const ChevronRightIcon = memo(() => <StateJsxIcon name={'chevron_right'} />);
 
 interface IMiniDrawerProps {
-  def: StatePageDrawer
+  def: StatePageDrawer;
 }
 
 export default function MiniDrawer({ def: drawer }: IMiniDrawerProps) {
-  const open = useSelector((state: RootState) => state.drawer.open)
+  const open = useSelector((state: RootState) => state.drawer.open);
   const dispatch = useDispatch<AppDispatch>()
   const theme = useTheme()
 
@@ -101,7 +103,7 @@ export default function MiniDrawer({ def: drawer }: IMiniDrawerProps) {
             to={get_formatted_route(item.has)}
           >
             <ListItemIcon>
-              <JsxUnifiedIconProvider def={item.has} />
+              <StateJsxUnifiedIconProvider def={item.has} />
             </ListItemIcon>
             <ListItemText primary={item.has.state.text} />
           </ListItem>

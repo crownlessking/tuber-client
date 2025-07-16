@@ -48,18 +48,18 @@ const SpanStyled = styled('span')(() => ({}));
 type ActionType = 'edit' | 'delete' | 'upvote' | 'downvote' | 'bookmark' | 'settings';
 
 interface IActionConfig {
-  faIcon: string;
+  icon: string;
   onClick?: (index: number) => any;
 }
 
 // Memoized action configurations
 const ACTION_CONFIGS: Record<ActionType, IActionConfig> = {
-  edit: { faIcon: 'fa-pen-to-square', onClick: dialog_edit_bookmark },
-  delete: { faIcon: 'fa-trash-can', onClick: dialog_delete_bookmark },
-  upvote: { faIcon: 'far, thumbs-up' },
-  downvote: { faIcon: 'far, thumbs-down' },
-  bookmark: { faIcon: 'far, fa-bookmark' },
-  settings: { faIcon: 'fa-cog' }
+  edit: { icon: 'fa-pen-to-square', onClick: dialog_edit_bookmark },
+  delete: { icon: 'fa-trash-can', onClick: dialog_delete_bookmark },
+  upvote: { icon: 'far, thumbs-up' },
+  downvote: { icon: 'far, thumbs-down' },
+  bookmark: { icon: 'far, fa-bookmark' },
+  settings: { icon: 'fa-cog' }
 };
 
 // Optimized action component
@@ -70,7 +70,7 @@ const ActionButton = React.memo<{ type: ActionType; index?: number }>(({ type, i
     type: 'icon',
     onClick: config.onClick && index !== undefined ? config.onClick(index) : undefined,
     props: { size: 'small' },
-    has: { faIcon: config.faIcon }
+    has: { icon: config.icon }
   }), [config, index]);
 
   return <StateJsxLink def={linkDef} />;

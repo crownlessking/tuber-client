@@ -1,10 +1,7 @@
 import { Fragment } from 'react';
 import { Icon, Button } from '@mui/material';
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import StateFormItem from 'src/controllers/StateFormItem';
 import store, { actions } from 'src/state';
-import { get_font_awesome_icon_prop } from 'src/controllers';
 import StateForm from 'src/controllers/StateForm';
 
 interface IJsonButtonProps { def: StateFormItem<StateForm>; }
@@ -35,12 +32,10 @@ export default function StateJsxDialogAction ({ def: button }: IJsonButtonProps)
             </Fragment>
           );
         } else if (button.has.faIcon) {
-          const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
           return (
             <Fragment>
               { button.value }
               &nbps;
-              <FontAwesomeIcon icon={icon} />
             </Fragment>
           );
         }
@@ -58,10 +53,8 @@ export default function StateJsxDialogAction ({ def: button }: IJsonButtonProps)
             </Fragment>
           );
         } else if (button.has.faIcon) {
-          const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp
           return (
             <Fragment>
-              <FontAwesomeIcon icon={icon} />
               &nbsp;
               { button.text }
             </Fragment>
@@ -75,8 +68,8 @@ export default function StateJsxDialogAction ({ def: button }: IJsonButtonProps)
       if (button.has.icon) {
         return <Icon>{ button.has.icon }</Icon>;
       } else if (button.has.faIcon) {
-        const icon = get_font_awesome_icon_prop(button.has.faIcon) as IconProp;
-        return <FontAwesomeIcon icon={icon} />;
+        console.error('.faIcon is no longer a valid icon');
+        return ( null );
       }
     }
     return (

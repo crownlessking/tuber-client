@@ -1,11 +1,21 @@
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import StatePage from '../../controllers/StatePage';
 import { styled } from '@mui/material';
+import { StateJsxIcon } from 'src/mui/icon';
+import { memo } from 'react';
 
 const MsgDiv = styled('div')(() => ({
   width: '100%',
   textAlign: 'center'
 }));
+
+const CheckCircleOutlineIcon = memo(() => (
+  <StateJsxIcon
+    name='check_circle_outline'
+    config={{
+      sx: { fontSize: '29.5rem !important' }
+    }}
+  />
+));
 
 /**
  * Displays a generic page that indicates a successful operation.
@@ -35,10 +45,7 @@ export default function PageSuccess ({ def: page }:{ def: StatePage }) {
 
   return (
     <>
-      <CheckCircleOutlineIcon
-        sx={{ fontSize: '29.5rem !important' }}
-        htmlColor={page.typography.color}
-      />
+      <CheckCircleOutlineIcon />
       <MsgDiv style={{color: page.typography.color}}>
         <h1>{ msg }</h1>
       </MsgDiv>

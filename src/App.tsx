@@ -1,10 +1,4 @@
-// import logo from './logo.svg'
-// import './App.css'
 import { useEffect } from 'react';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab } from '@fortawesome/free-brands-svg-icons';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-import { far } from '@fortawesome/free-regular-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, get_bootstrap_key, initialize } from './state';
 import { post_req_state } from './state/net.actions';
@@ -21,22 +15,6 @@ import {
   THEME_MODE
 } from './constants';
 import { get_cookie } from './business.logic';
-
-/**
- * Making all FontAwesome 'Regular', 'Solid', and 'Brand' icons available
- * throughout the entire application
- *
- * just do:
- * ```javascript
- * import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
- *
- * const icon = <FontAwesomeIcon icon='coffee' />
- * ```
- *
- * @see https://www.npmjs.com/package/@fortawesome/react-fontawesome
- * for more info
- */
-library.add(fab, fas, far);
 
 Config.write(THEME_MODE, get_cookie('mode') || THEME_DEFAULT_MODE);
 

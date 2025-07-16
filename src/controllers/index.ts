@@ -1,4 +1,3 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import {
   APP_CONTENT_VIEW,
   DEFAULT_LANDING_PAGE_VIEW,
@@ -6,6 +5,8 @@ import {
 import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi';
 import { IStatePageContent } from '../interfaces/IStatePage';
 import { err, ler } from '../business.logic/logging';
+
+interface IIconProp {}
 
 /**
  * Converts an icon definition to a valid argument for the `FontAwesomeIcon`
@@ -25,18 +26,18 @@ import { err, ler } from '../business.logic/logging';
  * @param iconStr 
  * @deprecated
  */
-export function get_font_awesome_icon_prop(iconStr: string): IconProp {
+export function get_font_awesome_icon_prop(iconStr: string): IIconProp {
   const pieces = iconStr.replace(/\s+/,'').split(',');
 
   if (pieces.length === 2) {
-    return pieces as IconProp;
+    return pieces as IIconProp;
   } else if (pieces.length === 1) {
-    return ['fas', iconStr] as IconProp;
+    return ['fas', iconStr] as IIconProp;
   }
 
   err('bad icon definition. Check your JSON.');
 
-  return '' as IconProp;
+  return '' as IIconProp;
 }
 
 /**

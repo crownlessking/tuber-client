@@ -1,8 +1,7 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Icon, InputAdornment } from '@mui/material';
+import { InputAdornment } from '@mui/material';
 import { IAdornment } from '../../../common.types';
-import { get_font_awesome_icon_prop } from '../../../controllers';
+import { StateJsxUnifiedIconProvider } from 'src/mui/icon';
+import StateFormItemCustom from 'src/controllers/StateFormItemCustom';
 
 interface IGetTextFieldAdornmentProps {
   startAdornment ?:IAdornment | JSX.Element;
@@ -21,10 +20,12 @@ const getProps = function (adornment :IAdornment) {
 
 const getIcon = function (adornment :IAdornment) {
   if (adornment.icon) {
-    return <Icon>{ adornment.icon }</Icon>;
+    // return <Icon>{ adornment.icon }</Icon>;
+    const icon = new StateFormItemCustom({ icon: adornment.icon }, {});
+    return <StateJsxUnifiedIconProvider def={icon} />;
   } else if (adornment.faIcon) {
-    const icon = get_font_awesome_icon_prop(adornment.faIcon);
-    return <FontAwesomeIcon icon={icon as IconProp} />;
+    console.error('.faIcon is no longer a valid icon.');
+    return ( null );
   }
   return '';
 }

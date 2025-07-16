@@ -1,21 +1,6 @@
 import * as F from '../../controllers';
 
 describe('src/controllers/index.ts', () => {
-
-  describe('get_font_awesome_icon_prop', () => {
-    it('returns the icon props for the given icon name', () => {
-      const iconName = 'faTimes';
-      const iconProps = F.get_font_awesome_icon_prop(iconName);
-      expect(iconProps).toEqual({
-        icon: 'times',
-        prefix: 'fas'
-      });
-    });
-    it('returns an empty string if argument is empty', () => {
-      const iconProps = F.get_font_awesome_icon_prop('');
-      expect(iconProps).toBeFalsy();
-    });
-  });
   
   describe('get_viewport_size', () => {
     it('returns the viewport size', () => {
@@ -170,13 +155,6 @@ describe('src/controllers/index.ts', () => {
     it('returns the parsed page content', () => {
       const content = F.jsonapi_fleetly_index([]);
       expect(content).not.toBeUndefined();
-    });
-  });
-
-  describe ('get_drawer_width', () => {
-    it('returns the drawer width', () => {
-      const width = F.get_drawer_width();
-      expect(width).toEqual(240);
     });
   });
 

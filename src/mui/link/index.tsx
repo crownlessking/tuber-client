@@ -8,7 +8,7 @@ import store, { IRedux, actions } from '../../state';
 import { Link as RouterLink } from 'react-router-dom';
 import Chip from '@mui/material/Chip';
 import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip';
-import StateJsxBadgedIcon from '../state.jsx.icons';
+import StateJsxBadgedIcon from '../icon';
 
 interface IJsonLinkProps {
   def: StateLink;

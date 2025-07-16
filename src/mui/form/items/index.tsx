@@ -21,7 +21,7 @@ import StateFormItem from '../../../controllers/StateFormItem';
 import StateJsxFormItemGroup from '../state.jsx.form.item.group';
 import StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect';
 import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
-import { JsxUnifiedIconProvider } from '../../state.jsx.icons';
+import { StateJsxUnifiedIconProvider } from '../../icon';
 import { AppDispatch, default_callback } from '../../../state';
 import { formsDataClear } from '../../../slices/formsData.slice';
 import StateFormItemGroup from '../../../controllers/StateFormItemGroup';
@@ -369,7 +369,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       </InputLabel>
     ),
     [C.ICON]: (item: StateFormItem, key: string|number) => (
-      <JsxUnifiedIconProvider key={`icon${depth}-${key}`} def={item.has} />
+      <StateJsxUnifiedIconProvider key={`icon${depth}-${key}`} def={item.has} />
     ),
     [C.DIV]: (item: StateFormItem, key: string|number) => {
       const StyledDiv = get_styled_div();

@@ -1,24 +1,27 @@
-import Box from '@mui/material/Box'
-import MuiAppbar, { AppBarProps as MuiAppbarProps } from '@mui/material/AppBar'
-import Toolbar from '@mui/material/Toolbar'
-import IconButton from '@mui/material/IconButton'
-import HamburgerIcon from '@mui/icons-material/Menu'
-import Typography from '@mui/material/Typography'
-import StatePage from '../../controllers/StatePage'
-import AppbarButton from '../link'
-import StateJsxLogo from './state.jsx.logo'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../state'
-import { styled } from '@mui/material/styles'
-import { get_drawer_width } from '../../state'
+import Box from '@mui/material/Box';
+import MuiAppbar, { AppBarProps as MuiAppbarProps } from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import IconButton from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import StatePage from '../../controllers/StatePage';
+import AppbarButton from '../link';
+import StateJsxLogo from './state.jsx.logo';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../state';
+import { styled } from '@mui/material/styles';
+import { get_drawer_width } from '../../state';
+import { StateJsxIcon } from '../icon';
+import { memo } from 'react';
 
 interface IJsonBasicAB {
-  def: StatePage
+  def: StatePage;
 }
 
 interface AppbarProps extends MuiAppbarProps {
-  open?: boolean
+  open?: boolean;
 }
+
+const HamburgerIcon = memo(() => <StateJsxIcon name='menu' />);
 
 const Appbar = styled(MuiAppbar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -39,13 +42,13 @@ const Appbar = styled(MuiAppbar, {
 }));
 
 export default function StateJsxMiniAppbar({ def: page }: IJsonBasicAB) {
-  const { appbar } = page
-  const open = useSelector((state: RootState) => state.drawer.open)
-  const dispatch = useDispatch<AppDispatch>()
+  const { appbar } = page;
+  const open = useSelector((state: RootState) => state.drawer.open);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleDrawerOpen = () => {
-    dispatch({ type: 'drawer/drawerOpen' })
-  }
+    dispatch({ type: 'drawer/drawerOpen' });
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -86,5 +89,5 @@ export default function StateJsxMiniAppbar({ def: page }: IJsonBasicAB) {
         </Toolbar>
       </Appbar>
     </Box>
-  )
+  );
 }

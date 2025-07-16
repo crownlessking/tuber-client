@@ -86,8 +86,6 @@ const delegate_data_handling = (
   endpoint: string,
   json: IJsonapiBaseResponse
 ) => {
-  cancel_spinner();
-  dispatch(appHideSpinner());
   const status = json.meta?.status || 500;
   const defaultDriver: { [key: number]: () => void } = {
     200: () => net_default_200_driver(dispatch, getState, endpoint, json),
@@ -110,6 +108,8 @@ const delegate_data_handling = (
   } catch (e) {
     remember_exception(e);
   }
+  cancel_spinner();
+  dispatch(appHideSpinner());
 }
 
 /**

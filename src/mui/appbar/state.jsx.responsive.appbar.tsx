@@ -1,44 +1,25 @@
-import * as React from 'react'
-import Appbar from '@mui/material/AppBar'
-import Box from '@mui/material/Box'
-import Toolbar from '@mui/material/Toolbar'
-import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
-import StateJsxMenuIcon from './state.jsx.menuicon.appbar'
-import StatePage from '../../controllers/StatePage'
+import * as React from 'react';
+import Appbar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import StateJsxMenuIcon from './state.jsx.menuicon.appbar';
+import StatePage from '../../controllers/StatePage';
 
 interface IJRAppbarProps {
-  def: StatePage
+  def: StatePage;
 }
 
-// const drawerWidth = 240;
-const navItems = [ 'Home', 'About', 'Contact' ]
+const navItems = [ 'Home', 'About', 'Contact' ];
 
 export default function StateJsxResponsiveAppbar({ def: page }: IJRAppbarProps) {
-  const { appbar } = page
-  const [ mobileOpen, setMobileOpen ] = React.useState(false)
+  const { appbar } = page;
+  const [ mobileOpen, setMobileOpen ] = React.useState(false);
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen)
-  }
-
-  // const drawer = (
-  //   <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-  //     <Typography variant="h6" sx={{ my: 2 }}>
-  //       MUI
-  //     </Typography>
-  //     <Divider />
-  //     <List>
-  //       {navItems.map((item) => (
-  //         <ListItem key={item} disablePadding>
-  //           <ListItemButton sx={{ textAlign: 'center' }}>
-  //             <ListItemText primary={item} />
-  //           </ListItemButton>
-  //         </ListItem>
-  //       ))}
-  //     </List>
-  //   </Box>
-  // );
+    setMobileOpen(!mobileOpen);
+  };
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -62,5 +43,5 @@ export default function StateJsxResponsiveAppbar({ def: page }: IJRAppbarProps) 
         </Toolbar>
       </Appbar>
     </Box>
-  )
+  );
 }

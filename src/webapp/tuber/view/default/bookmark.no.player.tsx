@@ -2,12 +2,12 @@ import Grid from '@mui/material/Grid';
 import ListItem from '@mui/material/ListItem';
 import { styled } from '@mui/material/styles';
 import { IBookmark } from '../../tuber.interfaces';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { get_platform_icon_src, shorten_text } from '../../_tuber.common.logic';
 import React, { Fragment, useCallback, useMemo } from 'react';
 import { SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config';
 import BookmarkActionsToolbar from './list.actions';
 import Thumbnail from './thumbnail';
+import { StateJsxIcon } from 'src/mui/icon';
 
 interface IBookmarkProps {
   children: IBookmark;
@@ -86,10 +86,12 @@ const ExpandNoteIconWrapper = styled('a')(({ theme }) => ({
   color: theme.palette.grey[500],
 }));
 
-const ExpandNoteIcon = styled(PlayArrowIcon)(() => ({
-  width: '1.5rem',
-  height: '1.5rem',
-}));
+// const ExpandNoteIcon = styled(PlayArrowIcon)(() => ({
+//   width: '1.5rem',
+//   height: '1.5rem',
+// }));
+
+const ExpandNoteIcon = React.memo(() => <StateJsxIcon name='play_arrow_outline' />);
 
 // Optimized BookmarkNoPlayer component with React.memo for performance
 const BookmarkNoPlayer = React.memo<IBookmarkProps>(({ children: bookmark, index: i, playerOpen, handleOnClick, handleExpandDetailIconOnClick }) => {

@@ -1,173 +1,106 @@
-import { SvgIcon } from '@mui/material';
-import StateFormItemCustom from 'src/controllers/StateFormItemCustom';
-import StateIcon from 'src/controllers/StateIcon';
-import {
-  IStateIconPolygon,
-  IStateIconPath,
-  IStateIconRect,
-  IStateIconGroup
-} from 'src/interfaces/IStateIcon';
+import { Badge, Icon, SvgIcon } from '@mui/material';
+import getSvgIcon from '../state.jsx.imported.svg.icons';
+import StateFormItemCustom from '../../controllers/StateFormItemCustom';
+import { FC, Fragment, useMemo, useCallback } from 'react';
+import StateAllIcons from 'src/controllers/StateAllIcons';
+import { useSelector } from 'react-redux';
+import type { RootState } from 'src/state';
+import StateJsxSvgIcon from './state.jsx.svg.icon';
 
 interface IJsonIconProps {
-  def: StateFormItemCustom<unknown>;
-  svgDef: StateIcon;
+  def: StateFormItemCustom<any>; // StateFormItem | StateLink
 }
 
-interface ICommonProps {
-  fill?: string;
+export interface IStateJsxIconProps {
+  name: string;
+  config?:  React.ComponentProps<typeof SvgIcon>;
 }
 
-interface IPathProps extends ICommonProps {
-  path: IStateIconPath;
-}
+/**
+ * e.g.
+ * ```ts
+ * const item = {
+ *    has: {
+ *       icon: '',
+ *       faIcon: ''
+ *    }
+ * }
+ * ```
+ */
+export const StateJsxUnifiedIconProvider = (({ def: has }) => {
+  const iconsState = useSelector((state: RootState) => state.icons);
 
-interface IPolyProps extends ICommonProps {
-  poly: IStateIconPolygon;
-}
+  const renderIcon = useCallback(() => {
+    const allIcons = new StateAllIcons(iconsState);
+    const svg = allIcons.getIcon(has.icon);
+    return <StateJsxSvgIcon def={has} svgDef={svg} />;
+  }, [iconsState, has]);
 
-interface IRectProps extends ICommonProps {
-  rect: IStateIconRect;
-}
+  const renderSvgIcon = useCallback(() =>
+    getSvgIcon(has.svgIcon, has.iconProps) ||
+    <Icon {...has.iconProps}>{ has.svgIcon }</Icon>
+  , [has.svgIcon, has.iconProps]);
 
-const StateJsxIconGroup = ({ group, fill }: { group: IStateIconGroup; fill?: string }) => {
-  const { children, ...groupAttributes } = group;
+  const renderMuiIcon = useCallback(() => 
+    getSvgIcon(has.muiIcon, has.iconProps) || 
+    <Icon {...has.iconProps}>{ has.muiIcon }</Icon>
+  , [has.muiIcon, has.iconProps]);
+
+  const renderFaIcon = useCallback(() => {
+    console.error('.faIcon is no longer a valid icon.');
+    return ( null );
+  }, []);
+
+  const renderNone = useCallback(() => <Fragment>❌</Fragment>, []);
+
+  const map = useMemo(() => ({
+    icon: renderIcon,
+    svgIcon: renderSvgIcon,
+    muiIcon: renderMuiIcon,
+    faIcon: renderFaIcon,
+    none: renderNone
+  }), [renderIcon, renderSvgIcon, renderMuiIcon, renderFaIcon, renderNone]);
+
+  const type = useMemo(() => {
+    if (has.svgIcon && has.svgIcon !== 'none') return 'svgIcon';
+    if (has.icon) return 'icon';
+    if (has.faIcon) return 'faIcon';
+    return 'none';
+  }, [has.svgIcon, has.icon, has.faIcon]);
+
+  return map[type]();
+}) as FC<IJsonIconProps>;
+
+export const StateJsxIcon: FC<IStateJsxIconProps> = ({ name, config }) => {
+  const iconsState = useSelector((state: RootState) => state.icons);
+  const allIcons = new StateAllIcons(iconsState);
+  const iconSvg = allIcons.getIcon(name);
+
   return (
-    <g {...groupAttributes}>
-      {children.map((element, i) => {
-        switch (element.type) {
-          case 'path':
-            return (
-              <StateJsxIconPath
-                key={`group-path-${i}`}
-                path={element.props as IStateIconPath}
-                fill={fill}
-              />
-            );
-          case 'rect':
-            return (
-              <StateJsxIconRect
-                key={`group-rect-${i}`}
-                rect={element.props as IStateIconRect}
-                fill={fill}
-              />
-            );
-          case 'polygon':
-            return (
-              <StateJsxIconPoly
-                key={`group-polygon-${i}`}
-                poly={element.props as IStateIconPolygon}
-                fill={fill}
-              />
-            );
-          case 'group':
-            return (
-              <StateJsxIconGroup
-                key={`group-group-${i}`}
-                group={element.props as IStateIconGroup}
-                fill={fill}
-              />
-            );
-          default:
-            return null;
-        }
-      })}
-    </g>
+    <StateJsxSvgIcon def={{ iconProps: config || {} }} svgDef={iconSvg} />
   );
-};
+}
 
-const StateJsxIconPath = ({ path, fill }: IPathProps) => (
-  <path d={path.d} fill={path.fill || fill} />
-);
+export const StateJsxBadgedIcon = (({ def: has }) => {
+  const badgeProps = useMemo(() => ({
+    color: 'error' as const,
+    ...has.badge,
+    badgeContent: '-'
+  }), [has.badge]);
 
-const StateJsxIconPoly = ({ poly, fill }: IPolyProps) => (
-  <polygon
-    points={poly.points}
-    fill={poly.fill || fill}
-    stroke={poly.stroke}
-    strokeWidth={poly.strokeWidth}
-    transform={poly.transform}
-  />
-);
-
-const StateJsxIconRect = ({ rect, fill }: IRectProps) => (
-  <rect
-    width={rect.width}
-    height={rect.height}
-    x={rect.x}
-    y={rect.y}
-    rx={rect.rx}
-    ry={rect.ry}
-    fill={rect.fill || fill}
-  />
-);
-
-export default function StateJsxIcon({ def: icon, svgDef: svg }: IJsonIconProps) {
-  // Return early if no content to render
-  if (!svg.hasContent) {
-    return null;
-  }
-
-  // Only apply explicit width/height if no fontSize is specified in iconProps
-  const shouldApplyExplicitSize = !icon.iconProps?.fontSize;
+  const iconComponent = useMemo(() => <StateJsxUnifiedIconProvider def={has} />, [has]);
 
   return (
-    <SvgIcon
-      viewBox={svg.viewBox}
-      sx={{
-        ...(shouldApplyExplicitSize && {
-          width: svg.width,
-          height: svg.height,
-        }),
-        fill: svg.fill,
-        stroke: svg.stroke,
-        strokeWidth: svg.strokeWidth,
-        ...svg.attributes
-      }}
-      {...icon.iconProps}
-    >
-      {/* Render groups */}
-      {svg.groups?.map((group, i) => (
-        <StateJsxIconGroup
-          key={`group-${i}`}
-          group={group}
-          fill={svg.fill}
-        />
-      ))}
-
-      {/* Render paths */}
-      {svg.paths.map((path, i) => (
-        <StateJsxIconPath
-          key={`path-${i}`}
-          path={path}
-          fill={svg.fill}
-        />
-      ))}
-      
-      {/* Render default path if only svg string is provided */}
-      {svg.defaultPathElement && (
-        <path 
-          d={svg.defaultPathElement.d} 
-          fill={svg.defaultPathElement.fill} 
-        />
+    <Fragment>
+      {has.badge ? (
+        <Badge {...badgeProps}>
+          {iconComponent}
+        </Badge>
+      ) : (
+        iconComponent
       )}
-
-      {/* Render rectangles */}
-      {svg.rects.map((rect, i) => (
-        <StateJsxIconRect 
-          key={`rect-${i}`}
-          rect={rect}
-          fill={svg.fill}
-        />
-      ))}
-      
-      {/* Render polygons */}
-      {svg.polygons.map((polygon, i) => (
-        <StateJsxIconPoly
-          key={`polygon-${i}`}
-          poly={polygon}
-          fill={svg.fill}
-        />
-      ))}
-    </SvgIcon>
+    </Fragment>
   );
-};
+}) as FC<IJsonIconProps>;
+
+export default StateJsxBadgedIcon;

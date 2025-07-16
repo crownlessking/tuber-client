@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { styled } from '@mui/material/styles';
 import Appbar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -6,8 +6,6 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import MenuIcon from '@mui/icons-material/Menu';
-import MoreIcon from '@mui/icons-material/MoreVert';
 import StatePage from '../../controllers/StatePage';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, redux } from '../../state';
@@ -15,7 +13,7 @@ import StatePageAppbarMidSearch from '../../controllers/templates/StatePageAppba
 import StateJsxLogo from './state.jsx.logo';
 import AppbarButton from '../link';
 import InputAdornment from '@mui/material/InputAdornment';
-import { JsxUnifiedIconProvider } from '../state.jsx.icons';
+import { StateJsxIcon, StateJsxUnifiedIconProvider } from '../icon';
 import Menu from '@mui/material/Menu';
 import StateLink from '../../controllers/StateLink';
 import StateJsxChip from './state.jsx.chip';
@@ -54,6 +52,9 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     width: '100%',
   },
 }));
+
+const MenuIcon = memo(() => <StateJsxIcon name='menu' />);
+const MoreIcon = memo(() => <StateJsxIcon name='more_vert' />);
 
 export default function StateJsxMidSearchAppbar({ def: page }: { def: StatePage; }) {
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
@@ -143,7 +144,7 @@ export default function StateJsxMidSearchAppbar({ def: page }: { def: StatePage;
           <Search {...appbar.searchFieldProps}>
             {appbarChips.length < 1 ? (
               <UrlIconWrapper>
-                <JsxUnifiedIconProvider def={appbar.searchFieldIcon} />
+                <StateJsxUnifiedIconProvider def={appbar.searchFieldIcon} />
               </UrlIconWrapper>
             ) : ( null )}
             <StyledInputBase

@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import {
   CardContent, Grid, IconButton, InputAdornment, Paper, Toolbar, 
   Typography
 } from '@mui/material';
-import ClearOutlinedIcon from '@mui/icons-material/ClearOutlined';
 import { styled } from '@mui/material/styles';
 import { Fragment } from 'react';
 import JsonapiError from '../../controllers/jsonapi.error';
@@ -15,7 +14,7 @@ import {
   get_errors_list
 } from '../../business.logic/errors';
 import InputBase from '@mui/material/InputBase';
-import SearchIcon from '@mui/icons-material/Search';
+import { StateJsxIcon } from 'src/mui/icon';
 
 interface IPageErrorsProps {
   def: StatePage;
@@ -103,6 +102,20 @@ const ErrorJsonWrapper = styled('div')(() => ({
   fontWeight: 'bold',
   overflowWrap: 'anywhere',
 }));
+
+const ClearOutlinedIcon = memo(() => (
+  <StateJsxIcon
+    name='close'
+    config={{ color: 'error', fontSize: 'small' }}
+  />
+));
+
+const SearchIcon = memo(() => (
+  <StateJsxIcon
+    name='search'
+    config={{ sx: {'color': '#9e9e9e'} }}
+  />
+));
 
 /** Highlight all occurence of a substring into a value */
 const highlight = (str: string, regex: string) => {
@@ -293,7 +306,7 @@ export default function PageErrors({ def: page }: IPageErrorsProps) {
                       sx={{ mr: 1 }}
                       onClick={handleClearFilter}
                     >
-                      <ClearOutlinedIcon color='error' />
+                      <ClearOutlinedIcon />
                     </IconButton> : ( null )
                   }
                 </InputAdornment>

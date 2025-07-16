@@ -43,7 +43,7 @@ export default class StateIcon extends AbstractState implements IStateIcon {
 
   /** SVG viewBox attribute (default: "0 0 24 24") */
   get viewBox(): string {
-    return this._iconState.viewBox || "0 0 24 24";
+    return this._iconState.viewBox || '0 0 24 24';
   }
 
   /** Icon width (default: 24) */
@@ -59,6 +59,10 @@ export default class StateIcon extends AbstractState implements IStateIcon {
   /** Icon fill color */
   get fill(): string {
     return this._iconState.fill || 'currentColor';
+  }
+
+  get opacity(): number | undefined {
+    return this._iconState.opacity;
   }
 
   /** Icon stroke color */
@@ -130,7 +134,8 @@ export default class StateIcon extends AbstractState implements IStateIcon {
     if (this.svg && (!this.paths || this.paths.length === 0)) {
       return {
         d: this.svg,
-        fill: this.fill
+        fill: this.fill,
+        opacity: this.opacity
       };
     }
     return null;

@@ -1,12 +1,12 @@
 import {
   Avatar, Dialog, DialogTitle, List, ListItemAvatar, ListItemButton, 
   ListItemText
-} from '@mui/material'
-import { useDispatch, useSelector } from 'react-redux'
-import { AppDispatch, RootState } from '../../state'
-import StateDialogSelection from '../../controllers/templates/StateDialogSelection'
-import StateDialogSelectionItem from '../../controllers/templates/StateDialogSelectionItem'
-import { JsxUnifiedIconProvider } from '../state.jsx.icons'
+} from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../state';
+import StateDialogSelection from '../../controllers/templates/StateDialogSelection';
+import StateDialogSelectionItem from '../../controllers/templates/StateDialogSelectionItem';
+import { StateJsxUnifiedIconProvider } from '../icon';
 
 /*
   Selection Dialog
@@ -42,21 +42,21 @@ import { JsxUnifiedIconProvider } from '../state.jsx.icons'
 */
 
 export interface ISelectionDialogProps {
-  def: StateDialogSelection
+  def: StateDialogSelection;
 }
 
 export default function StateJsxSelectionDialog(
   { def: dialog }: ISelectionDialogProps
 ) {
-  const dispatch = useDispatch<AppDispatch>()
-  const open = useSelector((state: RootState) => state.dialog.open ?? false)
+  const dispatch = useDispatch<AppDispatch>();
+  const open = useSelector((state: RootState) => state.dialog.open ?? false);
 
-  const onClose = () => dispatch({ type: 'dialog/dialogClose' })
+  const onClose = () => dispatch({ type: 'dialog/dialogClose' });
 
   const handleListItemClick = (info: StateDialogSelectionItem) => {
-    dispatch({ type: 'dialog/dialogClose' })
-    dialog.callback(info)
-  }
+    dispatch({ type: 'dialog/dialogClose' });
+    dialog.callback(info);
+  };
 
   return (
     <Dialog onClose={onClose} open={open}>
@@ -70,7 +70,7 @@ export default function StateJsxSelectionDialog(
             <ListItemAvatar>
               <Avatar {...info.avatar.props}>
                 {info.icon
-                  ? (<JsxUnifiedIconProvider def={info.avatar.jsonIcon} />)
+                  ? (<StateJsxUnifiedIconProvider def={info.avatar.jsonIcon} />)
                   : info.avatar.text
                 }
               </Avatar>
