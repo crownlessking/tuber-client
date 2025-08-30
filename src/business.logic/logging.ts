@@ -12,12 +12,13 @@ export const msg = (msg: string): string => {
 }
 
 /**
- * Logs a message to the console if the app is in debug mode.
- * @param msg Message to log.
+ * Set a message prefix for all subsequently console messages printed using one
+ * of the other logging functions.
+ * @param prefix prefix message.
  */
-export const pre = (msg?: string) => {
+export const pre = (prefix?: string) => {
   if (Config.DEBUG) {
-    _msgPrefix = msg ?? '';
+    _msgPrefix = prefix ?? '';
   }
 }
 
@@ -25,7 +26,7 @@ export const pre = (msg?: string) => {
  * Logs a message to the console if the app is in debug mode.
  * @param msg Message to log.
  */
-export const log = (...args: any[]) => {
+export const log = (...args: unknown[]) => {
   if (Config.DEBUG) {
     console.log(_msgPrefix, ...args);
   }
@@ -35,7 +36,7 @@ export const log = (...args: any[]) => {
  * Logs an error message to the console if the app is in debug mode.
  * @param msg Message to log.
  */
-export const ler = (...args: any[]) => {
+export const ler = (...args: unknown[]) => {
   if (Config.DEBUG) {
     console.error(_msgPrefix, ...args);
   }
@@ -45,7 +46,7 @@ export const ler = (...args: any[]) => {
  * Logs a warning message to the console if the app is in debug mode.
  * @param msg Message to log.
  */
-export const lwr = (...args: any[]) => {
+export const lwr = (...args: unknown[]) => {
   if (Config.DEBUG) {
     console.warn(_msgPrefix, ...args);
   }

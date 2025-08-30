@@ -1,4 +1,4 @@
-import StateFormItemCustomChip from '../../../controllers/templates/StateFormItemCustomChip'
+import StateFormItemCustomChip from '../../../controllers/templates/StateFormItemCustomChip';
 
 describe('StateFormItemCustomChip', () => {
   describe('constructor', () => {
@@ -6,7 +6,7 @@ describe('StateFormItemCustomChip', () => {
       expect(new StateFormItemCustomChip(
         {},
         {}
-      )).toEqual({ _formItemCustomChipState: {} })
-    })
-  })
-})
+      )).toEqual({ _formItemCustomChipState: {} });
+    });
+  });
+});

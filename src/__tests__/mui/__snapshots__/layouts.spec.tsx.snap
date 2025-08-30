@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`src/mui/layouts.tsx DefaultLayout should render 1`] = `
+<main
+  className="MuiBox-root css-tq5ge6"
+>
+  <div
+    className="MuiBox-root css-h8qc7q"
+  />
+</main>
+`;
+
+exports[`src/mui/layouts.tsx DefaultLayoutToolbared should render 1`] = `
+<main
+  className="MuiBox-root css-1t8wgs6"
+>
+  <div
+    className="MuiBox-root css-28rf0g"
+  />
+</main>
+`;
+
+exports[`src/mui/layouts.tsx LayoutCentered should render 1`] = `
+<main
+  className="MuiBox-root css-zxdg2z"
+>
+  <div
+    className="MuiBox-root css-1ps3vj8"
+  />
+  <div
+    className="MuiGrid-root MuiGrid-container css-go2vvz-MuiGrid-root"
+  />
+</main>
+`;
+
+exports[`src/mui/layouts.tsx LayoutCenteredNoScroll should render 1`] = `
+<div
+  className="MuiGrid-root MuiGrid-container css-1nvdg6y-MuiGrid-root"
+/>
+`;
+
+exports[`src/mui/layouts.tsx LayoutCenteredScroll should render 1`] = `
+<main
+  className="MuiBox-root css-zxdg2z"
+>
+  <div
+    className="MuiBox-root css-h8qc7q"
+  />
+  <div
+    className="MuiGrid-root MuiGrid-container css-go2vvz-MuiGrid-root"
+  />
+</main>
+`;
+
+exports[`src/mui/layouts.tsx Toolbar should render 1`] = `
+<div
+  className="MuiBox-root css-xgfxhs"
+/>
+`;
+
+exports[`src/mui/layouts.tsx VirtualizedTableLayout should render 1`] = `
+<main
+  className="MuiBox-root css-tq5ge6"
+>
+  <div
+    className="MuiBox-root css-xp6yhd"
+  />
+</main>
+`;

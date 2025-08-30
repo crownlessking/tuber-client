@@ -2,7 +2,7 @@ import { CircularProgress, styled } from '@mui/material';
 import { LayoutCenteredNoScroll } from '../mui/layouts';
 import type { RootState } from '../state';
 import { useSelector } from 'react-redux';
-import { APP_IS_FETCHING } from 'src/constants';
+import { APP_IS_FETCHING } from 'src/constants.client';
 import { FC } from 'react';
 
 const Background = styled('div')(() => ({

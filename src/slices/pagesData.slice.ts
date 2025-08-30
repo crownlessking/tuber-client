@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from '../state/initial.state';
+import { TObj } from 'src/common.types';
 
 export interface IPagesDataArgs {
   route: string;
   key:   string;
-  data:  any;
+  value:  unknown;
 }
 
 interface IArgs {
@@ -17,9 +18,9 @@ export const pagesDataSlice = createSlice({
   initialState: initialState.pagesData,
   reducers: {
     pagesDataAdd: (state, action: IArgs) => {
-      const { route, data, key } = action.payload;
-      state[route] = state[route] || {};
-      state[route][key] = data;
+      const { route, value, key } = action.payload;
+      state[route] ??= {};
+      (state[route] as TObj)[key] = value;
     },
     pagesDataRemove: (state, action) => {
       delete state[action.payload];

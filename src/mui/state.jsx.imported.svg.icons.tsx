@@ -3,7 +3,7 @@ import { TObj } from '../common.types';
 
 export default function getImportedSvgIcon (
   iconName: string,
-  props?: any
+  props?: unknown
 ) {
   const iconTable: TObj<JSX.Element | null> = {
     'phone_outline': null,
@@ -104,4 +104,4 @@ export const ImportedSvgIcon = (({
   props
 }) => {
   return <>{ getImportedSvgIcon(iconName, props) }</>;
-}) as FC<{iconName:string;props?:any}>;
+}) as FC<{iconName:string;props?:unknown}>;

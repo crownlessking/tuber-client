@@ -1,4 +1,4 @@
-import JsonapiRequest from '../../controllers/jsonapi.request'
+import JsonapiRequest from '../../controllers/jsonapi.request';
 
 describe('jsonapi.request.ts', () => {
 
@@ -12,8 +12,8 @@ describe('jsonapi.request.ts', () => {
             attributes: { attr: 'value' }
           }
         }
-      })
-    })
-  })
+      });
+    });
+  });
 
-})
+});

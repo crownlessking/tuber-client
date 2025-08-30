@@ -1,5 +1,4 @@
-import { get_val, safely_get } from '.';
-import { get_head_meta_content } from '../business.logic';
+import { get_head_meta_content, get_val, safely_get_as } from '../business.logic';
 import AbstractState from './AbstractState';
 import IStateNet from '../interfaces/IStateNet';
 import { remember_possible_error } from 'src/business.logic/errors';
@@ -16,9 +15,9 @@ export default class StateNet extends AbstractState implements IStateNet {
   }
 
   get state(): IStateNet { return this._netState; }
-  get parent(): any { return this.die('Not implemented yet.', {}); }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get parent(): unknown { return this.die('Not implemented yet.', {}); }
+  get props(): unknown { return this.die('Not implemented yet.', {}); }
+  get theme(): unknown { return this.die('Not implemented yet.', {}); }
   get csrfTokenName(): string { return this._netState.csrfTokenName ?? ''; }
   get csrfTokenMethod(): Required<IStateNet>['csrfTokenMethod'] {
     return this._netState.csrfTokenMethod || 'meta';
@@ -33,7 +32,7 @@ export default class StateNet extends AbstractState implements IStateNet {
       if (!token) err('Invalid meta: CSRF token not found.');
       break;
     case 'javascript':
-      token = safely_get(window, this.csrfTokenName, '');
+      token = safely_get_as(window, this.csrfTokenName, '');
       if (!token) err('Invalid property (path): CSRF token not found.');
       break;
     }
@@ -154,9 +153,10 @@ export default class StateNet extends AbstractState implements IStateNet {
  */
 export function parse_cone_exp(state: AbstractState, cone: string): string {
   if (/^<([-$_a-zA-Z0-9\\/]+)(\.[-$_a-zA-Z0-9\\/]+)*>$/.test(cone)) {
-    const value = get_val(state, cone.substring(1, cone.length - 1));
+    const value = get_val<string>(state, cone.substring(1, cone.length - 1));
     if (!value) {
       err(`Cone expression resolution on '${cone}' failed.`);
+      return '';
     }
     return value;
   }

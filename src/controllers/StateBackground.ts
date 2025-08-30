@@ -24,8 +24,8 @@ export default class StateBackground<P = State>
   /** Get the background json. */
   get state(): IStateBackground { return this._backgroundState; }
   get parent(): P { return this._parentDef; }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): unknown { return this.die('Not implemented yet.', {}); }
+  get theme(): unknown { return this.die('Not implemented yet.', {}); }
   get color(): CSSProperties['backgroundColor'] { return this._backgroundState.color; }
   get image(): CSSProperties['backgroundImage'] { return this._backgroundState.image; }
   get repeat(): CSSProperties['backgroundRepeat'] { return this._backgroundState.repeat; }

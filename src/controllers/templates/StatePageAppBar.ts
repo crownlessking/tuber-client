@@ -7,6 +7,8 @@ import type StatePage from '../StatePage';
 import StatePageAppbarBackground from './StatePageAppbarBackground';
 import StatePageAppbarTypography from './StatePageAppbarTypography';
 import { remember_exception } from '../../business.logic/errors';
+import { CSSProperties, HTMLAttributes } from 'react';
+import { AppBarProps, SxProps } from '@mui/material';
 
 export default class StatePageAppbar 
   extends StateAppbar<StatePage>
@@ -17,7 +19,7 @@ export default class StatePageAppbar
   protected pageAppbarBackgroundDef?: StatePageAppbarBackground;
   protected appbarTypography?: StatePageAppbarTypography;
   private _default: StateAppbarDefault;
-  private _appbarLogoProps?: Required<IStateAppbar>['logoProps'];
+  private _appbarLogoProps?: IStateAppbar['logoProps'];
 
   constructor(appbar: IStateAppbar, parent: StatePage) {
     super(appbar, parent);
@@ -27,8 +29,8 @@ export default class StatePageAppbar
     this.noAppbarTypography = !this.appbarState.typography;
   }
 
-  get theme(): any { return this.appbarState.theme || this._default.theme; }
-  get props(): any { return this.appbarState.props || this._default.props; }
+  get theme(): CSSProperties { return this.appbarState.theme || this._default.theme; }
+  get props(): AppBarProps { return this.appbarState.props || this._default.props; }
   get _type(): TAppbarStyle {
     return this.appbarState._type || this._default.appbarStyle;
   }
@@ -99,12 +101,12 @@ export default class StatePageAppbar
     };
   }
 
-  get menuItemsProps(): any {
-    return this.appbarState.menuItemsProps || {};
+  get menuItemsProps(): HTMLAttributes<HTMLLIElement> & { sx?: SxProps } {
+    return this.appbarState.menuItemsProps ?? {};
   }
 
-  get menuItemsSx(): any {
-    return this.appbarState.menuItemsSx || this._default.menuItemsSx;
+  get menuItemsSx(): SxProps {
+    return this.appbarState.menuItemsSx ?? this._default.menuItemsSx;
   }
 
   get logoTag(): Required<IStateAppbar>['logoTag'] {
@@ -113,7 +115,7 @@ export default class StatePageAppbar
       || this._default.logoTag;
   }
 
-  get logoProps() {
+  get logoProps(): IStateAppbar['logoProps'] {
     if (this._appbarLogoProps) {
       return this._appbarLogoProps;
     }
@@ -146,7 +148,7 @@ export default class StatePageAppbar
 
   get hasLogo(): boolean {
     return !!this.parent.parent.parent.app.logoUri
-      || Object.keys(this.logoProps).length > 0;
+      || Object.keys(this.logoProps as object).length > 0;
   }
 
   get textLogoProps() {
@@ -156,17 +158,17 @@ export default class StatePageAppbar
     };
   }
 
-  get logoContainerProps(): any {
+  get logoContainerProps(): (HTMLAttributes<HTMLDivElement> & { sx?: SxProps; }) {
     return {
       ...this._default.logoContainerProps,
       ...this.appbarState.logoContainerProps
     };
   }
 
-  get searchFieldProps() {
+  get searchContainerProps(): (HTMLAttributes<HTMLDivElement> & { sx?: SxProps; }) {
     return {
-      ...this._default.searchFieldProps,
-      ...this.appbarState.searchFieldProps
+      ...this._default.searchContainerProps,
+      ...this.appbarState.searchContainerProps
     };
   }
 
@@ -248,7 +250,7 @@ export default class StatePageAppbar
             return inheritedTypography;
           }
         }
-      } catch (e: any) { remember_exception(e); }
+      } catch (e: unknown) { remember_exception(e); }
     }
     return {};
   }

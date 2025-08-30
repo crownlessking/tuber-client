@@ -1,10 +1,12 @@
 import { default_callback, TReduxHandle } from 'src/state';
 import AbstractState from './AbstractState';
-import IStateFormItemCustom from '../interfaces/IStateFormItemCustom';
+import IStateFormItemCustom, { TStateFormITemCustomColor } from '../interfaces/IStateFormItemCustom';
 import IStateLink from '../interfaces/IStateLink';
 import StateFormItemCustom from './StateFormItemCustom';
+import { TObj } from 'src/common.types';
+import { CSSProperties } from 'react';
 
-export default class StateLink<P = any>
+export default class StateLink<P = unknown>
   extends AbstractState
   implements IStateLink
 {
@@ -21,14 +23,14 @@ export default class StateLink<P = any>
       menuItemsProps: {},
       menuItemsSx: {},
       typography: {}
-    }) as any;
+    }) as P;
     this._linkHasState = this._linkState.has || { };
   }
 
   get state(): IStateLink { return this._linkState; }
-  get parent(): P { return this._parentDef; }
-  get props(): any { return this._linkState.props; }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get parent(): P { return (this._parentDef ?? {}) as P; }
+  get props(): TObj { return this._linkState.props ?? {}; }
+  get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
   get type(): Required<IStateLink>['type'] { return this._linkState.type || 'text'; }
   get has(): StateFormItemCustom<this> {
     return this._linkHas
@@ -53,7 +55,7 @@ export default class StateLink<P = any>
     return this._handleOnClick || this.setHandleOnClick();
   }
   get href(): string { return this._linkState.href ?? ''; }
-  get color(): string { return this._linkHasState.color || 'inherit'; }
+  get color(): TStateFormITemCustomColor { return this._linkHasState.color || 'default'; }
 
   /** Set form field `onClick` attribute */
   set onClick(cb: TReduxHandle) {
@@ -77,7 +79,7 @@ export default class StateLink<P = any>
  *
  * @param route
  */
-export function get_formatted_route(has: StateFormItemCustom<any>, href?: string): string {
+export function get_formatted_route(has: StateFormItemCustom<unknown>, href?: string): string {
   const route = has.route;
   if (route) {
     return route.charAt(0) !== '/' ? `/${route}` : route;

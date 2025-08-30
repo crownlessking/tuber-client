@@ -27,3 +27,4 @@ yarn-error.log*
 # files
 /src/App.test.tsx.backup
 /src/designdoc.md
+TESTING_TUTORIAL.md

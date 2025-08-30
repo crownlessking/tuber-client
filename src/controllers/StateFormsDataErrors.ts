@@ -4,7 +4,7 @@ import State from './State';
 
 const EXCEPTION_MESSAGE = 'StateFormsDataErrors: configure instance with \'formName\'';
 
-export default class StateFormsDataErrors<T=any> extends AbstractState {
+export default class StateFormsDataErrors<T=unknown> extends AbstractState {
   private _formName?: string;
 
   constructor (
@@ -14,10 +14,10 @@ export default class StateFormsDataErrors<T=any> extends AbstractState {
     super();
   }
 
-  get parent(): any { return this.parentDef || new State(); }
+  get parent(): unknown { return this.parentDef || new State(); }
   get state(): IStateFormsDataErrors { return this.formsDataErrorsState; }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): unknown { return this.die('Not implemented yet.', {}); }
+  get theme(): unknown { return this.die('Not implemented yet.', {}); }
 
   configure({ formName }: { formName: string }) {
     this._formName = formName;
@@ -58,7 +58,7 @@ export default class StateFormsDataErrors<T=any> extends AbstractState {
     return this.formsDataErrorsState[this._formName]?.[n]?.message ?? '';
   }
 
-  get(): any {
+  get(): unknown {
     if (!this._formName) {
       throw new Error(EXCEPTION_MESSAGE);
     }

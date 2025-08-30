@@ -1,12 +1,13 @@
-import { InputProps, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import { type AppDispatch, redux, type RootState } from '../../../state';
-import getTextFieldAdornment from './state.jsx.input.adornment';
+import { StateJsxAdornment } from './state.jsx.input.adornment';
 import type StateFormItem from '../../../controllers/StateFormItem';
 import { useDispatch, useSelector } from 'react-redux';
-import { NAME_NOT_SET } from '../../../constants';
+import { NAME_NOT_SET } from '../../../constants.client';
 import StateJsxTextfieldInputProps from './state.jsx.textfield.input.props';
 import { useEffect } from 'react';
 import { ISliceFormsDataErrorsArgs } from 'src/slices/formsDataErrors.slice';
+import StateFormsData from 'src/controllers/StateFormsData';
 
 interface IJsonTextfieldProps {
   def: StateFormItem;
@@ -41,12 +42,13 @@ export const typeMap: { [constant: string]: string } = {
  */
 export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProps) {
   const { name, parent: { name: formName } } = textfield;
-  const formsData = useSelector((state: RootState) => state.formsData);
+  const formsDataState = useSelector((state: RootState) => state.formsData);
+  const formsData = new StateFormsData(formsDataState);
   const formsDataErrors = useSelector(
     (state: RootState) => state.formsDataErrors
   );
   const dispatch = useDispatch<AppDispatch>();
-  const value = formsData[formName]?.[name] ?? '';
+  const value = formsData.getValue(formName, name, '');
   const error = formsDataErrors[formName]?.[name]?.error;
 
   useEffect(() => {
@@ -96,7 +98,7 @@ export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProp
       error={error || textfield.has.regexError(value)}
       helperText={error
         ? formsDataErrors[formName]?.[name]?.message
-        : textfield.props.helperText
+        : textfield.props.helperText as string
       }
       value={value}
       onFocus={handleFocus}
@@ -108,7 +110,10 @@ export default function StateJsxTextfield({ def: textfield }: IJsonTextfieldProp
   ) : (
     <TextField
       value={NAME_NOT_SET}
-      InputProps={getTextFieldAdornment(textfield.inputProps) as Partial<InputProps>}
+      InputProps={{
+        startAdornment: <StateJsxAdornment def={textfield.inputProps.start} />,
+        endAdornment: <StateJsxAdornment def={textfield.inputProps.end} />
+      }}
       disabled
     />
   );

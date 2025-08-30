@@ -1,11 +1,12 @@
+import { FormControlProps, InputLabelProps } from '@mui/material';
 import StateFormItem from '../StateFormItem';
 
 export type TInput = 'phone' | 'none';
 
 export interface IInputConfig {
-  formControlProps?: any;
-  inputLabelProps?: any;
-  props?: any;
+  formControlProps?: FormControlProps;
+  inputLabelProps?: InputLabelProps;
+  props?: Record<string, unknown>;
   id?: string;
 }
 

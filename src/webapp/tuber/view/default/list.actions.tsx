@@ -10,6 +10,7 @@ import { dialog_edit_bookmark, dialog_delete_bookmark } from '../../callbacks/pr
 import { IBookmark } from '../../tuber.interfaces';
 import { get_ratio_color } from './_default.common.logic';
 import StateNet from 'src/controllers/StateNet';
+import { IDefaultParent } from 'src/interfaces/IStateLink';
 
 interface IBookmarkActionToolbarProps {
   i: number;
@@ -66,7 +67,7 @@ const ACTION_CONFIGS: Record<ActionType, IActionConfig> = {
 const ActionButton = React.memo<{ type: ActionType; index?: number }>(({ type, index }) => {
   const config = ACTION_CONFIGS[type];
   
-  const linkDef = useMemo(() => new StateLink({
+  const linkDef = useMemo(() => new StateLink<IDefaultParent>({
     type: 'icon',
     onClick: config.onClick && index !== undefined ? config.onClick(index) : undefined,
     props: { size: 'small' },

@@ -1,5 +1,5 @@
-import StateDialogSelection from '../../../controllers/templates/StateDialogSelection'
-import StateDialogSelectionItem from '../../../controllers/templates/StateDialogSelectionItem'
+import StateDialogSelection from '../../../controllers/templates/StateDialogSelection';
+import StateDialogSelectionItem from '../../../controllers/templates/StateDialogSelectionItem';
 
 describe('StateDialogSelectionItem', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateDialogSelectionItem', () => {
       expect(new StateDialogSelectionItem(
         {},
         {} as StateDialogSelection
-      )).toEqual({ _dialogSelectionItemState: {} })
-    })
-  })
-})
+      )).toEqual({ _dialogSelectionItemState: {} });
+    });
+  });
+});

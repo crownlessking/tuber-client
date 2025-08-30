@@ -20,8 +20,8 @@ export default class StateAnchorOrigin
 
   get state(): IStateAnchorOrigin { return this._anchorOriginState; }
   get parent(): StateSnackbar { return this._parentDef; }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): unknown { return this.die('Not implemented yet.', {}); }
+  get theme(): unknown { return this.die('Not implemented yet.', {}); }
 
   get vertical(): AnchorVertical { return this._anchorOriginState.vertical; }
   get horizontal(): AnchorHorizontal {

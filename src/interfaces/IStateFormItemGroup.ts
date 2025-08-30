@@ -1,4 +1,4 @@
-import { IAbstractState } from '../common.types';
+import IAbstractState from './IAbstractState';
 import IStateFormItem from './IStateFormItem';
 
 export type TItemGroup = 'box' | 'stack' | 'localized' | 'form_group'

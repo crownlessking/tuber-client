@@ -19,10 +19,10 @@ export default class JsonapiPaginationLinks extends AbstractState {
     }
   }
 
-  get parent (): any { return this.die('Not implemented yet.', {}); }
-  get state (): any { return this.die('Not implemented yet.', {}); }
-  get props (): any { return this.die('Not implemented yet.', {}); }
-  get theme (): any { return this.die('Not implemented yet.', {}); }
+  get parent (): unknown { return this.die('Not implemented yet.', {}); }
+  get state (): unknown { return this.die('Not implemented yet.', {}); }
+  get props (): unknown { return this.die('Not implemented yet.', {}); }
+  get theme (): unknown { return this.die('Not implemented yet.', {}); }
 
   /**
    * Get the query string value by key.
@@ -50,7 +50,7 @@ export default class JsonapiPaginationLinks extends AbstractState {
           'page[size]'
         ))
       );
-    } catch (err: any) {
+    } catch (err: unknown) {
       remember_exception(err, 'JsonapiPaginationLinks.get: pageSize defaulted to 25.');
       return this._pageSize = 25;
     }
@@ -65,7 +65,7 @@ export default class JsonapiPaginationLinks extends AbstractState {
           'page[number]'
         ))
       );
-    } catch (err: any) {
+    } catch (err: unknown) {
       remember_exception(err, 'JsonapiPaginationLinks.get: selfPageNumber defaulted to 1.');
       return this._selfPageNumber = 1;
     }

@@ -40,13 +40,15 @@ import {
   NET_STATE_PATCH,
   NET_STATE_PATCH_DELETE,
   STATE_RESET,
-  TCallback
-} from '../constants';
+  TEventCallback
+} from '../constants.client';
 import Config from '../config';
 import { remember_exception } from '../business.logic/errors';
 import initialState from './initial.state';
 import { clear_last_content_jsx } from '../business.logic';
 import { err } from '../business.logic/logging';
+import IState, { INetState } from '../interfaces/IState';
+import { TObj } from '../common.types';
 
 const appReducer = combineReducers({
   app: infoReducer,
@@ -95,8 +97,9 @@ const appReducer = combineReducers({
  *
  * [TODO] Write a unit test for this function
  */
-const net_patch_state_reducer = (oldState: any, fragment: any) => {
-  const state = { ...oldState };
+const net_patch_state_reducer = ($oldState: unknown, $fragment: unknown): unknown => {
+  const state = { ...($oldState as TObj) };
+  const fragment = $fragment as TObj;
   try {
     for (const prop in fragment) {
       const newStateVal = fragment[prop];
@@ -130,33 +133,43 @@ const net_patch_state_reducer = (oldState: any, fragment: any) => {
       } // END switch
 
       // Runs a list of callbacks when a state with a certain id is loaded.
-      if (newStateVal._id) {
+      if (typeof newStateVal === 'object'
+        && '_id' in newStateVal
+        && typeof newStateVal._id === 'string'
+      ) {
         ON_NET_LOAD_CALLBACK_LIST[newStateVal._id]
           ?.forEach(callback => callback(redux));
         // Delete the list of callbacks after they have been run.
         delete ON_NET_LOAD_CALLBACK_LIST[newStateVal._id];
       }
     }
-  } catch (e: any) {
+  } catch (e) {
     remember_exception(e);
-    err(e.stack);
+    err((e as Error).stack ?? '');
   }
-  return state;
+  return state as unknown;
+}
+
+interface IActionShell {
+  payload: INetState;
+  type: string;
 }
 
 // https://stackoverflow.com/questions/35622588/how-to-reset-the-state-of-a-redux-store
-const rootReducer = (state: any, action: any) => {
+const rootReducer = ($state: unknown, $action?: unknown) => {
+  const action = $action as IActionShell;
+  const state = $state as IState;
 
   if (action.type === NET_STATE_PATCH) {
     const newState = net_patch_state_reducer(state, action.payload);
     if (!state.app.isBootstrapped) {
-      Config.set('DEBUG', action.payload.app.inDebugMode ?? false);
-      Config.set('DEV', action.payload.app.inDevelMode ?? false);
+      Config.set('DEBUG', action.payload.app?.inDebugMode ?? false);
+      Config.set('DEV', action.payload.app?.inDevelMode ?? false);
     }
 
     // TODO Set more server-side configuration here.
 
-    return appReducer(newState, action);
+    return appReducer(newState as IState, action);
   }
 
   // Reset of the state
@@ -179,6 +192,8 @@ const store = configureStore({
   //   )
   //   .concat(logger) // TODO Uncomment when debugging Redux
 });
+
+
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
@@ -250,14 +265,14 @@ export const redux: IRedux = {
  * Type for callback that needs to access the redux store and actions in
  * addition to the event object.
  */
-export type TReduxHandle = (redux: IRedux) => TCallback;
+export type TReduxHandle = (redux: IRedux) => TEventCallback;
 /** Type that gives access to the redux store and actions. */
 export type TReduxCallback = (redux: IRedux) => void;
 /**
  * Type that gives access to the redux store, actions, and the response from
  * the server.
  */
-export type TReduxNetCallback<T=any> = (
+export type TReduxNetCallback<T=unknown> = (
   response: T,
   redux: IRedux
 ) => Promise<void>;
@@ -288,7 +303,7 @@ export function get_bootstrap_key(): string {
  * If a callback is required for a link or button but is not defined, then this
  * method will provide a dummy one.
  */
-export function dummy_callback (_redux: IRedux): TCallback {
+export function dummy_callback (_redux: IRedux): TEventCallback {
   return () => {
     if (redux.store.getState().app.inDebugMode) {
       console.error('dummy_callback: No callback was assigned.');
@@ -302,7 +317,7 @@ export function dummy_callback (_redux: IRedux): TCallback {
  *
  * The app page will be updated based on the URL change triggered by the link.
  */
-export function default_callback ({store, actions, route}:IRedux): TCallback {
+export function default_callback ({store, actions, route}:IRedux): TEventCallback {
   return () => {
     if (route) {
       store.dispatch(actions.appBrowserSwitchPage(route));
@@ -346,15 +361,18 @@ const BOOTSTRAP_CALLBACK_LIST: {
  *               forever.
  * @returns void
  */
-export const on_bootstrap_run = (
-  callback: TReduxNetCallback,
+export const on_bootstrap_run = <T=unknown>(
+  callback: TReduxNetCallback<T>,
   maxRun?: number
 ) => {
-  BOOTSTRAP_CALLBACK_LIST.push({ callback, maxRun });
+  (BOOTSTRAP_CALLBACK_LIST as {
+    callback: TReduxNetCallback<T>,
+    maxRun?: number
+  }[]).push({ callback, maxRun });
 };
 
 /** Run all callbacks that were registered with onBoostrapRun(). */
-export const bootstrap = (response: any) => {
+export const bootstrap = (response: unknown) => {
   BOOTSTRAP_CALLBACK_LIST.forEach((obj, i) => {
     obj.callback(response, redux);
     if (obj.maxRun) {
@@ -391,5 +409,9 @@ export function on_net_load_run(
   ON_NET_LOAD_CALLBACK_LIST[_id] = ON_NET_LOAD_CALLBACK_LIST[_id] ?? [];
   ON_NET_LOAD_CALLBACK_LIST[_id].push(callback);
 }
+
+export const get_state = () => store.getState();
+export const dispatch: typeof store.dispatch = store.dispatch.bind(store);
+export const subscribe: typeof store.subscribe = store.subscribe.bind(store);
 
 export default store;

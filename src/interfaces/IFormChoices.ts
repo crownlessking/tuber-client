@@ -1,11 +1,10 @@
-// import { RadioProps } from '@mui/material';
-import { IAbstractState } from '../common.types';
+import IAbstractState from './IAbstractState';
 import IStateFormItemCustom from './IStateFormItemCustom';
 
 export default interface IFormChoices extends IAbstractState {
   name?: string;
   label?: string;
-  color?: any; // RadioProps['color'];
+  color?: 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning'
   disabled?: boolean;
   has?: IStateFormItemCustom;
 }

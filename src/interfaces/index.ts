@@ -32,7 +32,7 @@ export interface IHtmlAttributes {
   dir?: string;
   dirname?: string;
   disabled?: boolean;
-  download?: any;
+  download?: unknown;
   draggable?: boolean;
   enctype?: string;
   enterKeyHint?: string;
@@ -48,7 +48,7 @@ export interface IHtmlAttributes {
   httpEquiv?: string;
   id?: string;
   inert?: boolean;
-  inputMode?: any;
+  inputMode?: unknown;
   ismap?: boolean;
   kind?: string;
   label?: string;
@@ -65,83 +65,83 @@ export interface IHtmlAttributes {
   muted?: boolean;
   name?: string;
   noValidate?: boolean;
-  onAbort?: any;
-  onAfterPrint?: any;
-  onBeforePrint?: any;
-  onBeforeUnload?: any;
-  onBlur?: any;
-  onCanPlay?: any;
-  onCanPlayThrough?: any;
-  onChange?: any;
-  onClick?: any;
-  onContextMenu?: any;
-  onCopy?: any;
-  onCueChange?: any;
-  onCut?: any;
-  onDblClick?: any;
-  onDrag?: any;
-  onDragEnd?: any;
-  onDragEnter?: any;
-  onDragLeave?: any;
-  onDragOver?: any;
-  onDragStart?: any;
-  onDrop?: any;
-  onDurationChange?: any;
-  onEmptied?: any;
-  onEnded?: any;
-  onError?: any;
-  onFocus?: any;
-  onHashChange?: any;
-  onInput?: any;
-  onInvalid?: any;
-  onKeyDown?: any;
-  onKeyPress?: any;
-  onKeyUp?: any;
-  onLoad?: any;
-  onLoadedData?: any;
-  onLoadedMetadata?: any;
-  onLoadStart?: any;
-  onMouseDown?: any;
-  onMouseMove?: any;
-  onMouseOut?: any;
-  onMouseOver?: any;
-  onMouseUp?: any;
-  onMouseWheel?: any;
-  onOffline?: any;
-  onOnline?: any;
-  onPageHide?: any;
-  onPageShow?: any;
-  onPaste?: any;
-  onPause?: any;
-  onPlay?: any;
-  onPlaying?: any;
-  onPopState?: any;
-  onProgress?: any;
-  onRateChange?: any;
-  onReset?: any;
-  onResize?: any;
-  onScroll?: any;
-  onSearch?: any;
-  onSeeked?: any;
-  onSeeking?: any;
-  onSelect?: any;
-  onStalled?: any;
-  onStorage?: any;
-  onSubmit?: any;
-  onSuspend?: any;
-  onTimeUpdate?: any;
-  onToggle?: any;
-  onUnload?: any;
-  onVolumeChange?: any;
-  onWaiting?: any;
-  onWheel?: any;
+  onAbort?: unknown;
+  onAfterPrint?: unknown;
+  onBeforePrint?: unknown;
+  onBeforeUnload?: unknown;
+  onBlur?: unknown;
+  onCanPlay?: unknown;
+  onCanPlayThrough?: unknown;
+  onChange?: unknown;
+  onClick?: unknown;
+  onContextMenu?: unknown;
+  onCopy?: unknown;
+  onCueChange?: unknown;
+  onCut?: unknown;
+  onDblClick?: unknown;
+  onDrag?: unknown;
+  onDragEnd?: unknown;
+  onDragEnter?: unknown;
+  onDragLeave?: unknown;
+  onDragOver?: unknown;
+  onDragStart?: unknown;
+  onDrop?: unknown;
+  onDurationChange?: unknown;
+  onEmptied?: unknown;
+  onEnded?: unknown;
+  onError?: unknown;
+  onFocus?: unknown;
+  onHashChange?: unknown;
+  onInput?: unknown;
+  onInvalid?: unknown;
+  onKeyDown?: unknown;
+  onKeyPress?: unknown;
+  onKeyUp?: unknown;
+  onLoad?: unknown;
+  onLoadedData?: unknown;
+  onLoadedMetadata?: unknown;
+  onLoadStart?: unknown;
+  onMouseDown?: unknown;
+  onMouseMove?: unknown;
+  onMouseOut?: unknown;
+  onMouseOver?: unknown;
+  onMouseUp?: unknown;
+  onMouseWheel?: unknown;
+  onOffline?: unknown;
+  onOnline?: unknown;
+  onPageHide?: unknown;
+  onPageShow?: unknown;
+  onPaste?: unknown;
+  onPause?: unknown;
+  onPlay?: unknown;
+  onPlaying?: unknown;
+  onPopState?: unknown;
+  onProgress?: unknown;
+  onRateChange?: unknown;
+  onReset?: unknown;
+  onResize?: unknown;
+  onScroll?: unknown;
+  onSearch?: unknown;
+  onSeeked?: unknown;
+  onSeeking?: unknown;
+  onSelect?: unknown;
+  onStalled?: unknown;
+  onStorage?: unknown;
+  onSubmit?: unknown;
+  onSuspend?: unknown;
+  onTimeUpdate?: unknown;
+  onToggle?: unknown;
+  onUnload?: unknown;
+  onVolumeChange?: unknown;
+  onWaiting?: unknown;
+  onWheel?: unknown;
   open?: boolean;
   optimum?: number;
   pattern?: string;
   placeholder?: string;
-  popOver?: any;
-  popOverTarget?: any;
-  popOverTargetAction?: any;
+  popOver?: unknown;
+  popOverTarget?: unknown;
+  popOverTargetAction?: unknown;
   poster?: string;
   preload?: string;
   readOnly?: boolean;
@@ -169,7 +169,7 @@ export interface IHtmlAttributes {
   tabIndex?: number;
   target?: string;
   title?: string;
-  translate?: any;
+  translate?: unknown;
   type?: string;
   useMap?: string;
   value?: string | string[] | number;
@@ -190,30 +190,56 @@ export type TWithOptional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, 
 /** @see https://stackoverflow.com/a/69328045/1875859 */
 export type TWithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
-export interface ITypography extends IHtmlAttributes {
-  align?: 'inherit' | 'left' | 'center' | 'right' | 'justify';
-  children?: any;
-  classes?: Record<string, string>;
-  gutterBottom?: boolean;
-  noWrap?: boolean;
-  paragraph?: boolean;
-  variant?: 'inherit'
-    | 'body1'
-    | 'body2'
-    | 'button'
-    | 'caption'
-    | 'h1'
-    | 'h2'
-    | 'h3'
-    | 'h4'
-    | 'h5'
-    | 'h6'
-    | 'overline'
-    | 'subtitle1'
-    | 'subtitle2'
-    | 'srOnly';
-  sx?: SxProps;
-  variantMapping?: Partial<Record<'body1' | 'body2', string>>;
+/** Type for page layout. */
+export type TStatePageLayout =
+  'layout_centered_no_scroll'
+  | 'layout_centered'
+  | 'layout_default'
+  | 'layout_md'
+  | 'layout_none'
+  | 'layout_none_no_appbar'
+  | 'layout_sm'
+  | 'layout_table_virtualized'
+  | 'layout_xl'
+  | 'layout_xs';
+
+/**
+ * Type for textfield adornment, e.g.
+ *
+ * icons and text symbol located within the textfield that serve as a type of
+ * label. e.g.  
+ * ```json
+ * {
+ *   'type': 'textfield',
+ *   'name': 'machine_name',
+ *   'props': {}, // Maerial-ui props
+ *   'inputProps': {
+ *     'start': { // IAdornment start here
+ *       'icon': {},
+ *       'faIcon': (),
+ *        
+ *     }
+ *   }
+ * }
+ * ```
+ */
+export interface IAdornment {
+  position?: 'start' | 'end';
+  type?: 'text' | 'button';
+  /** Material-UI icon */
+  icon?: string;
+  /** Fontawesone icon */
+  faIcon?: string;
+  text?: string;
+  [x: string]: unknown;
 }
 
 export type TThemeMode = 'light' | 'dark';
+
+export type TStyledImgProps = React.ImgHTMLAttributes<HTMLImageElement> & {
+  sx?: SxProps;
+};
+
+export type TTextProps = React.HTMLAttributes<HTMLSpanElement> & {
+  sx?: SxProps;
+};

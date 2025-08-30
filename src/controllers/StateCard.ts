@@ -2,7 +2,7 @@ import AbstractState from './AbstractState';
 import IStateCard from '../interfaces/IStateCard';
 import StateFormItem from './StateFormItem';
 
-export default class StateCard<P=any> extends AbstractState implements IStateCard {
+export default class StateCard<P=unknown> extends AbstractState implements IStateCard {
   protected parentDef?: P;
   protected cardActions?: StateFormItem<this>[];
   constructor(protected cardState: IStateCard, parent?: P) {

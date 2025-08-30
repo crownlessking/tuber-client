@@ -1,46 +1,52 @@
-import { type SxProps } from '@mui/material/styles';
-import { type CSSProperties } from 'react';
-import { IAbstractState } from '../common.types';
-import { IHtmlAttributes } from '.';
+import { SxProps } from '@mui/material/styles';
 import IStateFormItem from './IStateFormItem';
+import {
+  AvatarProps,
+  CardHeaderProps,
+  CardMediaOwnProps,
+  CardMediaProps,
+  TypographyProps
+} from '@mui/material';
+import { CSSProperties, ElementType, HTMLAttributes, ReactNode } from 'react';
+import IAbstractState from './IAbstractState';
 
 export interface IStateCardProps {
-  children?: any;
+  children?: ReactNode;
   classes?: Record<string, string>;
   raised?: boolean;
   sx?: SxProps;
 }
 
-export interface IStateCardContentTypographyProps extends IHtmlAttributes {
+export interface IStateCardContentTypographyProps extends TypographyProps {
   gutterBottom?: boolean;
-  variant?: string;
+  variant?: TypographyProps['variant'];
 }
 
 export interface IStateCardContentProps {
-  children?: any;
+  children?: ReactNode;
   classes?: Record<string, string>;
   component?: string;
   sx?: SxProps;
-  typographyProps?: IHtmlAttributes;
+  typographyProps?: TypographyProps;
 }
 
 export interface IStateCardActionAreaProps {
-  children?: any;
+  children?: ReactNode;
   classes?: Record<string, string>;
   sx?: SxProps;
 }
 
 export interface IStateCardActionsProps {
-  children?: any;
+  children?: ReactNode;
   classes?: Record<string, string>;
   disableSpacing?: boolean;
   sx?: SxProps;
 }
 
-export interface ICardMediaProps extends IHtmlAttributes {
-  children?: any;
+export interface ICardMediaProps extends CardMediaProps {
+  children?: ReactNode;
   classes?: Record<string, string>;
-  component?: string | JSX.Element;
+  component?: ElementType<unknown>;
   image?: string;
   /** use when `component` is `img` */
   width?: string;
@@ -53,11 +59,11 @@ export interface ICardMediaProps extends IHtmlAttributes {
   style?: CSSProperties;
 }
 
-export interface IAvatarProps extends IHtmlAttributes {
+export interface IAvatarProps extends AvatarProps {
   alt?: string;
-  children?: any;
+  children?: ReactNode;
   classes?: Record<string, string>;
-  imgProps?: IHtmlAttributes;
+  imgProps?: HTMLAttributes<HTMLImageElement> & { sx?: SxProps; };
   sizes?: string;
   src?: string;
   srcSet?: string;
@@ -72,13 +78,13 @@ export interface ICardHeaderProps {
   subheader?: string;
   component?: string | JSX.Element;
   disableTypography?: boolean;
-  subheaderTypographyProps?: Record<string, any>;
+  subheaderTypographyProps?: TypographyProps;
   sx?: SxProps;
   title?: string;
-  titleTypographyProps?: Record<string, any>;
+  titleTypographyProps?: TypographyProps;
 }
 
-export default interface IStateCard extends IAbstractState {
+export default interface IStateCard extends Omit<IAbstractState, 'props'> {
   _type: 'basic'
     | 'card'
     | 'complex'
@@ -86,12 +92,12 @@ export default interface IStateCard extends IAbstractState {
     | 'image_media'
     | 'multi_action_area';
   props?: IStateCardProps;
-  mediaProps?: ICardMediaProps;
+  mediaProps?: CardMediaOwnProps;
   contentProps?: IStateCardContentProps;
   actionArea?: IStateCardActionAreaProps;
   actionsProps?: IStateCardActionsProps;
   actions?: IStateFormItem[];
-  headerProps?: ICardHeaderProps;
+  headerProps?: CardHeaderProps;
   avatarProps?: IAvatarProps;
   title?: string;
   fullText?: string;

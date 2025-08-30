@@ -1,6 +1,6 @@
-import State from '../../../controllers/State'
-import StateAppbar from '../../../controllers/StateAppbar'
-import StateAppbarBackground from '../../../controllers/templates/StateAppbarBackground'
+import State from '../../../controllers/State';
+import StateAppbar from '../../../controllers/StateAppbar';
+import StateAppbarBackground from '../../../controllers/templates/StateAppbarBackground';
 
 describe('StateAppbarBackground', () => {
   describe('constructor', () => {
@@ -8,7 +8,7 @@ describe('StateAppbarBackground', () => {
       expect(new StateAppbarBackground(
         {},
         {} as StateAppbar<State>
-      )).toEqual({ _backgroundState: {} })
-    })
-  })
-})
+      )).toEqual({ _backgroundState: {} });
+    });
+  });
+});

@@ -2,6 +2,9 @@ import AbstractState from './AbstractState';
 import StateLink from './StateLink';
 import type State from './State';
 import IStateDrawer from '../interfaces/IStateDrawer';
+import { DrawerProps } from '@mui/material';
+import { TWithRequired } from '../common.types';
+import { CSSProperties } from 'react';
 
 export default class StateDrawer<P = State>
   extends AbstractState
@@ -22,13 +25,13 @@ export default class StateDrawer<P = State>
 
   get state(): IStateDrawer { return this.drawerState; }
   get parent(): P { return this.parentDef; }
-  get props() {
+  get props(): TWithRequired<DrawerProps, 'anchor'> {
     return {
       ...this.drawerState.props,
-      anchor: this.drawerState.anchor
+      anchor: this.drawerState.anchor ?? 'left'
     };
   }
-  get theme(): any {
+  get theme(): CSSProperties {
     return this.die('Not implemented yet.', {});
   }
   get _type() {

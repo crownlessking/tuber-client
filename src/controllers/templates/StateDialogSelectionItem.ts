@@ -1,40 +1,40 @@
-import { blue } from '@mui/material/colors';
 import AbstractState from '../AbstractState';
 import { type IStateDialogSelectionItem } from '../../interfaces/IStateDialog';
-import StateAvatar from '../StateAvatar';
 import type StateDialogSelection from './StateDialogSelection';
 import { err } from '../../business.logic/logging';
+import StateAvatar from '../StateAvatar';
+import { blue } from '@mui/material/colors';
 
-export default class StateDialogSelectionItem
-  extends AbstractState implements IStateDialogSelectionItem
+export default class StateDialogSelectionItem<T = unknown>
+  extends AbstractState implements IStateDialogSelectionItem<T>
 {
-  private itemState: IStateDialogSelectionItem;
-  private parentDef: StateDialogSelection;
+  private _itemState: IStateDialogSelectionItem<T>;
+  private parentDef: StateDialogSelection<T>;
   private avatarState?: StateAvatar;
 
   constructor(
-    itemState: IStateDialogSelectionItem,
-    parent: StateDialogSelection
+    itemState: IStateDialogSelectionItem<T>,
+    parent: StateDialogSelection<T>
   ) {
     super();
-    this.itemState = itemState;
+    this._itemState = itemState;
     this.parentDef = parent;
   }
 
-  get parent(): StateDialogSelection { return this.parentDef; }
-  get state(): IStateDialogSelectionItem { return this.itemState; }
-  get props(): any {
+  get parent(): StateDialogSelection<T> { return this.parentDef; }
+  get state(): IStateDialogSelectionItem<T> { return this._itemState; }
+  get props(): unknown {
     err('`StateDialogSelectionItem.props` not implemented yet.');
     return {};
   }
-  get theme(): any {
+  get theme(): unknown {
     err('`StateDialogSelectionItem.theme` not implemented yet.');
     return {};
   }
-  get title(): string { return this.itemState.title ?? ''; }
+  get title(): string { return this._itemState.title ?? ''; }
   get avatar(): StateAvatar {
     return this.avatarState || (this.avatarState = new StateAvatar(
-      this.itemState.avatar || {
+      this._itemState.avatar || {
         props: {
           sx: { bgcolor: blue[100], color: blue[600] }
         },

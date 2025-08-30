@@ -24,7 +24,8 @@ export const dialogsSlice = createSlice({
     dialogsAddMultiple: (state, action: IAddMultipleAction) => {
       const dialogs = action.payload;
       Object.keys(dialogs).forEach(key => {
-        state[key] = dialogs[key] as any;
+        /* @ts-ignore */
+        state[key] = dialogs[key];
       });
     },
     /**

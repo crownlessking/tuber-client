@@ -1,7 +1,7 @@
-import { log } from 'src/business.logic/logging';
+import { log, pre } from 'src/business.logic/logging';
 import JsonapiRequest from 'src/controllers/jsonapi.request';
 import { post_req_state } from 'src/state/net.actions';
-import { type IRedux } from '../../../state';
+import { type IRedux } from 'src/state';
 import { DIALOG_DAILY_NEW_ID, FORM_DAILY_NEW_ID } from '../tuber.config';
 import { IBookmark } from '../tuber.interfaces';
 import { get_start_time_in_seconds } from '../_tuber.common.logic';
@@ -19,6 +19,7 @@ import {
 export default function form_submit_new_daily_bookmark(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch }, actions } = redux;
+    pre('form_submit_new_daily_bookmark():');
     const rootState = getState();
     const formEp = get_dialog_form_endpoint(rootState, DIALOG_DAILY_NEW_ID);
     if (!formEp) { return; }
@@ -40,21 +41,12 @@ export default function form_submit_new_daily_bookmark(redux: IRedux) {
     if (!endpoint) { return; }
 
     const { formData, formName } = data;
-    const platform = formData.platform;
-    const videoid = formData.videoid;
     const start_seconds = get_start_time_in_seconds(formData.start_time);
-    const title = formData.title;
-    const note = formData.note;
-    const thumbnail_url = formData.thumbnail_url;
     const requestBody = new JsonapiRequest<IBookmark>(endpoint, {
-      platform,
-      videoid,
-      thumbnail_url,
+      ...formData,
       start_seconds,
-      title,
-      note
     }).build();
-    log('form_submit_new_daily_bookmark: requestBody', requestBody);
+    log('requestBody', requestBody);
 
     dispatch(post_req_state(encodeURIComponent(endpoint), requestBody));
     dispatch(actions.formsDataClear(formName));

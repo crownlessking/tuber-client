@@ -1,10 +1,9 @@
-import { memo, useState } from 'react';
+import { Fragment, memo, useState, ChangeEvent } from 'react';
 import {
   CardContent, Grid, IconButton, InputAdornment, Paper, Toolbar, 
   Typography
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Fragment } from 'react';
 import JsonapiError from '../../controllers/jsonapi.error';
 import StatePage from '../../controllers/StatePage';
 import { IJsonapiError } from '../../interfaces/IJsonapi';
@@ -14,7 +13,7 @@ import {
   get_errors_list
 } from '../../business.logic/errors';
 import InputBase from '@mui/material/InputBase';
-import { StateJsxIcon } from 'src/mui/icon';
+import { StateJsxIcon } from '../../mui/icon';
 
 interface IPageErrorsProps {
   def: StatePage;
@@ -268,8 +267,8 @@ export default function PageErrors({ def: page }: IPageErrorsProps) {
     i++;
   }
 
-  const handleSearchChange = (e: any) => {
-    setFilter(e.target.value);
+  const handleSearchChange = (e: unknown) => {
+    setFilter((e as ChangeEvent<HTMLInputElement>).target.value);
     hive.setSelected && hive.setSelected<TClasses>('errorCardHover');
     hive.setState && hive.setState('');
   };

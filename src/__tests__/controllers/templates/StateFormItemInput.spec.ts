@@ -1,5 +1,5 @@
 import StateForm from '../../../controllers/StateForm'
-import StateFormItemInput from '../../../controllers/templates/StateFormItemInput'
+import StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
 
 describe('StateFormItemInput', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateFormItemInput', () => {
       expect(new StateFormItemInput(
         { type: 'text' },
         {} as StateForm
-      )).toEqual({ _formItemInputState: {} })
-    })
-  })
-})
+      )).toEqual({ _formItemInputState: {} });
+    });
+  });
+});

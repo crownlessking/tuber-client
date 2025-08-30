@@ -9,6 +9,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import Chip from '@mui/material/Chip';
 import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip';
 import StateJsxBadgedIcon from '../icon';
+import { get_val } from '../../business.logic';
 
 interface IJsonLinkProps {
   def: StateLink;
@@ -35,21 +36,23 @@ const StateJsxLink = React.memo<IJsonLinkProps>(({ def, children }) => {
   
   const route = useMemo(() => get_formatted_route(has), [has]);
   
-  const menuItemsProps = useMemo(() => def.parent.menuItemsProps, [def.parent.menuItemsProps]);
-  
+  const menuItemsProps = useMemo(() => {
+    const mItemsProps = get_val<{}>(def, 'parent.menuItemsProps');
+    return mItemsProps;
+  }, [def]);
+
   const props = useMemo(() => ({ 
     ...menuItemsProps, 
     ...def.props 
   }), [menuItemsProps, def.props]);
-  
-  const menuItemsSx = useMemo(() => def.parent.menuItemsSx, [def.parent.menuItemsSx]);
-  
-  const commonSx = useMemo(() => ({
-    ...menuItemsSx,
-    fontFamily: def.parent.typography.fontFamily,
-    color: def.parent.typography.color
-  }), [menuItemsSx, def.parent.typography.fontFamily, def.parent.typography.color]);
-  
+
+  const commonSx = useMemo(() => {
+    const menuItemsSx = get_val<{}>(def, 'def.parent.menuItemsSx');
+    const fontFamily = get_val<string>(def, 'parent.typography.fontFamily');
+    const color = get_val<string>(def, 'parent.typography.color');
+    return { ...menuItemsSx, fontFamily, color };
+  }, [def]);
+
   // Memoized onClick handler
   const handleClick = useMemo(() => def.onClick(redux), [def, redux]);
   

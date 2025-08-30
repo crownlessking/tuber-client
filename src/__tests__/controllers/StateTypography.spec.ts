@@ -1,9 +1,9 @@
-import StateTypography from '../../controllers/StateTypography'
+import StateTypography from '../../controllers/StateTypography';
 
 describe('StateTypography', () => {
   describe('constructor', () => {
     it('should create a state typography object', () => {
-      expect(new StateTypography({}, null)).toEqual({ _typographyState: {} })
-    })
-  })
-})
+      expect(new StateTypography({}, null)).toEqual({ _typographyState: {} });
+    });
+  });
+});

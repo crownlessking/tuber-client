@@ -15,6 +15,6 @@ export default class StateTopLevelLinks extends AbstractState {
 
   get state(): IStateTopLevelLinks { return this.topLevelLinksState; }
   get parent(): State { return this._parentDef || new State(); }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): unknown { return this.die('Not implemented yet.', {}); }
+  get theme(): unknown { return this.die('Not implemented yet.', {}); }
 }

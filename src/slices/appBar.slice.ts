@@ -24,7 +24,7 @@ export const appbarSlice = createSlice({
       state.textLogoProps = action.payload;
     },
     appbarSearchFieldPropsUpdate: (state, action) => {
-      state.searchFieldProps = action.payload;
+      state.searchContainerProps = action.payload;
     },
     appbarDesktopMenuItemsPropsUpdate: (state, action) => {
       state.desktopMenuItemsProps = action.payload;

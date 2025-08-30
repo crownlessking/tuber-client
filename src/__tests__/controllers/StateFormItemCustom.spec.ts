@@ -1,9 +1,9 @@
-import StateFormItemCustom from '../../controllers/StateFormItemCustom'
+import StateFormItemCustom from '../../controllers/StateFormItemCustom';
 
 describe('StateFormItemCustom', () => {
   describe('constructor', () => {
     it('should create a state form item custom object', () => {
-      expect(new StateFormItemCustom({}, null)).toEqual({ _formItemCustomState: {} })
-    })
-  })
-})
+      expect(new StateFormItemCustom({}, null)).toEqual({ _formItemCustomState: {} });
+    });
+  });
+});

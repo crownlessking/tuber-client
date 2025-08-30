@@ -4,7 +4,7 @@ import StateFormItemSelect from '../../../../../controllers/templates/StateFormI
 import StateForm from 'src/controllers/StateForm';
 
 describe('src/mui/dialog/form/select/native.select.tsx', () => {
-  const hive = {} as Record<string, any>;
+  const hive = {} as Record<string, unknown>;
 
   it('should render correctly', () => {
     const select = new StateFormItemSelect({

@@ -1,5 +1,5 @@
 
 declare interface Window {
-  [property: string]: any;
+  [property: string]: unknown;
 }
 

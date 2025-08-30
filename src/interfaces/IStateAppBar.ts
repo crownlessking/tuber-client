@@ -1,8 +1,18 @@
-import type { 
-  AppBarProps as AppbarProps, ToolbarProps, IconButtonProps, BoxProps, InputBaseProps,
+import { HTMLAttributes } from 'react';
+import {
+  BoxProps,
+  ButtonProps,
+  IconButtonProps,
+  MenuProps,
+  SxProps,
+  TypographyProps
 } from '@mui/material';
-import { IAbstractState } from '../common.types';
-import { IHtmlAttributes } from '.';
+import {
+  AppBarProps as AppbarProps,
+  ToolbarProps,
+  InputBaseProps
+} from '@mui/material';
+import IAbstractState from './IAbstractState';
 import IStateBackground from './IStateBackground';
 import IStateComponent from './IStateComponent';
 import IStateFormItemCustom from './IStateFormItemCustom';
@@ -11,7 +21,7 @@ import IStateTypography from './IStateTypography';
 
 export type TAppbarStyle = 'basic' | 'mini' | 'responsive' | 'middle_search' | 'none';
 
-export default interface IStateAppbar extends IAbstractState {
+export default interface IStateAppbar extends Omit<IAbstractState, 'props'> {
   _type?: TAppbarStyle;
   /** App bar style from Material-ui example's website. */
   appbarStyle?: TAppbarStyle;
@@ -23,23 +33,23 @@ export default interface IStateAppbar extends IAbstractState {
   toolbarProps?: ToolbarProps;
   /** hamburger icon props */
   menuIconProps?: IconButtonProps;
-  logoProps?: IHtmlAttributes;
+  logoProps?: Record<string, unknown>;
   /** mui5 text-logo props */
-  textLogoProps?: any;
-  logoContainerProps?: IHtmlAttributes;
+  textLogoProps?: TypographyProps;
+  logoContainerProps?: HTMLAttributes<HTMLDivElement> & { sx?: SxProps };
   /** Appbar textfield props */
   inputBaseProps?: InputBaseProps;
   /** Appbar input chips */
   inputBaseChips?: IStateFormItemCustom[];
   /** Appbar search field props */
-  searchFieldProps?: any;
+  searchContainerProps?:  HTMLAttributes<HTMLDivElement> & { sx?: SxProps };
   /** Icon that's in the left corner of app bar search field. */
   searchFieldIcon?: IStateFormItemCustom;
   /** Whether to hide the search field icon. */
   hideSearchFieldIcon?: boolean;
   /** Icon button that's in the right corner of app bar search field. */
   searchFieldIconButton?: IStateLink;
-  searchFieldIconButtonProps?: any;
+  searchFieldIconButtonProps?: ButtonProps;
   // searchFieldIconButtonOnClickHandle?: string
   /** (Desktop) props for box grouping the menu link */
   desktopMenuItemsProps?: BoxProps;
@@ -51,20 +61,20 @@ export default interface IStateAppbar extends IAbstractState {
   mobileMenuIconProps?: IconButtonProps;
   mobileMenuIcon2Props?: IconButtonProps;
   /** each individual items */
-  mobileMenuProps?: any;
+  mobileMenuProps?: MenuProps;
   /** each individual items */
-  mobileMenu2Props?: any;
+  mobileMenu2Props?: MenuProps;
   /** props applied to all menu items */
-  menuItemsProps?: any;
+  menuItemsProps?: HTMLAttributes<HTMLLIElement> & { sx?: SxProps };
   /** style to be applied to all menu items */
-  menuItemsSx?: any;
+  menuItemsSx?: SxProps;
   /** mobile menu id */
   menuId?: string;
   mobileMenuId?: string;
   /** mobile menu 2 id */
   mobileMenu2Id?: string;
   /** mui5 logo wrapper styles */
-  logoTheme?: any;
+  logoTheme?: HTMLAttributes<HTMLDivElement>;
   /** Appbar background color, image, gradient... etc. */
   background?: IStateBackground;
   /** Appbar font color and family. */

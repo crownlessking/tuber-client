@@ -1,3 +1,4 @@
+import { AvatarProps, CardHeaderProps } from '@mui/material';
 import IStateCard from '../../interfaces/IStateCard';
 import StateCard from '../StateCard';
 
@@ -10,14 +11,14 @@ export default class StateCardComplex extends StateCard {
       ...this.cardState.props
     };
   }
-  get headerProps(): Required<IStateCard>['headerProps'] {
+  get headerProps(): CardHeaderProps {
     return {
       title: 'Shrimp and Chorizo Paella',
       subheader: 'September 14, 2016',
       ...this.cardState.headerProps
     };
   }
-  get avatarProps(): any {
+  get avatarProps(): AvatarProps {
     return {
       alt: 'Avatar',
       ...this.cardState.avatarProps

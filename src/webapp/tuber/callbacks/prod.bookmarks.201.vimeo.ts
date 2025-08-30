@@ -18,23 +18,10 @@ export default function form_submit_new_vimeo_bookmark(redux: IRedux) {
     const rootState = getState();
     const endpoint = get_dialog_form_endpoint(rootState, DIALOG_VIMEO_NEW_ID);
     if (!endpoint) { return; }
-    const data = get_form_data(redux, FORM_VIMEO_NEW_ID);
+    const data = get_form_data<IBookmark>(redux, FORM_VIMEO_NEW_ID);
     if (!data) { return; }
     const { formData, formName } = data;
-    const platform = formData.platform;
-    const videoid = formData.videoid;
-    const start_seconds = formData.start_seconds;
-    const end_seconds = formData.end_seconds;
-    const title = formData.title;
-    const note = formData.note;
-    const requestBody = new JsonapiRequest<IBookmark>('bookmarks', {
-      platform,
-      videoid,
-      start_seconds,
-      end_seconds,
-      title,
-      note
-    }).build();
+    const requestBody = new JsonapiRequest<IBookmark>('bookmarks', formData).build();
     log('form_submit_new_vimeo_bookmark: requestBody', requestBody);
     dispatch(post_req_state('bookmarks', requestBody));
     dispatch(actions.formsDataClear(formName));

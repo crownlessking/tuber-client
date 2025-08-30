@@ -2,6 +2,9 @@ import AbstractState from './AbstractState';
 import { IStateFormItemRadioButton } from '../interfaces/IFormChoices';
 import IStateFormItemCustom from '../interfaces/IStateFormItemCustom';
 import type StateFormItemRadioCustom from './templates/StateFormItemRadioCustom';
+import { CSSProperties } from 'react';
+import { FormControlLabelProps, Radio } from '@mui/material';
+import React from 'react';
 
 /**
  * If a set of radio buttons is a *single form item (`StateFormItemRadio`) then
@@ -24,8 +27,8 @@ export default class StateFormItemRadioButton
 
   get state(): IStateFormItemRadioButton { return this._radioButtonState; }
   get parent(): StateFormItemRadioCustom { return this._parentDef; }
-  get props(): any { return this._radioButtonState.props; }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): Record<string, unknown> { return this._radioButtonState.props ?? {}; }
+  get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
   get name(): string { return this._radioButtonState.name ?? ''; }
   get label(): string {
     return this._radioButtonState.label
@@ -38,7 +41,14 @@ export default class StateFormItemRadioButton
   get disabled(): boolean {
     return this._radioButtonState.disabled === true;
   }
-  get formControlLabelProps(): any {
-    return this._radioButtonHasState.formControlLabelProps;
+  get formControlLabelProps(): FormControlLabelProps {
+    return this._radioButtonHasState.formControlLabelProps ?? {
+      'control': React.createElement(Radio, {
+        color: this.color,
+        disabled: this.disabled,
+        ...this.props
+      }),
+      'label': this.label
+    };
   }
 }

@@ -21,7 +21,7 @@ export default function StateJsxDialogForm({ def: dialog }: IDialogForm) {
   const open = useSelector((state: RootState) => state.dialog.open ?? false);
 
   const handleDialogTitleClose = () => dispatch({ type: 'dialog/dialogClose' });
-  const handleClose = (_e: any, reason: any) => {
+  const handleClose = (_e: unknown, reason: unknown) => {
     // Clicking on the backdrop no longer close the dialog
     if (reason && reason === "backdropClick")
         return;

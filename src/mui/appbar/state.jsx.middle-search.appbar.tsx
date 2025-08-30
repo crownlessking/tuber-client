@@ -141,7 +141,7 @@ export default function StateJsxMidSearchAppbar({ def: page }: { def: StatePage;
               { page.parent.parent.app.title }
             </Typography>
           )}
-          <Search {...appbar.searchFieldProps}>
+          <Search {...appbar.searchContainerProps}>
             {appbarChips.length < 1 ? (
               <UrlIconWrapper>
                 <StateJsxUnifiedIconProvider def={appbar.searchFieldIcon} />
@@ -161,7 +161,7 @@ export default function StateJsxMidSearchAppbar({ def: page }: { def: StatePage;
                       'type': 'icon',
                       'has': {
                         'icon': 'clear_outline',
-                        'iconProps': { 'color': 'error', 'fontSize': 'small' },
+                        'svgIconProps': { 'color': 'error', 'fontSize': 'small' },
                       },
                       'onClick': ({ store, actions }) => () => {
                         store.dispatch(actions.appbarQueriesDelete(route));

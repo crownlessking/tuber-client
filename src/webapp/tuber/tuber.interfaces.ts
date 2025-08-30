@@ -1,5 +1,4 @@
 // Tuber app types and interfaces gathered in one spot
-import IStateLink from '../../interfaces/IStateLink';
 import type StatePageAppbar from '../../controllers/templates/StatePageAppbar';
 import { TWithRequired } from 'src/interfaces';
 
@@ -90,19 +89,19 @@ export interface ITuberBookmarksProps {
   setPlayerOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-// export type TTuberPlatformMap = {[brand in TPlatform]: (...args: any) => JSX.Element | null }
+// export type TTuberPlatformMap = {[brand in TPlatform]: (...args: unknownnown) => JSX.Element | null }
 export type TTuberPlatformMap = {[brand in TPlatform]: JSX.Element | null };
 
 export interface IResearchToolbarProps {
-  /** This callback shows and hides the list of bookmarks. */
-  togglePlayerCallback: IStateLink['onClick'];
-  /**
-   * This callback function displays an interface which is then used to create
-   * a new bookmark.
-   */
-  bookmarkAddCallback: IStateLink['onClick'];
-  toggleThumbnailsCallback: IStateLink['onClick'];
-  /** Parent definition for state links. It is required. */
+  // /** This callback shows and hides the list of bookmarks. */
+  // togglePlayerCallback: IStateLink['onClick'];
+  // /**
+  //  * This callback function displays an interface which is then used to create
+  //  * a new bookmark.
+  //  */
+  // bookmarkAddCallback: IStateLink['onClick'];
+  // toggleThumbnailsCallback: IStateLink['onClick'];
+  // /** Parent definition for state links. It is required. */
   def: StatePageAppbar;
 }
 
@@ -113,9 +112,6 @@ export interface ITuberPlayer {
 }
 
 export interface ITuberProps {
-  playerOpen?: boolean;
-  setBookmarkToPlay?: React.Dispatch<React.SetStateAction<IBookmark|undefined>>;
-  setPlayerOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   open?: boolean;
   setOpen?: React.Dispatch<React.SetStateAction<boolean>>;
   isOpen?: boolean;
@@ -123,33 +119,11 @@ export interface ITuberProps {
   toolbarProps?: IResearchToolbarProps;
 }
 
-export type TTBListProps = TWithRequired<
-  ITuberProps,
-  'playerOpen'
-  | 'setPlayerOpen'
-  | 'setBookmarkToPlay'
->;
-
-export type TTTBListProps = TWithRequired<
-  ITuberProps,
-  'setBookmarkToPlay'
-  | 'setPlayerOpen'
->;
-
 export type TTPlayerProps = TWithRequired<ITuberProps, 'toolbarProps'>;
 
-/** Tuber bookmark list */
-export interface ITBList {
-  props: TTBListProps;
-}
-
-/** Tuber thumbnailed bookmark list */
-export interface ITTBList {
-  props: TTTBListProps;
-}
-
 export interface TTPlayer {
-  props: TTPlayerProps;
+  toolbarDef: StatePageAppbar;
+  bookmark?: IBookmark;
 }
 
 export interface IUrlStatus {

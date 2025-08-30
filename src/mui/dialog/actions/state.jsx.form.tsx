@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { STATE_BUTTON } from '../../../constants';
+import { STATE_BUTTON } from '../../../constants.client';
 import type StateForm from 'src/controllers/StateForm';
 import IStateFormItem from '../../../interfaces/IStateFormItem';
 import StateFormItem from '../../../controllers/StateFormItem';

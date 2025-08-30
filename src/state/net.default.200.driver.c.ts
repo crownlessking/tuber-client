@@ -17,7 +17,7 @@ import { safely_get_as } from '../business.logic';
 import { remember_jsonapi_errors } from '../business.logic/errors';
 import { is_object } from '../business.logic';
 import Config from '../config';
-import { BOOTSTRAP_ATTEMPTS } from 'src/constants';
+import { BOOTSTRAP_ATTEMPTS } from 'src/constants.client';
 import { dataUpdateRange } from 'src/slices/dataLoadedPages.slice';
 import execute_directives from './net.directives.c';
 import { net_patch_state } from './actions';

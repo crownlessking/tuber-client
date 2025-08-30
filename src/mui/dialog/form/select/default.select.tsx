@@ -14,7 +14,7 @@ interface IDialogSelectDefault {
 
 export default function DialogSelectDefault (props: IDialogSelectDefault) {
   const { def: select, hive } = props;
-  const [value, setValue] = useState<string>(hive[select.name] ?? '');
+  const [value, setValue] = useState<string>((hive[select.name] ?? '') as string);
 
   const handleChange = (event: SelectChangeEvent) => {
     setValue(event.target.value as string);

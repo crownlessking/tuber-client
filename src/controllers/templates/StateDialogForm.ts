@@ -1,5 +1,5 @@
-import { get_parsed_page_content } from '..';
-import { IDialogContentProps } from '../../interfaces/IStateDialog';
+import { DialogContentProps } from '@mui/material';
+import { get_parsed_content } from '..';
 import { IStatePageContent } from '../../interfaces/IStatePage';
 import StateDialog from '../StateDialog';
 import type StateForm from '../StateForm';
@@ -33,8 +33,8 @@ export default class StateDialogForm extends StateDialog {
    * const content = '$form : login : users';
    * ```
    */
-  get content(): string { return this.dialogState.content ?? '' }
-  get contentProps(): IDialogContentProps {
+  get content(): unknown { return this.dialogState.content; }
+  get contentProps(): DialogContentProps {
     return {
       'sx': { 'paddingTop': '5px !important' },
       ...this.dialogState.contentProps
@@ -42,7 +42,7 @@ export default class StateDialogForm extends StateDialog {
   }
   private getContentObj(): IStatePageContent {
     return this.contentObj || (
-      this.contentObj = get_parsed_page_content(this.content)
+      this.contentObj = get_parsed_content(this.content)
     );
   }
   private getForm(): StateForm | null {

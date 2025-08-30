@@ -8,7 +8,7 @@ import type { RootState } from 'src/state';
 import StateJsxSvgIcon from './state.jsx.svg.icon';
 
 interface IJsonIconProps {
-  def: StateFormItemCustom<any>; // StateFormItem | StateLink
+  def: StateFormItemCustom<unknown>; // StateFormItem | StateLink
 }
 
 export interface IStateJsxIconProps {
@@ -77,9 +77,9 @@ export const StateJsxIcon: FC<IStateJsxIconProps> = ({ name, config }) => {
   const iconSvg = allIcons.getIcon(name);
 
   return (
-    <StateJsxSvgIcon def={{ iconProps: config || {} }} svgDef={iconSvg} />
+    <StateJsxSvgIcon def={{ svgIconProps: config || {} }} svgDef={iconSvg} />
   );
-}
+};
 
 export const StateJsxBadgedIcon = (({ def: has }) => {
   const badgeProps = useMemo(() => ({

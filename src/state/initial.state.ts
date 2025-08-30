@@ -17,10 +17,10 @@ import IState from '../interfaces/IState';
  * @returns object or throws an exception
  * @throws an exception if the global variable name is invalid.
  */
-const _get_global_var = <T=any>(varName: string): T => {
+const _get_global_var = <T=unknown>(varName: string): T => {
   try {
-    return window[varName];
-  } catch (e: any) {
+    return window[varName] as T;
+  } catch (e: unknown) {
     const message = `Global variable "${varName}" does not exist.`;
     console.error(message);
   }

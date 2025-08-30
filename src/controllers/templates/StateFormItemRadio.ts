@@ -1,3 +1,4 @@
+import { FormControlProps, FormLabelProps } from '@mui/material';
 import { IStateFormItemRadioButton } from '../../interfaces/IFormChoices';
 import type StateForm from '../StateForm';
 import StateFormItem from '../StateFormItem';
@@ -7,9 +8,9 @@ export type TRadioStyle = 'default' | 'row';
 
 export interface IRadioConfig {
   id?: string;
-  props?: any;
-  formControlProps?: any;
-  formLabelProps?: any;
+  props?: Record<string, unknown>;
+  formControlProps?: FormControlProps;
+  formLabelProps?: FormLabelProps;
 }
 
 /**
@@ -37,13 +38,13 @@ export default class StateFormItemRadio extends StateFormItem<
       ...this.itemState.props
     };
   }
-  get formControlProps(): any {
+  get formControlProps(): FormControlProps {
     return {
       ...this._getConfig().formControlProps,
       ...this.itemHasState.formControlProps
     };
   }
-  get formLabelProps(): any {
+  get formLabelProps(): FormLabelProps {
     return {
       ...this._getConfig().formLabelProps,
       ...this.itemHasState.formLabelProps

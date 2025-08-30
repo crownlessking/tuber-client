@@ -1,4 +1,3 @@
-
 import {
   delete_req_state,
   get_dialog_state,
@@ -10,21 +9,24 @@ import {
   dev_create_bookmark_search_index,
   dev_get_bookmarks_callback
 } from './dev.bookmarks.200';
-import { get_parsed_page_content, safely_get_as } from 'src/controllers';
-import { remember_exception } from 'src/business.logic/errors';
+import { get_parsed_content } from 'src/controllers';
+import { remember_exception } from '../../../business.logic/errors';
 import dev_get_video_thumbnail from './dev.get.video.thumbnail';
 import {
   FORM_RUMBLE_URL_REGEX_ID,
   FORM_UNKNOWN_URL_REGEX_ID,
   FORM_TWITCH_CLIENT_ID_ID,
-  FORM_SAVE_CONFIG_VALUE_ID
+  FORM_SAVE_CONFIG_VALUE_ID,
+  PAGE_SAVE_CONFIG_VALUE_ID,
 } from '../tuber.config';
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
 import { YouTubePlayer } from 'react-youtube';
-import { get_state_form_name } from 'src/business.logic';
+import { get_state_form_name, safely_get_as } from '../../../business.logic';
 import Config from 'src/config';
 import { TPlatform } from '../tuber.interfaces';
-import { ler } from '../../../business.logic/logging';
+import { pre } from '../../../business.logic/logging';
+import JsonapiRequest from 'src/controllers/jsonapi.request';
+import { get_registry_val } from './_callbacks.common.logic';
 
 /**
  * [ __YouTube__ ] Shows a dialog containing a form to create a new bookmark.
@@ -35,16 +37,12 @@ import { ler } from '../../../business.logic/logging';
 export function dev_dialog_new_youtube_bookmark_from_video(redux: IRedux) {
   return async () => {
     const { store: { dispatch } } = redux;
-    const rootState = redux.store.getState();
-    const dialogKey = rootState.stateRegistry['6'];
-    const dialogState = await get_dialog_state(redux, dialogKey);
-    if (!dialogState) {
-      ler(`'${dialogKey}' does not exist.`);
-      return;
-    }
+    pre('dev_dialog_new_youtube_bookmark_from_video():');
+    const dialogState = await get_dialog_state(redux, '6');
+    if (!dialogState) { return; }
     const player = Config.read<YouTubePlayer>('player');
     try {
-      const content = get_parsed_page_content(dialogState.content);
+      const content = get_parsed_content(dialogState.content);
       dispatch({
         type: 'formsData/formsDataUpdate',
         payload: {
@@ -69,9 +67,8 @@ export function dev_dialog_new_youtube_bookmark_from_video(redux: IRedux) {
           value: Config.read<TPlatform>('platform')
         }
       });
-    } catch (e: any) { remember_exception(e) }
-  
-    if (rootState.dialog._id !== dialogState._id) { // if the dialog was NOT mounted
+    } catch (e: unknown) { remember_exception(e); }
+    if (redux.store.getState().dialog._id !== dialogState._id) { // if the dialog was NOT mounted
       dispatch({ type: 'dialog/dialogMount', payload: dialogState });
     } else {
       dispatch({ type: 'dialog/dialogOpen' });
@@ -118,8 +115,8 @@ function dev_clipboard_test(redux: IRedux) {
     let value: string;
     try {
       value = await navigator.clipboard.readText();
-    } catch (e: any) {
-      value = e.message;
+    } catch (e) {
+      value = (e as Error).message;
       remember_exception(e, `dev_clipboard_test: ${value}`);
     }
     redux.store.dispatch({
@@ -195,19 +192,18 @@ function dev_populate_collection(redux: IRedux) {
 
 function dev_form_submit_rumble_regex(redux: IRedux) {
   return async () => {
+    pre('dev_form_submit_rumble_regex():');
     const { store: { dispatch, getState } } = redux;
     const rootState = getState();
     const { headers } = rootState.net;
-    const formName = rootState.stateRegistry[FORM_RUMBLE_URL_REGEX_ID];
-    if (!formName) {
-      ler('dev_form_submit_rumble_regex: Form name not found.');
-      return;
-    }
+    const formName = get_registry_val(rootState, FORM_RUMBLE_URL_REGEX_ID);
+    if (!formName) { return; }
     const formData = safely_get_as<Record<string, string>>(
       rootState.formsData,
       formName,
       {}
     );
+    pre();
     dispatch(post_req_state('dev/rumble/regexp', {
       regexp: formData.regexp,
       url: formData.url
@@ -221,16 +217,15 @@ function dev_form_submit_unknown_regex(redux: IRedux) {
     const { store: { dispatch, getState } } = redux;
     const rootState = getState();
     const { headers } = rootState.net;
-    const formName = rootState.stateRegistry[FORM_UNKNOWN_URL_REGEX_ID];
-    if (!formName) {
-      ler('dev_form_submit_unknown_regex: Form name not found.');
-      return;
-    }
+    pre('dev_form_submit_unknown_regex():');
+    const formName = get_registry_val(rootState, FORM_UNKNOWN_URL_REGEX_ID);
+    if (!formName) { return; }
     const formData = safely_get_as<Record<string, string>>(
       rootState.formsData,
       formName,
       {}
     );
+    pre();
     dispatch(post_req_state('dev/unknown/regexp', {
       regexp: formData.regexp,
       url: formData.url
@@ -244,11 +239,9 @@ function dev_form_submit_twitch_client_id(redux: IRedux) {
     const { store: { dispatch, getState } } = redux;
     const rootState = getState();
     const { headers } = rootState.net;
-    const formName = rootState.stateRegistry[FORM_TWITCH_CLIENT_ID_ID];
-    if (!formName) {
-      ler('dev_form_submit_twitch_client_id: Form name not found.');
-      return;
-    }
+    pre('dev_form_submit_twitch_client_id():');
+    const formName = get_registry_val(rootState, FORM_TWITCH_CLIENT_ID_ID);
+    if (!formName) { return; }
     const policy = new FormValidationPolicy<Record<string, string>>(
       redux,
       formName
@@ -262,6 +255,7 @@ function dev_form_submit_twitch_client_id(redux: IRedux) {
       return;
     }
     const formData = policy.getFilteredData();
+    pre();
     dispatch(post_req_state('dev/twitch/client-id', {
       client_id: formData.client_id,
       client_secret: formData.client_secret
@@ -270,16 +264,17 @@ function dev_form_submit_twitch_client_id(redux: IRedux) {
   };
 }
 
+/** @id $62_C_1 */
 function dev_form_submit_save_config_value(redux: IRedux) {
   return async () => {
     const { store: { dispatch, getState } } = redux;
     const rootState = getState();
     const { headers } = rootState.net;
-    const formName = rootState.stateRegistry[FORM_SAVE_CONFIG_VALUE_ID];
-    if (!formName) {
-      ler('dev_form_submit_save_config_value: Form name not found.');
-      return;
-    }
+    pre('dev_form_submit_save_config_value():');
+    const pageKey = get_registry_val(rootState, PAGE_SAVE_CONFIG_VALUE_ID);
+    if (!pageKey) { return; }
+    const formName = get_registry_val(rootState, FORM_SAVE_CONFIG_VALUE_ID);
+    if (!formName) { return; }
     const policy = new FormValidationPolicy<Record<string, string>>(
       redux,
       formName
@@ -293,10 +288,15 @@ function dev_form_submit_save_config_value(redux: IRedux) {
       return;
     }
     const formData = policy.getFilteredData();
-    dispatch(post_req_state('dev/save-config-value', {
-      key: formData.key,
-      value: formData.value
-    }, headers));
+    pre();
+    dispatch(post_req_state(
+      `dev/${pageKey}`,
+      new JsonapiRequest('Configurations', {
+        key: formData.key,
+        value: formData.value
+      }),
+      headers
+    ));
     dispatch({ type: 'formsData/formsDataClear' });
   };
 }

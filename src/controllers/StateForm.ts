@@ -3,6 +3,9 @@ import AbstractState from './AbstractState';
 import StateFormItem from './StateFormItem';
 import IStateForm from '../interfaces/IStateForm';
 import State from './State';
+import { CSSProperties } from 'react';
+import { IDummyEvent } from 'src/common.types';
+import { PaperProps } from '@mui/material';
 
 export default class StateForm extends AbstractState implements IStateForm {
   private _formItems?: StateFormItem[];
@@ -24,11 +27,11 @@ export default class StateForm extends AbstractState implements IStateForm {
   get parent(): StateAllForms {
     return this._parentDef ?? new State().allForms;
   }
-  get props(): any {
+  get props(): Record<string, unknown> {
     return {
       autoComplete: 'off',
       component: 'form',
-      onSubmit: (e: any) => e.preventDefault(),
+      onSubmit: (e: IDummyEvent) => e.preventDefault(),
       ...this._formState.props
     };
   }
@@ -50,7 +53,7 @@ export default class StateForm extends AbstractState implements IStateForm {
     }
     return 'none';
   }
-  get theme(): any { return this._formState.theme; }
+  get theme(): CSSProperties { return this._formState.theme ?? {}; }
   /** Form name */
   get _key(): string { return this._formState._key ?? ''; }
   /** Get (chain-access) list of form fields definition. */
@@ -65,7 +68,7 @@ export default class StateForm extends AbstractState implements IStateForm {
    */
   get name(): string { return this._formState._key ?? this._fname; }
   get endpoint(): string { return this._ePoint ?? ''; }
-  get paperProps(): any { return this._formState.paperProps; }
+  get paperProps(): PaperProps { return this._formState.paperProps ?? {}; }
   get errorCount(): number {
     const formsDataErrors = this.parent.parent.formsDataErrors;
     return formsDataErrors.getCount(this.name);

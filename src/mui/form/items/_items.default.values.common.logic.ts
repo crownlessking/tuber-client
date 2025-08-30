@@ -16,13 +16,14 @@ import {
   STATE_SELECT_NATIVE,
   CHECKBOXES,
   DESKTOP_DATE_TIME_PICKER
-} from '../../../constants';
+} from '../../../constants.client';
 import {
   formsDataUpdate,
   IFormsDataArgs
 } from '../../../slices/formsData.slice';
 import type StateFormItem from '../../../controllers/StateFormItem';
 import { remember_exception } from 'src/business.logic/errors';
+import { TObj } from 'src/common.types';
 
 /**
  * Insert form data to the Redux store.
@@ -47,8 +48,8 @@ function save_form_data(payload: IFormsDataArgs): void {
 function no_form_data_exist (formName: string, name?: string): boolean {
   try {
     if (name) {
-      // == null catches both undefined and null at the same time.
-      return store.getState().formsData[formName][name] == null;
+      const formData = store.getState().formsData[formName] as TObj;
+      return formData[name] == null; // caches both undefined and null at the same time.
     }
   } catch (e) { remember_exception(e); }
 

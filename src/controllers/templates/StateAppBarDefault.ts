@@ -1,9 +1,17 @@
-import type { AppBarProps, IconButtonProps } from '@mui/material';
+import type {
+  AppBarProps,
+  IconButtonProps,
+  MenuProps,
+  SxProps,
+  TypographyProps
+} from '@mui/material';
 import IStateAppbar from '../../interfaces/IStateAppbar';
 import type State from '../State';
 import StateAppbar from '../StateAppbar';
 import StateAppbarBackground from './StateAppbarBackground';
 import StateAppbarTypography from './StateAppbarTypography';
+import { HTMLAttributes } from 'react';
+import { TObj } from 'src/common.types';
 
 export default class StateAppbarDefault
   extends StateAppbar<State> implements IStateAppbar
@@ -20,7 +28,7 @@ export default class StateAppbarDefault
   get toolbarProps(): Required<IStateAppbar>['toolbarProps'] {
     return this.appbarState.toolbarProps || {};
   }
-  get logoProps(): any { return this.appbarState.logoProps; }
+  get logoProps(): TObj { return this.appbarState.logoProps ?? {}; }
 
   get menuIconProps(): IconButtonProps {
     return {
@@ -33,11 +41,9 @@ export default class StateAppbarDefault
     };
   }
 
-  get searchFieldProps(): any {
+  get searchContainerProps(): HTMLAttributes<HTMLDivElement> & { sx?: SxProps } {
     return {
-      placeholder: 'Search…',
-      inputProps: { 'aria-label': 'search' },
-      ...this.appbarState.searchFieldProps
+      ...this.appbarState.searchContainerProps
     };
   }
 
@@ -77,7 +83,7 @@ export default class StateAppbarDefault
     return this.appbarState.mobileMenuIcon2Props || {};
   }
 
-  get mobileMenuProps(): any {
+  get mobileMenuProps(): MenuProps {
     return {
       anchorOrigin: {
         vertical: 'top',
@@ -88,11 +94,12 @@ export default class StateAppbarDefault
         vertical: 'top',
         horizontal: 'right',
       },
+      open: false,
       ...this.appbarState.mobileMenuProps
     };
   }
 
-  get mobileMenu2Props(): any {
+  get mobileMenu2Props(): MenuProps {
     return {
       anchorOrigin: {
         vertical: 'top',
@@ -103,6 +110,7 @@ export default class StateAppbarDefault
         vertical: 'top',
         horizontal: 'right',
       },
+      open: false,
       ...this.appbarState.mobileMenu2Props
     };
   }
@@ -119,9 +127,9 @@ export default class StateAppbarDefault
     return this.appbarState.mobileMenu2Id || 'primary-menu2-mobile';
   }
 
-  get menuItemsSx(): any { return this.appbarState.menuItemsSx; }
+  get menuItemsSx(): SxProps { return this.appbarState.menuItemsSx ?? {}; }
 
-  get textLogoProps(): any {
+  get textLogoProps(): TypographyProps {
     return {
       variant: 'h6',
       noWrap: true,
@@ -134,7 +142,7 @@ export default class StateAppbarDefault
     };
   }
 
-  get logoContainerProps(): any {
+  get logoContainerProps(): HTMLAttributes<HTMLDivElement> & { sx?: SxProps } {
     return {
       ...this.appbarState.logoContainerProps,
       sx: {

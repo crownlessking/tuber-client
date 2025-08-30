@@ -20,7 +20,7 @@ export default function DialogSwitch (props: IDialogSwitch) {
   const switchGroup = props.def;
   const hive   = props.hive;
 
-  const [value, setValue] = useState<string[]>(hive[switchGroup.name]);
+  const [value, setValue] = useState<string[]>(hive[switchGroup.name] as string[]);
   const data: ICheckboxesData = {
     checkedValues: value,
     value: '',

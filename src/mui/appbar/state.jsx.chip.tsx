@@ -9,7 +9,7 @@ import store, {
 import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip';
 
 interface IStateJsxChipProps {
-  def: StateFormItemCustomChip<any>[];
+  def: StateFormItemCustomChip<unknown>[];
 }
 
 export default function StateJsxChip ({ def: chips }: IStateJsxChipProps) {

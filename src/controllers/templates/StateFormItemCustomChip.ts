@@ -1,13 +1,15 @@
-import { get_base_route } from '..';
+import { ChipProps } from '@mui/material';
+import { get_base_route } from '../../business.logic';
 import type { IRedux, TReduxHandle } from '../../state';
 import StateFormItemCustom from '../StateFormItemCustom';
+import { TStateFormITemCustomColor } from '../../interfaces/IStateFormItemCustom';
 
-export default class StateFormItemCustomChip<P> extends StateFormItemCustom<P> {
+export default class StateFormItemCustomChip<P=unknown> extends StateFormItemCustom<P> {
   private _handleOnClick?: TReduxHandle;
   private _handleOnDelete?: TReduxHandle;
-  get color() { return this.hasState.color || 'default'; }
-  get variant() { return this.hasState.variant || 'outlined'; }
-  get props(): any {
+  get color(): TStateFormITemCustomColor { return this.hasState.color ?? 'default'; }
+  get variant(): ChipProps['variant'] { return this.hasState.variant ?? 'outlined'; }
+  get props(): Record<string, unknown> {
     return {
       // 'sx': { 'position': 'absolute' },
       ...this.hasState.props,

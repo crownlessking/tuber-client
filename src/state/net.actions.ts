@@ -4,7 +4,9 @@ import {
   get_endpoint,
   get_origin_ending_fixed,
   get_query_starting_fixed,
-  get_themed_state
+  get_themed_state,
+  get_val,
+  is_object
 } from '../business.logic';
 import {
   remember_error,
@@ -22,15 +24,22 @@ import {
   appHideSpinner, appRequestFailed, appRequestStart
 } from '../slices/app.slice';
 import { IRedux, RootState } from '.';
-import { IJsonapiBaseResponse } from '../interfaces/IJsonapi';
+import { IJsonapiBaseResponse, IJsonapiError } from '../interfaces/IJsonapi';
 import { cancel_spinner, schedule_spinner } from './spinner';
 import IStateDialog from '../interfaces/IStateDialog';
 import StateNet from '../controllers/StateNet';
 import { TThemeMode } from '../interfaces';
 import Config from '../config';
-import { THEME_DEFAULT_MODE, THEME_MODE } from '../constants';
+import { THEME_DEFAULT_MODE, THEME_MODE } from '../constants.client';
 import { net_patch_state } from './actions';
-import { ler } from '../business.logic/logging';
+import { ler, pre } from '../business.logic/logging';
+import {
+  e_missingDialogDarkState,
+  e_MissingDialogKey,
+  e_missingDialogLightState,
+  e_missingDialogState
+} from '../business.logic/dev.errors.jsonapi';
+import { StateRegistry } from '../controllers/StateRegistry';
 
 const DEFAULT_HEADERS: RequestInit['headers'] = {
   'Accept': 'application/json',
@@ -86,7 +95,7 @@ const delegate_data_handling = (
   endpoint: string,
   json: IJsonapiBaseResponse
 ) => {
-  const status = json.meta?.status || 500;
+  const status = json.meta?.status as number || 500;
   const defaultDriver: { [key: number]: () => void } = {
     200: () => net_default_200_driver(dispatch, getState, endpoint, json),
     201: () => net_default_201_driver(dispatch, getState, endpoint, json),
@@ -151,39 +160,46 @@ const delegate_data_handling = (
  *
  * As more cases are discovered, they should be added to this list.
  */
-function _resolve_unexpected_nesting (response: any) {
-  if (response.response) {// Case of nested response
-    return response.response;
+function _resolve_unexpected_nesting<T=unknown>(response: unknown): T {
+  if (is_object(response) && 'response' in response) {// Case of nested response
+    return response.response as T;
   }
 
   // ... other cases
 
-  return response;
+  return response as T;
 }
 
 /**
  * Get dialog state from the server.
  *
  * @param redux store, actions, etc.
- * @param dialogId
+ * @param registryKey
  * @returns dialog state
  */
-export async function get_dialog_state <T=any>(
+export async function get_dialog_state <T=unknown>(
   redux: IRedux,
-  dialogId: string
+  registryKey: string
 ): Promise<IStateDialog<T>|null> {
+  pre('get_dialog_state():');
   const rootState = redux.store.getState();
+  const stateRegistry = rootState.stateRegistry;
+  const dialogKey = new StateRegistry(stateRegistry).get(registryKey);
+  if (typeof dialogKey !== 'string') {
+    e_MissingDialogKey(registryKey);
+    return null;
+  }
   const mode = Config.read<TThemeMode>(THEME_MODE, THEME_DEFAULT_MODE);
-  const dialogActiveState = rootState.dialogs[dialogId];
-  const dialogLightState = rootState.dialogsLight[dialogId];
-  const dialogDarkState = rootState.dialogsDark[dialogId];
+  const dialogActiveState = rootState.dialogs[dialogKey];
+  const dialogLightState = rootState.dialogsLight[dialogKey];
+  const dialogDarkState = rootState.dialogsDark[dialogKey];
   if (!dialogLightState || !dialogDarkState) {
-    ler(`get_dialog_state: ${dialogId} missing light or/and dark theme(s).`);
+    ler(`get_dialog_state: ${dialogKey} missing light or/and dark theme(s).`);
     remember_error({
       code: 'not_found',
-      title: `${dialogId} Not Found`,
-      detail: `${dialogId} missing light or/and dark theme(s).`,
-      source: { pointer: dialogId }
+      title: `${dialogKey} Not Found`,
+      detail: `${dialogKey} missing light or/and dark theme(s).`,
+      source: { pointer: dialogKey }
     });
   }
   const dialogState = get_themed_state<IStateDialog<T>>(
@@ -198,56 +214,51 @@ export async function get_dialog_state <T=any>(
   const url = `${origin}${dialogPathname}`;
   const { headers } = new StateNet(rootState.net);
   const response = await post_fetch(url, {
-    'key': dialogId,
+    'key': dialogKey,
     'mode': mode
   }, headers);
-  if (response?.errors) {
-    ler(`get_dialog_state: ${response.errors?.[0]?.title}`);
-    remember_jsonapi_errors(response.errors);
+  const errors = get_val<IJsonapiError[]>(response, 'errors');
+  if (errors) {
+    ler(`get_dialog_state: ${errors[0].title}`);
+    remember_jsonapi_errors(errors);
     return null;
   }
-  const main = response?.state?.dialogs?.[dialogId];
-  const light = response?.state?.dialogsLight?.[dialogId];
-  const dark = response?.state?.dialogsDark?.[dialogId];
-  if (!main
-    || !light
-    || !dark
-  ) {
-    ler(`get_dialog_state: ${dialogId} not found.`);
-    remember_error({
-      code: 'not_found',
-      title: `${dialogId} Not Found`,
-      detail: `All three state of ${dialogId} are required but one or more are`
-        + `missing.`,
-      source: { pointer: dialogId }
-    });
-    return null;
-  }
+  const main = get_val(response, `state.dialogs.${dialogKey}`);
+  const light = get_val(response, `state.dialogsLight.${dialogKey}`);
+  const dark = get_val(response, `state.dialogsDark.${dialogKey}`);
+  !main && e_missingDialogState(dialogKey);
+  !light && e_missingDialogLightState(dialogKey);
+  !dark && e_missingDialogDarkState(dialogKey);
   const themedDialogState = get_themed_state<IStateDialog<T>>(
     mode,
     main,
     light,
     dark
-  )
-  if (themedDialogState._key !== dialogId) {
-    ler(`get_dialog_state: ${dialogId} does not match ${themedDialogState._key}.`);
+  );
+  if (themedDialogState._key !== dialogKey) {
+    ler(`get_dialog_state: ${dialogKey} does not match ${themedDialogState._key}.`);
     remember_error({
       code: 'not_found',
-      title: `${dialogId} Not Found`,
-      detail: `${dialogId} does not match ${themedDialogState._key}.`,
-      source: { pointer: dialogId }
+      title: `${dialogKey} Not Found`,
+      detail: `${dialogKey} does not match ${themedDialogState._key}.`,
+      source: { pointer: dialogKey }
     });
     return null;
   }
-  redux.store.dispatch(net_patch_state(response.state));
-  return themedDialogState;
-}
 
-export async function post_fetch<T=any>(
+  const state = get_val(response, 'state');
+  if (state) {
+    redux.store.dispatch(net_patch_state(state));
+  }
+
+  return themedDialogState;
+} // END - get_dialog_state
+
+export async function post_fetch<T=unknown>(
   url: string,
   body: T,
   customHeaders?: RequestInit['headers']
-): Promise<any> {
+): Promise<unknown> {
   const headers = {
     ...DEFAULT_POST_PAYLOAD,
     headers: {
@@ -263,7 +274,7 @@ export async function post_fetch<T=any>(
   return json;
 }
 
-export async function get_fetch<T=any>(url: string): Promise<T> {
+export async function get_fetch<T=unknown>(url: string): Promise<T> {
   const response = await fetch(url, DEFAULT_GET_PAYLOAD);
   const json = await response.json();
   return json as T;
@@ -281,7 +292,7 @@ export async function get_fetch<T=any>(url: string): Promise<T> {
  */
 export const post_req_state = (
   endpoint: string,
-  body: any,
+  body: unknown,
   customHeaders?: RequestInit['headers']
 ) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
@@ -301,13 +312,15 @@ export const post_req_state = (
         },
         body: JSON.stringify(body)
       });
-      const json = _resolve_unexpected_nesting(await response.json());
-      json.meta = json.meta || {};
+      const json = _resolve_unexpected_nesting<IJsonapiBaseResponse>(
+        await response.json()
+      );
+      json.meta = json.meta ?? {};
       json.meta.status = response.status;
       json.meta.statusText = response.statusText;
       json.meta.ok = response.ok
       delegate_data_handling(dispatch, getState, endpoint, json);
-    } catch (error: any) {
+    } catch (error: unknown) {
       remember_exception(error);
       delegate_error_handling(dispatch);
     }
@@ -316,7 +329,7 @@ export const post_req_state = (
 
 export const put_req_state = (
   endpoint: string,
-  body?: any,
+  body?: unknown,
   customHeaders?: RequestInit['headers']
 ) => {
   return async (dispatch: Dispatch, getState: () => RootState) => {
@@ -342,7 +355,7 @@ export const put_req_state = (
       json.meta.statusText = response.statusText;
       json.meta.ok = response.ok;
       delegate_data_handling(dispatch, getState, endpoint, json);
-    } catch (error: any) {
+    } catch (error: unknown) {
       remember_exception(error);
       delegate_error_handling(dispatch);
     }
@@ -351,7 +364,7 @@ export const put_req_state = (
 
 export const axios_post_req_state = (
   _endpoint: string,
-  _body?: any,
+  _body?: unknown,
   _headers?: RequestInit['headers']
 ) => {
   // [TODO] Implement this function using axios.
@@ -450,9 +463,9 @@ export const delete_req_state = (
  */
 export const post_req = async (
   pathname: string,
-  body: any,
-  success?: (state: any, endpoint: string) => void,
-  failure?: (error: any) => void
+  body: unknown,
+  success?: (state: unknown, endpoint: string) => void,
+  failure?: (error: unknown) => void
 ) => {
   const endpoint = get_endpoint(pathname);
   return async (dispatch: Dispatch, getState: () => RootState) => {
@@ -492,8 +505,8 @@ export const post_req = async (
  */
 export const get_req = (
   pathname: string,
-  success?: (endpoint: string, state: any) => void,
-  failure?: (error: any) => void
+  success?: (endpoint: string, state: unknown) => void,
+  failure?: (error: unknown) => void
 ) => {
   const endpoint = get_endpoint(pathname);
   return async (dispatch: Dispatch, getState: () => RootState) => {

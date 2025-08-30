@@ -1,6 +1,6 @@
 import { remember_error, remember_exception } from 'src/business.logic/errors';
 import { ler, log } from 'src/business.logic/logging';
-import { get_query_values } from '../../controllers';
+import { get_query_values } from '../../business.logic';
 import {
   DIALOG_DAILY_EDIT_ID,
   DIALOG_FACEBOOK_EDIT_ID,
@@ -189,7 +189,7 @@ export function shorten_text(
   return text.slice(0, maxLen) + '...';
 }
 
-/** Get the platform icon source */
+/** Get the platform icon source @deprecated */
 export function get_platform_icon_src(platform: TPlatform): string {
   const icons: {[key in TPlatform]: string} = {
     _blank: '../img/icon-unknown.png',
@@ -201,7 +201,7 @@ export function get_platform_icon_src(platform: TPlatform): string {
     odysee: '../img/icon-odysee.png',
     facebook: '../img/icon-facebook.png',
     twitch: '../img/icon-twitch.png'
-  }
+  };
   return icons[platform] ?? icons._blank;
 }
 
@@ -447,7 +447,7 @@ export function get_iframe_url_src(iframe?: string) {
   return '';
 }
 
-export function get_dialog_id_for_edit(platform: TPlatform): string {
+export function get_dialog_registry_key_for_edit(platform: TPlatform): string {
   switch (platform) {
   case 'youtube':
     return DIALOG_YOUTUBE_EDIT_ID;

@@ -22,19 +22,10 @@ export default function form_submit_new_unknown_bookmark(redux: IRedux) {
     const data = get_form_data<IBookmark>(redux, FORM_UNKNOWN_NEW_ID);
     if (!data) { return; }
     const { formData, formName } = data;
-    const url = formData.url;
     const embed_url = get_iframe_url_src(formData.embed_url);
-    const thumbnail_url = formData.thumbnail_url;
-    const platform = formData.platform;
-    const title = formData.title;
-    const note = formData.note;
     const requestBody = new JsonapiRequest(endpoint, {
-      url,
+      ...formData,
       embed_url,
-      thumbnail_url,
-      platform,
-      title,
-      note
     }).build();
     log('form_submit_new_youtube_bookmark: requestBody', requestBody);
     dispatch(post_req_state(endpoint, requestBody));

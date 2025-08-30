@@ -1,4 +1,4 @@
-import { get_parsed_page_content } from 'src/controllers';
+import { get_parsed_content } from 'src/controllers';
 import StateTmp from 'src/controllers/StateTmp';
 import { type IRedux } from 'src/state';
 import { remember_error, remember_exception } from 'src/business.logic/errors';
@@ -34,7 +34,7 @@ export default function form_submit_edit_rumble_bookmark(redux: IRedux) {
       // Careful, `rootState.dialog` is only valid if the right dialog state
       // is mounted.
       const { _key, content } = rootState.dialog;
-      const {name, endpoint } = get_parsed_page_content(content);
+      const {name, endpoint } = get_parsed_content(content);
       if (!endpoint) {
         const errorMsg = `No endpoint defined for '${_key}'.`;
         ler(errorMsg);
@@ -93,9 +93,9 @@ export default function form_submit_edit_rumble_bookmark(redux: IRedux) {
       ));
       dispatch(actions.formsDataClear(formName));
       dispatch(actions.dialogClose());
-    } catch (e: any) {
-      ler(e.message);
-      remember_exception(e, msg(e.message));
+    } catch (e) {
+      ler((e as Error).message);
+      remember_exception(e, msg((e as Error).message));
     }
   };
 }

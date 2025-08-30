@@ -1,13 +1,27 @@
 import { get_state_form_name } from 'src/business.logic';
+import { e_missingRegistryValue } from 'src/business.logic/dev.errors.jsonapi';
 import { remember_error } from 'src/business.logic/errors';
 import { ler, pre } from 'src/business.logic/logging';
-import { get_parsed_page_content } from 'src/controllers';
+import { get_parsed_content } from 'src/controllers';
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
+import { StateRegistry } from 'src/controllers/StateRegistry';
 import { type IRedux, type RootState } from 'src/state';
 
-interface IFormData<T=any> {
+interface IFormData<T=unknown> {
   formData: T;
   formName: string;
+}
+
+/** An attempt to reduce inflated code when retrieving state registry values. */
+export const get_registry_val = (
+  rootState: RootState,
+  registryKey: string
+): string | undefined => {
+  const value = new StateRegistry(rootState.stateRegistry).get(registryKey);
+  if (typeof value !== 'string' || value === '') {
+    e_missingRegistryValue(registryKey);
+  }
+  return value as string | undefined;
 }
 
 /**
@@ -18,11 +32,12 @@ interface IFormData<T=any> {
  */
 export function get_dialog_form_endpoint(
   rootState: RootState,
-  dialogId: string
+  dialogRegistryKey: string
 ): string | undefined {
-  const dialogKey = rootState.stateRegistry[dialogId];
+  pre('get_dialog_form_endpoint():');
+  const dialogKey = get_registry_val(rootState, dialogRegistryKey);
+  if (!dialogKey) { return; }
   const dialogState = rootState.dialogs[dialogKey];
-  pre('get_dialog_form_endpoint:');
   if (!dialogState) {
     const errorMsg = `'${dialogKey}' does not exist.`;
     ler(errorMsg);
@@ -33,7 +48,7 @@ export function get_dialog_form_endpoint(
     });
     return;
   }
-  const endpoint = get_parsed_page_content(dialogState.content).endpoint;
+  const endpoint = get_parsed_content(dialogState.content).endpoint;
   if (!endpoint) {
     const errorMsg = `No endpoint defined for '${dialogKey}'.`;
     ler(errorMsg);
@@ -55,24 +70,15 @@ export function get_dialog_form_endpoint(
  * @param formId The form id.
  * @returns form data and form name
  */
-export function get_form_data<T=any>(
+export function get_form_data<T=unknown>(
   redux: IRedux,
   formId: string
 ): IFormData<T> | null {
   const rootState = redux.store.getState();
-  const formKey = rootState.stateRegistry[formId];
-  pre('get_dialog_form_data:');
-  if (!formKey) {
-    const errorMsg = `Form with id '${formId}' not found.`;
-    ler(errorMsg);
-    remember_error({
-      code: 'value_not_found',
-      title: errorMsg,
-      source: { parameter: 'formKey' }
-    });
-    return null;
-  }
-  const formName = get_state_form_name(formKey)
+  pre('get_form_data():');
+  const formKey = get_registry_val(rootState, formId);
+  if (!formKey) { return null; }
+  const formName = get_state_form_name(formKey);
   if (!rootState.formsData[formName]) {
     const errorMsg = `'${formKey}' data not found.`;
     ler(errorMsg);

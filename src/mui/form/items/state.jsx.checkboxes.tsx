@@ -7,11 +7,8 @@ import FormLabel from '@mui/material/FormLabel';
 import { useSelector } from 'react-redux';
 import type StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox';
 import { type RootState } from '../../../state';
-import {
-  get_redux_store_val,
-  get_statuses,
-  ICheckboxesData
-} from './_items.common.logic';
+import { get_statuses, ICheckboxesData } from './_items.common.logic';
+import StateFormsData from 'src/controllers/StateFormsData';
 
 interface IJsonCheckboxes {
   def: StateFormItemCheckbox;
@@ -19,13 +16,10 @@ interface IJsonCheckboxes {
 
 export default function StateJsxCheckboxes ({ def: checkboxes }: IJsonCheckboxes) {
   const { name, parent: { name: formName }} = checkboxes;
-  const formsData = useSelector<RootState>(state => state.formsData);
-  const checkedValues = get_redux_store_val<string[]>(
-    formsData,
-    formName,
-    name,
-    []
+  const formsData = new StateFormsData(
+    useSelector((state: RootState) => state.formsData)
   );
+  const checkedValues = formsData.getValue<string[]>(formName, name, []);
   const data: ICheckboxesData = {
     checkedValues,
     value: '',

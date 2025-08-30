@@ -11,7 +11,7 @@ import {
   DEFAULT_LANDING_PAGE_VIEW,
   DEFAULT_NOTFOUND_PAGE_VIEW,
   DEFAULT_SUCCESS_PAGE_VIEW
-} from '../constants';
+} from '../constants.client';
 import PageBlank from './pages/blank.component';
 import { err, log } from '../business.logic/logging';
 
@@ -36,9 +36,9 @@ export default function View({ def: page }: { def: StatePage }): JSX.Element|nul
 
   try {
     return viewsTable[view]();
-  } catch (e: any) {
+  } catch (e) {
     remember_exception(e);
-    log(e.message);
+    log((e as Error).message);
   }
   return ( null );
 }

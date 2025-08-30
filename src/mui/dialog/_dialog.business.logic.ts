@@ -8,7 +8,7 @@ import type StateFormItem from '../../controllers/StateFormItem';
 import { remember_exception } from 'src/business.logic/errors';
 import { ler } from '../../business.logic/logging';
 
-export type THive = Record<string, any>
+export type THive = Record<string, unknown>
 
 /**
  * Get a `stateForm` object so that a form can be displayed in the dialog.
@@ -39,7 +39,7 @@ function get_dialog_json(dialogName: string, defaultDialog: IStateDialog) {
   try {
     const dialogPropertyName = get_dialog_property_name(dialogName);
     return store.getState().dialogs[dialogPropertyName];
-  } catch (e: any) {
+  } catch (e: unknown) {
     const message = `get_dialog_state: '${dialogName}' does not exist.`;
     ler(message);
     remember_exception(e, message);

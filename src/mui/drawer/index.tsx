@@ -1,9 +1,9 @@
 import { Fragment, useMemo, useCallback } from 'react';
 import Config from '../../config';
-import { LAST_DRAWER_STATE } from '../../constants';
+import { LAST_DRAWER_STATE } from '../../constants.client';
 import IStateDrawer from '../../interfaces/IStateDrawer';
 import type StatePage from '../../controllers/StatePage';
-import type StateDrawerResponsive from '../../controllers/templates/StateDrawerResponsive';
+import StateDrawerResponsive from '../../controllers/templates/StateDrawerResponsive';
 import MiniDrawer from './mini-variant.drawer';
 import PersistentDrawer from './persistent.drawer';
 import ResponsiveDrawer from './responsive.drawer';
@@ -29,13 +29,13 @@ export default function StateJsxDrawer({ def: page }: IJsonDrawerProps) {
     const table: {[key: string]: JSX.Element} = {
       'mini': <MiniDrawer def={page.drawer} />,
       'persistent': <PersistentDrawer def={page.drawer} />,
-      'responsive': <ResponsiveDrawer def={page.drawer as StateDrawerResponsive} />,
+      'responsive': <ResponsiveDrawer def={new StateDrawerResponsive(page.drawer.state, page)} />,
       'temporary': <TempDrawer def={page.drawer} />,
       'swipeable': <TempDrawer def={page.drawer} />,
       'none': <Fragment />
     };
     return table;
-  }, [page.drawer]);
+  }, [ page ]);
 
   if (page.hideDrawer) {
     return ( null );

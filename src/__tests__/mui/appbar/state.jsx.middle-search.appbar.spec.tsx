@@ -11,5 +11,5 @@ describe('src/mui/appbar/state.jsx.middle-search.appbar.tsx', () => {
       .create(<StateJsxMiddleSearchAppbar def={page} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
-  })
-})
+  });
+});

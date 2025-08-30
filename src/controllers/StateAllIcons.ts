@@ -24,11 +24,11 @@ export default class StateAllIcons extends AbstractState {
     return this._parentDef || new State(); 
   }
 
-  get props(): any { 
+  get props(): unknown { 
     return this.die('Not implemented yet.', {}); 
   }
 
-  get theme(): any { 
+  get theme(): unknown { 
     return this.die('Not implemented yet.', {}); 
   }
 

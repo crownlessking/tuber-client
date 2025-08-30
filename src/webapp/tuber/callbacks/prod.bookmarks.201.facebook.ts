@@ -1,7 +1,7 @@
 import JsonapiRequest from 'src/controllers/jsonapi.request';
 import { type IRedux } from 'src/state';
 import { post_req_state } from 'src/state/net.actions';
-import { get_state_form_name } from '../../../business.logic';
+import { get_state_form_name, get_val } from '../../../business.logic';
 import { FORM_FACEBOOK_NEW_ID } from '../tuber.config';
 import { facebook_parse_iframe } from '../_tuber.common.logic';
 import { IBookmark } from '../tuber.interfaces';
@@ -22,7 +22,7 @@ export default function form_submit_new_facebook_bookmark(redux: IRedux) {
     const rootState = getState();
     const endpoint = get_dialog_form_endpoint(rootState, FORM_FACEBOOK_NEW_ID);
     if (!endpoint) { return; }
-    const formKey = rootState.stateRegistry[FORM_FACEBOOK_NEW_ID];
+    const formKey = get_val<string>(rootState, `stateRegistry.${FORM_FACEBOOK_NEW_ID}`);
     if (!formKey) {
       const errorMsg = 'form_submit_new_facebook_bookmark: Form key not found.';
       ler(errorMsg);
@@ -55,25 +55,18 @@ export default function form_submit_new_facebook_bookmark(redux: IRedux) {
       return;
     }
     const formData = policy.getFilteredData();
-    const platform = formData.platform;
     const [ author, videoid, start ] = facebook_parse_iframe(formData.embed_url);
     if (!author || !videoid) {
       ler('form_submit_new_facebook_bookmark: failed to get author and videoid!');
       policy.emit('embed_url', 'Bad embed URL.');
       return;
     }
-    const url = formData.url;
     const start_seconds = parseInt(start);
-    const title = formData.title;
-    const note = formData.note;
     const requestBody = new JsonapiRequest(endpoint, {
-      url,
+      ...formData,
       videoid,
       author,
-      platform,
       start_seconds,
-      title,
-      note
     }).build();
     log('form_submit_new_youtube_bookmark: requestBody', requestBody);
     dispatch(post_req_state(endpoint, requestBody));

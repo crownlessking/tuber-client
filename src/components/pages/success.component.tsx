@@ -37,10 +37,10 @@ const CheckCircleOutlineIcon = memo(() => (
  * Tags: `success`, `page`, `message`
  */
 export default function PageSuccess ({ def: page }:{ def: StatePage }) {
-  const msg = page.parent.parent.tmp.get(
+  const msg = page.parent.parent.tmp.get<string>(
     page.parent.parent.app.route,
     'message',
-    page.data.message
+    page.data.message as string
   );
 
   return (

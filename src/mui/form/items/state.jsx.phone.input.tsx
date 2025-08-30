@@ -1,12 +1,12 @@
 import FormControl from '@mui/material/FormControl';
 import Input from '@mui/material/Input';
 import InputLabel from '@mui/material/InputLabel';
-import { forwardRef } from 'react';
+import { forwardRef, ElementType } from 'react';
 import { IMaskInput } from 'react-imask';
 import { useSelector } from 'react-redux';
 import type StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
 import { type RootState } from '../../../state';
-import { get_field_value } from './_items.common.logic';
+import StateFormsData from 'src/controllers/StateFormsData';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -23,8 +23,8 @@ const TextMaskCustom = forwardRef<HTMLElement, CustomProps>(
         definitions={{
           '#': /[1-9]/,
         }}
-        inputRef={ref as any}
-        onAccept={(value: any) => onChange({ target: { name: props.name, value } })}
+        inputRef={ref}
+        onAccept={(value: string) => onChange({ target: { name: props.name, value } })}
         overwrite
       />
     );
@@ -37,8 +37,8 @@ interface IDialogPhoneInput {
 
 export default function StateJsxPhoneInput({ def: input }: IDialogPhoneInput) {
   input.configure('phone');
-  const formsData = useSelector<RootState>(state => state.formsData);
-  const value = get_field_value(formsData, input.parent.name, input.name);
+  const formsData = new StateFormsData(useSelector((state: RootState) => state.formsData));
+  const value = formsData.getValue(input.parent.name, input.name, '');
 
   return (
     <FormControl {...input.formControlProps}>
@@ -48,7 +48,7 @@ export default function StateJsxPhoneInput({ def: input }: IDialogPhoneInput) {
         name={input.name}
         value={value}
         onChange={input.onChange(input.name)}
-        inputComponent={TextMaskCustom as any}
+        inputComponent={TextMaskCustom as ElementType<unknown>}
       />
     </FormControl>
   );

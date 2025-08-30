@@ -1,4 +1,4 @@
-import JsonapiError from '../../controllers/jsonapi.error'
+import JsonapiError from '../../controllers/jsonapi.error';
 
 describe('JsonapiError', () => {
   describe('constructor', () => {
@@ -29,9 +29,9 @@ describe('JsonapiError', () => {
           source: { parameter: 'id' },
           meta: { meta: 'data' }
         }
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('id', () => {
     it('should return the id', () => {
@@ -39,17 +39,17 @@ describe('JsonapiError', () => {
         id: '1',
         code: 'not_found',
         title: 'Not Found'
-      })
+      });
       expect(error.id).toEqual('1')
-    })
+    });
     it('should return a new id if one is not provided', () => {
       const error = new JsonapiError({
         code: 'not_found',
         title: 'Not Found'
-      })
+      });
       expect(error.id).toBeDefined()
-    })
-  })
+    });
+  });
 
   describe('links', () => {
     it('should return the links', () => {
@@ -57,17 +57,17 @@ describe('JsonapiError', () => {
         code: 'not_found',
         title: 'Not Found',
         links: { about: { href: 'http://example.com'} }
-      })
+      });
       expect(error.links).toEqual({ about: 'http://example.com' })
-    })
+    });
     it('should return an empty object if links are not provided', () => {
       const error = new JsonapiError({
         code: 'not_found',
         title: 'Not Found'
-      })
+      });
       expect(error.links).toEqual({})
-    })
-  })
+    });
+  });
 
   describe('status', () => {
     it('should return the status', () => {
@@ -75,17 +75,17 @@ describe('JsonapiError', () => {
         code: 'not_found',
         title: 'Not Found',
         status: '404'
-      })
-      expect(error.status).toEqual('404')
-    })
+      });
+      expect(error.status).toEqual('404');
+    });
     it('should return an empty string if status is not provided', () => {
       const error = new JsonapiError({
         code: 'not_found',
         title: 'Not Found'
-      })
-      expect(error.status).toEqual('')
-    })
-  })
+      });
+      expect(error.status).toEqual('');
+    });
+  });
 
   describe('code', () => {
     it('should return the code', () => {
@@ -99,7 +99,7 @@ describe('JsonapiError', () => {
           code: 'not_found',
           title: 'Not Found'
         }
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

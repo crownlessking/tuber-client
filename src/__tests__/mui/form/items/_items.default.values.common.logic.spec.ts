@@ -1,7 +1,7 @@
 import set_all_default_values,
-  * as F from '../../../../../src/mui/form/items/_items.default.values.common.logic'
-import StateFormItem from '../../../../controllers/StateFormItem'
-import StateForm from '../../../../controllers/StateForm'
+  * as F from '../../../../../src/mui/form/items/_items.default.values.common.logic';
+import StateFormItem from '../../../../controllers/StateFormItem';
+import StateForm from '../../../../controllers/StateForm';
 
 describe('src/mui/form/items/_items.default.values.common.logic.ts', () => {
 
@@ -13,11 +13,11 @@ describe('src/mui/form/items/_items.default.values.common.logic.ts', () => {
         has: {
           defaultValue: 'default'
         }
-      }, {} as StateForm)
-      const formName = 'formName'
-      const result = F.set_default_value(field, formName)
-      expect(result).toEqual(undefined)
-    })
+      }, {} as StateForm);
+      const formName = 'formName';
+      const result = F.set_default_value(field, formName);
+      expect(result).toEqual(undefined);
+    });
 
     it('should not save the default value to the store if the field has no name', () => {
       const field = new StateFormItem({
@@ -26,10 +26,10 @@ describe('src/mui/form/items/_items.default.values.common.logic.ts', () => {
         has: {
           defaultValue: 'default'
         }
-      }, {} as StateForm)
-      const formName = 'formName'
-      const result = F.set_default_value(field, formName)
-      expect(result).toEqual(undefined)
+      }, {} as StateForm);
+      const formName = 'formName';
+      const result = F.set_default_value(field, formName);
+      expect(result).toEqual(undefined);
     })
 
     it('should not save the default value to the store if the field has no default value', () => {
@@ -39,10 +39,10 @@ describe('src/mui/form/items/_items.default.values.common.logic.ts', () => {
         has: {
           defaultValue: undefined
         }
-      }, {} as StateForm)
-      const formName = 'formName'
-      const result = F.set_default_value(field, formName)
-      expect(result).toEqual(undefined)
+      }, {} as StateForm);
+      const formName = 'formName';
+      const result = F.set_default_value(field, formName);
+      expect(result).toEqual(undefined);
     })
   })
 
@@ -63,11 +63,11 @@ describe('src/mui/form/items/_items.default.values.common.logic.ts', () => {
             defaultValue: 'default2'
           }
         }, {} as StateForm)
-      ]
-      const formName = 'formName'
-      const result = F.store_default_values(fields, formName)
-      expect(result).toEqual(undefined)
-    })
+      ];
+      const formName = 'formName';
+      const result = F.store_default_values(fields, formName);
+      expect(result).toEqual(undefined);
+    });
 
     it('should not save the default values to the store if the field has no name', () => {
       const fields = [
@@ -85,11 +85,11 @@ describe('src/mui/form/items/_items.default.values.common.logic.ts', () => {
             defaultValue: 'default2'
           }
         }, {} as StateForm)
-      ]
-      const formName = 'formName'
-      const result = F.store_default_values(fields, formName)
-      expect(result).toEqual(undefined)
-    })
+      ];
+      const formName = 'formName';
+      const result = F.store_default_values(fields, formName);
+      expect(result).toEqual(undefined);
+    });
 
     it('should not save the default values to the store if the field has no default value', () => {
       const fields = [
@@ -107,12 +107,12 @@ describe('src/mui/form/items/_items.default.values.common.logic.ts', () => {
             defaultValue: undefined
           }
         }, {} as StateForm)
-      ]
-      const formName = 'formName'
-      const result = F.store_default_values(fields, formName)
-      expect(result).toEqual(undefined)
-    })
-  })
+      ];
+      const formName = 'formName';
+      const result = F.store_default_values(fields, formName);
+      expect(result).toEqual(undefined);
+    });
+  });
 
   describe ('set_all_default_values', () => {
     it('should save the default values to the store', () => {
@@ -131,9 +131,9 @@ describe('src/mui/form/items/_items.default.values.common.logic.ts', () => {
             defaultValue: 'default2'
           }
         }, {} as StateForm)
-      ]
-      const result = set_all_default_values(fields)
-      expect(result).toEqual(undefined)
+      ];
+      const result = set_all_default_values(fields);
+      expect(result).toEqual(undefined);
     })
 
     it('should not save the default values to the store if the field has no name', () => {
@@ -152,10 +152,10 @@ describe('src/mui/form/items/_items.default.values.common.logic.ts', () => {
             defaultValue: 'default2'
           }
         }, {} as StateForm)
-      ]
-      const result = set_all_default_values(fields)
-      expect(result).toEqual(undefined)
-    })
+      ];
+      const result = set_all_default_values(fields);
+      expect(result).toEqual(undefined);
+    });
 
     it('should not save the default values to the store if the field has no default value', () => {
       const fields = [
@@ -173,9 +173,9 @@ describe('src/mui/form/items/_items.default.values.common.logic.ts', () => {
             defaultValue: undefined
           }
         }, {} as StateForm)
-      ]
-      const result = set_all_default_values(fields)
-      expect(result).toEqual(undefined)
-    })
-  })
-})
+      ];
+      const result = set_all_default_values(fields);
+      expect(result).toEqual(undefined);
+    });
+  });
+});

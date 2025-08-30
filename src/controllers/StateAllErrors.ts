@@ -16,6 +16,6 @@ export default class StateAllErrors extends AbstractState {
   get state(): IJsonapiError[] { return this._allErrorsState; }
   /** Chain-access to root definition. */
   get parent(): State { return this._parentDef || new State(); }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): unknown { return this.die('Not implemented yet.', {}); }
+  get theme(): unknown { return this.die('Not implemented yet.', {}); }
 }

@@ -1,14 +1,29 @@
-import { type BadgeProps } from '@mui/material';
-import { IAdornment } from '../common.types';
-import type { IRedux, TReduxHandle } from '../state';
+import { CSSProperties } from 'react';
+import { IAdornment } from '.';
+import { TReduxHandle } from '../state';
 import { IStateFormItemInputProps } from './IStateFormItem';
+import {
+  BadgeProps,
+  ChipProps,
+  FormControlLabelProps,
+  FormControlProps,
+  FormGroupProps,
+  FormHelperTextProps,
+  FormLabelProps,
+  IconProps,
+  InputLabelProps,
+  RadioGroupProps,
+  SvgIconProps
+} from '@mui/material';
 
-export default interface IStateFormItemCustom<T = any> {
-  callback?: (redux: IRedux) => (e: any) => void;
+export type TStateFormITemCustomColor = 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+
+export default interface IStateFormItemCustom<T = unknown> {
+  callback?: TReduxHandle;
   /** CSS classes (JSS), most likely inherited from parent element */
-  classes?: any;
+  classes?: unknown;
   content?: string;
-  color?: string;
+  color?: TStateFormITemCustomColor;
   /**
    * Currently the only way to set the default value for a
    * field. Don't use the `value` attribute, it will not
@@ -29,7 +44,8 @@ export default interface IStateFormItemCustom<T = any> {
    */
   iconPosition?: 'left' | 'right';
   /** To be spread on `Icon` and `FontAwesomeIcon` component tags. */
-  iconProps?: any;
+  iconProps?: IconProps;
+  svgIconProps?: SvgIconProps;
   /** Contains data for <select />,  */
   items?: T[];
   /** Component id */
@@ -45,7 +61,7 @@ export default interface IStateFormItemCustom<T = any> {
   /** Get human-readable helper text. */
   helperText?: string;
   title?: string;
-  variant?: string;
+  variant?: ChipProps['variant'];
   /**
    * badge props. If defined, the badge will show  
    * Badge example:
@@ -101,24 +117,24 @@ export default interface IStateFormItemCustom<T = any> {
   /** Material UI adornments. */
   startAdornment?: IAdornment;
   endAdornment?: IAdornment;
-  props?: any;
+  props?: Record<string, unknown>;
   inputProps?: IStateFormItemInputProps;
   /** JSS style */
-  theme?: any;
+  theme?: CSSProperties;
   /** Used for select components */
-  formControlProps?: any;
+  formControlProps?: FormControlProps;
   /** Used for select components */
-  formControlLabelProps?: any;
+  formControlLabelProps?: FormControlLabelProps;
   /** Used for select components */
-  inputLabelProps?: any;
+  inputLabelProps?: InputLabelProps;
   /** Used for radio components */
-  formLabelProps?: any;
+  formLabelProps?: FormLabelProps;
   /** Used for radio components */
-  radioGroupProps?: any;
+  radioGroupProps?: RadioGroupProps;
   /** Use for switch components */
-  formGroupProps?: any;
+  formGroupProps?: FormGroupProps;
   /** Use for select and switch components */
-  formHelperTextProps?: any;
+  formHelperTextProps?: FormHelperTextProps;
   highlight?: string;
   /** Maximum length of the input field. */
   maxLength?: number;

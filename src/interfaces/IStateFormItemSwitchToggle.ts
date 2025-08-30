@@ -1,4 +1,5 @@
-import { IAbstractState } from '../common.types';
+import { FormControlLabelProps } from '@mui/material';
+import IAbstractState from './IAbstractState';
 
 export default interface IStateFormItemSwitchToggle extends IAbstractState {
   /** Switch label */
@@ -6,5 +7,5 @@ export default interface IStateFormItemSwitchToggle extends IAbstractState {
   /** Switch value */
   name?: string;
   /** Use with switch component group */
-  formControlLabelProps?: any;
+  formControlLabelProps?: FormControlLabelProps;
 }

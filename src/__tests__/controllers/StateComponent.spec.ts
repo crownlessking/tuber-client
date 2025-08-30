@@ -1,9 +1,9 @@
-import StateComponent from '../../controllers/StateComponent'
+import StateComponent from '../../controllers/StateComponent';
 
 describe('StateComponent', () => {
   describe('constructor', () => {
     it('should create a state component object', () => {
-      expect(new StateComponent({}, null)).toEqual({ _stateComponent: {} })
-    })
-  })
-})
+      expect(new StateComponent({}, null)).toEqual({ _stateComponent: {} });
+    });
+  });
+});

@@ -1,5 +1,5 @@
-import State from '../../../controllers/State'
-import StateDialogCustomized from '../../../controllers/templates/StateDialogCustomized'
+import State from '../../../controllers/State';
+import StateDialogCustomized from '../../../controllers/templates/StateDialogCustomized';
 
 describe('StateDialogCustomized', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateDialogCustomized', () => {
       expect(new StateDialogCustomized(
         {},
         {} as State
-      )).toEqual({ _dialogCustomizedState: {} })
-    })
-  })
-})
+      )).toEqual({ _dialogCustomizedState: {} });
+    });
+  });
+});

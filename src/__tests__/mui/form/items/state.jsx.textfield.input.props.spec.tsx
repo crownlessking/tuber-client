@@ -12,7 +12,7 @@ describe('src/mui/form/items/state.jsx.textfield.input.props.tsx', () => {
 
     it('should render', () => {
       const adornment = new StateFormItemInputProps({
-        'start': {
+        'startAdornment': {
           icon: {
             type: 'icon',
             has: {
@@ -23,7 +23,7 @@ describe('src/mui/form/items/state.jsx.textfield.input.props.tsx', () => {
             color: 'primary',
           },
         } as IStateFormItemAdornment,
-        'end': {
+        'endAdornment': {
           icon: {
             type: 'icon',
             has: {

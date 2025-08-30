@@ -2,13 +2,15 @@ import { AppBarProps } from '@mui/material';
 import AbstractState from './AbstractState';
 import IStateBackground from '../interfaces/IStateBackground';
 import IStateTypography from '../interfaces/IStateTypography';
+import type State from './State';
 import type StateAppbarBackground from './templates/StateAppbarBackground';
 import type StateAppbarTypography from './templates/StateAppbarTypography';
 import StateComponent from './StateComponent';
 import StateLink from './StateLink';
 import IStateAppbar, { TAppbarStyle } from '../interfaces/IStateAppbar';
+import { CSSProperties } from 'react';
 
-export default class StateAppbar<P>
+export default class StateAppbar<P = State>
   extends AbstractState implements IStateAppbar
 {
   protected parentDef: P;
@@ -21,7 +23,7 @@ export default class StateAppbar<P>
   protected appbarBackground?: StateAppbarBackground<P>;
   protected appbarComponentsState: Required<IStateAppbar>['components'];
   protected appbarComponents: {
-    [comp: string]: StateComponent[]
+    [comp: string]: StateComponent<P>[]
   };
 
   /**
@@ -44,7 +46,7 @@ export default class StateAppbar<P>
   /** Get a copy of the `appbar` json. */
   get state(): IStateAppbar { return this.appbarState; }
   get parent(): P { return this.parentDef; }
-  get theme(): any { return this.appbarState.theme || {}; }
+  get theme(): CSSProperties { return this.appbarState.theme || {}; }
   get props(): AppBarProps { return this.appbarState.props || {}; }
   get _type(): TAppbarStyle { return this.appbarState._type ?? 'none'; }
   get appbarStyle(): TAppbarStyle { return this.appbarState.appbarStyle || 'basic'; }
@@ -67,15 +69,17 @@ export default class StateAppbar<P>
     );
   }
 
-  get logoTheme(): any { return this.appbarState.logoTheme || {}; }
+  get logoTheme(): React.HTMLAttributes<HTMLDivElement> {
+    return this.appbarState.logoTheme || {};
+  }
 
-  getComponentItem(c: string): StateComponent<this>[] {
+  getComponentItem(c: string): StateComponent<P>[] {
     if (this.appbarComponents[c]) {
       return this.appbarComponents[c];
     }
     if (this.appbarComponentsState[c]) {
       return this.appbarComponents[c] = this.appbarComponentsState[c].map(
-        comp => new StateComponent(comp, this)
+        comp => new StateComponent(comp, this.parentDef)
       );
     }
     return [];

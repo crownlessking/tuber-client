@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import SwipeableDrawer, { SwipeableDrawerProps } from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
@@ -44,7 +44,7 @@ export default function TempDrawer({ def: drawer }: ITempDrawerProps) {
             key={i + 1}
             button
             onClick={item.onClick({store, actions, route: item.has.route})}
-            component={RouterLink as any}
+            component={RouterLink}
             to={get_formatted_route(item.has)}
           >
             <ListItemIcon>
@@ -69,9 +69,10 @@ export default function TempDrawer({ def: drawer }: ITempDrawerProps) {
     ),
     'swipeable': (
       <SwipeableDrawer
-        {...drawer.props}
+        {...drawer.props as SwipeableDrawerProps}
         open={open}
         onClose={toggleDrawer}
+        onOpen={() => dispatch({ type: 'drawer/drawerOpen' })}
       >
         { list(drawer.props.anchor) }
       </SwipeableDrawer>

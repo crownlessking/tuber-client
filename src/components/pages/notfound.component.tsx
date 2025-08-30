@@ -16,10 +16,10 @@ const H2 = styled('h2')(() => ({
 }));
 
 export default function PageNotFound ({ def: page }: { def: StatePage }) {
-  const message = page.parent.parent.tmp.get(
+  const message = page.parent.parent.tmp.get<string>(
     page.parent.parent.app.route,
     'message',
-    page.data.message
+    page.data.message as string
   );
 
   return (

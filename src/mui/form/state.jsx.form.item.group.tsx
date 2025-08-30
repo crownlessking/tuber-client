@@ -1,9 +1,13 @@
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
-  Box, FormControl, FormControlLabel, FormGroup, Stack,
+  Box,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
+  Stack,
 } from '@mui/material';
-import React, { Fragment, useMemo } from 'react';
+import React, { Fragment, ReactElement, useMemo } from 'react';
 import type StateFormItemGroup from '../../controllers/StateFormItemGroup';
 import {
   BOX,
@@ -15,7 +19,7 @@ import {
   INDETERMINATE,
   DIV,
   NONE
-} from '../../constants';
+} from '../../constants.client';
 
 interface IFormItemGroupProps {
   def: StateFormItemGroup;
@@ -50,19 +54,22 @@ const StateJsxFormItemGroup = React.memo<IFormItemGroupProps>(({ def: item, chil
         {children}
       </FormControl>
     ),
-    [FORM_CONTROL_LABEL]: () => (
-      <FormControlLabel
-        {...item.props}
-        control={children}
-      />
-    ),
+    [FORM_CONTROL_LABEL]: () => {
+      return (
+        <FormControlLabel
+          label=''
+          {...item.props}
+          control={children as ReactElement}
+        />
+      );
+    },
     [INDETERMINATE]: () => {
       const childrenArray = Array.isArray(children) ? [...children] : [children];
       const parent = childrenArray.shift();
       return (
         <div>
           <FormControlLabel
-            {...item.props}
+            {...item.getProps()}
             control={parent}
           />
           {childrenArray}
@@ -79,7 +86,7 @@ const StateJsxFormItemGroup = React.memo<IFormItemGroupProps>(({ def: item, chil
         {children}
       </Fragment>
     )
-  }), [item.props, children]);
+  }), [item, children]);
 
   // Memoize the type lookup
   const itemType = useMemo(() => item.type.toLowerCase(), [item.type]);

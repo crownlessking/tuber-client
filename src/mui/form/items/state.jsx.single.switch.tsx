@@ -4,11 +4,11 @@ import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import { useSelector } from 'react-redux';
 import { TBoolVal } from '../../../common.types';
-import { NAME_NOT_SET } from '../../../constants';
+import { NAME_NOT_SET } from '../../../constants.client';
 import type StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
 import { type RootState } from '../../../state';
 import { to_bool_val } from '../_form.common.logic';
-import { get_redux_store_val } from './_items.common.logic';
+import StateFormsData from 'src/controllers/StateFormsData';
 
 interface IJsonSingleSwitch {
   def: StateFormItemSwitch;
@@ -32,9 +32,10 @@ export default function StateJsxSingleSwitch({
   def: $witch
 }: IJsonSingleSwitch) {
   const { name, disabled, onChange: handleChange } = $witch;
-  const formsData = useSelector<RootState>(state => state.formsData);
-  const getValue = () => get_redux_store_val<TBoolVal>(
-    formsData,
+  const formsData = new StateFormsData(
+    useSelector((state: RootState) => state.formsData)
+  );
+  const getValue = () => formsData.getValue<TBoolVal>(
     $witch.parent.name,
     $witch.name,
     'false'

@@ -6,12 +6,17 @@ import { TPlatform } from './tuber.interfaces';
 /** Setting for thumbnail load attempts total. */
 export const THUMB_LOAD_ATTEMPTS_CONF = 'thumbnail_Load_attempts_';
 
-export const THUMB_MAX_LOAD_ATTEMPTS = 1;
+export const ENDPOINT = 'bookmarks';
+export const PLAYER_OPEN = 'playerOpen';
+export const SET_TO_PLAY = 'bookmarkToPlay';
+export const SHOW_THUMBNAIL = 'showThumbnail';
+export const GREATER_THAN_MID = 'greaterThanMid';
+
 export const TUBER_SEARCH_COLUMN_WIDTH = 300;
 export const TUBER_BOOKMARKS_COLUMN_WIDTH = 600;
 
 export const SHORTENED_NOTE_MAX_LENGTH = 55;
-
+export const THUMB_MAX_LOAD_ATTEMPTS = 1;
 export const VIDEO_START_TIME_KEYS = ['t', 'start'];
 
 export const PLATFORM_URLS: {[key in TPlatform]: string} = {
@@ -76,5 +81,6 @@ export const FORM_TEST_THUMBNAIL_ID = '45';
 
 export const PAGE_RESEARCH_APP_ID = '40';
 export const PAGE_TEST_THUMBNAIL_ID = '46';
+export const PAGE_SAVE_CONFIG_VALUE_ID = '61';
 
 export const APP_IS_FETCHING_BOOKMARKS = 'APP_IS_FETCHING_BOOKMARKS';

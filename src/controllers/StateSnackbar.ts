@@ -19,8 +19,8 @@ export default class StateSnackbar
 
   get state(): IStateSnackbar { return this._snackbarState; }
   get parent(): State { return this._parentDef || new State(); }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): unknown { return this.die('Not implemented yet.', {}); }
+  get theme(): unknown { return this.die('Not implemented yet.', {}); }
   get anchorOrigin(): StateAnchorOrigin {
     return this._snackbarAnchorOrigin
       || (this._snackbarAnchorOrigin = new StateAnchorOrigin(

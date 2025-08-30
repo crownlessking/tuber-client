@@ -8,13 +8,53 @@ import { TStateAppbarQueries } from './IStateAppbarQueries';
 import IStateBackground from './IStateBackground';
 import IStateDialog from './IStateDialog';
 import IStateNet from './IStateNet';
-import { IJsonapiError, IJsonapiResource } from './IJsonapi';
+import {
+  IJsonapiDataAttributes,
+  IJsonapiError,
+  IJsonapiResource
+} from './IJsonapi';
 import IStateSnackbar from './IStateSnackbar';
 import IStateTopLevelLinks from './IStateTopLevelLinks';
 import IStateTypography from './IStateTypography';
 import IStateFormItemCustom from './IStateFormItemCustom';
-import { type ThemeOptions } from '@mui/material';
 import IStateAllIcons from './IStateAllIcons';
+import { ThemeOptions } from '@mui/material';
+
+/**
+ * Local version of ThemeOptions. This is a simplified version for local use.
+ * Extend or modify as needed to match the required shape.
+ */
+export interface IThemeOptionsLocal {
+  palette?: {
+    mode?: 'light' | 'dark';
+    primary?: {
+      main?: string;
+    };
+    secondary?: {
+      main?: string;
+    };
+    background?: {
+      default?: string;
+      paper?: string;
+    };
+    [key: string]: unknown;
+  };
+  typography?: {
+    fontFamily?: string;
+    fontSize?: number;
+    fontWeightLight?: number;
+    fontWeightRegular?: number;
+    fontWeightMedium?: number;
+    [key: string]: unknown;
+  };
+  spacing?: number | ((factor: number) => string | number);
+  shape?: {
+    borderRadius?: number;
+    [key: string]: unknown;
+  };
+  components?: Record<string, unknown>;
+  [key: string]: unknown;
+}
 
 export interface ILoadedPagesRange {
   first: string;
@@ -25,7 +65,7 @@ export interface IStateDataPagesRange {
   [endpoint: string]: ILoadedPagesRange | undefined;
 }
 
-export interface IStateData<T=any> {
+export interface IStateData<T=IJsonapiDataAttributes> {
   [endpoint: string]: IJsonapiResource<T>[];
 }
 
@@ -113,13 +153,13 @@ export default interface IState {
   forms: IStateAllForms;
   formsLight: IStateAllForms;
   formsDark: IStateAllForms;
-  formsData: Record<string, any>;
+  formsData: Record<string, unknown>;
   formsDataErrors: IStateFormsDataErrors;
-  meta: Record<string, any>;
+  meta: Record<string, unknown>;
   pages: IStateAllPages;
   pagesLight: IStateAllPages;
   pagesDark: IStateAllPages;
-  pagesData: Record<string, any>;
+  pagesData: Record<string, unknown>;
   /** **Note:** The property is the page route. */
   chips: TStateAllChips;
   snackbar: IStateSnackbar;
@@ -133,7 +173,7 @@ export default interface IState {
    * `suffix` `Form` indicates that the temporary data is stored for a form and
    * when the `newUserForm` accesses this data, it will be removed.
    */
-  tmp: Record<string, any>;
+  tmp: Record<string, unknown>;
   topLevelLinks: IStateTopLevelLinks;
   /** Material-ui `ThemeOptions` */
   theme: ThemeOptions;
@@ -143,7 +183,7 @@ export default interface IState {
   /** Get the pathnames needed to retrieve missing states. */
   pathnames: IStatePathnames;
   /** List of state keys */
-  stateRegistry: Record<string, string>;
+  stateRegistry: Record<string, unknown>;
 }
 
 /**
@@ -156,6 +196,3 @@ export type INetState = Partial<IState>;
 
 /** Type for a state that defines an icon. */
 export interface IStateFormItemCustomIcon extends IStateFormItemCustom {};
-
-/** ThemeOptions */
-export type IThemeOptions = ThemeOptions;

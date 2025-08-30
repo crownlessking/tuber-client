@@ -3,6 +3,16 @@ import YouTube, { YouTubeProps } from 'react-youtube';
 import Config from '../../../config';
 import { IBookmarkOrigin } from '../tuber.interfaces';
 
+type OnReadyEvent = {
+  target: {
+    // The YouTube Player API methods you use, e.g. playVideo, pauseVideo, etc.
+    playVideo: () => void;
+    pauseVideo: () => void;
+    // Add other methods as needed
+    [key: string]: any;
+  };
+};
+
 interface IYTPlayerProps {
   bookmark: IBookmarkOrigin;
 }
@@ -26,7 +36,7 @@ const YouTubePlayerApi = React.memo<IYTPlayerProps>(({ bookmark }) => {
   }), [start, end]);
 
   // Memoized onReady callback
-  const onPlayerReady: YouTubeProps['onReady'] = useCallback((event: any) => {
+  const onPlayerReady: YouTubeProps['onReady'] = useCallback((event: OnReadyEvent) => {
     Config.write('player', event.target);
   }, []);
 

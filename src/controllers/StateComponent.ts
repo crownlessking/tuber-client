@@ -1,13 +1,14 @@
 import AbstractState from './AbstractState';
 import IStateComponent from '../interfaces/IStateComponent';
+import { CSSProperties } from 'react';
 
-export default class StateComponent<P = any>
+export default class StateComponent<P = unknown>
   extends AbstractState
   implements IStateComponent
 {
   private _componentState: IStateComponent;
   private _parentDef: P;
-  private _componentItems?: StateComponent[];
+  private _componentItems?: StateComponent<P>[];
 
   constructor (componentState: IStateComponent, parent: P) {
     super();
@@ -18,22 +19,22 @@ export default class StateComponent<P = any>
   get state(): IStateComponent { return this._componentState; }
   get parent(): P { return this._parentDef; }
   get type(): string { return this._componentState._type || 'div'; }
-  get theme(): any { return this._componentState.theme || {}; }
-  get props(): any {
-    const props: any = { ...this._componentState }
+  get theme(): CSSProperties { return this._componentState.theme || {}; }
+  get props(): Record<string, unknown> {
+    const props: Record<string, unknown> = { ...this._componentState }
     delete props.type;
     delete props.theme;
     delete props.items;
     return props;
   }
-  get items(): StateComponent<P>[] {
+  get items(): StateComponent[] {
     return this._componentItems = this._componentItems
       || (this._componentItems = (this._componentState.items || []).map(
-        (item: IStateComponent) => new StateComponent(item, this)
+        (item: IStateComponent) => new StateComponent<P>(item, this._parentDef)
       ));
   }
 
-  getJson = <T = any>(): T => this._componentState as T;
+  getJson = <T = unknown>(): T => this._componentState as T;
 }
 
 export function getStateComponents<T>(

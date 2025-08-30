@@ -1,5 +1,5 @@
-import StateForm from '../../../controllers/StateForm'
-import StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect'
+import StateForm from '../../../controllers/StateForm';
+import StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect';
 
 describe('StateFormItemSelect', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateFormItemSelect', () => {
       expect(new StateFormItemSelect(
         { type: 'state_select' },
         {} as StateForm
-      )).toEqual({ _formItemSelectState: {} })
-    })
-  })
-})
+      )).toEqual({ _formItemSelectState: {} });
+    });
+  });
+});

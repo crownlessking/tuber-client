@@ -1,9 +1,9 @@
-import StateFormsDataErrors from '../../controllers/StateFormsDataErrors'
+import StateFormsDataErrors from '../../controllers/StateFormsDataErrors';
 
 describe('StateFormsDataErrors', () => {
   describe('constructor', () => {
     it('should create a state forms data errors object', () => {
-      expect(new StateFormsDataErrors({})).toEqual({ _formsDataErrorsState: {} })
-    })
-  })
-})
+      expect(new StateFormsDataErrors({})).toEqual({ _formsDataErrorsState: {} });
+    });
+  });
+});

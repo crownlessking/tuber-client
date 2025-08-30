@@ -8,7 +8,7 @@ import {
   ALLOWED_ATTEMPTS,
   THEME_DEFAULT_MODE,
   THEME_MODE
-} from '../../constants';
+} from '../../constants.client';
 import { post_req_state } from '../../state/net.actions';
 import StateForm from '../../controllers/StateForm';
 import StateAllForms from 'src/controllers/StateAllForms';

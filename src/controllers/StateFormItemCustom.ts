@@ -1,17 +1,32 @@
-import { get_val } from '.';
+import { get_val } from '../business.logic';
 import { dummy_callback, type IRedux, type TReduxHandle } from '../state';
 import AbstractState from './AbstractState';
-import IStateFormItemCustom, { THandleCallback } from '../interfaces/IStateFormItemCustom';
+import IStateFormItemCustom, {
+  THandleCallback,
+  TStateFormITemCustomColor
+} from '../interfaces/IStateFormItemCustom';
 import { ler } from '../business.logic/logging';
+import { TObj } from 'src/common.types';
+import { CSSProperties } from 'react';
+import {
+  FormControlLabelProps,
+  FormControlProps,
+  FormGroupProps,
+  FormHelperTextProps,
+  FormLabelProps,
+  IconProps,
+  SvgIconProps
+} from '@mui/material';
+import React from 'react';
 
-export default class StateFormItemCustom<P, T = any>
+export default class StateFormItemCustom<P, T = unknown>
   extends AbstractState
   implements IStateFormItemCustom<T>
 {
   protected hasItemsState: T[];
   protected parentDef: P;
   protected hasCallback?: TReduxHandle;
-  protected hasClasses: any;
+  protected hasClasses: unknown;
   private _fieldOk = true;
 
   constructor (protected hasState: IStateFormItemCustom<T>, parent: P) {
@@ -26,9 +41,9 @@ export default class StateFormItemCustom<P, T = any>
   get parent(): P { return this.parentDef; }
   get id(): string { return this.hasState.id ?? ''; }
   get callback(): TReduxHandle { return this.hasCallback || dummy_callback; }
-  get classes(): any { return this.hasClasses; }
+  get classes(): unknown { return this.hasClasses; }
   get content(): string { return this.hasState.content ?? ''; }
-  get color(): string { return this.hasState.color ?? ''; }
+  get color(): TStateFormITemCustomColor { return this.hasState.color ?? 'default'; }
   get defaultValue(): string { return this.hasState.defaultValue ?? ''; }
   get faIcon(): string { return this.hasState.faIcon ?? ''; }
   get icon(): string { return this.hasState.icon ?? ''; }
@@ -39,7 +54,8 @@ export default class StateFormItemCustom<P, T = any>
   get iconPosition(): IStateFormItemCustom<T>['iconPosition'] {
     return this.hasState.iconPosition;
   }
-  get iconProps() { return this.hasState.iconProps; }
+  get iconProps(): IconProps { return this.hasState.iconProps ?? {}; }
+  get svgIconProps(): SvgIconProps { return this.hasState.svgIconProps ?? {}; }
   get items(): T[] { return this.hasItemsState; }
   get label(): string { return this.hasState.label ?? ''; }
 
@@ -98,13 +114,26 @@ export default class StateFormItemCustom<P, T = any>
   get endAdornment(): IStateFormItemCustom<T>['endAdornment'] {
     return this.hasState.endAdornment;
   }
-  get props(): any { return this.hasState.props || {}; }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
-  get formControlProps(): any { return this.hasState.formControlProps; }
-  get formControlLabelProps(): any { return this.hasState.formControlLabelProps; }
-  get formLabelProps(): any { return this.hasState.formLabelProps; }
-  get formGroupProps(): any { return this.hasState.formGroupProps; }
-  get formHelperTextProps(): any { return this.hasState.formHelperTextProps; }
+  get props(): TObj { return this.hasState.props || {}; }
+  get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
+  get formControlProps(): FormControlProps {
+    return this.hasState.formControlProps ?? {};
+  }
+  get formControlLabelProps(): FormControlLabelProps | undefined {
+    return this.hasState.formControlLabelProps ?? {
+      label: '',
+      control: React.createElement('span'),
+    };
+  }
+  get formLabelProps(): FormLabelProps {
+    return this.hasState.formLabelProps ?? {};
+  }
+  get formGroupProps(): FormGroupProps {
+    return this.hasState.formGroupProps ?? {};
+  }
+  get formHelperTextProps(): FormHelperTextProps {
+    return this.hasState.formHelperTextProps ?? {};
+  }
   /**
    * Check if field value is valid.  
    * `maxLength` or `invalidChars` must be set first. Run the `evaluateVal()`
@@ -121,7 +150,7 @@ export default class StateFormItemCustom<P, T = any>
   get validationMessage(): string { return this.hasState.validationMessage ?? ''; }
   get disableOnError(): boolean { return !!this.hasState.disableOnError; }
 
-  set callback(cb: ((redux:IRedux)=>(e:any)=>void)|undefined) { this.hasCallback = cb; }
+  set callback(cb: ((redux:IRedux)=>(e:unknown)=>void)|undefined) { this.hasCallback = cb; }
 
   /**
    * Set custom classes for your field.
@@ -129,7 +158,7 @@ export default class StateFormItemCustom<P, T = any>
    * @param classes can be an array of strings, a string, or any other means to
    *                store class names
    */
-  set classes(classes: any) { this.hasClasses = classes; }
+  set classes(classes: unknown) { this.hasClasses = classes; }
 
   /**
    * If `has.regex` is set, you can use this function to do regular
@@ -160,7 +189,7 @@ export default class StateFormItemCustom<P, T = any>
       ler(`Invalid handle: '${callbackName}' not a function`);
       return;
     }
-    return callback;
+    return callback as TReduxHandle;
   } // END of method
 
   /**

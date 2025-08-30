@@ -35,7 +35,7 @@ export default function StateJsxAlertDialog(props: IAlertDialogProps) {
           </DialogContentText>
         ) : ( null )}
         {/* <div dangerouslySetInnerHTML={{ __html: dialog.content }} /> */}
-        { parse(dialog.content) }
+        { parse(dialog.content as string) }
       </DialogContent>
       <DialogActions {...dialog.actionsProps}>
         <StateJsxDialogAction def={dialog.actions} parent={dialog} />

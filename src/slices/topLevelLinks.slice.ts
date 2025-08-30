@@ -18,7 +18,7 @@ export const topLevelLinksSlice = createSlice({
   reducers: {
     topLevelLinksStore: (state, action: ITopLevelLinksReducerArgs) => {
       const { endpoint, links } = action.payload;
-      state[endpoint] = links as any;
+      state[endpoint] = links;
     },
     topLevelLinksRemove: (state, action) => {
       delete state[action.payload];

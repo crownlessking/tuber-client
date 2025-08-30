@@ -1,5 +1,5 @@
-import StatePage from '../../../controllers/StatePage'
-import StatePageTypography from '../../../controllers/templates/StatePageTypography'
+import StatePage from '../../../controllers/StatePage';
+import StatePageTypography from '../../../controllers/templates/StatePageTypography';
 
 describe('StatePageTypography', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StatePageTypography', () => {
       expect(new StatePageTypography(
         {},
         {} as StatePage
-      )).toEqual({ _defaultState: {} })
-    })
-  })
-})
+      )).toEqual({ _defaultState: {} });
+    });
+  });
+});

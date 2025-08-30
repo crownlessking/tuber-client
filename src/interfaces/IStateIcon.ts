@@ -65,4 +65,5 @@ export default interface IStateIcon {
   enableBackground?: string;
   rects?: IStateIconRect[];
   polygons?: IStateIconPolygon[];
+  baseProfile?: 'full' | 'basic' | 'tiny';
 }

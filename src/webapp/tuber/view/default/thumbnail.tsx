@@ -28,7 +28,7 @@ const ThumbnailGrid = styled(Grid)(({ theme: { spacing, palette } }) => ({
 const BookmarkThumbnail: FC<IThumbnailProps> = ({ i, bookmark }) => {
   return (
     <ThumbnailGrid
-      sx={{ 
+      sx={{
         backgroundImage: `url('${bookmark.thumbnail_url}')`
       }}
     >

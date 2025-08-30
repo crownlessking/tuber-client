@@ -1,13 +1,12 @@
 import List from '@mui/material/List';
 import { styled } from '@mui/material/styles';
-import React, { useCallback, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { type RootState } from 'src/state';
-import { gen_video_url } from '../../_tuber.common.logic';
 import LoadMoreBookmarksFromServer, {
   LoadEarlierBookmarksFromServer
 } from './list.load.more';
-import { IBookmark, ITTBList } from '../../tuber.interfaces';
+import { IBookmark } from '../../tuber.interfaces';
 import StateData from 'src/controllers/StateData';
 import BookmarkWithThumbnail from './bookmark.with.thumbnail';
 
@@ -24,8 +23,7 @@ const StyledList = styled(List)(({ theme }) => ({
   paddingLeft: theme.spacing(1),
 }));
 
-export default function TuberThumbnailedBookmarkList(props: ITTBList) {
-  const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props.props;
+export default function TuberThumbnailedBookmarkList() {
 
   // Memoize state selectors
   const dataState = useSelector((state: RootState) => state.data);
@@ -34,26 +32,9 @@ export default function TuberThumbnailedBookmarkList(props: ITTBList) {
   // Memoize bookmark collection
   const bookmarks = useMemo(() => {
     return data.configure({ endpoint: 'bookmarks' })
-      .collection()
+      .flatten()
       .get<IBookmark>();
   }, [data]);
-
-  // Memoized bookmark click handler
-  const handleBookmarkClick = useCallback((bookmark: IBookmark) => {
-    if (playerOpen) {
-      setBookmarkToPlay(bookmark);
-      setPlayerOpen(true);
-    } else {
-      const url = bookmark.url || gen_video_url(bookmark);
-      window.open(url, '_blank')?.focus();
-    }
-  }, [playerOpen, setBookmarkToPlay, setPlayerOpen]);
-
-  // Memoized click handler for the BookmarkWithThumbnail component
-  const handleOnClick = useCallback((bookmark: IBookmark) => (e: React.MouseEvent) => {
-    e.preventDefault();
-    handleBookmarkClick(bookmark);
-  }, [handleBookmarkClick]);
 
   return (
     <BookmarkListWrapper>
@@ -61,8 +42,7 @@ export default function TuberThumbnailedBookmarkList(props: ITTBList) {
       <StyledList>
         {bookmarks.map((bookmark, i) => (
           <BookmarkWithThumbnail
-            key={`bookmark-${i}-${bookmark.id || bookmark.url}`}
-            handleOnClick={handleOnClick}
+            key={bookmark.id || bookmark.url || `bookmark-${i}`}
             index={i}
           >
             {bookmark}

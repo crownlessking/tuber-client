@@ -2,14 +2,14 @@ import { IGenericObject } from '../common.types';
 import {
   IJsonapiDataAttributes,
   IJsonapiDataRelationships,
-  IJsonapiRequest,
+  IJsonapiRequestClient,
   IJsonapiResourceLinks
 } from '../interfaces/IJsonapi';
 
-/** Format the request using the jsonapi specification */
+/** Formats the request using the JSON:API specification. */
 export default class JsonapiRequest<T=IJsonapiDataAttributes> {
 
-  private _request: IJsonapiRequest<T>;
+  private _request: IJsonapiRequestClient<T>;
 
   constructor(type: string, attributes: T) {
     this._request = {
@@ -45,7 +45,7 @@ export default class JsonapiRequest<T=IJsonapiDataAttributes> {
     return this;
   }
 
-  meta(key: string, value: any) {
+  meta(key: string, value: unknown) {
     if (!this._request.data.meta) {
       this._request.data.meta = {};
     }

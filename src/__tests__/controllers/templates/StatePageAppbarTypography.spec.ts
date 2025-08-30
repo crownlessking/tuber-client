@@ -1,6 +1,6 @@
-import StateAppbar from '../../../controllers/StateAppbar'
-import StatePage from '../../../controllers/StatePage'
-import StatePageAppbarTypography from '../../../controllers/templates/StatePageAppbarTypography'
+import StateAppbar from '../../../controllers/StateAppbar';
+import StatePage from '../../../controllers/StatePage';
+import StatePageAppbarTypography from '../../../controllers/templates/StatePageAppbarTypography';
 
 describe('StatePageAppbarTypography', () => {
   describe('constructor', () => {
@@ -8,7 +8,7 @@ describe('StatePageAppbarTypography', () => {
       expect(new StatePageAppbarTypography(
         {},
         {} as StateAppbar<StatePage>
-      )).toEqual({ _defaultState: {} })
-    })
-  })
-})
+      )).toEqual({ _defaultState: {} });
+    });
+  });
+});

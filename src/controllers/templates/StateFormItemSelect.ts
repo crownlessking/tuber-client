@@ -1,3 +1,9 @@
+import {
+  FormControlLabelProps,
+  FormControlProps,
+  FormHelperTextProps,
+  InputLabelProps
+} from '@mui/material';
 import IStateFormItemSelectOption from '../../interfaces/IStateFormItemSelectOption';
 import type StateForm from '../StateForm';
 import StateFormItem from '../StateFormItem';
@@ -9,11 +15,11 @@ export type TSelectStyle = 'default' | 'basic' | 'standard' | 'filled' | 'native
                             | 'grouping' | 'native_grouping';
 
 export interface ISelectConfig {
-  formControlProps?: any;
-  formHelperTextProps?: any;
-  formControlLabelProps?: any;
-  inputLabelProps?: any;
-  props?: any;
+  formControlProps?: FormControlProps;
+  formHelperTextProps?: FormHelperTextProps;
+  formControlLabelProps?: FormControlLabelProps;
+  inputLabelProps?: InputLabelProps;
+  props?: Record<string, unknown>;
   id?: string;
 }
 
@@ -39,7 +45,7 @@ export default class StateFormItemSelect
     };
   }
 
-  get formControlProps(): any {
+  get formControlProps(): FormControlProps {
     return {
       variant: 'standard',
       ...this._getConfig().formControlProps,
@@ -47,20 +53,20 @@ export default class StateFormItemSelect
     };
   }
 
-  get formControlLabelProps(): any {
+  get formControlLabelProps(): FormControlLabelProps {
     return {
       ...this._getConfig().formControlLabelProps,
       ...this.itemHasState.formControlLabelProps
-    };
+    } as FormControlLabelProps;
   }
-  get inputLabelProps(): any {
+  get inputLabelProps(): InputLabelProps {
     return {
       ...this._getConfig().inputLabelProps,
       ...this.itemHasState.inputLabelProps
     };
   }
 
-  get formHelperTextProps(): any {
+  get formHelperTextProps(): FormHelperTextProps {
     return {
       ...this._getConfig().formHelperTextProps,
       ...this.itemHasState.formHelperTextProps

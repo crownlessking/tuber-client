@@ -22,9 +22,9 @@ export default class StateFormItemInputProps<P=StateFormItem>
   get start(): IStateFormItemAdornment | undefined { return this._inputPropsState.start; }
   get end(): IStateFormItemAdornment | undefined { return this._inputPropsState.end; }
   get parent(): P { return this._parentDef; }
-  get props(): any {
+  get props(): Record<string, unknown> {
     const { start, end, ...props } = this._inputPropsState;
     return props;
   }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get theme(): unknown { return this.die('Not implemented yet.', {}); }
 }

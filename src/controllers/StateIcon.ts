@@ -23,7 +23,7 @@ export default class StateIcon extends AbstractState implements IStateIcon {
   }
 
   /** SVG props to spread on the SVG component */
-  get props(): any {
+  get props(): unknown {
     return {
       viewBox: this.viewBox,
       width: this.width,
@@ -36,7 +36,7 @@ export default class StateIcon extends AbstractState implements IStateIcon {
     };
   }
 
-  get theme(): any {
+  get theme(): unknown {
     // Icons inherit theme from StateAllIcons -> State hierarchy
     return this.parent?.parent?.theme || {};
   }

@@ -8,14 +8,14 @@ import StateJsxSwitch from './state.jsx.switch';
 import StateJsxCheckboxes from './state.jsx.checkboxes';
 import StateJsxTextfield from './state.jsx.textfield';
 import JsonPicker from './state.jsx.picker';
-import * as C from '../../../constants';
+import * as C from '../../../constants.client';
 import { post_req_state } from '../../../state/net.actions';
 import { ICheckboxesData, update_checkboxes } from './_items.common.logic';
 import {
   BOOL_TRUEFALSE,
   BOOL_ONOFF,
   BOOL_YESNO,
-} from '../../../constants';
+} from '../../../constants.client';
 import type StateForm from '../../../controllers/StateForm';
 import type StateFormItem from '../../../controllers/StateFormItem';
 import StateJsxFormItemGroup from '../state.jsx.form.item.group';
@@ -23,7 +23,6 @@ import StateFormItemSelect from '../../../controllers/templates/StateFormItemSel
 import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
 import { StateJsxUnifiedIconProvider } from '../../icon';
 import { AppDispatch, default_callback } from '../../../state';
-import { formsDataClear } from '../../../slices/formsData.slice';
 import StateFormItemGroup from '../../../controllers/StateFormItemGroup';
 import IStateFormItemGroup from '../../../interfaces/IStateFormItemGroup';
 import FormLabel from '@mui/material/FormLabel';
@@ -44,6 +43,11 @@ import {
 import { get_bool_type } from '../_form.common.logic';
 import StateJsxButton from './state.jsx.button';
 import { log } from '../../../business.logic/logging';
+import { IDummyEvent } from 'src/common.types';
+import IStateFormItemSelectOption from 'src/interfaces/IStateFormItemSelectOption';
+import { IStateFormItemRadioButton } from 'src/interfaces/IFormChoices';
+import { IStateFormItemCheckboxBox } from 'src/controllers/StateFormItemCheckboxBox';
+import StateFormItemSwitchToggle from 'src/controllers/StateFormItemSwitchToggle';
 
 interface IRecursiveFormBuilder {
   form: StateForm;
@@ -81,7 +85,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
   /** Saves the form field value to the store. */
   const onUpdateFormData = useCallback((form: StateForm) =>
     (name: string) =>
-    (e: any) =>
+    (e: IDummyEvent) =>
   dispatch({
     type: 'formsData/formsDataUpdate',
     payload: {
@@ -124,7 +128,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
 
   /** Save switches value to the Redux store. */
   const handleChangeSingleSwitch = useCallback((form: StateForm) =>
-    (name: string, value: any) =>
+    (name: string, value: unknown) =>
     (e: React.ChangeEvent<HTMLInputElement>) =>
   {
     const map: {[x: string]: () => void} = {
@@ -202,7 +206,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
     }
     if (body) {
       dispatch(post_req_state(form.endpoint, body));
-      dispatch(formsDataClear(form.name));
+      dispatch({ type: 'formsData/formsDataClear', payload: form.name });
     }
   }, [dispatch]);
 
@@ -239,22 +243,33 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
   // Memoize the items table to prevent re-creation on every render
   const itemsTable: IItemTable = useMemo(() => ({
     [C.HTML]: (item: StateFormItem, key: string|number) => (
-      <StateJsxHtml key={`html${depth}-${key}`} def={item} />
+      <StateJsxHtml
+        key={`html${depth}-${key}`}
+        def={item as StateFormItem<StateForm, string>}
+      />
     ),
     [C.HTML_TAG]: (item: StateFormItem, key: string|number) => (
-      <StateJsxHtmlTag key={`html-tag${depth}-${key}`} def={item} />
+      <StateJsxHtmlTag
+        key={`html-tag${depth}-${key}`}
+        def={item as StateFormItem<StateForm, string>}
+      />
     ),
     [C.A]: (item: StateFormItem, key: string|number) => {
       item.onClick = item.hasNoOnClickCallback
         ? default_callback
         : item.onClick;
-      return <StateJsxHtmlA def={item} key={`a${depth}-${key}`} />;
+      return (
+        <StateJsxHtmlA
+          def={item as StateFormItem<StateForm, string>}
+          key={`a${depth}-${key}`}
+        />
+      );
     },
     [C.SUBMIT]: (item: StateFormItem, key: string|number) => {
       item.onClick = item.hasNoOnClickCallback
         ? onFormSubmitDefault(form)
         : item.onClick;
-        return <StateJsxButton key={`submit${depth}-${key}`} def={item} />;
+        return (<StateJsxButton key={`submit${depth}-${key}`} def={item} />);
     },
     [C.STATE_BUTTON]: (item: StateFormItem, key: string|number) => (
       <StateJsxButton key={`json-button${depth}-${key}`} def={item} />
@@ -266,7 +281,10 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       <hr key={`horizontal-line${depth}-${key}`} />
     ),
     [C.STATE_SELECT]: (item: StateFormItem, key: string|number) => {
-      const jsonSelectDef = new StateFormItemSelect(item.state, item.parent);
+      const jsonSelectDef = new StateFormItemSelect(
+        (item as StateFormItem<StateForm, IStateFormItemSelectOption>).state,
+        item.parent
+      );
       jsonSelectDef.onChange = onUpdateFormData(form);
       return (
         <JsonSelect
@@ -276,7 +294,10 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       );
     },
     [C.STATE_SELECT_NATIVE]: (item: StateFormItem, key: string|number) => {
-      const jsonSelectDef = new StateFormItemSelect(item.state, item.parent);
+      const jsonSelectDef = new StateFormItemSelect(
+        (item as StateFormItem<StateForm, IStateFormItemSelectOption>).state,
+        item.parent
+      );
       jsonSelectDef.onChange = onUpdateFormData(form);
       return (
         <StateJsxSelectNative
@@ -301,7 +322,10 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       );
     },
     [C.RADIO_BUTTONS]: (item: StateFormItem, key: string|number) => {
-      const radioDef = new StateFormItemRadio(item.state, item.parent);
+      const radioDef = new StateFormItemRadio(
+        (item as StateFormItem<StateForm, IStateFormItemRadioButton>).state,
+        item.parent
+      );
       radioDef.onChange = onUpdateFormData(form);
       return (
         <StateJsxRadio
@@ -311,7 +335,10 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       );
     },
     [C.CHECKBOXES]: (item: StateFormItem, key: string|number) => {
-      const checkboxesDef = new StateFormItemCheckbox(item.state, item.parent);
+      const checkboxesDef = new StateFormItemCheckbox(
+        (item as StateFormItem<StateForm, IStateFormItemCheckboxBox>).state,
+        item.parent
+      );
       checkboxesDef.onChange = onHandleCheckbox(form);
       return (
         <StateJsxCheckboxes
@@ -321,12 +348,18 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       );
     },
     [C.SWITCH]: (item: StateFormItem, key: string|number) => {
-      const switchDef = new StateFormItemSwitch(item.state, item.parent);
+      const switchDef = new StateFormItemSwitch(
+        (item as StateFormItem<StateForm, StateFormItemSwitchToggle>).state,
+        item.parent
+      );
       switchDef.onChange = handleChangeMultipleSwitches(form);
       return <StateJsxSwitch key={`switch${depth}-${key}`} def={switchDef} />;
     },
     [C.SINGLE_SWITCH]: (item: StateFormItem, key: string|number) => {
-      const switchDef = new StateFormItemSwitch(item.state, item.parent);
+      const switchDef = new StateFormItemSwitch(
+        (item as StateFormItem<StateForm, StateFormItemSwitchToggle>).state,
+        item.parent
+      );
       switchDef.onChange = handleChangeSingleSwitch(form);
       return (
         <StateJsxSingleSwitch
@@ -412,7 +445,7 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       try {
         item.has.defaultValue && itemsWithDefaultValues.push(item)
         return itemsTable[item.type.toLowerCase()](item, i)
-      } catch (e: any) {
+      } catch (e: unknown) {
         const message = `Form item type (${item.type}) does not exist.`;
         remember_exception(e);
         log(message);

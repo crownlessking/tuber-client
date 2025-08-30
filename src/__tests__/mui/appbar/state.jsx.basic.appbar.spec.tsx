@@ -11,5 +11,5 @@ describe('src/mui/appbar/state.jsx.basic.appbar.tsx', () => {
       .create(<StateJsxBasicAppbar def={page} />)
       .toJSON();
     expect(tree).toMatchSnapshot();
-  })
-})
+  });
+});

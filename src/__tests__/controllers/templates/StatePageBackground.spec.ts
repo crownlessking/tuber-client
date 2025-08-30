@@ -1,5 +1,5 @@
-import StatePage from '../../../controllers/StatePage'
-import StatePageBackground from '../../../controllers/templates/StatePageBackground'
+import StatePage from '../../../controllers/StatePage';
+import StatePageBackground from '../../../controllers/templates/StatePageBackground';
 
 describe('StatePageBackground', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StatePageBackground', () => {
       expect(new StatePageBackground(
         {  },
         {} as StatePage
-      )).toEqual({ _pageBackgroundState: {} })
-    })
-  })
-})
+      )).toEqual({ _pageBackgroundState: {} });
+    });
+  });
+});

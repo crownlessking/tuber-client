@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
+import DialogTitle, { DialogTitleProps } from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
@@ -20,15 +20,15 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export interface DialogTitleProps {
-  id: string;
+export interface IDialogTitleProps extends DialogTitleProps {
+  id?: string;
   children?: React.ReactNode;
   onClose: () => void;
 };
 
 const CloseIcon = React.memo(() => <StateJsxIcon name='close' />);
 
-function BootstrapDialogTitle(props: DialogTitleProps) {
+function BootstrapDialogTitle(props: IDialogTitleProps) {
   const { children, onClose, ...other } = props;
 
   return (
@@ -75,7 +75,7 @@ export default function StateJsxCustomizedDialog(props: ICustomizedDialogProps) 
         { dialog.title }
       </BootstrapDialogTitle>
       <DialogContent {...dialog.contentProps}>
-        { dialog.content }
+        { dialog.content as React.ReactNode }
       </DialogContent>
       <DialogActions {...dialog.actionsProps}>
         <StateJsxDialogAction def={dialog.actions} parent={dialog} />

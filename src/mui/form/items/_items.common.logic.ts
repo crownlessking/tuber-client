@@ -1,6 +1,7 @@
 import { log } from '../../../business.logic/logging';
 import { remember_exception } from '../../../business.logic/errors';
 import IStateFormItem from '../../../interfaces/IStateFormItem';
+import { is_record } from '../../../business.logic';
 
 /**
  * To be used with a multiple checkboxes component.
@@ -26,15 +27,18 @@ export interface ICheckboxesData {
  * @param $default 
  * @returns 
  */
-export function get_redux_store_val<T=any>(
-  storeValues: any,
+export function get_redux_store_val<T=unknown>(
+  storeValues: Record<string, unknown>,
   formName: string,
   name: string,
   $default: T
 ): T {
   try {
-    const val = storeValues[formName][name] || $default;
-    return val;
+    const formData = storeValues[formName];
+    if (is_record(formData)) {
+      const val = formData[name] || $default;
+      return val as T;
+    }
   } catch (e) { remember_exception(e); }
   return $default;
 }
@@ -49,12 +53,12 @@ export function get_redux_store_val<T=any>(
  * @deprecated
  */
 export function get_field_value(
-  formsData: any,
+  formsData: Record<string, unknown>,
   formName: string,
   name: string
 ) {
   try {
-    return formsData[formName]?.[name] ?? '';
+    return (is_record(formsData[formName]) && formsData[formName][name]) ?? '';
   } catch (e) { remember_exception(e); }
   return '';
 }
@@ -71,7 +75,10 @@ export function get_field_value(
  *
  * @depecated
  */
-export function get_locally_stored_value(formData: any, item: IStateFormItem): any {
+export function get_locally_stored_value(
+  formData: Record<string, unknown>,
+  item: IStateFormItem
+): unknown {
   const copyItem = { ...item };
   const { name } = copyItem;
   copyItem.has = copyItem.has || { };
@@ -115,14 +122,20 @@ export function update_switches_statuses(cb: ICheckboxesData): void {
   cb.statuses = statuses;
 }
 
-export function get_meta(stateMeta: any, endpoint: string, key?: string): any {
+export function get_meta<T=unknown>(
+  stateMeta: Record<string, unknown>,
+  endpoint: string, key?: string
+): T|null {
   try {
-    return key ? stateMeta[endpoint][key] : stateMeta[endpoint];
+    if (is_record(stateMeta[endpoint])) {
+      return (key ? stateMeta[endpoint][key] : stateMeta[endpoint]) as T;
+    }
   } catch (e) {
     const message = `get_meta: meta['${endpoint}']['${key}'] does NOT exist.`;
     log(message);
     remember_exception(e, message);
   }
+  return null;
 }
 
 /** Increment or decrement total errors based on old and new error state */

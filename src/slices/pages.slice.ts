@@ -27,7 +27,8 @@ export const pagesSlice = createSlice({
     },
     pagesAdd: (state, action: IArgs) => {
       const { route, page } = action.payload;
-      state[route] = page as any;
+      /* @ts-ignore */
+      state[route] = page;
     },
     pagesRemove: (state, action) => {
       delete state[action.payload];

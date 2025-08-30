@@ -1,5 +1,5 @@
-import State from '../../../controllers/State'
-import StateAppbarDefault from '../../../controllers/templates/StateAppbarDefault'
+import State from '../../../controllers/State';
+import StateAppbarDefault from '../../../controllers/templates/StateAppbarDefault';
 
 describe('StateAppbarDefault', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateAppbarDefault', () => {
       expect(new StateAppbarDefault(
         {},
         {} as State
-      )).toEqual({ _defaultState: {} })
-    })
-  })
-})
+      )).toEqual({ _defaultState: {} });
+    });
+  });
+});

@@ -1,4 +1,4 @@
-import { type TCallback } from '../constants';
+import { type TEventCallback } from '../constants.client';
 import Config from '../config';
 
 /**
@@ -13,25 +13,25 @@ export default abstract class AbstractState {
    * a specific value could or should be undefined.
    * Whereas, with the object, values are most likely not undefined.
    */
-  abstract get state(): any;
+  abstract get state(): unknown;
 
   /** Chain-access to parent definition. */
-  abstract get parent(): any;
+  abstract get parent(): unknown;
 
   /**
    * Use to spread properties that are valid component props on a component.
    */
-  abstract get props(): any;
+  abstract get props(): unknown;
 
   /** Use to apply CSS styles. */
-  abstract get theme(): any;
+  abstract get theme(): unknown;
 
   /**
    * Use when it's better to throw an exception.
    * @param msg error message
    * @param $return **required** dummy default value for compatibility sake.
    */
-  protected die<T=any>(msg: string, $return: T): T {
+  protected die<T=unknown>(msg: string, $return: T): T {
     if (Config.DEBUG) {
       throw new Error(msg);
     }
@@ -43,7 +43,7 @@ export default abstract class AbstractState {
    * @param msg error message
    * @param $return **required** dummy default value for compatibility sake.
    */
-  protected ler<T=any>(msg: string, $return: T): T {
+  protected ler<T=unknown>(msg: string, $return: T): T {
     if (Config.DEBUG) {
       console.error(msg);
     }
@@ -55,7 +55,7 @@ export default abstract class AbstractState {
    * @param msg warning message
    * @param $return **required** dummy default value for compatibility sake.
    */
-  protected warn<T=any>(msg: string, $return: T): T {
+  protected warn<T=unknown>(msg: string, $return: T): T {
     if (Config.DEBUG) {
       console.warn(msg);
     }
@@ -67,7 +67,7 @@ export default abstract class AbstractState {
    * @param msg log message
    * @param $return **required** dummy default value for compatibility sake.
    */
-  protected notice<T=any>(msg: string, $return: T): T {
+  protected notice<T=unknown>(msg: string, $return: T): T {
     if (Config.DEBUG) {
       console.log(msg);
     }
@@ -78,8 +78,8 @@ export default abstract class AbstractState {
    * If a callback is required for a link or button but is not defined, then this
    * method will provide a dummy one.
    */
-  protected get_dud_event_callback (): TCallback {
-    return (e: any) => {
+  protected get_dud_event_callback (): TEventCallback {
+    return (e: unknown) => {
       this.ler('No callback was assigned.', undefined);
     }
   }

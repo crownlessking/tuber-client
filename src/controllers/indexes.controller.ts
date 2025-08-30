@@ -71,14 +71,14 @@ export function drop_index(collection: string): void {
  * @param endpoint 
  * @param id 
  */
-export function select(endpoint: string, id: string): any {
+export function select(endpoint: string, id: string): unknown {
   try {
     return indexes?.[endpoint]?.[id];
-  } catch (e: any) {
+  } catch (e) {
     remember_exception({
       'code': '404',
-      'title': e.message,
-      'detail': e.stack,
+      'title': (e as Error).message,
+      'detail': (e as Error).stack,
       'source': {
         parameter: `${endpoint}/${id}`
       }

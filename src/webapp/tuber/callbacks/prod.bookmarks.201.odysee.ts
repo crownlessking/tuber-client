@@ -24,18 +24,7 @@ export default function form_submit_new_odysee_bookmark(redux: IRedux) {
     const data = get_form_data<IBookmark>(redux, FORM_ODYSEE_NEW_ID);
     if (!data) { return; }
     const { formData, formName } = data;
-    const platform = formData.platform;
-    const slug = formData.slug;
-    const start_seconds = formData.start_seconds;
-    const title = formData.title;
-    const note = formData.note;
-    const requestBody = new JsonapiRequest(endpoint, {
-      slug,
-      platform,
-      start_seconds,
-      title,
-      note
-    }).build();
+    const requestBody = new JsonapiRequest(endpoint, formData).build();
     log('form_submit_new_youtube_bookmark: requestBody', requestBody);
     dispatch(post_req_state(endpoint, requestBody));
     dispatch(actions.formsDataClear(formName));

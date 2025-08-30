@@ -18,7 +18,7 @@ import { err } from "../../business.logic/logging"
  *
  * @see https://jsonapi.org/format/#document-top-level
  */
-export function analyze_table_data(data: any) {
+export function analyze_table_data(data: unknown) {
   const type = typeof data
   let sample
   switch (type) {
@@ -63,7 +63,7 @@ export function analyze_table_data(data: any) {
  *
  * @param obj
  */
-export function get_table_view_columns(obj: any) {
+export function get_table_view_columns(obj: unknown) {
   const data = analyze_table_data(obj)
   return Object.keys(data).map(key => ({
     width: 400,

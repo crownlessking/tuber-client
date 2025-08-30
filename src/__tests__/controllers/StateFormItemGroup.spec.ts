@@ -1,10 +1,10 @@
-import StateForm from '../../controllers/StateForm'
-import StateFormItemGroup from '../../controllers/StateFormItemGroup'
+import StateForm from '../../controllers/StateForm';
+import StateFormItemGroup from '../../controllers/StateFormItemGroup';
 
 describe('StateFormItemGroup', () => {
   describe('constructor', () => {
     it('should create a state form item group object', () => {
-      expect(new StateFormItemGroup({}, {} as StateForm)).toEqual({ _formItemGroupState: {} })
-    })
-  })
-})
+      expect(new StateFormItemGroup({}, {} as StateForm)).toEqual({ _formItemGroupState: {} });
+    });
+  });
+});

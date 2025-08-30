@@ -1,7 +1,7 @@
-import { dataActions as a } from '../../slices/data.slice'
-import store from '../../state'
+import { dataActions as a } from '../../slices/data.slice';
+import store from '../../state';
 
-const { dispatch } = store
+const { dispatch } = store;
 
 describe('dataSlice', () => {
 

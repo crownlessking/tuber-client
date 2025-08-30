@@ -1,5 +1,5 @@
-import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio'
-import StateFormItemRadioCustom from '../../../controllers/templates/StateFormItemRadioCustom'
+import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
+import StateFormItemRadioCustom from '../../../controllers/templates/StateFormItemRadioCustom';
 
 describe('StateFormItemRadioCustom', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateFormItemRadioCustom', () => {
       expect(new StateFormItemRadioCustom(
         {  },
         {} as StateFormItemRadio
-      )).toEqual({ _formItemRadioCustomState: {} })
-    })
-  })
-})
+      )).toEqual({ _formItemRadioCustomState: {} });
+    });
+  });
+});

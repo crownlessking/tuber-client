@@ -1,5 +1,5 @@
-import StatePage from '../../../controllers/StatePage'
-import StatePageAppbar from '../../../controllers/templates/StatePageAppbar'
+import StatePage from '../../../controllers/StatePage';
+import StatePageAppbar from '../../../controllers/templates/StatePageAppbar';
 
 describe('StatePageAppbar', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StatePageAppbar', () => {
       expect(new StatePageAppbar(
         {},
         {} as StatePage
-      )).toEqual({ _defaultState: {} })
-    })
-  })
-})
+      )).toEqual({ _defaultState: {} });
+    });
+  });
+});

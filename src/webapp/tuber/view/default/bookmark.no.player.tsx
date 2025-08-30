@@ -2,24 +2,20 @@ import Grid from '@mui/material/Grid';
 import ListItem from '@mui/material/ListItem';
 import { styled } from '@mui/material/styles';
 import { IBookmark } from '../../tuber.interfaces';
-import { get_platform_icon_src, shorten_text } from '../../_tuber.common.logic';
+import { gen_video_url, shorten_text } from '../../_tuber.common.logic';
 import React, { Fragment, useCallback, useMemo } from 'react';
 import { SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config';
 import BookmarkActionsToolbar from './list.actions';
 import Thumbnail from './thumbnail';
 import { StateJsxIcon } from 'src/mui/icon';
+import PlatformIcon from './platform.icon';
 
 interface IBookmarkProps {
   children: IBookmark;
-  handleOnClick: (
-    bookmark: IBookmark,
-    playerOpen?: boolean
-  ) => (e: React.MouseEvent) => void;
   handleExpandDetailIconOnClick: (annotation: IBookmark, i: number)
     => (e: React.MouseEvent)
     => void;
   index: number;
-  playerOpen?: boolean;
 }
 
 const StyledListItem = styled(ListItem)(({ theme: { spacing } }) => ({
@@ -68,7 +64,7 @@ const TitleText = styled('span')(() => ({
   wordBreak: 'break-word'
 }));
 
-const PlatformIcon = styled('img')(() => ({
+const PlatformIconWrapper = styled('div')(() => ({
   width: '1.5rem',
   height: '1.5rem',
   margin: '0.25rem 0.5rem 0 0'
@@ -86,31 +82,29 @@ const ExpandNoteIconWrapper = styled('a')(({ theme }) => ({
   color: theme.palette.grey[500],
 }));
 
-// const ExpandNoteIcon = styled(PlayArrowIcon)(() => ({
-//   width: '1.5rem',
-//   height: '1.5rem',
-// }));
-
 const ExpandNoteIcon = React.memo(() => <StateJsxIcon name='play_arrow_outline' />);
 
 // Optimized BookmarkNoPlayer component with React.memo for performance
-const BookmarkNoPlayer = React.memo<IBookmarkProps>(({ children: bookmark, index: i, playerOpen, handleOnClick, handleExpandDetailIconOnClick }) => {
-  // Memoize platform icon source
-  const platformIconSrc = useMemo(() => get_platform_icon_src(bookmark.platform), [bookmark.platform]);
-  
+const BookmarkNoPlayer = React.memo<IBookmarkProps>(({
+  children: bookmark,
+  index: i,
+  handleExpandDetailIconOnClick
+}) => {
+
   // Memoize shortened note text
   const shortenedNote = useMemo(() => shorten_text(bookmark.note), [bookmark.note]);
-  
+
   // Memoize whether note should show expand button
   const shouldShowExpandButton = useMemo(() => 
     bookmark.note && bookmark.note.length > SHORTENED_NOTE_MAX_LENGTH, 
     [bookmark.note]
   );
-  
+
   // Memoized click handlers
   const handleBookmarkClick = useCallback((e: React.MouseEvent) => {
-    handleOnClick(bookmark, playerOpen)(e);
-  }, [handleOnClick, bookmark, playerOpen]);
+    const url = bookmark.url || gen_video_url(bookmark);
+    window.open(url, '_blank')?.focus();
+  }, [bookmark]);
   
   const handleExpandClick = useCallback((e: React.MouseEvent) => {
     handleExpandDetailIconOnClick(bookmark, i)(e);
@@ -122,7 +116,9 @@ const BookmarkNoPlayer = React.memo<IBookmarkProps>(({ children: bookmark, index
       <StackGrid container direction='column'>
         <Grid container direction='row'>
           <TitleWrapper>
-            <PlatformIcon src={platformIconSrc} />
+            <PlatformIconWrapper>
+              <PlatformIcon platform={bookmark.platform} />
+            </PlatformIconWrapper>
             <Title href='#' onClick={handleBookmarkClick}>
               <TitleText>{bookmark.title}</TitleText>
             </Title>

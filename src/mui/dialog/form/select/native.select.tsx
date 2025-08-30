@@ -13,7 +13,7 @@ interface IDialogSelectNative {
 export default function DialogSelectNative (props: IDialogSelectNative) {
   const { def: select, hive } = props;
   select.configure('native');
-  const [value, setValue] = useState<string>(hive[select.name] ?? '');
+  const [value, setValue] = useState<string>((hive[select.name] ?? '') as string);
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setValue(e.target.value as string);

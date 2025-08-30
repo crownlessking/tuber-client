@@ -28,10 +28,10 @@ export default class StateDataPagesRange extends AbstractState {
     this._parentDef = parent;
   }
 
-  get state(): any { return this._pagesRangeState; }
-  get parent(): any { return this._parentDef || new State(); }
-  get props(): any { return this.die('Method not implemented.', {}); }
-  get theme(): any { return this.die('Method not implemented.', {}); }
+  get state(): unknown { return this._pagesRangeState; }
+  get parent(): unknown { return this._parentDef || new State(); }
+  get props(): unknown { return this.die('Method not implemented.', {}); }
+  get theme(): unknown { return this.die('Method not implemented.', {}); }
 
   /** Instance needs to be given specific information to function properly. */
   configure(opts: IConfigure): this {

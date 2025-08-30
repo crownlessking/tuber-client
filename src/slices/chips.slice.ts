@@ -26,7 +26,8 @@ export const chipsSlice = createSlice({
     chipAdd: (state, action: IAdd) => {
       const { route, id, chipState } = action.payload;
       const pageChipsState = state[route] ?? {};
-      pageChipsState[id] = chipState as any;
+      // @ts-ignore
+      pageChipsState[id] = chipState;
       state[route] = pageChipsState;
     },
     chipRemove: (state, action: IRemove) => {
@@ -42,7 +43,8 @@ export const chipsSlice = createSlice({
     chipUpdate: (state, action: IAdd) => {
       const { route, id, chipState } = action.payload;
       const pageChipsState = state[route] ?? {};
-      pageChipsState[id] = chipState as any;
+      // @ts-ignore
+      pageChipsState[id] = chipState;
       state[route] = pageChipsState;
     },
     chipReset: state => {

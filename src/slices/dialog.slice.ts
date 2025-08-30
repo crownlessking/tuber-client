@@ -43,16 +43,24 @@ export const dialogSlice = createSlice({
       state.label = payload.label;
       state.contentText = payload.contentText;
       state.content     = payload.content;
-      state.actions     = payload.actions as any;
+      // @ts-ignore
+      state.actions     = payload.actions;
       state.showActions = payload.showActions;
       state.onSubmit    = payload.onSubmit;
+      // @ts-ignore
       state.list        = payload.list;
       state.callback    = payload.callback;
+      // @ts-ignore
       state.props       = payload.props;
+      // @ts-ignore
       state.titleProps  = payload.titleProps;
+      // @ts-ignore
       state.contentProps = payload.contentProps;
+      // @ts-ignore
       state.contentTextProps = payload.contentTextProps;
+      // @ts-ignore
       state.actionsProps     = payload.actionsProps;
+      // @ts-ignore
       state.slideProps       = payload.slideProps;
     },
     dialogDismount: (state) => {
@@ -65,20 +73,28 @@ export const dialogSlice = createSlice({
       state.label = $default.label;
       state.contentText = $default.contentText;
       state.content     = $default.content;
-      state.actions     = $default.actions as any;
+      /* @ts-ignore */
+      state.actions     = $default.actions;
       state.showActions = $default.showActions;
       state.onSubmit    = $default.onSubmit;
+      /* @ts-ignore */
       state.list        = $default.list;
       state.callback    = $default.callback;
+      /* @ts-ignore */
       state.props       = $default.props;
+      /* @ts-ignore */
       state.titleProps  = $default.titleProps;
+      /* @ts-ignore */
       state.contentProps = $default.contentProps;
+      /* @ts-ignore */
       state.contentTextProps = $default.contentTextProps;
+      /* @ts-ignore */
       state.actionsProps     = $default.actionsProps;
+      /* @ts-ignore */
       state.slideProps       = $default.slideProps;
     }
   }
-})
+});
 
 export const dialogActions = dialogSlice.actions
 export const {

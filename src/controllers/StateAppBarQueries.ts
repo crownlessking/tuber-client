@@ -9,16 +9,16 @@ import { TWithRequired } from '../interfaces';
 export default class StateAppbarQueries extends AbstractState {
 
   constructor(
-    protected searchesState: TStateAppbarQueries,
-    protected parentDef?: State
+    protected _searchesState: TStateAppbarQueries,
+    protected _parentDef?: State
   ) {
     super();
   }
 
-  get state(): TStateAppbarQueries { return this.searchesState; }
-  get parent(): State { return this.parentDef || new State(); }
-  get props(): any { return this.die('\'props\' not implemented yet.', {}); }
-  get theme(): any { return this.die('\'theme\' not implemented yet.', {}); }
+  get state(): TStateAppbarQueries { return this._searchesState; }
+  get parent(): State { return this._parentDef || new State(); }
+  get props(): unknown { return this.die('\'props\' not implemented yet.', {}); }
+  get theme(): unknown { return this.die('\'theme\' not implemented yet.', {}); }
 
   /**
    * Get a search query state.
@@ -30,8 +30,8 @@ export default class StateAppbarQueries extends AbstractState {
     IStateAppbarQuery,
     'value'
   >|null => {
-    const queryState =  this.searchesState[route]
-      ?? this.searchesState[`/${route}`]
+    const queryState =  this._searchesState[route]
+      ?? this._searchesState[`/${route}`]
       ?? null;
     if (!queryState) return null;
     return {

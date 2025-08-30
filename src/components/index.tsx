@@ -1,4 +1,4 @@
-import { Fragment, MouseEvent } from 'react';
+import { Fragment, MouseEvent, ChangeEvent } from 'react';
 import {
   styled,
   alpha,
@@ -34,8 +34,11 @@ import {
   TEXTFIELD,
   TEXT_NODE,
   TIME_PICKER
-} from '../constants';
-import { update_checkboxes } from '../mui/form/items/_items.common.logic';
+} from '../constants.client';
+import {
+  ICheckboxesData,
+  update_checkboxes
+} from '../mui/form/items/_items.common.logic';
 import StateJsxButton from '../mui/form/items/state.jsx.button';
 import StateJsxCheckboxes from '../mui/form/items/state.jsx.checkboxes';
 import StateJsxInput from '../mui/form/items/state.jsx.input';
@@ -56,18 +59,21 @@ import { formsDataClear } from '../slices/formsData.slice';
 import StateFormItemSwitch from '../controllers/templates/StateFormItemSwitch';
 import { get_bool_type } from 'src/mui/form/_form.common.logic';
 import { log } from '../business.logic/logging';
+import StateFormItemCheckbox from '../controllers/templates/StateFormItemCheckbox';
+import StateAllForms from '../controllers/StateAllForms';
+import IStateFormItem from '../interfaces/IStateFormItem';
 
 interface IComponentsBuilderProps {
   def: StateComponent[];
-  parent: any;
+  parent: unknown;
 }
 
 interface IDefProps {
   type: string;
   key: string|number;
-  getState: <T=any>()=>T;
-  props: any;
-  jsonTheme: any;
+  getState: <T=unknown>()=>T;
+  props: Record<string, unknown>;
+  jsonTheme: unknown;
   items: StateComponent[];
 }
 
@@ -86,18 +92,18 @@ function RecursiveComponents({
 
   /** Saves the form field value to the store. */
   const onUpdateFormData = (form: StateForm) =>
-  (name: string) => (e: any) => dispatch({
+  (name: string) => (e: unknown) => dispatch({
     type: 'formsData/formsDataUpdate',
     payload: {
       formName: form.name,
       name,
-      value: e.target.value
+      value: (e as ChangeEvent<HTMLInputElement>).target.value
     }
   });
 
   /** Saves the date value to the store. */
   const onUpdateFormDatetime = (form: StateForm) =>
-    (name: string, val: string) => (date: Date | null) =>
+    (name: string) => (date: Date | null) =>
   {
     if (date) {
       dispatch({
@@ -113,10 +119,10 @@ function RecursiveComponents({
 
   /** Saves checkboxes values to the Redux store. */
   const onHandleCheckbox = (form: StateForm) =>
-    (name: string, oldValue: any) => (e: any) => 
+    (name: string, oldValue: unknown) => () => 
   {
-    let value = oldValue ? oldValue : [];
-    value = update_checkboxes(value);
+    let value = (oldValue ? oldValue : []) as ICheckboxesData;
+    update_checkboxes(value);
     dispatch({
       type: 'formsData/formsDataUpdate',
       payload: {
@@ -129,7 +135,7 @@ function RecursiveComponents({
 
   /** Save switches value to the Redux store. */
   const onHandleSwitch = (form: StateForm) =>
-    (name: string, value: any) => (e: any) =>
+    (name: string, value: unknown) => (e: unknown) =>
   {
     const map: { [constant: string]: string[] } = {
       [BOOL_TRUEFALSE]: ['true', 'false'],
@@ -145,7 +151,7 @@ function RecursiveComponents({
         payload: {
           formName: form.name,
           name,
-          value: e.target.checked
+          value: (e as ChangeEvent<HTMLInputElement>).target.checked
             ? map[constant][0]
             : map[constant][1]
         }
@@ -156,7 +162,7 @@ function RecursiveComponents({
         payload: {
           formName: form.name,
           name,
-          value: e.target.checked
+          value: (e as ChangeEvent<HTMLInputElement>).target.checked
         }
       });
     }
@@ -173,7 +179,7 @@ function RecursiveComponents({
   const onFormSubmitDefault = (form: StateForm) => () => (e: MouseEvent) => {
     e.preventDefault();
     const formsData = form.parent.parent.formsData;
-    const body = formsData.get(form.name);
+    const body = formsData.get<RequestInit['body']>(form.name);
     if (body) {
       onPostReqState(form.endpoint, body);
       dispatch(formsDataClear(form.name));
@@ -181,7 +187,7 @@ function RecursiveComponents({
   }
 
   const textComponent = ({ type, key, getState: getJson }:IDefProps) => {
-    const textfield = new StateFormItem(getJson(), parent);
+    const textfield = new StateFormItem(getJson<IStateFormItem>(), parent as StateForm);
     if (parent instanceof StateForm) {
       textfield.onChange = onUpdateFormData(parent);
     }
@@ -194,7 +200,7 @@ function RecursiveComponents({
   }
 
   const pickerComponent = ({ type, key, getState: getJson }:IDefProps) => {
-    const picker = new StateFormItem(getJson(), parent);
+    const picker = new StateFormItem(getJson<IStateFormItem>(), parent as StateForm);
     if (parent instanceof StateForm) {
       picker.onChange = onUpdateFormDatetime(parent);
     }
@@ -210,11 +216,11 @@ function RecursiveComponents({
     [STATE_BUTTON]:({ type, key, getState: getJson }:IDefProps): number => components.push(
       <StateJsxButton
         key={`${type}-${key}`}
-        def={new StateFormItem(getJson(), parent)}
+        def={new StateFormItem(getJson(), parent as StateForm)}
       />
     ),
     [CHECKBOXES]:({ type, key, getState: getJson }:IDefProps): void => {
-      const checkboxes = new StateFormItem(getJson(), parent);
+      const checkboxes = new StateFormItemCheckbox(getJson(), parent as StateForm);
       if (parent instanceof StateForm) {
         checkboxes.onChange = onHandleCheckbox(parent);
       }
@@ -223,7 +229,7 @@ function RecursiveComponents({
       );
     },
     [FORM]:({ type, key, getState: getJson, items }:IDefProps): void => {
-      const form = new StateForm(getJson(), parent);
+      const form = new StateForm(getJson(), parent as StateAllForms);
       components.push(
         <StateJsxForm key={`${type}-${key}`} def={form}>
           <RecursiveComponents
@@ -237,7 +243,7 @@ function RecursiveComponents({
     [STATE_INPUT]:({ type, key, getState: getJson }:IDefProps): number => components.push(
       <StateJsxInput
         key={`${type}-${key}`}
-        def={new StateFormItem(getJson(), parent)}
+        def={new StateFormItem(getJson(), parent as StateForm)}
       />
     ),
     [INPUT_LABEL]:({ type, key, props }:IDefProps): number => components.push(
@@ -255,17 +261,17 @@ function RecursiveComponents({
     [RADIO_BUTTONS]:({ type, key, getState: getJson }:IDefProps): number => components.push(
       <StateJsxRadio
         key={`${type}-${key}`}
-        def={new StateFormItemRadio(getJson(), parent)}
+        def={new StateFormItemRadio(getJson(), parent as StateForm)}
       />
     ),
     [STATE_SELECT]:({ type, key, getState: getJson }:IDefProps): number => components.push(
       <JsonSelect
         key={`${type}-${key}`}
-        def={new StateFormItemSelect(getJson(), parent)}
+        def={new StateFormItemSelect(getJson(), parent as StateForm)}
       />
     ),
     [SUBMIT]:({ type, key, getState: getJson }:IDefProps): void => {
-      const button = new StateFormItem(getJson(), parent);
+      const button = new StateFormItem(getJson<IStateFormItem>(), parent as StateForm);
       if (parent instanceof StateForm) {
         button.onClick = button.hasNoOnClickCallback
           ? onFormSubmitDefault(parent)
@@ -274,7 +280,7 @@ function RecursiveComponents({
       components.push(<StateJsxButton key={`${type}-${key}`} def={button} />);
     },
     [SWITCH]:({ type, key, getState: getJson }:IDefProps): void => {
-      const $witch = new StateFormItemSwitch(getJson(), parent);
+      const $witch = new StateFormItemSwitch(getJson(), parent as StateForm);
       if (parent instanceof StateForm) {
         $witch.onChange = onHandleSwitch(parent);
       }
@@ -291,7 +297,7 @@ function RecursiveComponents({
     [PASSWORD]:textComponent,
     [TEXT]:textComponent,
     [TEXT_NODE]:({ type, key, getState: getJson }:IDefProps): void => {
-      const node = new StateFormItem(getJson(), parent);
+      const node = new StateFormItem(getJson<IStateFormItem>(), parent);
       components.push(
         <Fragment key={`${type}-${key}`}>
           { node.text }
@@ -338,9 +344,9 @@ function RecursiveComponents({
         jsonTheme,
         items
       });
-    } catch (e: any) {
+    } catch (e) {
       remember_exception(e);
-      log(e.message);
+      log((e as Error).message);
     }
   }
 

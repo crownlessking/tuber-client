@@ -3,28 +3,33 @@ import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import Content from '../../../components/content';
+import StatePage from 'src/controllers/StatePage';
+
+interface IDef {
+  contentName: string;
+}
 
 // Mock all dependencies
 jest.mock('../../../components/view.component', () => {
-  return React.memo(function MockView({ def }: { def: any }) {
+  return React.memo(function MockView({ def }: { def: IDef; }) {
     return <div data-testid="view-component">View: {def.contentName}</div>;
   });
 });
 
 jest.mock('../../../components/content/html.component', () => {
-  return React.memo(function MockHtmlContent({ def }: { def: any }) {
+  return React.memo(function MockHtmlContent({ def }: { def: IDef; }) {
     return <div data-testid="html-component">HTML: {def.contentName}</div>;
   });
 });
 
 jest.mock('../../../components/content/form.component', () => {
-  return React.memo(function MockFormContent({ formName, def, type }: { formName: string; def: any; type: string }) {
+  return React.memo(function MockFormContent({ formName, def, type }: { formName: string; def: unknown; type: string }) {
     return <div data-testid="form-component">Form: {formName} - {type}</div>;
   });
 });
 
 jest.mock('../../../components/content/webapp.content.component', () => {
-  return React.memo(function MockWebApps({ def }: { def: any }) {
+  return React.memo(function MockWebApps({ def }: { def: IDef }) {
     return <div data-testid="webapp-component">WebApp: {def.contentName}</div>;
   });
 });
@@ -396,17 +401,17 @@ describe('Content Component Performance & Memoization', () => {
       
       // We can't directly access the memoized constants, but we can test that
       // the component doesn't cause unnecessary re-renders
-      const TestWrapper = ({ def }: { def: any }) => {
-        return <Content def={def} />;
+      const TestWrapper = ({ def }: { def: unknown }) => {
+        return <Content def={def as StatePage} />;
       };
 
-      const { rerender } = renderWithProvider(<TestWrapper def={page as any} />);
+      const { rerender } = renderWithProvider(<TestWrapper def={page} />);
       expect(screen.getByTestId('view-component')).toBeInTheDocument();
 
       // Re-render should not cause issues
       rerender(
         <Provider store={store}>
-          <TestWrapper def={page as any} />
+          <TestWrapper def={page} />
         </Provider>
       );
 
@@ -414,14 +419,14 @@ describe('Content Component Performance & Memoization', () => {
     });
 
     it('should handle multiple rapid re-renders efficiently', () => {
-      const page = new MockStatePage('$html', 'rapid-test');
+      const page = new MockStatePage('$html', 'rapid-test') as unknown;
 
-      const { rerender } = renderWithProvider(<Content def={page as any} />);
+      const { rerender } = renderWithProvider(<Content def={page as StatePage} />);
 
       // Simulate rapid re-renders
       const rerenderComponent = () => (
         <Provider store={store}>
-          <Content def={page as any} />
+          <Content def={page as StatePage} />
         </Provider>
       );
 
@@ -436,9 +441,9 @@ describe('Content Component Performance & Memoization', () => {
   describe('Integration with business logic', () => {
     it('should properly integrate save_content_jsx with memoization', () => {
       const { save_content_jsx } = require('../../../business.logic');
-      const page = new MockStatePage('$view', 'integration-test');
+      const page = new MockStatePage('$view', 'integration-test') as unknown;
 
-      renderWithProvider(<Content def={page as any} />);
+      renderWithProvider(<Content def={page as StatePage} />);
 
       expect(save_content_jsx).toHaveBeenCalled();
       
@@ -449,9 +454,9 @@ describe('Content Component Performance & Memoization', () => {
 
     it('should properly integrate with form state management', () => {
       const { get_state_form_name } = require('../../../business.logic');
-      const page = new MockStatePage('$form_load', 'state-integration');
+      const page = new MockStatePage('$form_load', 'state-integration') as unknown;
 
-      renderWithProvider(<Content def={page as any} />);
+      renderWithProvider(<Content def={page as StatePage} />);
 
       expect(get_state_form_name).toHaveBeenCalledWith('state-integration');
     });

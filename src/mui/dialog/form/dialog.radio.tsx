@@ -15,7 +15,7 @@ interface IDialogRadio {
 export default function DialogRadio(props: IDialogRadio) {
   const radio = props.def;
   const hive  = props.hive;
-  const [currentValue, setCurrentValue] = useState<string>(hive[radio.name]);
+  const [currentValue, setCurrentValue] = useState<string>(hive[radio.name] as string);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = (e.target as HTMLInputElement).value;

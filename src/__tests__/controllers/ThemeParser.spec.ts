@@ -1,9 +1,9 @@
-import ThemeParser from '../../controllers/ThemeParser'
+import ThemeParser from '../../controllers/ThemeParser';
 
 describe('ThemeParser', () => {
   describe('constructor', () => {
     it('should create a theme parser object', () => {
-      expect(new ThemeParser({})).toEqual({ _themeParser: {} })
-    })
-  })
-})
+      expect(new ThemeParser({})).toEqual({ _themeParser: {} });
+    });
+  });
+});

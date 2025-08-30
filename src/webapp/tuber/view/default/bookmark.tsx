@@ -4,15 +4,19 @@ import ListItemText from '@mui/material/ListItemText';
 import Stack from '@mui/material/Stack';
 import { styled } from '@mui/material/styles';
 import React, { Fragment, useCallback, useMemo } from 'react';
-import { SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config';
+import { ENDPOINT, PLAYER_OPEN, SET_TO_PLAY, SHORTENED_NOTE_MAX_LENGTH } from '../../tuber.config';
 import { IBookmark } from '../../tuber.interfaces';
-import { get_platform_icon_src, shorten_text } from '../../_tuber.common.logic';
+import { gen_video_url, shorten_text } from '../../_tuber.common.logic';
 import BookmarkActionsToolbar from './list.actions';
 import { StateJsxIcon } from 'src/mui/icon';
+import PlatformIcon from './platform.icon';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from 'src/state';
+import StatePagesData from 'src/controllers/StatePagesData';
+import { pagesDataAdd } from 'src/slices/pagesData.slice';
 
 interface IBookmarkProps {
   children: IBookmark;
-  handleOnClick: (bookmark: IBookmark) => (e: React.MouseEvent) => void;
   handleExpandDetailIconOnClick: (annotation: IBookmark, i: number)
     => (e: React.MouseEvent)
     => void;
@@ -55,10 +59,10 @@ const Title = styled('a')(({ theme }) => ({
   }
 }));
 
-const PlatformIcon = styled('img')(() => ({
+const PlatformIconWrapper = styled('div')(() => ({
   width: '1.5rem',
   height: '1.5rem',
-  margin: '0.25rem 0.5rem 0 0',
+  margin: '0.25rem 0.5rem 0 0'
 }));
 
 const ExpandNoteIconWrapper = styled('a')(({ theme }) => ({
@@ -73,32 +77,47 @@ const ExpandNoteIconWrapper = styled('a')(({ theme }) => ({
   color: theme.palette.grey[500],
 }));
 
-// const ExpandNoteIcon = styled(PlayArrowIcon)(() => ({
-//   width: '1.5rem',
-//   height: '1.5rem',
-// }));
-
 const ExpandNoteIcon = React.memo(() => <StateJsxIcon name='play_arrow_outline' />);
 
 // Optimized Bookmark component with React.memo for performance
-const Bookmark = React.memo<IBookmarkProps>(({ children: bookmark, index: i, handleOnClick, handleExpandDetailIconOnClick }) => {
-  // Memoize platform icon source
-  const platformIconSrc = useMemo(() => get_platform_icon_src(bookmark.platform), [bookmark.platform]);
-  
+const Bookmark = React.memo<IBookmarkProps>(({ children: bookmark, index: i, handleExpandDetailIconOnClick }) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const pagesDataState = useSelector((state: RootState) => state.pagesData);
+  const reduxStore = useMemo(
+    () => new StatePagesData(pagesDataState),
+    [pagesDataState]
+  );
+  reduxStore.configure({ endpoint: ENDPOINT });
+  const playerOpen = reduxStore.get<boolean>(PLAYER_OPEN);
+
   // Memoize shortened note text
   const shortenedNote = useMemo(() => shorten_text(bookmark.note), [bookmark.note]);
-  
+
   // Memoize whether note should show expand button
   const shouldShowExpandButton = useMemo(() => 
     bookmark.note && bookmark.note.length > SHORTENED_NOTE_MAX_LENGTH, 
     [bookmark.note]
   );
-  
+
   // Memoized click handlers
   const handleBookmarkClick = useCallback((e: React.MouseEvent) => {
-    handleOnClick(bookmark)(e);
-  }, [handleOnClick, bookmark]);
-  
+    if (playerOpen) {
+      dispatch(pagesDataAdd({
+        route: ENDPOINT,
+        key: SET_TO_PLAY,
+        value: bookmark
+      }));
+      dispatch(pagesDataAdd({
+        route: ENDPOINT,
+        key: PLAYER_OPEN,
+        value: true
+      }));
+    } else {
+      const url = bookmark.url || gen_video_url(bookmark);
+      window.open(url, '_blank')?.focus();
+    }
+  }, [bookmark, dispatch, playerOpen]);
+
   const handleExpandClick = useCallback((e: React.MouseEvent) => {
     handleExpandDetailIconOnClick(bookmark, i)(e);
   }, [handleExpandDetailIconOnClick, bookmark, i]);
@@ -108,7 +127,9 @@ const Bookmark = React.memo<IBookmarkProps>(({ children: bookmark, index: i, han
       <Stack sx={{ position: 'relative' }}>
         <Grid container direction='column'>
           <TitleWrapper>
-            <PlatformIcon src={platformIconSrc} />
+            <PlatformIconWrapper>
+              <PlatformIcon platform={bookmark.platform} />
+            </PlatformIconWrapper>
             <Title href='#' onClick={handleBookmarkClick}>
               <ListItemText primary={bookmark.title} />
             </Title>

@@ -1,4 +1,4 @@
-import StateAllErrors from '../../controllers/StateAllErrors'
+import StateAllErrors from '../../controllers/StateAllErrors';
 
 describe('StateAllErrors', () => {
   describe('constructor', () => {
@@ -32,7 +32,7 @@ describe('StateAllErrors', () => {
           source: { parameter: 'id' },
           meta: { meta: 'data' }
         }
-      ])
+      ]);
       expect(state).toEqual({
         _allErrorsState: [
           {
@@ -56,9 +56,9 @@ describe('StateAllErrors', () => {
             meta: { meta: 'data' }
           }
         ]
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('state', () => {
     it('should return the state', () => {
@@ -91,7 +91,7 @@ describe('StateAllErrors', () => {
           source: { parameter: 'id' },
           meta: { meta: 'data' }
         }
-      ])
+      ]);
       expect(state.state).toEqual([
         {
           id: '1',
@@ -113,7 +113,7 @@ describe('StateAllErrors', () => {
           source: { parameter: 'id' },
           meta: { meta: 'data' }
         }
-      ])
-    })
-  })
-})
+      ]);
+    });
+  });
+});

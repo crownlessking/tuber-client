@@ -1,4 +1,4 @@
-import { get_parsed_page_content } from '.';
+import { get_parsed_content } from '.';
 import StatePageAppbar from './templates/StatePageAppbar';
 import StatePageBackground from './templates/StatePageBackground';
 import type StateAllPages from './StateAllPages';
@@ -12,11 +12,13 @@ import IStateBackground from '../interfaces/IStateBackground';
 import IStateComponent from '../interfaces/IStateComponent';
 import IStateTypography from '../interfaces/IStateTypography';
 import IStateDrawer, { IStatePageDrawer } from '../interfaces/IStateDrawer';
-import { TStatePageLayout } from '../constants';
+import { TStatePageLayout } from '../constants.client';
 import State from './State';
 import { remember_exception } from 'src/business.logic/errors';
 import { mongo_object_id } from '../business.logic';
 import { ler } from '../business.logic/logging';
+import { IJsonapiPageLinks } from '../interfaces/IJsonapi';
+import { CSSProperties } from 'react';
 
 export default class StatePage extends AbstractState implements IStatePage {
 
@@ -62,8 +64,8 @@ export default class StatePage extends AbstractState implements IStatePage {
   get state(): IStatePage { return this._pageState; }
   /** Chain-access to all pages definition. */
   get parent(): StateAllPages { return this._parentDef || new State().allPages; }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): Record<string, unknown> { return this.die('Not implemented yet.', {}); }
+  get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
   /**
    * Returns the page appbar json implementation or an empty object.  
    * The purpose is to initialize different instances of appbars using
@@ -191,9 +193,9 @@ export default class StatePage extends AbstractState implements IStatePage {
   get generateDefaultDrawer(): boolean { return this._pageState.generateDefaultDrawer === true; }
   get contentInherited(): string { return this._pageState.contentInherited ?? ''; }
   get backgroundInherited(): string { return this._pageState.backgroundInherited ?? ''; }
-  get data(): any { return this._pageState.data || {}; }
-  get meta(): any { return this._pageState.meta || {}; }
-  get links(): any { return this._pageState.links || {}; }
+  get data(): Record<string, unknown> { return this._pageState.data ?? {}; }
+  get meta(): Record<string, unknown> { return this._pageState.meta ?? {}; }
+  get links(): IJsonapiPageLinks { return this._pageState.links ?? {}; }
 
   /** Define a drawer for the current page. */
   setDrawer = (drawer: IStatePageDrawer): void => {
@@ -224,7 +226,7 @@ export default class StatePage extends AbstractState implements IStatePage {
 
   private _getContentObj(): IStatePageContent {
     if (this._pageState.content) {
-      return this._pageContentState = get_parsed_page_content(
+      return this._pageContentState = get_parsed_content(
         this._pageState.content
       );
     }
@@ -232,15 +234,15 @@ export default class StatePage extends AbstractState implements IStatePage {
       const inheritedContent = this.parent
         .getPageState(this._pageState.inherited)
         ?.content;
-      return this._pageContentState = get_parsed_page_content(inheritedContent);
+      return this._pageContentState = get_parsed_content(inheritedContent);
     }
     if (this._pageState.contentInherited) {
       const inheritedContent = this.parent
         .getPageState(this._pageState.contentInherited)
         ?.content;
-      return this._pageContentState = get_parsed_page_content(inheritedContent);
+      return this._pageContentState = get_parsed_content(inheritedContent);
     }
-    return this._pageContentState = get_parsed_page_content();
+    return this._pageContentState = get_parsed_content();
   }
 
   /** Ensures the page has the correct appbar. */
@@ -322,10 +324,10 @@ export default class StatePage extends AbstractState implements IStatePage {
       try {
         const background = this.parent.getPageState(route)?.background;
         if (background) { return background; }
-      } catch (e: any) {
+      } catch (e) {
         const message = `Error while inheriting background from "${route}" page.`;
         ler(message);
-        ler(e.stack);
+        ler((e as Error).stack);
         remember_exception(e, message);
       }
     }

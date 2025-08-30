@@ -5,8 +5,8 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import StateData from 'src/controllers/StateData';
 import { type RootState } from 'src/state';
-import { gen_video_url, shorten_text } from '../../_tuber.common.logic';
-import { IBookmark, ITTBList } from '../../tuber.interfaces';
+import { shorten_text } from '../../_tuber.common.logic';
+import { IBookmark } from '../../tuber.interfaces';
 import LoadMoreBookmarksFromServer, {
   LoadEarlierBookmarksFromServer
 } from './list.load.more';
@@ -16,8 +16,7 @@ const StyledList = styled(List)(({ theme }) => ({
   paddingLeft: theme.spacing(1),
 }));
 
-export default function TuberBookmarkSearchWithThumbnails(props: ITTBList) {
-  const { setBookmarkToPlay, playerOpen, setPlayerOpen } = props.props;
+export default function TuberBookmarkSearchWithThumbnails() {
   
   // Memoize state selectors
   const dataState = useSelector((state: RootState) => state.data);
@@ -26,23 +25,12 @@ export default function TuberBookmarkSearchWithThumbnails(props: ITTBList) {
   // Memoize bookmark collection
   const bookmarks = useMemo(() => {
     return data.configure({ endpoint: 'bookmarks' })
-      .collection()
+      .flatten()
       .get<IBookmark>();
   }, [data]);
 
   // State for expanded notes (replaces global array)
   const [expandedNotes, setExpandedNotes] = useState<Set<number>>(new Set());
-
-  // Memoized bookmark click handler
-  const handleBookmarkClick = useCallback((bookmark: IBookmark, playerOpenParam?: boolean) => {
-    if (playerOpenParam) {
-      setBookmarkToPlay(bookmark);
-      setPlayerOpen(true);
-    } else {
-      const url = bookmark.url || gen_video_url(bookmark);
-      window.open(url, '_blank')?.focus();
-    }
-  }, [setBookmarkToPlay, setPlayerOpen]);
 
   // Memoized expand toggle handler
   const handleToggleExpand = useCallback((index: number) => {
@@ -56,15 +44,6 @@ export default function TuberBookmarkSearchWithThumbnails(props: ITTBList) {
       return newSet;
     });
   }, []);
-
-  // Legacy handlers for existing Bookmark component
-  const handleOnClick = useCallback((
-    bookmark: IBookmark,
-    playerOpenParam?: boolean
-  ) => (e: React.MouseEvent) => {
-    e.preventDefault();
-    handleBookmarkClick(bookmark, playerOpenParam);
-  }, [handleBookmarkClick]);
 
   const handleExpandDetailIconOnClick = useCallback((
     bookmark: IBookmark,
@@ -105,10 +84,8 @@ export default function TuberBookmarkSearchWithThumbnails(props: ITTBList) {
         {bookmarks.map((bookmark, i) => (
           <Bookmark
             key={`bookmark-${i}-${bookmark.id || bookmark.url}`}
-            handleOnClick={handleOnClick}
             handleExpandDetailIconOnClick={handleExpandDetailIconOnClick}
             index={i}
-            playerOpen={playerOpen}
           >
             {bookmark}
           </Bookmark>

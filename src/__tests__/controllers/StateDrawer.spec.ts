@@ -1,9 +1,9 @@
-import StateDrawer from '../../controllers/StateDrawer'
+import StateDrawer from '../../controllers/StateDrawer';
 
 describe('StateDrawer', () => {
   describe('constructor', () => {
     it('should create a state drawer object', () => {
-      expect(new StateDrawer({}, null)).toEqual({ _drawerState: {} })
-    })
-  })
-})
+      expect(new StateDrawer({}, null)).toEqual({ _drawerState: {} });
+    });
+  });
+});

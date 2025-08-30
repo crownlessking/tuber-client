@@ -1,9 +1,10 @@
 import { type DrawerProps } from '@mui/material';
 import StatePageDrawer from './StatePageDrawer';
+import { TWithRequired } from 'src/common.types';
 
 export default class StateDrawerPersistent extends StatePageDrawer {
   
-  get props(): DrawerProps {
+  get props(): TWithRequired<DrawerProps, 'anchor'> {
     return {
       sx: {
         width: this.drawerState.width,
@@ -13,7 +14,8 @@ export default class StateDrawerPersistent extends StatePageDrawer {
           boxSizing: 'border-box',
         },
       },
-      variant: "persistent"
+      variant: 'persistent',
+      anchor: this.drawerState.anchor ?? 'left'
     };
   }
 

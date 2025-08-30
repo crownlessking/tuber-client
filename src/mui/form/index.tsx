@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useCallback } from 'react';
+import { Fragment, useMemo, useCallback, ReactNode } from 'react';
 import { Box, Paper, Stack } from '@mui/material';
 import type StateForm from '../../controllers/StateForm';
 import { remember_exception } from '../../business.logic/errors';
@@ -6,11 +6,11 @@ import { log } from '../../business.logic/logging';
 
 interface IJsonFormProps {
   def: StateForm;
-  children: any;
+  children: ReactNode;
 }
 
 function ConditionalPaper (
-  { form, children }:{ form: StateForm; children: any; }
+  { form, children }:{ form: StateForm; children: ReactNode; }
 ) {
   // Memoize the conditional paper rendering to avoid unnecessary re-renders
   const paperContent = useMemo(() => {
@@ -78,9 +78,9 @@ export default function StateJsxForm (
       }
       // Fallback to box if type is not found
       return map['box']();
-    } catch (e: any) {
+    } catch (e) {
       remember_exception(e);
-      log(e.message);
+      log((e as Error).message);
       // Return box component as fallback
       return map['box']();
     }

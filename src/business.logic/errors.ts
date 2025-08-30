@@ -1,5 +1,5 @@
 import Config from '../config';
-import { IJsonapiError } from '../interfaces/IJsonapi';
+import { IJsonapiError, TJsonapiMeta } from '../interfaces/IJsonapi';
 
 let tmpErrorsList: IJsonapiError[];
 
@@ -47,7 +47,7 @@ export function set_status_error_code(error: IJsonapiError): void {
 }
 
 /** Format JSON */
-export function format_json_code(state: Record<string,any> | string): string {
+export function format_json_code(state: object | string): string {
   const jsonStr = typeof state === 'string'
     ? state
     : JSON.stringify(state, null, 4);
@@ -80,7 +80,7 @@ function _color_json_code_regex_highlight(jsonStr: string): string {
  * @param obj
  * @returns
  */
-export function color_json_code(obj: Record<string,any> | string): string {
+export function color_json_code(obj: object | string): string {
   if (typeof obj === 'object' && obj !== null && !(obj instanceof Array)) {
     const jsonStr = JSON.stringify(obj, null, 4);
     const jsonStrHighlighted = _color_json_code_regex_highlight(jsonStr);
@@ -101,11 +101,11 @@ export function color_json_code(obj: Record<string,any> | string): string {
  *
  * @param error 
  */
-export function to_jsonapi_error(error: any, title?: string, meta?: any): IJsonapiError {
+export function to_jsonapi_error(error: unknown, title?: string, meta?: TJsonapiMeta): IJsonapiError {
   return {
     code: _id(),
-    title: title ?? error.message,
-    detail: error.stack,
+    title: title ?? (error as Error).message,
+    detail: (error as Error).stack,
     meta
   };
 }
@@ -145,7 +145,7 @@ export function remember_jsonapi_errors(errors: IJsonapiError[]) {
  * Temporarily saves error. Use when there is a possibility for invalid values
  * but no exception will be thrown.
  */
-export function remember_possible_error(title: string, data?: any) {
+export function remember_possible_error(title: string, data?: unknown) {
   if (Config.DEBUG) {
     tmpErrorsList = tmpErrorsList || [];
     const detail = data

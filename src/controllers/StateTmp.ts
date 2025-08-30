@@ -1,11 +1,12 @@
 import AbstractState from './AbstractState';
 import State from './State';
 import { ler } from '../business.logic/logging';
-import { IGenericObject } from '../common.types';
 import { tmpRemove } from 'src/slices/tmp.slice';
+import { CSSProperties } from 'react';
+import { is_record } from '../business.logic';
 
 interface IConfiguration {
-  dispatch: any;
+  dispatch?: Function;
 }
 
 function error_msg(msg: string) {
@@ -14,17 +15,17 @@ function error_msg(msg: string) {
 
 export default class StateTmp extends AbstractState {
   private _parentDef?: State;
-  private _dispatch: any;
+  private _dispatch?: Function;
 
-  constructor(private tmpState: IGenericObject, parent?: State) {
+  constructor(private _tmpState: Record<string, unknown>, parent?: State) {
     super();
     this._parentDef = parent;
   }
 
-  get state(): IGenericObject { return this.tmpState; }
+  get state(): Record<string, unknown> { return this._tmpState; }
   get parent(): State { return this._parentDef || new State(); }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): Record<string, unknown> { return this.die('Not implemented yet.', {}); }
+  get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
 
   configure ({ dispatch }: IConfiguration): void {
     this._dispatch = dispatch;
@@ -38,13 +39,17 @@ export default class StateTmp extends AbstractState {
     error_msg('configure instance with dispatch.');
   }
 
-  get = <T=any>(id: string, name: string, $default: T): T => {
-    const val = this.tmpState?.[id]?.[name] as T ?? $default;
-    this.removeTemporaryValue(id);
-    return val;
+  get = <T=unknown>(key: string, name: string, $default: T): T => {
+    const obj = this._tmpState[key];
+    if (is_record(obj)) {
+      const val = obj[name] ?? $default;
+      this.removeTemporaryValue(key);
+      return val as T;
+    }
+    return $default;
   }
 
-  set = <T=any>(id: string, name: string, value: T): void => {
+  set = <T=unknown>(id: string, name: string, value: T): void => {
     if (this._dispatch) {
       this._dispatch({
         type: 'tmp/tmpAdd',

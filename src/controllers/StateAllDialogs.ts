@@ -7,7 +7,7 @@ export default class StateAllDialogs extends AbstractState {
   private _parentDef?: State;
   private _allDialogsState: IStateAllDialogs;
 
-  constructor(allDialogsState: any, parent?: State) {
+  constructor(allDialogsState: IStateAllDialogs, parent?: State) {
     super();
     this._parentDef = parent;
     this._allDialogsState = allDialogsState;
@@ -15,10 +15,10 @@ export default class StateAllDialogs extends AbstractState {
 
   get state(): IStateAllDialogs { return this._allDialogsState; }
   get parent(): State { return this._parentDef || new State(); }
-  get props(): any {
+  get props(): unknown {
     return this.die('Not implemented yet.', {});
   }
-  get theme(): any {
+  get theme(): unknown {
     return this.die('Not implemented yet.', {});
   }
 }

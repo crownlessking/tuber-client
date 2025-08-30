@@ -42,19 +42,21 @@ export interface IJsonapiMember {
  * ```
  * @see https://jsonapi.org/format/#document-meta
  */
-export type TJsonapiMeta = Record<string, any>;
+export type TJsonapiMeta = Record<string, unknown>;
 
 /**
  * @see https://jsonapi.org/format/#document-links
  */
-export interface IJsonapiLink {
+export interface IJsonapiLinkObject {
   href: string;
   meta?: TJsonapiMeta;
 }
 
+export type TJsonapiLink = IJsonapiLinkObject | string | undefined;
+
 export interface IJsonapiErrorLinks {
-  about?: IJsonapiLink;
-  [prop: string]: IJsonapiLink | string | undefined;
+  about?: IJsonapiLinkObject;
+  [prop: string]: TJsonapiLink;
 }
 
 export interface IJsonapiErrorSource {
@@ -87,23 +89,31 @@ export interface IJsonapiError {
 }
 
 interface IJsonapiAbstractLinks {
-  self: IJsonapiLink | string;
-  related?: IJsonapiLink | string;
+  self?: IJsonapiLinkObject | string;
+  related?: IJsonapiLinkObject | string;
+}
+
+export interface IJsonapiPageLinks extends IJsonapiAbstractLinks {
+  [key: string]: TJsonapiLink;
+}
+
+export interface IJsonapiSpecLinks extends IJsonapiAbstractLinks {
+  self: IJsonapiLinkObject | string;
 }
 
 /**
  * @see https://jsonapi.org/format/#fetching-pagination
  */
-export interface IJsonapiPaginationLinks extends IJsonapiAbstractLinks {
-  first?: IJsonapiLink | string;
-  last?: IJsonapiLink | string;
-  prev?: IJsonapiLink | string;
-  next?: IJsonapiLink | string;
-  [key: string]: IJsonapiLink | string | undefined;
+export interface IJsonapiPaginationLinks extends IJsonapiSpecLinks {
+  first?: IJsonapiLinkObject | string;
+  last?: IJsonapiLinkObject | string;
+  prev?: IJsonapiLinkObject | string;
+  next?: IJsonapiLinkObject | string;
+  [key: string]: TJsonapiLink;
 }
 
-export interface IJsonapiResourceLinks extends IJsonapiAbstractLinks {
-  [key: string]: IJsonapiLink | string | undefined;
+export interface IJsonapiResourceLinks extends IJsonapiSpecLinks {
+  [key: string]: TJsonapiLink;
 }
 
 /**
@@ -131,7 +141,7 @@ export interface IJsonapiResourceAbstract {
  * @see https://jsonapi.org/format/#document-resource-object-relationships
  */
 export interface IJsonapiRelationship extends IJsonapiResourceAbstract {
-  data: IJsonapiResourceLinkage;
+  data: IJsonapiResourceLinkage | IJsonapiResourceLinkage[];
 }
 export interface IJsonapiDataRelationships {
   [key: string]: IJsonapiRelationship;
@@ -141,7 +151,7 @@ export interface IJsonapiDataRelationships {
  * @see https://jsonapi.org/format/#document-resource-objects
  */
 export interface IJsonapiDataAttributes {
-  [key: string]: string;
+  [key: string]: unknown;
 }
 
 export interface IJsonapiResource<T=IJsonapiDataAttributes> 
@@ -172,7 +182,7 @@ export interface IJsonapiMetaResponse extends IJsonapiBaseResponse {
 }
 export interface IJsonapiDataResponse extends IJsonapiBaseResponse {
   data: IJsonapiResponseResource[] | IJsonapiResponseResource | IJsonapiResourceLinkage | null;
-  included?: any[];
+  included?: IJsonapiResource[];
 }
 export interface IJsonapiErrorResponse extends IJsonapiBaseResponse {
   errors: IJsonapiError[];
@@ -181,10 +191,10 @@ export interface IJsonapiErrorResponse extends IJsonapiBaseResponse {
 /**
  * @see https://jsonapi.org/format/#document-top-level
  */
-export interface IJsonapiResponse extends IJsonapiBaseResponse {
-  data?: IJsonapiResource[] | IJsonapiResource | IJsonapiResourceLinkage | null;
+export interface IJsonapiResponse<T=IJsonapiDataAttributes> extends IJsonapiBaseResponse {
+  data?: IJsonapiResource<T>[] | IJsonapiResource<T> | IJsonapiResourceLinkage | null;
   errors?: IJsonapiError[];
-  included?: any[];
+  included?: IJsonapiResource[];
 }
 
 /**
@@ -199,7 +209,7 @@ export interface IJsonapiStateResponse extends IJsonapiResponse {
 export interface IJsonapiRequestResource<T=IJsonapiDataAttributes>
   extends IJsonapiResourceAbstract, IJsonapiCompoundDoc
 {
-  attributes: T;
+  attributes?: T;
   relationships?: IJsonapiDataRelationships;
 }
 
@@ -207,8 +217,20 @@ export interface IJsonapiAbstractRequest {
   jsonapi?: IJsonapiMember;
 }
 
+export interface IJsonapiBaseRequest extends IJsonapiAbstractRequest {
+  meta?: TJsonapiMeta;
+  links?: IJsonapiPaginationLinks;
+}
+
 export interface IJsonapiRequest<T=IJsonapiDataAttributes>
-  extends IJsonapiAbstractRequest
+  extends IJsonapiBaseRequest
+{
+  data?: IJsonapiRequestResource<T>;
+  included?: IJsonapiResource[];
+}
+
+export interface IJsonapiRequestClient<T=IJsonapiDataAttributes>
+  extends IJsonapiRequest<T>
 {
   data: IJsonapiRequestResource<T>;
 }

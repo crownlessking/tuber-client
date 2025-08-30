@@ -6,7 +6,7 @@ export interface IDataAdd {
   type: string;
   payload: {
     /** Collection of resources retrieved from server. */
-    data: any;
+    data: IJsonapiResource;
     /** The endpoint at which the collection was retrieved. */
     endpoint: string;
   };
@@ -21,7 +21,7 @@ export interface ICollectionStore {
   type: string;
   payload: {
     /** Collection of resources retrieved from server. */
-    collection: IJsonapiResource<any>[];
+    collection: IJsonapiResource[];
     /** The endpoint at which the collection was retrieved. */
     endpoint: string;
   };
@@ -31,7 +31,7 @@ export interface ICollectionLimitedStore {
   type: string;
   payload: {
     /** Collection of resources retrieved from server. */
-    collection: IJsonapiResource<any>[];
+    collection: IJsonapiResource[];
     /** The endpoint at which the collection was retrieved. */
     endpoint: string;
     /** Maximum number of resources per page. */
@@ -45,7 +45,7 @@ export interface IMemberEditActionPayload {
   endpoint: string;
   index?: number;
   prop: string;
-  val: any;
+  val: unknown;
 }
 
 export interface IMemberEditAction {
@@ -58,7 +58,7 @@ export interface IDataResourceUpdate {
   payload: {
     endpoint: string;
     index: number;
-    resource: IJsonapiResource<any>;
+    resource: IJsonapiResource;
   }
 }
 
@@ -134,7 +134,11 @@ export const dataSlice = createSlice({
     /** Modifies a single data member. */
     dataSetAttrByIndex: (state, action: IMemberEditAction) => {
       const { endpoint, index, prop, val } = action.payload;
-      if (index) {
+      if (index
+        && state[endpoint]
+        && state[endpoint][index]
+        && state[endpoint][index].attributes
+      ) {
         state[endpoint][index].attributes[prop] = val;
       }
     },
@@ -143,14 +147,14 @@ export const dataSlice = createSlice({
       payload: {
         collectionName: string;
         name: string;
-        resource: IJsonapiResource<any>;
+        resource: IJsonapiResource;
       };
     }) => {
       const { collectionName, name, resource } = action.payload;
       const collection = state[collectionName]
         ?? [] as IJsonapiResource[];
       for (let i = 0; i < collection.length; i++) {
-        if (collection[i].attributes.name === name) {
+        if (collection[i].attributes?.name === name) {
           collection[i] = resource;
           break;
         }
@@ -162,7 +166,7 @@ export const dataSlice = createSlice({
       payload: {
         collectionName: string;
         id: string;
-        resource: IJsonapiResource<any>;
+        resource: IJsonapiResource;
       };
     }) => {
       const { collectionName, id, resource } = action.payload;

@@ -14,53 +14,54 @@ import {
   INDETERMINATE,
   LOCALIZED,
   STACK,
-  DIV
-} from '../constants';
+  DIV,
+} from '../constants.client';
 import StateFormItemCustom from './StateFormItemCustom';
-import { dummy_callback, type IRedux, type TReduxHandle } from '../state';
+import { dummy_callback } from '../state';
 import IStateFormItem from '../interfaces/IStateFormItem';
 import IStateFormItemCustom from '../interfaces/IStateFormItemCustom';
 import StateFormItemInputProps from './StateFormItemInputProps';
 import { IFormItemDataError } from '../interfaces/IState';
 import { err } from '../business.logic/logging';
+import { CSSProperties } from 'react';
 
 export interface IFormItemHandle {
-  dispatch: any;
+  dispatch: unknown;
   form: StateForm;
   input: StateFormItem;
   inputError?: IFormItemDataError;
 }
 
-export default class StateFormItem<P = StateForm, T = any>
+export default class StateFormItem<P = StateForm, T = unknown>
   extends AbstractState
   implements IStateFormItem
 {
-  protected itemState: IStateFormItem;
+  protected itemState: IStateFormItem<T>;
   protected parentDef: P;
   protected itemHasState: IStateFormItemCustom<T>;
   protected itemHas?: StateFormItemCustom<StateFormItem<P, T>, T>;
   protected itemDisabled: boolean;
-  protected itemOnClick?: TReduxHandle;
+  protected itemOnClick?: Function;
   protected itemOnFocus?: Function;
   protected itemOnChange?: Function;
-  protected itemOnKeydown?: TReduxHandle;
+  protected itemOnKeydown?: Function;
   protected itemOnBlur?: Function;
   protected recursiveItems?: StateFormItem<P, T>[];
   protected itemInputProps?: StateFormItemInputProps<StateFormItem<P, T>>;
 
-  constructor(itemState: IStateFormItem, parent: P) {
-    super()
+  constructor(itemState: IStateFormItem<T>, parent: P) {
+    super();
     this.itemState = itemState;
     this.parentDef = parent;
     this.itemDisabled = !!this.itemState.disabled;
     this.itemHasState = itemState.has || {};
   }
 
-  get state(): IStateFormItem { return this.itemState; }
+  get state(): IStateFormItem<T> { return this.itemState; }
   /** Chain-access to parent object (form). */
   get parent(): P { return this.parentDef; }
-  get props(): any {return this.itemState.props || {}; }
-  get theme(): any { return this.itemState.theme || this.itemHasState.theme || {}; }
+  get props(): Record<string, unknown> {return this.itemState.props || {}; }
+  get theme(): CSSProperties { return this.itemState.theme || this.itemHasState.theme || {}; }
   get type(): Required<IStateFormItem>['type'] { return this.itemState.type ?? ''; }
   get id(): string { return this.itemState.id ?? ''; }
   /** Get the current form field name. */
@@ -81,10 +82,10 @@ export default class StateFormItem<P = StateForm, T = any>
         this
       ));
   }
-  get _type(): any { return this.itemState._type || {}; }
+  get _type(): string { return this.itemState._type || ''; }
   /** Get the current form field `href` attribute. */
   get href(): string | undefined { return this.itemState.href; }
-  get value(): string { return this.itemState.value; }
+  get value(): string { return this.itemState.value ?? ''; }
   /** Get human-readable text. */
   get text(): string {
     return this.itemState.label
@@ -96,16 +97,16 @@ export default class StateFormItem<P = StateForm, T = any>
       || '';
   }
   /** Callback to run on 'onClick' event. */
-  get onFocus() {
+  get onFocus(): Function {
     return this.itemOnFocus
       || (
         this.itemOnFocus = this.has.getHandleCallback('onfocus')
           || this.itemState.onFocus
-          || (() => {})
+          || dummy_callback
       );
   }
   /** Get form field `onClick` value. */
-  get onClick() {
+  get onClick(): Function {
     return this.itemOnClick
       || (
         this.itemOnClick = this.has.getHandleCallback()
@@ -126,25 +127,25 @@ export default class StateFormItem<P = StateForm, T = any>
       || (
         this.itemOnChange = this.has.getHandleCallback('onchange')
           || this.itemState.onChange
-          || (() => {})
+          || dummy_callback
       );
   }
   /** Callback to run on 'onKeyDown' event. */
-  get onKeyDown() {
+  get onKeyDown(): Function {
     return this.itemOnKeydown
       || (
         this.itemOnKeydown = this.has.getHandleCallback('onkeydown')
           || this.itemState.onKeyDown
-          || (() => {})
+          || dummy_callback
       );
   }
   /** Callback to run on 'onBlur' event. */
-  get onBlur() {
+  get onBlur(): Function {
     return this.itemOnBlur
       || (
         this.itemOnBlur = this.has.getHandleCallback('onblur')
           || this.itemState.onBlur
-          || (() => {})
+          || dummy_callback
       );
   }
   get disabled(): boolean { return this.itemDisabled; }
@@ -163,7 +164,7 @@ export default class StateFormItem<P = StateForm, T = any>
       return this.recursiveItems;
     }
     if (this.itemState.items) {
-      this.recursiveItems = (this.itemState.items as IStateFormItem[]).map(
+      this.recursiveItems = (this.itemState.items as IStateFormItem<T>[]).map(
         item => new StateFormItem(item, this.parentDef)
       );
       return this.recursiveItems;
@@ -233,7 +234,7 @@ export default class StateFormItem<P = StateForm, T = any>
       // || this.disableOnChange
   }
   /** Set form field `onClick` attribute */
-  set onClick(cb: (redux: IRedux) => (e: any) => void) {
+  set onClick(cb: Function) {
     this.itemOnClick = cb;
   }
   /** Set the 'onChange' attribute of the form field. */
@@ -241,7 +242,7 @@ export default class StateFormItem<P = StateForm, T = any>
     this.itemOnChange = cb;
   }
   /** Set the 'onKeyDown' attribute of the form field. */
-  set onKeyDown(cb: TReduxHandle) {
+  set onKeyDown(cb: Function) {
     this.itemOnKeydown = cb;
   }
   /** Set the 'onBlur' attribute of the form field. */

@@ -1,12 +1,16 @@
 import { Box, Grid } from '@mui/material';
 import { createTheme } from '@mui/material/styles';
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 const theme = createTheme();
 
+interface IGenericProps {
+  children: ReactNode;
+}
+
 interface IMainProps {
   p?: string | number;
-  children: any;
+  children: ReactNode;
 }
 
 const defaultClasses = {
@@ -62,7 +66,7 @@ export const Toolbar = ({ mHeight }: { mHeight?: string|number }) => {
  * enough to fit the available viewport space. The content should automatically
  * resize.
  */
-export const LayoutCenteredNoScroll = ({ children }: any) => {
+export const LayoutCenteredNoScroll = ({ children }: IGenericProps) => {
   const sx = useMemo(() => ({
     minHeight: '100vh'
   }), []);
@@ -94,7 +98,7 @@ export const LayoutCenteredNoScroll = ({ children }: any) => {
 const LayoutCenteredFactory = (mHeight?: number) => {
   const spacing = theme.spacing(3);
   
-  return ({ children }: any) => (
+  return ({ children }: IGenericProps) => (
     <Main p={spacing}>
       <Toolbar mHeight={mHeight} />
       <Grid
@@ -127,7 +131,7 @@ export const LayoutCenteredDialog = LayoutCenteredFactory(0);
 const LayoutDefaultFactory = (mHeight = 0) => {
   const spacing = theme.spacing(0, 2);
   
-  return ({children}: any) => (
+  return ({children}: IGenericProps) => (
     <Main p={spacing}>
       <Toolbar mHeight={mHeight} />
       { children }
@@ -142,7 +146,7 @@ export const VirtualizedTableLayout = LayoutDefaultFactory(49); // 29
 const LayoutNoneFactory = (mHeight = 0) => {
   const sx = { w: '100%' };
   
-  return ({children}: any) => (
+  return ({children}: IGenericProps) => (
     <Box component='main' sx={sx}>
       <Toolbar mHeight={mHeight} />
       { children }

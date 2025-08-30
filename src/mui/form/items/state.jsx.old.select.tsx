@@ -1,4 +1,3 @@
-import { get_field_value } from './_items.common.logic';
 import { type RootState } from '../../../state';
 import { useSelector } from 'react-redux';
 import type StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect';
@@ -9,7 +8,8 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
-import { NAME_NOT_SET } from '../../../constants';
+import { NAME_NOT_SET } from '../../../constants.client';
+import StateFormsData from '../../../controllers/StateFormsData';
 
 interface IJsonSelectProps {
   def: StateFormItemSelect;
@@ -18,11 +18,10 @@ interface IJsonSelectProps {
 export default function StateJsxSelect ({ def: select }: IJsonSelectProps) {
   const { name, onChange: handleChange } = select;
   set_default_value(select, select.parent.name);
-  const formsData = useSelector<RootState>(state => state.formsData);
-
-  const getValue = () => {
-    return get_field_value(formsData, select.parent.name, select.name);
-  };
+  const formsData = new StateFormsData(
+    useSelector((state: RootState) => state.formsData)
+  );
+  const getValue = () => formsData.getValue(select.parent.name, select.name, '');
 
   return name ? (
     <FormControl {...select.formControlProps}>

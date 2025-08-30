@@ -34,7 +34,7 @@ import {
   TEXT,
   TEXTAREA,
   TEXTFIELD,
-} from '../../../constants';
+} from '../../../constants.client';
 import StateJsxFormItemGroup from '../../form/state.jsx.form.item.group';
 import DialogCheckboxes from './dialog.checkboxes';
 import DialogPhoneInput from './dialog.phone.input';
@@ -44,6 +44,10 @@ import DialogSwitch from './dialog.switch';
 import DialogTextField from './dialog.textfield';
 import DialogSelect from './select';
 import { log } from '../../../business.logic/logging';
+import type StateFormItemCheckboxBox from 'src/controllers/StateFormItemCheckboxBox';
+import type IStateFormItemSelectOption from 'src/interfaces/IStateFormItemSelectOption';
+import type StateFormItemRadioButton from 'src/controllers/StateFormItemRadioButton';
+import type StateFormItemSwitchToggle from 'src/controllers/StateFormItemSwitchToggle';
 
 interface IRecursiveFormBuilder {
   form: StateForm;
@@ -58,7 +62,7 @@ interface IItemTable {
   ) => JSX.Element | JSX.Element[];
 }
 
-export type THive = Record<string, any>;
+export type THive = Record<string, unknown>;
 
 export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
   const form = props.form;
@@ -127,7 +131,7 @@ export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
     ),
     [CHECKBOXES]: (def: StateFormItem, key: string|number) => (
       <DialogCheckboxes
-        def={def}
+        def={def as StateFormItem<StateForm, StateFormItemCheckboxBox>}
         hive={hive}
         key={`checkboxes${depth}-${key}`}
       />
@@ -162,7 +166,7 @@ export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
     [INDETERMINATE]: groupItem,
     [STATE_SELECT]: (def: StateFormItem, key: string|number) => (
       <DialogSelect
-        def={def}
+        def={def as StateFormItem<StateForm, IStateFormItemSelectOption>}
         hive={hive}
         key={`json-select${depth}-${key}`}
       />
@@ -172,7 +176,10 @@ export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
     [NUMBER]: textItem,
     [PASSWORD]: textItem,
     [RADIO_BUTTONS]: (def: StateFormItem, key: string|number) => {
-      const radioDef = new StateFormItemRadio(def.state, def.parent);
+      const radioDef = new StateFormItemRadio(
+        def.state as StateFormItem<StateForm, StateFormItemRadioButton>,
+        def.parent
+      );
       return (
         <DialogRadio
           def={radioDef}
@@ -183,7 +190,10 @@ export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
     },
     [STACK]: groupItem,
     [SWITCH]: (def: StateFormItem, key: string|number) => {
-      const switchDef = new StateFormItemSwitch(def.state, def.parent);
+      const switchDef = new StateFormItemSwitch(
+        def.state as StateFormItem<StateForm, StateFormItemSwitchToggle>,
+        def.parent
+      );
       return (
         <DialogSwitch
           def={switchDef}
@@ -224,7 +234,7 @@ export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
     return itemsToRender.map((item, i) => {
       try {
         return itemsTable[item.type.toLowerCase()](item, i);
-      } catch (e: any) {
+      } catch (e: unknown) {
         const message = `Form item type (${item.type}) does not exist.`;
         remember_exception(e, message);
         log(message);

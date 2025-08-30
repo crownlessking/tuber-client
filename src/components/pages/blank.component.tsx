@@ -8,7 +8,7 @@ import {
   ALLOWED_ATTEMPTS,
   THEME_DEFAULT_MODE,
   THEME_MODE
-} from '../../constants';
+} from '../../constants.client';
 import { TThemeMode } from 'src/interfaces';
 
 export default function PageBlank ({ def: page }:{ def: StatePage }) {

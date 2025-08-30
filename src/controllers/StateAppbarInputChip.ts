@@ -1,4 +1,4 @@
-import { TStateAllChips, TStateChips } from 'src/interfaces/IState';
+import { TStateAllChips, TStateChips } from '../interfaces/IState';
 import AbstractState from './AbstractState';
 import State from './State';
 import StateFormItemCustomChip from './templates/StateFormItemCustomChip';
@@ -8,7 +8,7 @@ interface IConfigure {
   route?: string;
 }
 
-export default class StateAppbarInputChip<T=any> extends AbstractState {
+export default class StateAppbarInputChip extends AbstractState {
   private _route?: string;
   private _template?: string;
 
@@ -20,9 +20,9 @@ export default class StateAppbarInputChip<T=any> extends AbstractState {
   }
 
   get state(): TStateAllChips { return this._allChipState; }
-  get parent(): any { return this._parentDef ?? new State(); }
-  get props(): any { return this.die('\'props\' not implemented yet.', {}); }
-  get theme(): any { return this.die('\'theme\' not implemented yet.', {}); }
+  get parent(): State { return this._parentDef ?? new State(); }
+  get props(): unknown { return this.die('\'props\' not implemented yet.', {}); }
+  get theme(): unknown { return this.die('\'theme\' not implemented yet.', {}); }
 
   configure = ({ template, route }: IConfigure) => {
     this._route = route;
@@ -64,7 +64,7 @@ export default class StateAppbarInputChip<T=any> extends AbstractState {
     return anal;
   }
 
-  get(): StateFormItemCustomChip<T>[]|null {
+  get(): StateFormItemCustomChip<this>[]|null {
     if (!this._route || !this._template) {
       this.ler('call StateAppbarInputChip.configure() first.', null);
       return null;
@@ -73,20 +73,20 @@ export default class StateAppbarInputChip<T=any> extends AbstractState {
     if (!anal.match) { return null; }
     const routeParts = [ ...anal.routeParts ];
     routeParts.shift();
-    const chips: StateFormItemCustomChip<T>[] = [];
+    const chips: StateFormItemCustomChip<this>[] = [];
     const routeChipsState = this.getRouteChipsState(this._route);
 
     for (const id of routeParts) { // The id is in the URL pathnames
       const chipState = routeChipsState[id];
       chips.push(
-        new StateFormItemCustomChip<any>(chipState, this)
+        new StateFormItemCustomChip<this>(chipState, this)
       );
     }
   
     return chips;
   }
 
-  alwaysGet(): StateFormItemCustomChip<T>[] {
+  alwaysGet(): StateFormItemCustomChip[] {
     return this.get() ?? [];
   }
 

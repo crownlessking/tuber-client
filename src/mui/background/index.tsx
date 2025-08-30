@@ -1,4 +1,4 @@
-import { useMemo, memo } from 'react';
+import { useMemo, memo, ReactNode } from 'react';
 import type StateBackground from '../../controllers/StateBackground';
 import type StatePage from '../../controllers/StatePage';
 import Fade from '@mui/material/Fade';
@@ -15,7 +15,7 @@ const BackgroundStyledBox = styled(Box)(() => ({
 
 interface IBackgroundProps {
   def: StateBackground<StatePage>;
-  children?: any;
+  children?: ReactNode;
 }
 
 const Background = memo(function Background(

@@ -1,9 +1,11 @@
-import { type InputProps } from '@mui/material';
-import { type CSSProperties } from 'react';
-import { IAbstractState } from '../common.types';
-import * as C from '../constants';
+
+import { CSSProperties } from 'react';
+import * as C from '../constants.client';
+import IAbstractState from './IAbstractState';
 import IStateFormItemCustom from './IStateFormItemCustom';
 import IStateLink from './IStateLink';
+import { InputProps } from '@mui/material/Input';
+import { SxProps } from '@mui/material';
 
 /**
  * When adding input adornment to a text field, It's the type for `start` and
@@ -21,9 +23,13 @@ import IStateLink from './IStateLink';
  * @see https://mui.com/material-ui/react-text-field/#input-adornments
  */
 export interface IStateFormItemAdornment {
+  type?: 'text' | 'button';
   icon?: IStateLink;
+  /** Fontawesone icon @deprecated */
+  faIcon?: string;
   text?: string;
-  textProps?: any;
+  textProps?: React.HTMLAttributes<HTMLSpanElement> & { sx?: SxProps };
+  [x: string]: unknown;
 }
 
 /**
@@ -92,7 +98,7 @@ export type TStateFormItemType = typeof C.BREAK_LINE
   | typeof C.TIME_PICKER
   | typeof C.BAD_FORM_ITEM;
 
-export default interface IStateFormItem extends IAbstractState {
+export default interface IStateFormItem<T=unknown> extends IAbstractState {
   /** Form field type e.g. textfield, select, radio... etc. */
   type?: TStateFormItemType;
   /** Form field `id` */
@@ -100,19 +106,19 @@ export default interface IStateFormItem extends IAbstractState {
   /** Form field `name` */
   name?: string;
   /** Form field `value` */
-  value?: any;
+  value?: string;
   href?: string;
   style?: CSSProperties;
-  onClick?: any;
-  onFocus?: any;
-  onKeyDown?: any;
-  onChange?: any;
-  onBlur?: any;
+  onClick?: Function;
+  onFocus?: Function;
+  onKeyDown?: Function;
+  onChange?: Function;
+  onBlur?: Function;
   label?: string;
   highlight?: string;
   disabled?: boolean;
   /** Contains members that are generally not `JSX.Element` props. */
-  has?: IStateFormItemCustom;
+  has?: IStateFormItemCustom<T>;
   inputProps?: IStateFormItemInputProps;
   items?: Array<IStateFormItem>;
   /** Disable form item */

@@ -7,7 +7,7 @@ import store from '.';
  * The variable's purpose is to prevent functions from running after they have
  * been scheduled to do so via `setTimeout`
  */
-let handle: any;
+let handle: ReturnType<typeof setTimeout> | null;
 
 /**
  * We don't want to spinner to show up right away, so we schedule it to appear

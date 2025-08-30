@@ -1,4 +1,4 @@
-import StateAllDialogs from '../../controllers/StateAllDialogs'
+import StateAllDialogs from '../../controllers/StateAllDialogs';
 
 describe('StateAllDialogs', () => {
   describe('constructor', () => {
@@ -25,7 +25,7 @@ describe('StateAllDialogs', () => {
         links: {
           self: 'http://example.com/dialogs'
         }
-      })
+      });
       expect(state).toEqual({
         _allDialogsState: {
           dialogs: [
@@ -50,9 +50,9 @@ describe('StateAllDialogs', () => {
             self: 'http://example.com/dialogs'
           }
         }
-      })
-    })
-  })
+      });
+    });
+  });
 
   describe('state', () => {
     it('should return the state', () => {
@@ -78,7 +78,7 @@ describe('StateAllDialogs', () => {
         links: {
           self: 'http://example.com/dialogs'
         }
-      })
+      });
       expect(state.state).toEqual({
         dialogs: [
           {
@@ -101,7 +101,7 @@ describe('StateAllDialogs', () => {
         links: {
           self: 'http://example.com/dialogs'
         }
-      })
-    })
-  })
-})
+      });
+    });
+  });
+});

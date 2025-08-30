@@ -1,4 +1,4 @@
-import { safely_get_as } from 'src/controllers';
+import { safely_get_as } from '../../../business.logic';
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
 import { type IRedux } from 'src/state';
 import {
@@ -23,17 +23,25 @@ import {
 } from '../dev.video.thumbnail';
 import { get_fetch } from 'src/state/net.actions';
 import { IBookmark } from '../tuber.interfaces';
-import { IJsonapiResource } from 'src/interfaces/IJsonapi';
 import React from 'react';
 import Config from 'src/config';
-import { get_origin_ending_fixed } from '../../../business.logic';
+import { get_origin_ending_fixed, get_val } from '../../../business.logic';
 import { ler } from '../../../business.logic/logging';
+import StateData from 'src/controllers/StateData';
+import { IJsonapiResponse } from 'src/interfaces/IJsonapi';
+
+interface IFormsData {
+  video_url?: string;
+}
 
 export default function dev_get_video_thumbnail(redux: IRedux) {
   return async () => {
     const { store: { getState, dispatch } } = redux;
     const rootState = getState();
-    const formName = rootState.stateRegistry[FORM_TEST_THUMBNAIL_ID];
+    const formName = get_val<string>(
+      rootState,
+      `stateRegistry.${FORM_TEST_THUMBNAIL_ID}`
+    );
     if (!formName) {
       const errorMsg = `dev_get_video_thumbnail: form name not found.`;
       ler(errorMsg);
@@ -44,7 +52,7 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
       });
       return;
     }
-    const errorPolicy = new FormValidationPolicy(redux, formName);
+    const errorPolicy = new FormValidationPolicy<IFormsData>(redux, formName);
     const route = rootState.stateRegistry[PAGE_TEST_THUMBNAIL_ID];
     if (!route) {
       errorPolicy.emit('video_url', `Page route not found`);
@@ -102,13 +110,16 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
 
 export function dev_fix_missing_thumbnails(i: number) {
   return (redux: IRedux) => {
-    return async (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
+    return async (e: unknown) => {
+      (e as React.MouseEvent<HTMLButtonElement>).preventDefault();
       const rootState = redux.store.getState();
-      const resource: IJsonapiResource<IBookmark> = rootState
-        .data
-        .bookmarks
-        ?.[i];
+      const data = new StateData(redux.store.getState().data);
+      data.configure({ endpoint: 'bookmarks' });
+      // const resource: IJsonapiResource<IBookmark> = rootState
+      //   .data
+      //   .bookmarks
+      //   ?.[i];
+      const resource = data.get<IBookmark>()[i];
       if (!resource) {
         ler(`resourceList['${i}'] does not exist.`);
         return;
@@ -128,7 +139,7 @@ export function dev_fix_missing_thumbnails(i: number) {
       try {
         const origin = get_origin_ending_fixed(rootState.app.origin);
         const endpoint = `${origin}bookmarks/${id}/thumbnail-url`;
-        const editedBookmarkResource = await get_fetch(endpoint);
+        const editedBookmarkResource = await get_fetch<IJsonapiResponse<IBookmark>>(endpoint);
         if (editedBookmarkResource.errors) {
           ler(`dev_fix_missing_thumbnails: ${editedBookmarkResource.errors?.[0]?.title}`);
           remember_jsonapi_errors(editedBookmarkResource.errors);
@@ -142,8 +153,8 @@ export function dev_fix_missing_thumbnails(i: number) {
             resource: editedBookmarkResource.data
           }
         });
-      } catch (e: any) {
-        ler(`dev_fix_missing_thumbnails: ${e.message}`);
+      } catch (e) {
+        ler(`dev_fix_missing_thumbnails: ${(e as Error).message}`);
         remember_exception(e);
       }
     }

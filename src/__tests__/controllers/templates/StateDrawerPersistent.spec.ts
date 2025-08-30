@@ -1,5 +1,5 @@
-import StatePage from '../../../controllers/StatePage'
-import StateDrawerPersistent from '../../../controllers/templates/StateDrawerPersistent'
+import StatePage from '../../../controllers/StatePage';
+import StateDrawerPersistent from '../../../controllers/templates/StateDrawerPersistent';
 
 describe('StateDrawerPersistent', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateDrawerPersistent', () => {
       expect(new StateDrawerPersistent(
         {},
         {} as StatePage
-      )).toEqual({ _defaultState: {} })
-    })
-  })
-})
+      )).toEqual({ _defaultState: {} });
+    });
+  });
+});

@@ -1,5 +1,5 @@
-import StateAnchorOrigin from '../../controllers/StateAnchorOrigin'
-import StateSnackbar from '../../controllers/StateSnackbar'
+import StateAnchorOrigin from '../../controllers/StateAnchorOrigin';
+import StateSnackbar from '../../controllers/StateSnackbar';
 
 describe('StateAnchorOrigin', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateAnchorOrigin', () => {
       expect(new StateAnchorOrigin({
         vertical: 'top',
         horizontal: 'left'
-      }, {} as StateSnackbar)).toEqual({ _anchorOriginState: {} })
-    })
-  })
-})
+      }, {} as StateSnackbar)).toEqual({ _anchorOriginState: {} });
+    });
+  });
+});

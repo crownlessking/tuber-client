@@ -1,13 +1,17 @@
 import { type AppDispatch } from 'src/state';
 import { get_req_state } from 'src/state/net.actions';
 import AbstractState from './AbstractState';
-import { IJsonapiResource } from '../interfaces/IJsonapi';
+import {
+  IJsonapiDataAttributes,
+  IJsonapiResource
+} from '../interfaces/IJsonapi';
 import { IStateData } from '../interfaces/IState';
 import State from './State';
+import { TObj } from 'src/common.types';
 
 interface IConfigure {
-  dispatch?: AppDispatch,
-  endpoint?: string,
+  dispatch?: AppDispatch;
+  endpoint?: string;
 }
 
 /**
@@ -21,7 +25,7 @@ export default class StateData extends AbstractState {
   private _parentDef?: State;
   private _reduxDispatch?: AppDispatch;
   private _endpoint?: string;
-  private _currentCollection?: any[];
+  private _flattenedCollection?: IJsonapiDataAttributes[];
   private _includedProps: { id: boolean, types: boolean };
 
   constructor(dataState: IStateData, parent?: State) {
@@ -33,8 +37,8 @@ export default class StateData extends AbstractState {
 
   get state(): IStateData { return this._dataState; }
   get parent(): State { return this._parentDef || new State(); }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): TObj { return this.die('Not implemented yet.', {}); }
+  get theme(): TObj { return this.die('Not implemented yet.', {}); }
 
   get noCollection(): boolean {
     return this._dataState && Object.keys(this._dataState).length === 0;
@@ -72,7 +76,7 @@ export default class StateData extends AbstractState {
    * @param endpoint
    * @param index
    */
-  getResourceById = (id: string): IJsonapiResource | null => {
+  getResourceById = <T = IJsonapiDataAttributes>(id: string): IJsonapiResource<T> | null => {
     if (!this._endpoint) {
       return this.die('StateData: Endpoint not set.', null);
     }
@@ -82,46 +86,44 @@ export default class StateData extends AbstractState {
     }
     for (const resource of collection) {
       if (resource.id === id) {
-        return resource;
+        return resource as IJsonapiResource<T>;
       }
     }
     return null;
   }
 
-  private getCollection = (): IJsonapiResource[] => {
+  getResources = <T=IJsonapiDataAttributes>(): IJsonapiResource<T>[] => {
     if (!this._endpoint) {
       return this.die('StateData: Endpoint not set.', []);
     }
-    const collection = this._dataState[this._endpoint];
-    if (!collection) {
+    const resources = this._dataState[this._endpoint];
+    if (!resources) {
       return this.notice(
         `StateData: '${this._endpoint}' collection not found.`,
         []
       );
     }
-    return collection;
+    return resources as IJsonapiResource<T>[];
   }
 
    /** Include the 'id' or the 'type'. */
    include(prop: 'id' | 'types'): this {
-    if (this._currentCollection) {
-      return this.die('StateData: Run \'include()\' before collect().', this);
+    if (this._flattenedCollection) {
+      return this.die('StateData: Run \'include()\' before flatten().', this);
     }
     this._includedProps[prop] = true;
     return this;
   }
 
-  /** Acquire collection from the data state. */
-  collection(): this {
+  /** Merges id, type, and the attributes members. */
+  flatten(): this {
     if (!this._endpoint) {
       return this.die('StateData: Endpoint not set.', this);
     }
     const { id, types } = this._includedProps;
-    this._currentCollection = this.getCollection().map(
-      (resource: IJsonapiResource) =>
-    {
+    this._flattenedCollection = this.getResources().map(resource => {
       if (!id && !types) {
-        return resource.attributes || {}
+        return resource.attributes || {};
       } else if (id && !types) {
         return { id: resource.id, ...resource.attributes }
       } else if (!id && types) {
@@ -133,17 +135,17 @@ export default class StateData extends AbstractState {
     return this;
   }
 
-  /** Get collection */
-  get<T=any>(): T[] {
-    if (!this._currentCollection) {
-      return this.die('StateData: Run collect() first.', []);
+  /** Get flattened collection */
+  get<T=IJsonapiDataAttributes>(): T[] {
+    if (!this._flattenedCollection) {
+      return this.die('StateData: Run flatten() first.', []);
     }
-    return this._currentCollection;
+    return this._flattenedCollection as T[];
   }
 
   /** */
   isEmpty(): boolean {
-    return this.getCollection().length === 0;
+    return this.getResources().length === 0;
   }
 
   /** Delete array elements by index range. */
@@ -151,7 +153,7 @@ export default class StateData extends AbstractState {
     range: { startIndex: number, endIndex: number}
   ): IJsonapiResource[] {
     const { startIndex, endIndex } = range;
-    const arr = this.getCollection();
+    const arr = this.getResources();
     return arr.slice(0, startIndex).concat(arr.slice(endIndex + 1));
   }
 }

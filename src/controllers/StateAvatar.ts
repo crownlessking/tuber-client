@@ -1,20 +1,26 @@
 import AbstractState from './AbstractState';
 import IStateAvatar from '../interfaces/IStateAvatar';
 import StateFormItemCustom from './StateFormItemCustom';
+import { AvatarProps } from '@mui/material';
+import IStateDialog, { IStateDialogAvatar } from '../interfaces/IStateDialog';
+import { CSSProperties } from 'react';
 
-export default class StateAvatar extends AbstractState implements IStateAvatar {
-  protected avatarState: IStateAvatar;
+export default class StateAvatar
+  extends AbstractState
+  implements IStateDialogAvatar
+{
+  protected avatarState: IStateDialogAvatar;
 
   constructor(avatarState: IStateAvatar) {
     super();
     this.avatarState = avatarState;
   }
 
-  get parent(): any {
+  get parent(): IStateDialog {
     return this.die('Avatar state does not have a parent.', {});
   }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
-  get props(): any {
+  get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
+  get props(): AvatarProps {
     return this.avatarState.props || {
       variant: 'circular'
     };

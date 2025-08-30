@@ -13,12 +13,12 @@ describe('src/mui/form/items/state.jsx.input.label.tsx', () => {
 
         // [TODO] Implement state to test this.
 
-      }, {} as StateForm)
-      const component = renderer.create(<StateJsxInputLabel def={form} />)
-      const tree = component.toJSON()
-      expect(tree).toMatchSnapshot()
-    })
+      }, {} as StateForm);
+      const component = renderer.create(<StateJsxInputLabel def={form} />);
+      const tree = component.toJSON();
+      expect(tree).toMatchSnapshot();
+    });
 
-  })
+  });
 
-})
+});

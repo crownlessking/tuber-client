@@ -1,4 +1,4 @@
-import { DEFAULT_BLANK_PAGE, DEFAULT_LANDING_PAGE } from '../constants';
+import { DEFAULT_BLANK_PAGE, DEFAULT_LANDING_PAGE } from '../constants.client';
 import AbstractState from './AbstractState';
 import IStateAllPages from '../interfaces/IStateAllPages';
 import IStatePage from '../interfaces/IStatePage';
@@ -22,8 +22,8 @@ export default class StateAllPages extends AbstractState {
   get state(): IStateAllPages { return this._allPagesState; }
   /** Chain-access root definition. */
   get parent(): State { return this._parentDef || new State(); }
-  get props(): any { return this.die('Not implemented yet.', {}); }
-  get theme(): any { return this.die('Not implemented yet.', {}); }
+  get props(): unknown { return this.die('Not implemented yet.', {}); }
+  get theme(): unknown { return this.die('Not implemented yet.', {}); }
 
   /**
    * Get a page state.

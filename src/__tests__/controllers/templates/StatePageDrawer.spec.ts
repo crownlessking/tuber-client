@@ -1,5 +1,5 @@
-import StatePage from '../../../controllers/StatePage'
-import StatePageDrawer from '../../../controllers/templates/StatePageDrawer'
+import StatePage from '../../../controllers/StatePage';
+import StatePageDrawer from '../../../controllers/templates/StatePageDrawer';
 
 describe('StatePageDrawer', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StatePageDrawer', () => {
       expect(new StatePageDrawer(
         {},
         {} as StatePage
-      )).toEqual({ _defaultState: {} })
-    })
-  })
-})
+      )).toEqual({ _defaultState: {} });
+    });
+  });
+});

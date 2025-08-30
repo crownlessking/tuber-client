@@ -1,8 +1,8 @@
 import { type IRedux } from 'src/state';
-import { mongo_object_id } from 'src/business.logic';
+import { get_val, mongo_object_id } from 'src/business.logic';
 import { get_req_state } from 'src/state/net.actions';
 import { APP_IS_FETCHING_BOOKMARKS, PAGE_RESEARCH_APP_ID } from '../tuber.config';
-import { get_parsed_page_content } from 'src/controllers';
+import { get_parsed_content } from 'src/controllers';
 import { pre, log } from 'src/business.logic/logging';
 import StateAppbarQueries from 'src/controllers/StateAppbarQueries';
 import StateApp from 'src/controllers/StateApp';
@@ -12,6 +12,7 @@ import StateNet from 'src/controllers/StateNet';
  * Callback to handle the search field in the appbar when the user submits a
  * query to search for bookmarks.
  * @param redux store, actions, and route
+ * @id 63_C_1
  */
 export default function appbar_search_bookmarks (redux: IRedux) {
   return async () => {
@@ -20,19 +21,18 @@ export default function appbar_search_bookmarks (redux: IRedux) {
     const route = new StateApp(rootState.app).route;
     const queries = new StateAppbarQueries(rootState.appbarQueries);
     const queryObj = queries.get(route);
-    pre('appbar_search_bookmarks: ');
+    pre('appbar_search_bookmarks():');
     if (!queryObj) {
       log(`${route} route has no search query object.`);
       return;
     }
     const pageKey = rootState.stateRegistry[PAGE_RESEARCH_APP_ID];
-    const content = rootState.pages[pageKey]?.content;
-    const endpoint = get_parsed_page_content(content).endpoint;
+    const content = get_val<string>(rootState, `pages.${pageKey}.content`);
+    const endpoint = get_parsed_content(content).endpoint;
     if (!endpoint) {
       log('Page content has no endpoint');
       return;
     }
-
     const net = new StateNet(rootState.net);
     if (net.userLoggedIn && queryObj.value.startsWith(':')) {
       // [TODO] Filter special characters except the colon.

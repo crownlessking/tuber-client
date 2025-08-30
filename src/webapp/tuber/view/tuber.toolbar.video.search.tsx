@@ -1,18 +1,17 @@
 import { styled } from '@mui/material/styles';
 import React, { useMemo } from 'react';
-import IStateLink from 'src/interfaces/IStateLink';
 import StateLink from 'src/controllers/StateLink';
 import StatePageAppbar from 'src/controllers/templates/StatePageAppbar';
 import Link from 'src/mui/link';
 import { IResearchToolbarProps } from '../tuber.interfaces';
 import { useSelector } from 'react-redux';
-import { type RootState } from 'src/state';
+import { IRedux, type RootState } from 'src/state';
 import StateNet from 'src/controllers/StateNet';
+import { ENDPOINT, PLAYER_OPEN } from '../tuber.config';
+import StatePagesData from 'src/controllers/StatePagesData';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 interface IToolbarIcon {
-  /** Callback to run when the toolbar icon is clicked. */
-  callback: IStateLink['onClick'];
-  /** Parent definition for state links. It is required. */
   def: StatePageAppbar;
 }
 
@@ -46,7 +45,7 @@ const AddBookmark = React.memo<IToolbarIcon>(({ def: appbar }) => {
     },
     'has': {
       'icon': 'add_outline',
-      'iconProps': {
+      'svgIconProps': {
         'sx': {
           'color': 'grey.600',
           'fontSize': 34
@@ -54,7 +53,6 @@ const AddBookmark = React.memo<IToolbarIcon>(({ def: appbar }) => {
       },
       'onclickHandle': `tuberCallbacks.$3_C_1`,
     },
-    // 'onClick': callback
   }, appbar), [appbar]);
 
   return <Link def={iconDef} />;
@@ -63,7 +61,10 @@ const AddBookmark = React.memo<IToolbarIcon>(({ def: appbar }) => {
 // Set display name for debugging
 AddBookmark.displayName = 'AddBookmark';
 
-const IntegratedPlayerToggle = React.memo<IToolbarIcon>(({ callback, def: appbar }) => {
+const IntegratedPlayerToggle = React.memo<IToolbarIcon>(({ def: appbar }) => {
+  const theme = useTheme();
+  const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
+
   // Memoize the StateLink configuration to prevent recreation
   const iconDef = useMemo(() => new StateLink({
     'type': 'icon',
@@ -72,15 +73,33 @@ const IntegratedPlayerToggle = React.memo<IToolbarIcon>(({ callback, def: appbar
     },
     'has': {
       'icon': 'monitor_outline',
-      'iconProps': {
+      'svgIconProps': {
         'sx': {
           'color': 'grey.600',
           'fontSize': 34
         }
       },
     },
-    'onClick': callback
-  }, appbar), [callback, appbar]);
+    'onClick': (redux: IRedux) => () => {
+      const { store: { getState, dispatch }, actions } = redux;
+      const reduxStore = new StatePagesData(getState().pagesData);
+      reduxStore.configure({ endpoint: ENDPOINT });
+      const playerOpen = reduxStore.get<boolean>(PLAYER_OPEN);
+      if (greaterThanMid) {
+        dispatch(actions.pagesDataAdd({
+          route: ENDPOINT,
+          key: PLAYER_OPEN,
+          value: !playerOpen
+        }));
+      } else {
+        dispatch(actions.pagesDataAdd({
+          route: ENDPOINT,
+          key: PLAYER_OPEN,
+          value: false
+        }));
+      }
+    }
+  }, appbar), [appbar, greaterThanMid]);
 
   return <Link def={iconDef} />;
 });
@@ -100,14 +119,8 @@ const ResearchToolbarFixed = React.memo<IResearchToolbarProps>((props) => {
       <ToggleWrapper>
         {sessionValid ? (
           <>
-            <AddBookmark
-              callback={props.bookmarkAddCallback}
-              def={appbar}
-            />
-            <IntegratedPlayerToggle
-              callback={props.togglePlayerCallback}
-              def={appbar}
-            />
+            <AddBookmark def={appbar} />
+            <IntegratedPlayerToggle def={appbar} />
           </>
         ) : null}
       </ToggleWrapper>

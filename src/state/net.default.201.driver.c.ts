@@ -2,6 +2,8 @@ import { Dispatch } from 'redux';
 import { is_object, clean_endpoint_ending } from '../business.logic';
 import {
   IJsonapiAbstractResponse,
+  IJsonapiDataAttributes,
+  IJsonapiResource,
   IJsonapiResponse
 } from '../interfaces/IJsonapi';
 import {
@@ -39,7 +41,7 @@ export default function net_default_201_driver (
     } else if (is_object(doc.data)) {
       dispatch(dataStack({
         endpoint: clean_endpoint_ending(endpoint),
-        data: doc.data
+        data: doc.data as IJsonapiResource<IJsonapiDataAttributes>
       }));
     }
   }

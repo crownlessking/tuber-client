@@ -1,7 +1,7 @@
 import '../tuber.css';
-import { Fragment, useState, useLayoutEffect } from 'react';
+import { Fragment, useLayoutEffect, useMemo } from 'react';
 import StatePage from '../../../../controllers/StatePage';
-import { IBookmark, IResearchToolbarProps } from '../../tuber.interfaces';
+import { IBookmark } from '../../tuber.interfaces';
 import TuberBookmarkList from './list';
 import TuberPlayer from './player';
 import tuber_register_callbacks from '../../callbacks/tuber.callbacks';
@@ -10,13 +10,20 @@ import Grid from '@mui/material/Grid';
 import Toolbar from '@mui/material/Toolbar';
 import ResearchToolbarFixed from '../tuber.toolbar.video.search';
 import TuberBookmarkSearchWithThumbnails from './list.no.player';
-import dialog_new_youtube_bookmark_from_video
-  from '../../callbacks/prod.bookmarks.youtube';
 import { useMediaQuery } from '@mui/material';
 import TuberThumbnailedBookmarkList from './list.with.thumbnail';
-import { on_bootstrap_run } from 'src/state';
+import { AppDispatch, on_bootstrap_run, RootState } from 'src/state';
 import StateNet from 'src/controllers/StateNet';
 import { IJsonapiStateResponse } from 'src/interfaces/IJsonapi';
+import { useDispatch, useSelector } from 'react-redux';
+import StatePagesData from 'src/controllers/StatePagesData';
+import {
+  ENDPOINT,
+  PLAYER_OPEN,
+  SET_TO_PLAY,
+  SHOW_THUMBNAIL,
+} from '../../tuber.config';
+import { pagesDataAdd } from 'src/slices/pagesData.slice';
 
 tuber_register_callbacks();
 on_bootstrap_run(async ({ state }: IJsonapiStateResponse) => {
@@ -41,40 +48,35 @@ const TuberPlayerWrapper = styled('div')(({ theme }) => ({
 }));
 
 export default function ViewDefault({ def: page }: { def: StatePage}) {
-  const [ playerOpen, setPlayerOpen ] = useState<boolean>(false);
-  const [ bookmarkToPlay, setBookmarkToPlay ] = useState<IBookmark>();
-  const [ showThumbnail, setShowThumbnail ] = useState<boolean>(true);
+  const dispatch = useDispatch<AppDispatch>();
+  const pagesDataState = useSelector((state: RootState) => state.pagesData);
+  const pagesData = useMemo(
+    () => new StatePagesData(pagesDataState),
+    [pagesDataState]
+  );
+  pagesData.configure({ endpoint: ENDPOINT });
+
   const theme = useTheme();
-  const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
+  const currentGreaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
+  const playerOpen = pagesData.get<boolean>(PLAYER_OPEN);
+  const showThumbnail = pagesData.get<boolean>(SHOW_THUMBNAIL);
+  const bookmarkToPlay = pagesData.get<IBookmark>(SET_TO_PLAY);
 
-  const toolbarProps: IResearchToolbarProps = {
-    togglePlayerCallback: () => () => {
-      if (greaterThanMid) {
-        setPlayerOpen(!playerOpen);
-      } else {
-        setPlayerOpen(false);
-      }
-    },
-    /** Creates a new bookmark @deprecated */
-    bookmarkAddCallback: dialog_new_youtube_bookmark_from_video,
-    toggleThumbnailsCallback: () => () => {
-      setShowThumbnail(!showThumbnail);
-    },
-    // appbar definition
-    def: page.appbar
-  };
-
-  // Closes the integrated player if window size too small.
+  // Closes the integrated player if window size is too small.
   useLayoutEffect(() => {
     const updateLayout = () => {
-      if (!greaterThanMid) {
-        setPlayerOpen(false);
+      if (!currentGreaterThanMid) {
+        dispatch(pagesDataAdd({
+          route: ENDPOINT,
+          key: PLAYER_OPEN,
+          value: false
+        }));
       }
     };
     window.addEventListener('resize', updateLayout);
     updateLayout();
     return () => window.removeEventListener('resize', updateLayout);
-  });
+  }, [currentGreaterThanMid, dispatch]);
 
   return (
     <Fragment>
@@ -82,42 +84,18 @@ export default function ViewDefault({ def: page }: { def: StatePage}) {
         {playerOpen ? (
           <Grid container direction='row'>
             {showThumbnail ? (
-              <TuberThumbnailedBookmarkList
-                props={{
-                  playerOpen,
-                  setPlayerOpen,
-                  setBookmarkToPlay
-                }}
-              />
+              <TuberThumbnailedBookmarkList />
             ) : (
-              <TuberBookmarkList
-                props={{
-                  playerOpen,
-                  setPlayerOpen,
-                  setBookmarkToPlay
-                }}
-              />
+              <TuberBookmarkList />
             )}
             <TuberPlayerWrapper>
-              <TuberPlayer
-                props={{
-                  isOpen: playerOpen,
-                  bookmark: bookmarkToPlay,
-                  toolbarProps
-                }}
-              />
+              <TuberPlayer bookmark={bookmarkToPlay} toolbarDef={page.appbar} />
             </TuberPlayerWrapper>
           </Grid>
         ) : (
           <Fragment>
-            <TuberBookmarkSearchWithThumbnails
-              props={{
-                playerOpen,
-                setPlayerOpen,
-                setBookmarkToPlay
-              }}
-            />
-            <ResearchToolbarFixed {...toolbarProps} />
+            <TuberBookmarkSearchWithThumbnails />
+            <ResearchToolbarFixed def={page.appbar} />
           </Fragment>
         )}
     </Fragment>

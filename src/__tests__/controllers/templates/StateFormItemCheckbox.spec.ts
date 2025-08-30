@@ -1,5 +1,5 @@
-import StateForm from '../../../controllers/StateForm'
-import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox'
+import StateForm from '../../../controllers/StateForm';
+import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox';
 
 describe('StateFormItemCheckbox', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateFormItemCheckbox', () => {
       expect(new StateFormItemCheckbox(
         { type: 'checkboxes' },
         {} as StateForm,
-      )).toEqual({ _formItemCheckboxState: {} })
-    })
-  })
-})
+      )).toEqual({ _formItemCheckboxState: {} });
+    });
+  });
+});

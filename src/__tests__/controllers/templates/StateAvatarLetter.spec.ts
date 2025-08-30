@@ -1,9 +1,9 @@
-import StateAvatarLetter from '../../../controllers/templates/StateAvatarLetter'
+import StateAvatarLetter from '../../../controllers/templates/StateAvatarLetter';
 
 describe('StateAvatarLetter', () => {
   describe('constructor', () => {
     it('should create a state avatar letter object', () => {
-      expect(new StateAvatarLetter({})).toEqual({ _avatarLetterState: {} })
-    })
-  })
-})
+      expect(new StateAvatarLetter({})).toEqual({ _avatarLetterState: {} });
+    });
+  });
+});

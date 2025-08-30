@@ -3,19 +3,19 @@ import { DesktopDateTimePicker } from '@mui/x-date-pickers/DesktopDateTimePicker
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import TextField from '@mui/material/TextField';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useSelector } from 'react-redux';
 import StateFormItem from '../../../controllers/StateFormItem';
 import { RootState } from '../../../state';
 import { remember_exception } from '../../../business.logic/errors';
-import { get_redux_store_val } from './_items.common.logic';
 import {
   DATE_TIME_PICKER,
   DESKTOP_DATE_TIME_PICKER,
   MOBILE_DATE_TIME_PICKER,
   NAME_NOT_SET
-} from '../../../constants';
+} from '../../../constants.client';
 import { log } from '../../../business.logic/logging';
+import StateFormsData from '../../../controllers/StateFormsData';
 
 interface IJsonPickerProps {
   def: StateFormItem;
@@ -27,20 +27,17 @@ interface IPickerTable {
 
 export default function StateJsxPicker({ def }: IJsonPickerProps) {
   const { name, parent: { name: formName }, onChange: handleChange } = def;
-  const formsData = useSelector<RootState>(state => state.formsData);
-  const value = get_redux_store_val(
-    formsData,
-    formName,
-    name,
-    null
+  const formsData = new StateFormsData(
+    useSelector((state: RootState) => state.formsData)
   );
+  const value = formsData.getValue(formName, name, null);
 
   const table: IPickerTable = {
     [DATE_TIME_PICKER]: () => (
       <DateTimePicker
         label="DateTimePicker"
         {...def.props}
-        renderInput={(props: any) => <TextField {...props} />}
+        renderInput={(props: TextFieldProps) => <TextField {...props} />}
         value={value}
         onChange={handleChange(name)}
       />
@@ -51,7 +48,7 @@ export default function StateJsxPicker({ def }: IJsonPickerProps) {
         {...def.props}
         value={value}
         onChange={handleChange(name)}
-        renderInput={(props: any) => <TextField {...props} />}
+        renderInput={(props: TextFieldProps) => <TextField {...props} />}
       />
     ),
     [DESKTOP_DATE_TIME_PICKER]: () => (
@@ -60,7 +57,7 @@ export default function StateJsxPicker({ def }: IJsonPickerProps) {
         {...def.props}
         value={value}
         onChange={handleChange(name)}
-        renderInput={(props: any) => <TextField {...props} />}
+        renderInput={(props: TextFieldProps) => <TextField {...props} />}
       />
     ),
   };
@@ -74,9 +71,9 @@ export default function StateJsxPicker({ def }: IJsonPickerProps) {
         </LocalizationProvider>
       )
       : <TextField value={`PICKER ${NAME_NOT_SET}`} disabled />;
-  } catch (e: any) {
+  } catch (e) {
     remember_exception(e);
-    log(e.message);
+    log((e as Error).message);
   }
 
   return (null);

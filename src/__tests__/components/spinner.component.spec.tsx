@@ -1,7 +1,7 @@
-import * as F from '../../components/spinner.component'
+import * as F from '../../components/spinner.component';
 
 describe('src/components/spinner.component.tsx', () => {
   it('should import without error', () => {
-    expect(F).toBeTruthy()
-  })
-})
+    expect(F).toBeTruthy();
+  });
+});

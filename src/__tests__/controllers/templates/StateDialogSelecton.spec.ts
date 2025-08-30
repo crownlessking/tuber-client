@@ -1,5 +1,5 @@
-import State from '../../../controllers/State'
-import StateDialogSelection from '../../../controllers/templates/StateDialogSelection'
+import State from '../../../controllers/State';
+import StateDialogSelection from '../../../controllers/templates/StateDialogSelection';
 
 describe('StateDialogSelection', () => {
   describe('constructor', () => {
@@ -8,6 +8,6 @@ describe('StateDialogSelection', () => {
         {},
         {} as State
       )).toEqual({ _dialogSelectionState: {} })
-    })
-  })
-})
+    });
+  });
+});

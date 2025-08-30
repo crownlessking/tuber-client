@@ -1,7 +1,7 @@
-import { styled } from '@mui/material'
-import React from 'react'
-import { err } from '../../business.logic/logging'
-import type StatePageAppbar from '../../controllers/templates/StatePageAppbar'
+import { styled } from '@mui/material';
+import React from 'react';
+import { err } from '../../business.logic/logging';
+import type StatePageAppbar from '../../controllers/templates/StatePageAppbar';
 
 /**
  * To define a logo, set the `appbar.logoTag` and `appbar.logoProps`.
@@ -24,18 +24,18 @@ export default function StateJsxLogo ({ def: appbar }: { def: StatePageAppbar })
   /**
    * @see https://codesandbox.io/s/7q80d?file=/src/MyAppBar.tsx
    */
-  const ImgLogo = styled('img')(() => ({ marginRight: 10 }))
+  const ImgLogo = styled('img')(() => ({ marginRight: 10 }));
 
-  const PathLogo = styled('path')(() => ({}))
-  const DivLogoContainer = styled('div')(() => ({}))
-  const DivLogo = styled('div')(() => ({}))
-  const logoTag = appbar.logoTag.toLowerCase()
-  const logoProps = appbar.logoProps
-  const logoContainerProps = appbar.logoContainerProps
+  const PathLogo = styled('path')(() => ({}));
+  const DivLogoContainer = styled('div')(() => ({}));
+  const DivLogo = styled('div')(() => ({}));
+  const logoTag = appbar.logoTag.toLowerCase();
+  const logoProps = appbar.logoProps;
+  const logoContainerProps = appbar.logoContainerProps;
 
   // Used to apply logo image real size in the absence of user-defined height
   // and width.
-  const logoRef = React.createRef()
+  const logoRef = React.createRef<HTMLDivElement>();
 
   const logoTagTable = {
     'img': <ImgLogo {...logoProps} />,
@@ -43,17 +43,17 @@ export default function StateJsxLogo ({ def: appbar }: { def: StatePageAppbar })
     'div': <DivLogo {...logoProps} ref={logoRef} />
   }
 
-  const Logo = logoTagTable[logoTag as keyof typeof logoTagTable]
+  const Logo = logoTagTable[logoTag as keyof typeof logoTagTable];
 
   if (Logo) {
     return (
       <DivLogoContainer {...logoContainerProps}>
         { Logo }
       </DivLogoContainer>
-    )
+    );
   }
 
-  err(`Invalid \`${logoTag}\` logo.`)
+  err(`Invalid \`${logoTag}\` logo.`);
 
-  return ( null )
+  return ( null );
 }

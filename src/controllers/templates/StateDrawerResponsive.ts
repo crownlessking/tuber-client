@@ -1,15 +1,16 @@
 import { type DrawerProps } from '@mui/material';
 import StatePageDrawer from './StatePageDrawer';
+import { TWithRequired } from 'src/common.types';
 
 export default class StateDrawerResponsive extends StatePageDrawer {
-  private container = window !== undefined
+  private _container = window !== undefined
     ? () => window.document.body
-    : undefined
+    : undefined;
   
   /** `props` for temporary drawer. */
-  get props(): DrawerProps {
+  get props(): TWithRequired<DrawerProps, 'anchor'> {
     return {
-      container: this.container,
+      container: this._container,
       variant: 'temporary',
       ModalProps: {
         keepMounted: true, // Better open performance on mobile.
@@ -21,7 +22,8 @@ export default class StateDrawerResponsive extends StatePageDrawer {
           width: this.width
         },
       },
-      ...this.drawerState.props
+      ...this.drawerState.props,
+      anchor: this.drawerState.anchor ?? 'left'
     };
   }
 

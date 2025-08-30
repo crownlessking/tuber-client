@@ -41,6 +41,7 @@ export default function form_submit_new_youtube_bookmark(redux: IRedux) {
       title,
       note
     }).build();
+    requestBody.data.attributes ??= {} as IBookmark;
     requestBody.data.attributes.thumbnail_url = formData.thumbnail_url;
     log('form_submit_new_youtube_bookmark: requestBody', requestBody);
     dispatch(post_req_state(endpoint, requestBody));

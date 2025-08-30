@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`src/mui/dialog/form/dialog.radio.tsx should render correctly 1`] = `
+<div
+  className="MuiFormControl-root css-1nrlq1o-MuiFormControl-root"
+>
+  <label
+    className="MuiFormLabel-root MuiFormLabel-colorPrimary css-u4tvz2-MuiFormLabel-root"
+  >
+     
+  </label>
+  <div
+    className="MuiFormGroup-root MuiRadioGroup-root css-dmmspl-MuiFormGroup-root"
+    role="radiogroup"
+  />
+</div>
+`;

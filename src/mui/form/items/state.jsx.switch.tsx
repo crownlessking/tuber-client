@@ -4,11 +4,12 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import TextField from '@mui/material/TextField';
 import { type RootState } from '../../../state';
-import { get_redux_store_val, ICheckboxesData } from './_items.common.logic';
+import { ICheckboxesData } from './_items.common.logic';
 import { useSelector } from 'react-redux';
 import type StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
 import FormLabel from '@mui/material/FormLabel';
-import { NAME_NOT_SET } from '../../../constants';
+import { NAME_NOT_SET } from '../../../constants.client';
+import StateFormsData from 'src/controllers/StateFormsData';
 
 interface IJsonSwitchProps {
   def: StateFormItemSwitch;
@@ -41,13 +42,10 @@ interface IJsonSwitchProps {
 export default function StateJsxSwitch (props: IJsonSwitchProps) {
   const switchGroup = props.def;
   const { name } = switchGroup;
-  const formsData = useSelector<RootState>(state => state.formsData);
-  const values = get_redux_store_val<string[]>(
-    formsData,
-    switchGroup.parent.name,
-    name,
-    []
+  const formsData = new StateFormsData(
+    useSelector((state: RootState) => state.formsData)
   );
+  const values = formsData.getValue<string[]>(switchGroup.parent.name, name, []);
   const data: ICheckboxesData = {
     checkedValues: values,
     value: '',

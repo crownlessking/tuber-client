@@ -1,5 +1,5 @@
-import StateFormItemSwitchToggle from '../../controllers/StateFormItemSwitchToggle'
-import StateFormItemSwitch from '../../controllers/templates/StateFormItemSwitch'
+import StateFormItemSwitchToggle from '../../controllers/StateFormItemSwitchToggle';
+import StateFormItemSwitch from '../../controllers/templates/StateFormItemSwitch';
 
 describe('StateFormItemSwitchToggle', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateFormItemSwitchToggle', () => {
       expect(new StateFormItemSwitchToggle(
         {},
         {} as StateFormItemSwitch
-      )).toEqual({ _formItemSwitchToggleState: {} })
-    })
-  })
-})
+      )).toEqual({ _formItemSwitchToggleState: {} });
+    });
+  });
+});

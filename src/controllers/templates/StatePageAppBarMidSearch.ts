@@ -17,7 +17,7 @@ interface TConfigure {
 export default class StatePageAppbarMidSearch extends StatePageAppbar {
   
   protected searchFieldIconButtonDef?: StateLink<this>;
-  protected inputChipsDefs?: StateFormItemCustomChip<this>[];
+  protected inputChipsDefs?: StateFormItemCustomChip[];
   protected _chip?: StateAppbarInputChip;
   protected _route?: string;
   protected _template?: string;
@@ -54,7 +54,7 @@ export default class StatePageAppbarMidSearch extends StatePageAppbar {
   get searchFieldIcon(): StateFormItemCustom<this> {
     return new StateFormItemCustom({
       'icon': 'search_outline',
-      'iconProps': {
+      'svgIconProps': {
         'sx': { 'color': 'grey.500' }
       },
       ...this.appbarState.searchFieldIcon
@@ -98,8 +98,8 @@ export default class StatePageAppbarMidSearch extends StatePageAppbar {
     };
   }
 
-  get logoContainerProps(): any {
-    return this.appbarState.logoContainerProps;
+  get logoContainerProps(): Required<IStateAppbar>['logoContainerProps'] {
+    return this.appbarState.logoContainerProps ?? {};
   }
 
   private _breakPath(path: string): string[] {
@@ -151,14 +151,14 @@ export default class StatePageAppbarMidSearch extends StatePageAppbar {
     this.inputChipsDefs = [ ...this._chip.alwaysGet() ];
     for (const ic of this.appbarState.inputBaseChips ?? []) {
       this.inputChipsDefs.push(
-        new StateFormItemCustomChip(ic, this)
+        new StateFormItemCustomChip<this>(ic, this)
       );
     }
     return this.inputChipsDefs;
   }
 
   /** Get all chips in the search field. */
-  get inputChips(): StateFormItemCustomChip<this>[] {
+  get inputChips(): StateFormItemCustomChip[] {
     return this.inputChipsDefs
       || (this.inputChipsDefs = (this.appbarState.inputBaseChips || []).map(
         item => new StateFormItemCustomChip(item, this)

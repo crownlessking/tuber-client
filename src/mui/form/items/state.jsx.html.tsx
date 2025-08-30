@@ -9,8 +9,11 @@ import { Fragment } from 'react';
 import store, { actions } from '../../../state';
 import { get_formatted_route } from '../../../controllers/StateLink';
 import Link from '@mui/material/Link';
-import { Link as RouterLink } from 'react-router-dom';
-import { IGenericObject } from '../../../common.types';
+import {
+  Link as RouterLink,
+  LinkProps as RouterLinkProps
+} from 'react-router-dom';
+import { TObj } from '../../../common.types';
 
 interface IHtmlProps {
   def: StateFormItem<StateForm, string>;
@@ -20,7 +23,7 @@ interface IHtmlProps {
 export const get_styled_div = () => styled('div')(() => ({}));
 
 /** Styled anchor element */
-export const LinkStyled = styled(Link)(({ theme }) => ({
+export const LinkStyled = styled(Link)<RouterLinkProps>(({ theme }) => ({
   textDecoration: 'none',
   color: theme.palette.primary.main,
   '&:hover': {
@@ -29,14 +32,14 @@ export const LinkStyled = styled(Link)(({ theme }) => ({
 }));
 
 /** Parse handlebar notations */
-export function parseHandlebars(htmlText: string, values?: IGenericObject) {
+export function parseHandlebars(htmlText: string, values?: TObj) {
   let html = htmlText;
   if (!values) {
     html = html.replace(/{{\s*[_$a-zA-Z0-9]+\s*}}/g, '');
     return html;
   }
   Object.keys(values).forEach(key => {
-    const val = values[key] ?? '&#128681;';
+    const val = String(values[key] ?? '&#128681;');
     const re = new RegExp(`{{\\s*${key}\\s*}}`, 'g');
     html = html.replace(re, val);
   });
@@ -70,7 +73,7 @@ export function StateJsxHtml({ def: html }: { def: StateFormItem<StateForm, stri
   const pagesDataState = useSelector((state: RootState) => state.pagesData);
 
   if (html.has.key || html.has.route) {
-    const pageData = pagesDataState[html.has.key || html.has.route];
+    const pageData = pagesDataState[html.has.key || html.has.route] as TObj;
     htmlText = parseHandlebars(html.has.content || html.has.text, pageData);
   }
 
@@ -98,14 +101,14 @@ export const StateJsxHtmlA: React.FC<IHtmlProps> = ({ def: link }) => {
   };
   return (
     <Fragment>
-      <LinkStyled
+      <Link
         component={RouterLink}
         {...link.props}
         to={route}
         onClick={link.onClick(redux)}
       >
         { link.text }
-      </LinkStyled>
+      </Link>
     </Fragment>
   );
 }

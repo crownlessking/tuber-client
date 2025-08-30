@@ -6,7 +6,7 @@ import FormLabel from '@mui/material/FormLabel';
 import type StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
 import { type RootState } from '../../../state';
 import { useSelector } from 'react-redux';
-import { get_redux_store_val } from './_items.common.logic';
+import StateFormsData from 'src/controllers/StateFormsData';
 
 interface IDialogRadio { def: StateFormItemRadio; }
 
@@ -31,9 +31,10 @@ interface IDialogRadio { def: StateFormItemRadio; }
  */
 export default function StateJsxRadio({ def: radioGroup }: IDialogRadio) {
   const { name, parent: { name: formName } } = radioGroup;
-  const formsData = useSelector<RootState>(state => state.formsData);
-  const storeValue = get_redux_store_val(
-    formsData,
+  const formsData = new StateFormsData(
+    useSelector((state: RootState) => state.formsData)
+  );
+  const storeValue = formsData.getValue(
     formName,
     name,
     radioGroup.has.items[0].name

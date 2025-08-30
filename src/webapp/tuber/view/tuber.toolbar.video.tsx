@@ -1,17 +1,17 @@
 import { styled } from '@mui/material/styles';
 import React, { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import IStateLink from 'src/interfaces/IStateLink';
 import StateLink from 'src/controllers/StateLink';
 import type StatePageAppbar from 'src/controllers/templates/StatePageAppbar';
 import Link from 'src/mui/link';
 import { IResearchToolbarProps } from '../tuber.interfaces';
-import { type RootState } from 'src/state';
+import { IRedux, type RootState } from 'src/state';
 import StateNet from 'src/controllers/StateNet';
+import StatePagesData from 'src/controllers/StatePagesData';
+import { ENDPOINT, PLAYER_OPEN, SHOW_THUMBNAIL } from '../tuber.config';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 interface IToolbarIcon {
-  /** Callback to run when the toolbar icon is clicked. */
-  callback: IStateLink['onClick'];
   /** Parent definition for state links. It is required. */
   def: StatePageAppbar;
 }
@@ -68,7 +68,7 @@ const AddBookmark = React.memo<IToolbarIcon>(({ def: appbar }) => {
     },
     'has': {
       'icon': 'add_outline',
-      'iconProps': {
+      'svgIconProps': {
         'sx': {
           'color': 'grey.600',
           'fontSize': 34
@@ -105,7 +105,7 @@ AddBookmark.displayName = 'AddBookmark';
 //   return <Link def={iconDef} />
 // }
 
-const ShowThumbnailsToggle = React.memo<IToolbarIcon>(({ callback, def: appbar }) => {
+const ShowThumbnailsToggle = React.memo<IToolbarIcon>(({ def: appbar }) => {
   // Memoize the StateLink configuration to prevent recreation
   const iconDef = useMemo(() => new StateLink({
     'type': 'icon',
@@ -114,15 +114,25 @@ const ShowThumbnailsToggle = React.memo<IToolbarIcon>(({ callback, def: appbar }
     },
     'has': {
       'icon': 'insert_photo_outline',
-      'iconProps': {
+      'svgIconProps': {
         'sx': {
           'color': 'grey.600',
           'fontSize': 34
         }
       },
     },
-    'onClick': callback
-  }, appbar), [callback, appbar]);
+    'onClick': (redux: IRedux) => () => {
+      const { store: { getState, dispatch }, actions } = redux;
+      const reduxStore = new StatePagesData(getState().pagesData);
+      reduxStore.configure({ endpoint: ENDPOINT });
+      const showThumbnail = reduxStore.get<boolean>(SHOW_THUMBNAIL);
+      dispatch(actions.pagesDataAdd({
+        route: ENDPOINT,
+        key: SHOW_THUMBNAIL,
+        value: !showThumbnail
+      }));
+    }
+  }, appbar), [appbar]);
 
   return <Link def={iconDef} />;
 });
@@ -130,7 +140,10 @@ const ShowThumbnailsToggle = React.memo<IToolbarIcon>(({ callback, def: appbar }
 // Set display name for debugging
 ShowThumbnailsToggle.displayName = 'ShowThumbnailsToggle';
 
-const IntegratedPlayerToggle = React.memo<IToolbarIcon>(({ callback, def: appbar }) => {
+const IntegratedPlayerToggle = React.memo<IToolbarIcon>(({ def: appbar }) => {
+  const theme = useTheme();
+  const greaterThanMid = useMediaQuery(theme.breakpoints.up('md'));
+
   // Memoize the StateLink configuration to prevent recreation
   const iconDef = useMemo(() => new StateLink({
     'type': 'icon',
@@ -139,7 +152,7 @@ const IntegratedPlayerToggle = React.memo<IToolbarIcon>(({ callback, def: appbar
     },
     'has': {
       'icon': 'monitor_outline',
-      'iconProps': {
+      'svgIconProps': {
         'sx': {
           'color': 'grey.600',
           'fontSize': 34
@@ -147,8 +160,26 @@ const IntegratedPlayerToggle = React.memo<IToolbarIcon>(({ callback, def: appbar
       },
       'route': appbar.parent._key // 'research-app'
     },
-    'onClick': callback
-  }, appbar), [callback, appbar]);
+    'onClick': (redux: IRedux) => () => {
+      const { store: { getState, dispatch }, actions } = redux;
+      const reduxStore = new StatePagesData(getState().pagesData);
+      reduxStore.configure({ endpoint: ENDPOINT });
+      const playerOpen = reduxStore.get<boolean>(PLAYER_OPEN);
+      if (greaterThanMid) {
+        dispatch(actions.pagesDataAdd({
+          route: ENDPOINT,
+          key: PLAYER_OPEN,
+          value: !playerOpen
+        }));
+      } else {
+        dispatch(actions.pagesDataAdd({
+          route: ENDPOINT,
+          key: PLAYER_OPEN,
+          value: false
+        }));
+      }
+    }
+  }, appbar), [appbar, greaterThanMid]);
 
   return <Link def={iconDef} />;
 });
@@ -156,9 +187,8 @@ const IntegratedPlayerToggle = React.memo<IToolbarIcon>(({ callback, def: appbar
 // Set display name for debugging
 IntegratedPlayerToggle.displayName = 'IntegratedPlayerToggle';
 
-const ResearchToolbar = React.memo<IResearchToolbarProps>((props) => {
-  const { def: appbar } = props;
-  
+const ResearchToolbar = React.memo<IResearchToolbarProps>(({ def: appbar }) => {
+
   // Memoize state selectors
   const netState = useSelector((rootState: RootState) => rootState.net);
   const { sessionValid } = useMemo(() => new StateNet(netState), [netState]);
@@ -168,18 +198,9 @@ const ResearchToolbar = React.memo<IResearchToolbarProps>((props) => {
       <ToggleWrapper>
         {sessionValid ? (
           <>
-            <AddBookmark
-              callback={props.bookmarkAddCallback}
-              def={appbar}
-            />
-            <ShowThumbnailsToggle
-              callback={props.toggleThumbnailsCallback}
-              def={appbar}
-            />
-            <IntegratedPlayerToggle
-              callback={props.togglePlayerCallback}
-              def={appbar}
-            />
+            <AddBookmark def={appbar} />
+            <ShowThumbnailsToggle def={appbar} />
+            <IntegratedPlayerToggle def={appbar} />
           </>
         ) : null}
       </ToggleWrapper>

@@ -1,6 +1,7 @@
 import { Theme } from '@mui/material';
 import { err } from '../business.logic/logging';
-import { get_val, safely_get } from '.';
+import { get_val, safely_get_as } from '../business.logic';
+import { TObj } from 'src/common.types';
 
 interface IEval {
   type      : 'fn' | 'slice';
@@ -22,7 +23,7 @@ export default class ThemeParser {
    * theme function, it can be stored in an object saved to this field.
    * When it is needed, it will be called from this field.
    */
-  private fnList: any;
+  private fnList: Record<string, unknown>;
 
   /** Material-ui 5 list of theme functions */
   private mui5FnList = {
@@ -39,22 +40,22 @@ export default class ThemeParser {
     'transitions.create': 1
   };
 
-  constructor (fnList: any = {}) {
+  constructor (fnList: Record<string, unknown> = {}) {
     this.fnList = fnList;
   }
 
   getTheme(): Theme|undefined { return this._theme; }
 
   /** Get a simplified parser */
-  getParser (): any {
-    return  (theme: Theme, rules: any) => {
+  getParser (): Function {
+    return  (theme: Theme, rules: Record<string, unknown>) => {
       this._theme = theme;
       return this._parse({ ...rules });
     }
   }
 
   /** Pass a set of required function to be executed */
-  setFnList (fnList: any): void {
+  setFnList (fnList: Record<string, unknown>): void {
     this.fnList = fnList;
   }
 
@@ -85,30 +86,30 @@ export default class ThemeParser {
       const arg = strFnPieces[i];
       const parsedArg = +arg || NaN;
       isNaN(parsedArg)
-        ? parsed.push(safely_get(this._theme, arg, arg))
+        ? parsed.push(safely_get_as(this._theme as object, arg, arg))
         : parsed.push(parsedArg);
     }
     return parsed;
   }
 
   /** Runs theme functions */
-  private _runFn (fname: string, args: (string | number)[]): any {
+  private _runFn (fname: string, args: (string | number)[]): string | number {
     let fn = this.fnList?.[fname];
     if (typeof fn === 'function') {
       return fn(...args);
     }
-    fn = get_val(this._theme, fname)
+    fn = get_val(this._theme, fname);
     if (typeof fn === 'function') {
       return fn(...args);
     }
 
     err(`Bad value: '${fname}' not a function.`);
 
-    return undefined;
+    return 0;
   }
 
   /** Prevents unintended values */
-  private _filter (result: any): any {
+  private _filter (result: unknown): unknown {
     switch (typeof result) {
     case 'function':
       return undefined;
@@ -196,7 +197,7 @@ export default class ThemeParser {
   /** Saves theme functions changes to rules */
   private _apply (
     type: TParsingType,
-    rules: any,
+    rules: TObj,
     prop: string,
     tokens: (string|number)[]
   ) {
@@ -228,7 +229,7 @@ export default class ThemeParser {
    * }
    * ```
    */
-  private _deleteProperties (propertyBin: string[], rules: any) {
+  private _deleteProperties (propertyBin: string[], rules: TObj) {
     for (let i = 0; i < propertyBin.length; i++) {
       const property = propertyBin[i];
       delete rules[property];
@@ -236,7 +237,7 @@ export default class ThemeParser {
   }
 
   /** Returns true if a value is a falsy. */
-  private _bad(val: any) {
+  private _bad(val: unknown) {
     if (!val) return true;
     switch (typeof val) {
       case 'string':
@@ -249,7 +250,7 @@ export default class ThemeParser {
   }
 
   /** Applies theme function values */
-  private _parse (rules : any) {
+  private _parse (rules : TObj) {
     if (this._bad(rules)) { return {}; }
     const propertyBin: string[] = [];
     for (const prop in rules) {
@@ -257,12 +258,12 @@ export default class ThemeParser {
       if (this._bad(val)) { continue; }
       // Recursively handle nested CSS properties
       if (typeof val === 'object' && !Array.isArray(val)) {
-        rules[prop] = this._parse(val);
+        rules[prop] = this._parse(val as TObj);
       }
       const parsedProp = this._eval(prop);
       switch (typeof parsedProp) {
       case 'string':
-        rules[safely_get(this._theme,parsedProp,parsedProp)] = val;
+        rules[safely_get_as(this._theme as object, parsedProp,parsedProp)] = val;
         break;
       case 'object':
         propertyBin.push(prop);
@@ -276,14 +277,14 @@ export default class ThemeParser {
       if (this._bad(val)) { continue; }
       // Recursively handle nested CSS properties
       if (typeof val === 'object' && !Array.isArray(val)) {
-        rules[prop] = this._parse(val);
+        rules[prop] = this._parse(val as TObj);
       }
-      const parsedVal = this._eval(val);
+      const parsedVal = this._eval(val as string);
       switch (typeof parsedVal) {
         case 'number':
           break;
         case 'string':
-          rules[prop] = this._filter(safely_get(this._theme, parsedVal, parsedVal));
+          rules[prop] = this._filter(safely_get_as(this._theme as object, parsedVal, parsedVal));
           break;
         case 'object':
           if (Array.isArray(parsedVal)) {

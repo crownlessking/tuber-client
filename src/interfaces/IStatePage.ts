@@ -2,9 +2,10 @@ import { IStatePageDrawer } from './IStateDrawer';
 import IStateBackground from './IStateBackground';
 import IStateComponent from './IStateComponent';
 import IStateTypography from './IStateTypography';
-import { TStatePageLayout } from '../constants';
 import IStateAppbar from './IStateAppbar';
-import { IAbstractState, IGenericObject } from '../common.types';
+import IAbstractState from './IAbstractState';
+import { TStatePageLayout } from '.';
+import { IJsonapiPageLinks } from './IJsonapi';
 
 /**
  * Page with content, an appbar, background, drawer... etc.
@@ -77,11 +78,11 @@ export default interface IStatePage extends IAbstractState {
   /** Route of another page with a valid background to use. */
   backgroundInherited?: string;
   /** The page can retrieve or possibly store data in this field. */
-  data?: any;
+  data?: Record<string, unknown>;
   /** The page can retrieve or possibly save metadata in this field. */
-  meta?: IGenericObject;
+  meta?: Record<string, unknown>;
   /** The page can retrieve or possibly save (Jsonapi) links in this field. */
-  links?: any;
+  links?: IJsonapiPageLinks;
 }
 
 /**

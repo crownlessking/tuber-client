@@ -26,7 +26,6 @@ import form_submit_edit_twitch_bookmark from './prod.bookmarks.204.twitch';
 import toggle_theme_mode from './prod.toggle.theme.mode';
 import { DIALOG_LOGIN_ID } from '../tuber.config';
 import { get_dialog_state } from 'src/state/net.actions';
-import { ler } from 'src/business.logic/logging';
 
 /** Default callback for closing dialogs */
 function close_default (redux: IRedux) {
@@ -42,14 +41,9 @@ export function dialog_sign_in(redux: IRedux) {
       dispatch({ type: 'dialog/dialogOpen' });
       return;
     }
-    const dialogKey = rootState.stateRegistry[DIALOG_LOGIN_ID];
-    const dialogState = await get_dialog_state(redux, dialogKey);
-    if (!dialogState) {
-      ler(`'${dialogKey}' does not exists.`);
-      return;
-    }
-    // if the dialog was NOT mounted
-    if (rootState.dialog._key !== dialogState._key) {
+    const dialogState = await get_dialog_state(redux, DIALOG_LOGIN_ID);
+    if (!dialogState) { return; }
+    if (rootState.dialog._key !== dialogState._key) { // if the dialog was NOT mounted
       dispatch({ type: 'dialog/dialogMount', payload: dialogState });
     } else {
       dispatch({ type: 'dialog/dialogOpen' });

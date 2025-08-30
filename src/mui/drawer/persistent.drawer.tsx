@@ -62,7 +62,7 @@ export default function PersistentDrawer({def: drawer }: PerDrawerProps) {
             key={i + 1}
             button
             onClick={item.onClick({store, actions, route: item.has.route})}
-            component={RouterLink as any}
+            component={RouterLink}
             to={get_formatted_route(item.has)}
           >
             <ListItemIcon>

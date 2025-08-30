@@ -2,19 +2,19 @@ import {
   DATE_TIME_PICKER,
   DESKTOP_DATE_TIME_PICKER,
   MOBILE_DATE_TIME_PICKER,
-} from '../../../constants';
+} from '../../../constants.client';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { DesktopDateTimePicker } from '@mui/x-date-pickers/DesktopDateTimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import TextField from '@mui/material/TextField';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useState } from 'react';
 import { THive } from '.';
 import type StateForm from '../../../controllers/StateForm';
 import type StateFormItem from '../../../controllers/StateFormItem';
 import { remember_exception } from '../../../business.logic/errors';
-import { NAME_NOT_SET } from '../../../constants';
+import { NAME_NOT_SET } from '../../../constants.client';
 import { log } from '../../../business.logic/logging';
 
 interface IJsonPickerProps {
@@ -29,8 +29,8 @@ interface IPickerTable {
 export default function DialogPicker({ def, hive }: IJsonPickerProps) {
   const [value, setValue] = useState<string>();
 
-  const handleChange = (newValue: string) => {
-    setValue(newValue);
+  const handleChange = (newValue: string | null) => {
+    setValue(newValue ?? '');
     hive[def.name] = newValue;
   }
 
@@ -39,7 +39,7 @@ export default function DialogPicker({ def, hive }: IJsonPickerProps) {
       <DateTimePicker
         label="DateTimePicker"
         {...def.props}
-        renderInput={(props: any) => <TextField {...props} />}
+        renderInput={(props: TextFieldProps) => <TextField {...props} />}
         value={value}
         onChange={handleChange}
       />
@@ -50,7 +50,7 @@ export default function DialogPicker({ def, hive }: IJsonPickerProps) {
         {...def.props}
         value={value}
         onChange={handleChange}
-        renderInput={(props: any) => <TextField {...props} />}
+        renderInput={(props: TextFieldProps) => <TextField {...props} />}
       />
     ),
     [DESKTOP_DATE_TIME_PICKER]: () => (
@@ -59,7 +59,7 @@ export default function DialogPicker({ def, hive }: IJsonPickerProps) {
         {...def.props}
         value={value}
         onChange={handleChange}
-        renderInput={(props: any) => <TextField {...props} />}
+        renderInput={(props: TextFieldProps) => <TextField {...props} />}
       />
     ),
   };
@@ -73,9 +73,9 @@ export default function DialogPicker({ def, hive }: IJsonPickerProps) {
         </LocalizationProvider>
       )
       : <TextField value={`PICKER ${NAME_NOT_SET}`} disabled />;
-  } catch (e: any) {
+  } catch (e) {
     remember_exception(e);
-    log(e.message);
+    log((e as Error).message);
   }
 
   return (null);

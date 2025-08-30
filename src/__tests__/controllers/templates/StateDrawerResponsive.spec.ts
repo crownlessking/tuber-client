@@ -1,5 +1,5 @@
-import StatePage from '../../../controllers/StatePage'
-import StateDrawerResponsive from '../../../controllers/templates/StateDrawerResponsive'
+import StatePage from '../../../controllers/StatePage';
+import StateDrawerResponsive from '../../../controllers/templates/StateDrawerResponsive';
 
 describe('StateDrawerResponsive', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateDrawerResponsive', () => {
       expect(new StateDrawerResponsive(
         {},
         {} as StatePage
-      )).toEqual({ _drawerResponsiveState: {} })
-    })
-  })
-})
+      )).toEqual({ _drawerResponsiveState: {} });
+    });
+  });
+});

@@ -10,18 +10,18 @@ export default interface ISelectProps {
    * **MenuItem** elements **must** be direct descendants when **native** is
    * false.
    * @type node */
-  children?: any; // node -- The option elements to populate the select with
+  children?: unknown; // node -- The option elements to populate the select with
   /** Override or extend the styles applied to the component.
    * @see https://mui.com/material-ui/api/select/#classes
    */
-  classes?: any;
+  classes?: unknown;
   /** If **true**, the component is initially open. Use when the component open
    * state is not controlled (i.e. the **open** prop is not defined). You can
    * only use it when the **native** prop is **false** (default).
    * @default false */
   defaultOpen?: boolean;
   /** The default value. Use when the compoent is not controlled. */
-  defaultValue?: any;
+  defaultValue?: unknown;
   /** If **true**, a value is displayed even if no items are selected. In order
    * to display a meaningful value, a function can be passed to the
    * **renderValue** prop which returns the value to be displayed when no items
@@ -34,21 +34,21 @@ export default interface ISelectProps {
    * @type elementType
    * @default ArrowDropDownIcon
    */
-  IconComponent?: any;
+  IconComponent?: unknown;
   /** The **id** of the wrapper element or the select element when **native**. */
   id?: string;
   /** An **Input** element; does not have to be a material-ui specific **Input**.
    * @type element */
-  input?: any;
+  input?: unknown;
   /** An **Input** element; does not have to be a material-ui specific **Input**.
    * @type object */
-  inputProps?: any;
+  inputProps?: unknown;
   /** The label of the **input**. It is only used for layout. The actual
    * labelling is handled by **InputLabel**.
    * @see https://mui.com/material-ui/api/outlined-input/#props
    * @type node
    */
-  label?: any;
+  label?: unknown;
   /** If **dense**, will adjust vertical spacing. This is normally obtained via
    * context from FormControl. The prop defaults to the value (**'none'**)
    * inherited from the parent FormControl component. */
@@ -74,7 +74,7 @@ export default interface ISelectProps {
    * - event The event source of the callback. You can pull out the new value
    * by accessing event.target.value (string).
    * @type func */
-  onChange?: any;
+  onChange?: unknown;
   /** The short hint displayed in the input before the user enters a value. */
   placeholder?: string;
   /** It prevents the user from changing the value of the field (not from
@@ -88,18 +88,18 @@ export default interface ISelectProps {
   /** The components used for each slot inside. This prop is an alias for the
    * **components** prop, which will be deprecated in the future.
    * @default {} */
-  slots?: any;
+  slots?: unknown;
   /** Start **InputAdornment** for this component. */
-  startArdornment?: any;
+  startArdornment?: unknown;
   /** The system prop that allows defining system overrides as well as
    * additional CSS styles.
    * See the `sx` page for more details.
    * @see https://mui.com/system/getting-started/the-sx-prop/ */
-  sx?: any;
+  sx?: unknown;
   /** Type of the **input** element. It should be a valid HTML5 input type.
    * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input#Form_%3Cinput%3E_types
    */
   type?: string;
   /** The value of the **input** element, required for a controlled component. */
-  value?: any;
+  value?: unknown;
 }

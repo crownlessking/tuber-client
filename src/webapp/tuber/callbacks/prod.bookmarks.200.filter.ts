@@ -15,7 +15,7 @@ export default function appbar_filter_bookmarks(redux: IRedux) {
     const queryObj = queries.get(route);
     const filter = queryObj?.value?.toLowerCase() ?? '';
     const bookmarks = data
-      .collection()
+      .flatten()
       .get<IBookmark>();
     const bookmarksFiltered = bookmarks.filter(bookmark => {
       if (bookmark.title.toLowerCase().includes(filter.toLowerCase())) {

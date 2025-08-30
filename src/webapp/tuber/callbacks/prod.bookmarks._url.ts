@@ -1,12 +1,12 @@
-import { get_parsed_page_content, safely_get_as } from 'src/controllers';
+import { get_parsed_content  } from '../../../controllers';
 import { type IRedux } from 'src/state';
 import { remember_error, remember_exception } from 'src/business.logic/errors';
 import { URL_DIALOG_ID_NEW } from '../tuber.config';
 import parse_platform_video_url from '../tuber.platform.drivers';
 import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
 import { get_dialog_state } from 'src/state/net.actions';
-import { get_state_form_name } from '../../../business.logic';
-import { ler } from '../../../business.logic/logging';
+import { get_state_form_name, safely_get_as } from '../../../business.logic';
+import { ler, pre } from '../../../business.logic/logging';
 
 /**
  * Shows the dialog to insert a new video url from which the video bookmark
@@ -16,24 +16,22 @@ import { ler } from '../../../business.logic/logging';
  */
 export function dialog_new_video_url(redux: IRedux) {
   return async () => {
+    pre('dialog_new_video_url():');
     const { store: { dispatch } } = redux;
     const rootState = redux.store.getState();
     if (rootState.dialog._id === URL_DIALOG_ID_NEW) {
       dispatch({ type: 'dialog/dialogOpen' });
       return;
     }
-    const dialogKey = rootState.stateRegistry[URL_DIALOG_ID_NEW];
-    const newVideoUrlDialogState = await get_dialog_state(redux, dialogKey);
-    if (!newVideoUrlDialogState) {
-      ler(`'${dialogKey}' does not exists.`);
-      return;
-    }
+    const newVideoUrlDialogState = await get_dialog_state(redux, URL_DIALOG_ID_NEW);
+    if (!newVideoUrlDialogState) { return; }
     // if the dialog was NOT mounted
     if (rootState.dialog._key !== newVideoUrlDialogState._key) {
       dispatch({ type: 'dialog/dialogMount', payload: newVideoUrlDialogState });
     } else {
       dispatch({ type: 'dialog/dialogOpen' });
     }
+    pre();
   };
 }
 
@@ -44,14 +42,11 @@ export function dialog_new_video_url(redux: IRedux) {
  */
 export default function dialog_new_bookmark_from_url(redux: IRedux) {
   return async () => {
+    pre('dialgo_new_bookmark_from_url():');
     const rootState = redux.store.getState();
-    const dialogKey = rootState.stateRegistry[URL_DIALOG_ID_NEW];
-    const urlDialogState = await get_dialog_state(redux, dialogKey);
-    if (!urlDialogState) {
-      ler(`'${dialogKey}' does not exists.`);
-      return;
-    }
-    const urlContent = get_parsed_page_content(urlDialogState.content);
+    const urlDialogState = await get_dialog_state(redux, URL_DIALOG_ID_NEW);
+    if (!urlDialogState) { return; }
+    const urlContent = get_parsed_content(urlDialogState.content);
     const urlFormName = get_state_form_name(urlContent.name);
     const url = safely_get_as<string>(rootState.formsData[urlFormName], `url`, '');
 
@@ -69,17 +64,9 @@ export default function dialog_new_bookmark_from_url(redux: IRedux) {
         errorMessage.emit('url', video.urlCheck.message);
         return;
       }
-      const newBookmarkDialogKey = rootState.stateRegistry[video.dialogId];
-      if (!newBookmarkDialogKey) {
-        ler(`dialog_new_bookmark_from_url: ${video.platform} dialog key not found.`);
-        return;
-      }
-      const newBookmarkDialogState = await get_dialog_state(redux, newBookmarkDialogKey);
-      if (!newBookmarkDialogState) {
-        ler(`dialog_new_bookmark_from_url: ${video.platform} dialog json not found.`);
-        return;
-      }
-      const content = get_parsed_page_content(newBookmarkDialogState.content);
+      const newBookmarkDialogState = await get_dialog_state(redux, video.dialogId);
+      if (!newBookmarkDialogState) { return; }
+      const content = get_parsed_content(newBookmarkDialogState.content);
       const formName = get_state_form_name(content.name);
       redux.store.dispatch({
         type: 'formsData/formsDataUpdate',
@@ -173,8 +160,8 @@ export default function dialog_new_bookmark_from_url(redux: IRedux) {
       } else {
         redux.store.dispatch({ type: 'dialog/dialogOpen' });
       }
-    } catch (e: any) {
-      ler(`dialog_new_bookmark_from_url: ${e.message}`);
+    } catch (e: unknown) {
+      ler(`dialog_new_bookmark_from_url: ${(e as Error).message}`);
       remember_exception(e);
     }
   };
@@ -189,8 +176,8 @@ export default function dialog_new_bookmark_from_url(redux: IRedux) {
 export function dialog_new_bookmark_from_url_on_enter_key (
   redux: IRedux
 ) {
-  return (e: any) => {
-    if (e.key !== 'Enter') { return; }
+  return (e: unknown) => {
+    if ((e as KeyboardEvent).key !== 'Enter') { return; }
     dialog_new_bookmark_from_url(redux)();
   }
 }

@@ -1,9 +1,9 @@
-import StateLink from '../../controllers/StateLink'
+import StateLink from '../../controllers/StateLink';
 
 describe('StateLink', () => {
   describe('constructor', () => {
     it('should create a state link object', () => {
-      expect(new StateLink({})).toEqual({ _linkState: {} })
-    })
-  })
-})
+      expect(new StateLink({})).toEqual({ _linkState: {} });
+    });
+  });
+});

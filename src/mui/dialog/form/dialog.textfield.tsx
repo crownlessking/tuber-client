@@ -1,10 +1,9 @@
-import { InputProps } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { useState } from 'react';
 import { THive } from '.';
-import { NAME_NOT_SET } from '../../../constants';
+import { NAME_NOT_SET } from '../../../constants.client';
 import type StateFormItem from '../../../controllers/StateFormItem';
-import getTextFieldAdornment from '../../form/items/state.jsx.input.adornment';
+import { StateJsxAdornment } from '../../form/items/state.jsx.input.adornment';
 import { typeMap } from '../../form/items/state.jsx.textfield';
 
 interface IJsonTextfieldProps {
@@ -17,7 +16,7 @@ export default function DialogTextField({
   hive
 }: IJsonTextfieldProps) {
   const defaultValue = hive[textfield.name] ?? '';
-  const [value, setValue] = useState<any>(defaultValue);
+  const [value, setValue] = useState(defaultValue as string);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -32,12 +31,18 @@ export default function DialogTextField({
       error={textfield.has.regexError(value)}
       value={value}
       onChange={handleChange}
-      InputProps={getTextFieldAdornment(textfield.inputProps)}
+      InputProps={{
+        startAdornment: <StateJsxAdornment def={textfield.inputProps.start} />,
+        endAdornment: <StateJsxAdornment def={textfield.inputProps.end} />
+      }}
     />
   ) : (
     <TextField
       value={NAME_NOT_SET}
-      InputProps={getTextFieldAdornment(textfield.inputProps) as Partial<InputProps>}
+      InputProps={{
+        startAdornment: <StateJsxAdornment def={textfield.inputProps.start} />,
+        endAdornment: <StateJsxAdornment def={textfield.inputProps.end} />
+      }}
       disabled
     />
   );

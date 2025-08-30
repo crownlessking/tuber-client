@@ -1,5 +1,5 @@
-import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox'
-import StateFormItemCheckboxCustom from '../../../controllers/templates/StateFormItemCheckboxCustom'
+import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox';
+import StateFormItemCheckboxCustom from '../../../controllers/templates/StateFormItemCheckboxCustom';
 
 describe('StateFormItemCheckboxCustom', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateFormItemCheckboxCustom', () => {
       expect(new StateFormItemCheckboxCustom(
         { },
         {} as StateFormItemCheckbox
-      )).toEqual({ _checkboxCustomState: {} })
-    })
-  })
-})
+      )).toEqual({ _checkboxCustomState: {} });
+    });
+  });
+});

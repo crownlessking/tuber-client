@@ -1,5 +1,5 @@
-import State from '../../../controllers/State'
-import StateDialogForm from '../../../controllers/templates/StateDialogForm'
+import State from '../../../controllers/State';
+import StateDialogForm from '../../../controllers/templates/StateDialogForm';
 
 describe('StateDialogForm', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateDialogForm', () => {
       expect(new StateDialogForm(
         {},
         {} as State
-      )).toEqual({ _dialogFormState: {} })
-    })
-  })
-})
+      )).toEqual({ _dialogFormState: {} });
+    });
+  });
+});

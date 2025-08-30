@@ -4,7 +4,7 @@ import StateFormItem from '../../../../controllers/StateFormItem';
 
 describe('src/mui/dialog/form/dialog.picker.tsx', () => {
 
-  const hive = {} as Record<string, any>;
+  const hive = {} as Record<string, unknown>;
 
   it('should render correctly', () => {
     const picker = new StateFormItem({

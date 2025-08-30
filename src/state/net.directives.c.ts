@@ -7,10 +7,10 @@ const ACTIONS = {
     dispatch: Dispatch
   ) => dispatch(state_reset()),
   
-} as Record<string, ((dispatch: Dispatch<any>, meta?: Record<string, any>) => void)>;
+} as Record<string, ((dispatch: Dispatch, meta?: Record<string, unknown>) => void)>;
 
 export default function execute_directives(
-  dispatch: Dispatch<any>,
+  dispatch: Dispatch,
   meta?: TJsonapiMeta
 ): void {
   const directives = meta?.directives

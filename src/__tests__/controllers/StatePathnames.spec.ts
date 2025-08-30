@@ -1,4 +1,4 @@
-import StatePathnames from '../../controllers/StatePathnames'
+import StatePathnames from '../../controllers/StatePathnames';
 
 describe('StatePathnames', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StatePathnames', () => {
         DIALOGS: '',
         FORMS: '',
         PAGES: '',
-      })).toEqual({ _pathnamesState: {} })
-    })
-  })
-})
+      })).toEqual({ _pathnamesState: {} });
+    });
+  });
+});

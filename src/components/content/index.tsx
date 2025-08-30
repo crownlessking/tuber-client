@@ -8,7 +8,7 @@ import IStateApp from '../../interfaces/IStateApp';
 import IStateAllForms from '../../interfaces/IStateAllForms';
 import IStatePage from '../../interfaces/IStatePage';
 import HtmlContent from './html.component';
-import { APP_CONTENT_VIEW } from '../../constants';
+import { APP_CONTENT_VIEW } from '../../constants.client';
 import { remember_exception } from 'src/business.logic/errors';
 import FormContent from './form.component';
 import WebApps from './webapp.content.component';
@@ -117,8 +117,8 @@ export default function Content (props: IContentProps) {
       } else {
         save_content_jsx(contentJsx = null);
       }
-    } catch (e: any) {
-      const message = `Bad page content.\n${e.message}`;
+    } catch (e) {
+      const message = `Bad page content.\n${(e as Error).message}`;
       ler(message);
       remember_exception(e, message);
       save_content_jsx(contentJsx = null);
@@ -178,8 +178,8 @@ export default function Content (props: IContentProps) {
     try {
       const handler = contentTable[type] || contentTable['$default'];
       result = handler();
-    } catch (e: any) {
-      const message = `Bad page content. ${e.message}`;
+    } catch (e) {
+      const message = `Bad page content. ${(e as Error).message}`;
       ler(message);
       remember_exception(e, message);
       result = contentTable['$default']();

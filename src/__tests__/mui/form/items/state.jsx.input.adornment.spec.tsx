@@ -21,11 +21,11 @@ describe('src/mui/form/items/state.jsx.textfield.tsx', () => {
         <Textfield
           inputProps={getTextFieldAdornment(textfield.inputProps)} 
         />
-      )
-      const tree = component.toJSON()
-      expect(tree).toMatchSnapshot()
-    })
+      );
+      const tree = component.toJSON();
+      expect(tree).toMatchSnapshot();
+    });
 
-  })
+  });
 
-})
+});

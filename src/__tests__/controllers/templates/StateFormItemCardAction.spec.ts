@@ -1,5 +1,5 @@
-import StateCard from '../../../controllers/StateCard'
-import StateFormItemCardAction from '../../../controllers/templates/StateFormItemCardAction'
+import StateCard from '../../../controllers/StateCard';
+import StateFormItemCardAction from '../../../controllers/templates/StateFormItemCardAction';
 
 describe('StateFormItemCardAction', () => {
   describe('constructor', () => {
@@ -7,7 +7,7 @@ describe('StateFormItemCardAction', () => {
       expect(new StateFormItemCardAction(
         { type: 'a' },
         {} as StateCard,
-      )).toEqual({ _cardActionState: {} })
-    })
-  })
-})
+      )).toEqual({ _cardActionState: {} });
+    });
+  });
+});

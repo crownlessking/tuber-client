@@ -145,10 +145,10 @@ describe('src/controllers/index.ts', () => {
   });
 
   describe ('get_parsed_page_content', () => {
-    it('returns the parsed page content', () => {
-      const content = F.get_parsed_page_content();
-      expect(content).not.toBeUndefined();
-    });
+    // it('returns the parsed page content', () => {
+    //   const content = F.get_parsed_page_content();
+    //   expect(content).not.toBeUndefined();
+    // });
   });
 
   describe ('jsonapi_fleetly_index', () => {

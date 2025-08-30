@@ -9,11 +9,11 @@ export type TWithOptional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, 
 /** @see https://stackoverflow.com/a/69328045/1875859 */
 export type TWithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
-export interface IGenericObject<T=any> {
+export interface IGenericObject<T=unknown> {
   [prop: string]: T;
 }
 
-export type TObj<T=any> = Record<string, T>;
+export type TObj<T=unknown> = Record<string, T>;
 
 export type TReadonly<K extends string | number | symbol, T> = {
   readonly [P in K]: T;
@@ -27,9 +27,9 @@ export interface IAbstractState {
   /** Abstract `type`. */
   _type?: string;
   /** Spread me on a react component. */
-  props?: any;
+  props?: Record<string, unknown>;
   /** Use to apply CSS styles. */
-  theme?: any;
+  theme?: Record<string, unknown>;
 }
 
 /**
@@ -53,14 +53,14 @@ export interface IAbstractState {
  * ```
  */
 export interface IAdornment {
-  position: 'start' | 'end';
+  position?: 'start' | 'end';
   type?: 'text' | 'button';
   /** Material-UI icon */
   icon?: string;
   /** Fontawesone icon */
   faIcon?: string;
   text?: string;
-  [props: string]: any;
+  [x: string]: unknown;
 }
 
 export type TBoolVal = 'true'
@@ -69,3 +69,11 @@ export type TBoolVal = 'true'
   | 'off'
   | 'yes'
   | 'no';
+
+export interface IDummyEvent<T=unknown> {
+  target: {
+    value: T;
+  };
+  preventDefault: () => void;
+  key: string;
+}

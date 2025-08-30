@@ -1,3 +1,4 @@
+import { CardMediaProps } from '@mui/material';
 import IStateCard from '../../interfaces/IStateCard';
 import StateCard from '../StateCard';
 
@@ -10,12 +11,13 @@ export default class StateCardMultiActionArea extends StateCard {
       ...this.cardState.props
     };
   }
-  get mediaProps(): any {
+  get mediaProps(): CardMediaProps {
     return {
       component: 'img',
-      width: '100%',
-      height: 'auto',
-      alt: 'Image',
+      sx: {
+        width: '100%',
+        height: 'auto'
+      },
       ...this.cardState.mediaProps
     };
   }

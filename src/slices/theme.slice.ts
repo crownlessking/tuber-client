@@ -2,7 +2,7 @@ import { ThemeOptions } from '@mui/material/styles/createTheme';
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from '../state/initial.state';
 
-type TThemeProps = Record<string, any>;
+type TThemeProps = Record<string, unknown>;
 interface IThemeSetAction {
   payload: ThemeOptions;
 }
@@ -15,7 +15,7 @@ export const themeSlice = createSlice({
       for (const prop in action.payload) {
         try {
           (state as TThemeProps)[prop] = (action.payload as TThemeProps)[prop];
-        } catch (e: any) {
+        } catch (e: unknown) {
           delete (state as TThemeProps)[prop];
         }
       }
@@ -24,7 +24,7 @@ export const themeSlice = createSlice({
       for (const prop in initialState.theme) {
         try {
           (state as TThemeProps)[prop] = (initialState.theme as TThemeProps)[prop];
-        } catch (e: any) {
+        } catch (e: unknown) {
           delete (state as TThemeProps)[prop];
         }
       }

@@ -1,121 +1,10 @@
 import {
   APP_CONTENT_VIEW,
   DEFAULT_LANDING_PAGE_VIEW,
-} from '../constants';
-import { IJsonapiResourceAbstract } from '../interfaces/IJsonapi';
+} from '../constants.client';
 import { IStatePageContent } from '../interfaces/IStatePage';
-import { err, ler } from '../business.logic/logging';
-
-interface IIconProp {}
-
-/**
- * Converts an icon definition to a valid argument for the `FontAwesomeIcon`
- * element.
- *
- * e.g.
- * 
- * ```tsx
- * const iconDefinition = '<icon_type>, <icon_name>'
- * const validIconArgument = getFontAwesomeIconProp(iconDefinition)
- *
- * <FontAwesomeIcon icon={validIconArgument} />
- * ```
- *
- * Icon types are, "fas, far, fab"
- *
- * @param iconStr 
- * @deprecated
- */
-export function get_font_awesome_icon_prop(iconStr: string): IIconProp {
-  const pieces = iconStr.replace(/\s+/,'').split(',');
-
-  if (pieces.length === 2) {
-    return pieces as IIconProp;
-  } else if (pieces.length === 1) {
-    return ['fas', iconStr] as IIconProp;
-  }
-
-  err('bad icon definition. Check your JSON.');
-
-  return '' as IIconProp;
-}
-
-/**
- * Get browser tab viewport size.
- *
- * @deprecated
- * Credit:
- * @see https://stackoverflow.com/questions/1377782/javascript-how-to-determine-the-screen-height-visible-i-e-removing-the-space
- */
-export function get_viewport_size(): { width: number; height: number }
-{
-  let e: any = window, a = 'inner';
-  if ( !( 'innerWidth' in window ) ) {
-    a = 'client';
-    e = document.documentElement || document.body;
-  }
-  return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
-}
-
-/**
- * Get a height in pixels that can help you strech an HTML element vertically
- * to fit the remaining screen space.
- *
- * @param bottom margin between the bottom of the viewport and the streched
- *               element.
- *               e.g. How much space do you want between the bottom of the
- *                    viewport and your element
- * @returns height in pixels
- * @deprecated
- */
-export function stretch_to_bottom(bottom: number): number {
-  const height = get_viewport_size().height;
-
-  return height - bottom;
-}
-
-/**
- * Find nested values in object using a string of dot-separated object keys.
- *
- * e.i.
- * ```ts
- * const obj = {
- *    account: {
- *      user: {
- *        lastname: 'Foo'
- *      }
- *    }
- * };
- * const lastname = getVal(obj, 'account.user.lastname')
- * ```
- *
- * @param obj 
- * @param path dot-separated object (nested) keys
- * @returns the value of the object property or `null` if the property does not
- *          exist.
- */
-export function get_val<T=any>(obj: any, path: string): T|null {
-  if (typeof obj === 'undefined' || Array.isArray(obj) || typeof obj !== 'object') {
-    return null;
-  }
-  const paths = path.split('.');
-  let i = 0,
-    key = paths[i],
-    candidate = obj[key];
-
-  while (i < paths.length) {
-    if (!candidate) {
-      break;
-    } else if (i >= paths.length - 1) {
-      return candidate as T ?? null;
-    }
-    i++;
-    key = paths[i];
-    candidate = candidate[key];
-  }
-
-  return null;
-}
+import { ler } from '../business.logic/logging';
+import { TObj } from 'src/common.types';
 
 /**
  * Adds a new property and value to an object.
@@ -124,7 +13,7 @@ export function get_val<T=any>(obj: any, path: string): T|null {
  * @param prop new property name of object
  * @param val the value at that object property
  */
-const create_writable_property = (data: any, prop: string, val: any): void => {
+const create_writable_property = (data: unknown, prop: string, val: unknown): void => {
   Object.defineProperty(data, prop, {
     value: val,
     writable: true
@@ -140,10 +29,10 @@ const create_writable_property = (data: any, prop: string, val: any): void => {
  *
  * @todo NOT TESTED, please test
  */
-export function set_val(obj: any, path: string, val: any): void {
+export function set_val(obj: object, path: string, val: unknown): void {
   const propArray = path.split('.');
-  let o = obj,
-      candidate: any,
+  let o = obj as TObj,
+      candidate: unknown,
       j = 0;
 
   do {
@@ -160,168 +49,9 @@ export function set_val(obj: any, path: string, val: any): void {
       create_writable_property(o, prop, {});
     }
 
-    o = o[prop];
+    o = o[prop] as TObj;
     j++;
   } while (1);
-}
-
-/**
- * Get the query string value by key.
- * @param url
- * @param key
- * @returns value of the query string key
- */
-export function get_query_val(url: string, key: string): string {
-  const query = url.split('?')[1];
-  if (!query) return '';
-  const pairs = query.split('&');
-  for (let i = 0; i < pairs.length; i++) {
-    const pair = pairs[i];
-    const [k, v] = pair.split('=');
-    if (k === key) return v;
-  }
-  return '';
-}
-
-/**
- * Get all query string keys as an array
- * @param url
- * @returns array of query string keys
- */
-export function get_query_keys(url: string): string[] {
-  const query = url.split('?')[1];
-  if (!query) return [];
-  return query.split('&').map((pair) => pair.split('=')[0]);
-}
-
-/**
- * Get all query string values as an object
- * @param url
- * @returns object of query string keys and values
- */
-export function get_query_values(url: string): { [key: string]: string } {
-  const query = url.split('?')[1];
-  if (!query) return {};
-  const values: { [key: string]: string } = {};
-  const pairs = query.split('&');
-  for (let i = 0; i < pairs.length; i++) {
-    const pair = pairs[i];
-    const [k, v] = pair.split('=');
-    values[k] = v;
-  }
-  return values;
-}
-
-/**
- * Set the query string value by key.
- * @param url
- * @param key
- * @param val
- * @returns new url with the query string key and value
- */
-export function set_url_query_val(url: string, key: string, val?: string) {
-  const urlObj = new URL(url);
-  const query = new URLSearchParams(urlObj.searchParams);
-  const { origin, pathname } = urlObj;
-  if (typeof val === 'undefined') {
-    query.delete(key);
-    const newUrl = `${origin}${pathname}?${query.toString()}`;
-    return newUrl;
-  }
-  query.set(key, val.toString());
-  const newUrl = `${origin}${pathname}?${query.toString()}`;
-  return newUrl;
-}
-
-/**
- * Delete array elements by index range.
- * @param arr
- * @param start
- * @param end
- * @returns new array with elements removed
- */
-export function delete_range<T>(arr: T[], start: number, end: number): T[] {
-  return arr.slice(0, start).concat(arr.slice(end + 1));
-}
-
-/**
- * Get HTML head meta data.
- *
- * @param name 
- * @returns content of the meta tag
- */
-export function get_head_meta_content(name: string): string {
-  const meta = document.querySelector(`meta[name="${name}"]`);
-
-  if (meta) {
-    return (meta as HTMLMetaElement).content;
-  }
-
-  // err(`Meta with '${name}' name does not exist.`)
-
-  return '';
-}
-
-/**
- * Converts an endpoint which contains hyphens to a camel case
- * version.
- *
- * @param endpoint
- * @returns camel case version of the endpoint
- */
-export function camelize(endpoint: string): string {
-  return endpoint.replace(/-([a-zA-Z])/g, g => g[1].toUpperCase());
-}
-
-/**
- * Safely get a value from the given object.
- *
- * This function will prevent exceptions or catch them so they can be store and
- * viewed later without crashing the app.
- *
- * @param obj 
- * @param path     an existing property of `obj` or a dot-separated list of
- *                 properties.
- * @param _default value to return if `obj[path]` is undefined
- * @returns value of `obj[path]` or `_default` if `obj[path]` is undefined
- * @deprecated
- */
-export function safely_get(obj: any, path = '', _default?: any): any {
-  const value = get_val(obj, path);
-
-  if (value !== null) {
-    return value;
-  }
-
-  // force function to return undefined
-  if (_default === 'undefined') {
-    return undefined;
-  }
-
-  if (_default === undefined) {
-  
-    // If a path was not provided, we can safely assume that the object is being
-    // tested for a valid value
-    if (!path) return {};
-  
-    return null;
-  }
-
-  return _default;
-}
-
-/**
- * Get a value from an object as the same type as the default value without
- * causing an exception.
- * @param obj arbitrary object
- * @param path dot-separated list of properties
- * @param _default default value
- * @returns value of `obj[path]` or `_default` if `obj[path]` is undefined
- */
-export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
-  const value = get_val<T>(obj, path);
-
-  return value !== null ? value : _default;
 }
 
 /**
@@ -338,8 +68,10 @@ export function safely_get_as<T=any>(obj: any, path = '', _default: T): T {
  * @param content 
  * @returns `IStatePageContent` object.
  */
-export function get_parsed_page_content(str?: string): IStatePageContent {
-  const content = str ?? '';
+export function get_parsed_content(content?: unknown): IStatePageContent {
+  if (typeof content !== 'string') {
+    throw new Error('Content is not a string.');
+  }
   const options = content.replace(/\s+/g, '').split(':');
   if (options.length <= 1) {
     ler('get_parsed_page_content: Invalid or missing `page` content definition');
@@ -359,42 +91,6 @@ export function get_parsed_page_content(str?: string): IStatePageContent {
     contentObj.args = options[3];
   }
   return contentObj;
-}
-
-/** Type for event's callback defined with a string. */
-export type THandleEvent = 'onclick' | 'onchange' | 'onkeydown' | 'onblur';
-
-/**
- * Save array index into the array element.
- * 
- * **Purpose:** Useful for array of object where an element needs to be modify
- * and retrieve in the index directly from the element to be modify avoid
- * having to iterate through the array find it.
- *
- * **Be careful:** Object to be indexed must extends the `IFeetlyIndexed`
- * interface.
- * @param a
- * @see IFeetlyIndexed
- * @see jsonapi_fleetly_index
- * @deprecated
- */
-export function jsonapi_fleetly_index(a: IJsonapiResourceAbstract[]): void {
-  if (a.length <= 0
-    || (a.length > 0 && typeof a[0] !== 'object' && !Array.isArray(a[0]))
-  ) {
-    return;
-  }
-  a.map((e, i) => e._index = i);
-}
-
-/**
- * Get the real route from the template route by ignoring the path variables.
- * @param templateRoute
- * @param templateRoute 
- */
-export function get_base_route(templateRoute?: string): string {
-  if (!templateRoute) return '';
-  return templateRoute.replace(/^\/|\/$/g, '').split('/')[0];
 }
 
 /**

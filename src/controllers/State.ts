@@ -1,4 +1,4 @@
-import store, { type RootState } from '../state';
+import { type RootState, get_state } from '../state';
 import StateAllPages from './StateAllPages';
 import StateAllIcons from './StateAllIcons';
 import AbstractState from './AbstractState';
@@ -54,7 +54,7 @@ export default class State extends AbstractState {
   get state(): RootState {
     return this.die(
       `Access to the root state is NOT a good idea.`,
-      store.getState()
+      get_state()
     );
   }
 
@@ -78,7 +78,7 @@ export default class State extends AbstractState {
   get app(): StateApp {
     return this._appDef
       || (this._appDef = new StateApp(
-          store.getState().app,
+          get_state().app,
           this
         ));
   }
@@ -89,7 +89,7 @@ export default class State extends AbstractState {
   get appbar(): StateAppbarDefault {
     return this._appbarDef
       || (this._appbarDef = new StateAppbarDefault(
-          store.getState().appbar,
+          get_state().appbar,
           this
         ));
   }
@@ -97,7 +97,7 @@ export default class State extends AbstractState {
   get appbarQueries(): StateAppbarQueries {
     return this._appbarQueriesDef
       || (this._appbarQueriesDef = new StateAppbarQueries(
-            store.getState().appbarQueries,
+            get_state().appbarQueries,
             this
           ));
   }
@@ -108,7 +108,7 @@ export default class State extends AbstractState {
   get background(): StateBackground {
     return this._backgroundDef
       || (this._backgroundDef = new StateBackground(
-          store.getState().background,
+          get_state().background,
           this
         ));
   }
@@ -116,7 +116,7 @@ export default class State extends AbstractState {
   get typography(): StateTypography {
     return this._typographyDef
       || (this._typographyDef = new StateTypography(
-          store.getState().typography,
+          get_state().typography,
           this
         ));
   }
@@ -127,7 +127,7 @@ export default class State extends AbstractState {
   get allIcons(): StateAllIcons {
     return this._allIconsDef
       || (this._allIconsDef = new StateAllIcons(
-          store.getState().icons,
+          get_state().icons,
           this
         ));
   }
@@ -137,14 +137,14 @@ export default class State extends AbstractState {
   get data(): StateData {
     return this._dataDef
       || (this._dataDef = new StateData(
-        store.getState().data
+        get_state().data
       ));
   }
 
   get dialog(): StateDialog {
     return this._dialogDef
       || (this._dialogDef = new StateDialog(
-          store.getState().dialog,
+          get_state().dialog,
           this
         ));
   }
@@ -152,7 +152,7 @@ export default class State extends AbstractState {
   get allDialogs(): StateAllDialogs {
     return this._allDialogsDef
       || (this._allDialogsDef = new StateAllDialogs(
-          store.getState().dialogs,
+          get_state().dialogs,
           this
         ));
   }
@@ -165,7 +165,7 @@ export default class State extends AbstractState {
   get drawer(): StateDrawer {
     return this._drawerDef
       || (this._drawerDef = new StateDrawer(
-          store.getState().drawer,
+          get_state().drawer,
           this
         ));
   }
@@ -173,7 +173,7 @@ export default class State extends AbstractState {
   get allErrors(): StateAllErrors {
     return this._allErrorsDef
       || (this._allErrorsDef = new StateAllErrors(
-          store.getState().errors,
+          get_state().errors,
           this
         ));
   }
@@ -186,7 +186,7 @@ export default class State extends AbstractState {
   get allForms(): StateAllForms {
     return this._allFormsDef
       || (this._allFormsDef = new StateAllForms(
-          store.getState().forms,
+          get_state().forms,
           this
         ));
   }
@@ -199,15 +199,14 @@ export default class State extends AbstractState {
   get formsData(): StateFormsData {
     return this._formsDataDef
       || (this._formsDataDef = new StateFormsData(
-          store.getState().formsData,
-          this
+          get_state().formsData
         ));
   }
 
   get formsDataErrors(): StateFormsDataErrors {
     return this._formsDataErrorsDef
       || (this._formsDataErrorsDef = new StateFormsDataErrors(
-          store.getState().formsDataErrors,
+          get_state().formsDataErrors,
           this
         ));
   }
@@ -218,7 +217,7 @@ export default class State extends AbstractState {
   get meta(): StateMeta {
     return this._metaDef
       || (this._metaDef = new StateMeta(
-          store.getState().meta,
+          get_state().meta,
           this
         ));
   }
@@ -229,7 +228,7 @@ export default class State extends AbstractState {
   get allPages(): StateAllPages {
     return this._allPagesDef
       || (this._allPagesDef = new StateAllPages(
-          store.getState().pages,
+          get_state().pages,
           this
         ));
   }
@@ -239,7 +238,7 @@ export default class State extends AbstractState {
   get pagesData(): StatePagesData {
     return this._pagesDataDef
       || (this._pagesDataDef = new StatePagesData(
-          store.getState().pagesData,
+          get_state().pagesData,
           this
         ));
   }
@@ -247,7 +246,7 @@ export default class State extends AbstractState {
   get snackbar(): StateSnackbar {
     return this._snackbarDef
       || (this._snackbarDef = new StateSnackbar(
-          store.getState().snackbar,
+          get_state().snackbar,
           this
         ));
   }
@@ -255,7 +254,7 @@ export default class State extends AbstractState {
   get tmp(): StateTmp {
     return this._tmpDef
       || (this._tmpDef = new StateTmp(
-          store.getState().tmp,
+          get_state().tmp,
           this
         ));
   }
@@ -263,24 +262,24 @@ export default class State extends AbstractState {
   get topLevelLinks(): StateTopLevelLinks {
     return this._topLevelLinksDef
       || (this._topLevelLinksDef = new StateTopLevelLinks(
-          store.getState().topLevelLinks,
+          get_state().topLevelLinks,
           this
         ));
   }
 
-  get theme(): any { return store.getState().theme; }
+  get theme(): unknown { return get_state().theme; }
 
   get net(): StateNet {
     return this._netDef
       || (this._netDef = new StateNet(
-        store.getState().net,
+        get_state().net,
       ));
   }
 
   get pathnames(): StatePathnames {
     return this._pathnamesDef
       || (this._pathnamesDef = new StatePathnames(
-        store.getState().pathnames
+        get_state().pathnames
       ));
   }
 

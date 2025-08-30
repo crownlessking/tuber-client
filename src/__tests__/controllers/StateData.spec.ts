@@ -1,9 +1,9 @@
-import StateData from '../../controllers/StateData'
+import StateData from '../../controllers/StateData';
 
 describe('StateData', () => {
   describe('constructor', () => {
     it('should create a state data object', () => {
-      expect(new StateData({})).toEqual({ _dataState: {} })
-    })
-  })
-})
+      expect(new StateData({})).toEqual({ _dataState: {} });
+    });
+  });
+});

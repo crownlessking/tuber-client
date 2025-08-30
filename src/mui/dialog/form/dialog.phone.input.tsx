@@ -21,8 +21,8 @@ const TextMaskCustom = forwardRef<HTMLElement, CustomProps>(
         definitions={{
           '#': /[1-9]/,
         }}
-        inputRef={ref as any}
-        onAccept={(value: any) => onChange({ target: { name: props.name, value } })}
+        inputRef={ref}
+        onAccept={(value: string) => onChange({ target: { name: props.name, value } })}
         overwrite
       />
     );
@@ -39,7 +39,7 @@ export default function DialogPhoneInput(props: IDialogPhoneInput) {
   const input = props.def;
   input.configure('phone');
 
-  const [value, setValue] = useState<string>(hive[input.name]);
+  const [value, setValue] = useState<string>(hive[input.name] as string);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
@@ -50,13 +50,8 @@ export default function DialogPhoneInput(props: IDialogPhoneInput) {
   return (
     <FormControl {...input.formControlProps}>
       <InputLabel {...input.inputLabelProps}>{ input.label }</InputLabel>
-      <Input
-        {...input.props}
-        name={input.name}
-        value={value}
-        onChange={handleChange}
-        inputComponent={TextMaskCustom as any}
-      />
+      { /* @ts-ignore */ }
+      <Input {...input.props} name={input.name} value={value} onChange={handleChange} inputComponent={TextMaskCustom} />
     </FormControl>
   );
 }

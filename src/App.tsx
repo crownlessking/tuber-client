@@ -13,7 +13,7 @@ import {
   BOOTSTRAP_ATTEMPTS,
   THEME_DEFAULT_MODE,
   THEME_MODE
-} from './constants';
+} from './constants.client';
 import { get_cookie } from './business.logic';
 
 Config.write(THEME_MODE, get_cookie('mode') || THEME_DEFAULT_MODE);

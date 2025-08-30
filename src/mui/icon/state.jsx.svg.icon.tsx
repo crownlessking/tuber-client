@@ -9,7 +9,7 @@ import {
 
 interface IJsonIconProps {
   def?: {
-    iconProps: React.ComponentProps<typeof SvgIcon>;
+    svgIconProps: React.ComponentProps<typeof SvgIcon>;
   };
   svgDef: StateIcon;
 }
@@ -113,10 +113,10 @@ export default function StateJsxSvgIcon({ def, svgDef: svg }: IJsonIconProps) {
   }
 
   // Only apply explicit width/height if no fontSize is specified in iconProps
-  const shouldApplyExplicitSize = !def?.iconProps?.fontSize;
+  const shouldApplyExplicitSize = !def?.svgIconProps?.fontSize;
 
-  const svgIconProps: Required<IJsonIconProps>['def']['iconProps'] = (
-    def && def.iconProps
+  const svgIconProps: Required<IJsonIconProps>['def']['svgIconProps'] = (
+    def && def.svgIconProps
   ) || {};
 
   return (

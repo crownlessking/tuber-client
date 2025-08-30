@@ -1,15 +1,22 @@
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from '../state/initial.state';
+import { TObj } from '../common.types';
 
 export interface IFormsDataArgs {
   formName: string;
   name: string;
-  value: any;
+  value: unknown;
 }
 
 interface IFormsDataReducerArgs {
   type: string;
   payload: IFormsDataArgs;
+}
+
+interface IFormsDataClear {
+  type: string;
+  /** Form name */
+  payload: string;
 }
 
 export const formsDataSlice = createSlice({
@@ -19,11 +26,11 @@ export const formsDataSlice = createSlice({
     formsDataUpdate: (state, { payload }: IFormsDataReducerArgs) => {
       const { formName, name, value } = payload;
       state[formName] = state[formName] || {};
-      state[formName][name] = value;
+      (state[formName] as TObj)[name] = value;
     },
-    /** pass the form name to clear all form data */
-    formsDataClear: (state, action) => {
-      delete state[action.payload];
+    /** pass the form name to clear the form data. */
+    formsDataClear: (state, { payload }: IFormsDataClear) => {
+      delete state[payload];
     },
   }
 });

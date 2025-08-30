@@ -6,7 +6,7 @@ export interface IConfigMethods {
    * @param data arbitrary object containing key-value pairs.
    * @returns void
    */
-  readonly init: (data?: any) => void;
+  readonly init: (data?: unknown) => void;
   /**
    * Save a value.
    *
@@ -15,7 +15,7 @@ export interface IConfigMethods {
    * @param val value to be saved.
    * @returns void
    */
-  readonly set: (path: string, val: any) => void;
+  readonly set: (path: string, val: unknown) => void;
   /**
    * Read a value.
    *
@@ -24,7 +24,7 @@ export interface IConfigMethods {
    *                 is undefined.
    * @returns the value at the specified path or the default value.
    */
-  readonly read: <T=any>(path: string, $default?: T) => T;
+  readonly read: <T=undefined>(path: string, $default?: T) => T;
   /**
    * Save a value.
    *
@@ -32,7 +32,7 @@ export interface IConfigMethods {
    * @param val value to be saved.
    * @returns void
    */
-  readonly write: <T=any>(path: string, val: T) => void;
+  readonly write: <T=unknown>(path: string, val: T) => void;
   /**
    * Delete a property.
    *
@@ -57,7 +57,7 @@ type TReservedKeys = keyof IConfigMethods;
  * You've been warned.
  */
 export interface IConfiguration extends IConfigMethods {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 let writable: boolean = false;
@@ -70,7 +70,7 @@ let $delete: boolean = false;
  * @param prop new property name
  * @param val the value at that property
  */
-const create_property = (obj: any, prop: string, val: any): void => {
+const create_property = (obj: unknown, prop: string, val: unknown): void => {
   Object.defineProperty(obj, prop, {
     value: val,
     writable
@@ -103,37 +103,47 @@ const invalid_keys: {[key in TReservedKeys]: number} = {
  * TODO finish implementing this function
  *
  * @param obj  arbitrary object.
- * @param path a string containing the dot-separated list of object properties.
- *             e.g. "pagination.users.limit"
+ * @param path a string containing the dot-separated path of object properties,
+ *             e.g., "pagination.users.limit"
  */
-const resolve = (obj: any, path: string, val?: any): any => {
+const resolve = (obj: object, path: string, val?: unknown): unknown => {
+  if (!obj || Array.isArray(obj)) { return undefined; }
+
   const propArray = path.split('.');
-  let o = obj,
-    candidate: any,
-    j = 0;
+  let o = obj as Record<string, unknown>;
 
-  do {
-    let prop = propArray[j];
-    candidate = o[prop];
+  for (let i = 0; i < propArray.length; i++) {
+    const prop = propArray[i];
 
-    // if this is the last property
-    if (j >= (propArray.length - 1)) {
-      if (val) {
+    // If last property in path
+    if (i === propArray.length - 1) {
+      if (val !== undefined) {
         create_property(o, prop, val);
         return val;
       } else if ($delete) {
-        o[prop] = undefined;
+        delete o[prop];
+        return undefined;
       }
-      return candidate;
-
-      // if the property does not exist but a value was provided
-    } else if (!candidate && val) {
-      create_property(o, prop, {});
+      return o[prop];
     }
-    o = o[prop];
-    j++;
-  } while (1);
 
+    // If property does not exist, create it if setting a value
+    if (!(prop in o) || o[prop] === undefined) {
+      if (val !== undefined) {
+        create_property(o, prop, {});
+      } else {
+        return undefined;
+      }
+    }
+
+    // Move deeper
+    if (o[prop] !== null && typeof o[prop] === 'object' && !Array.isArray(o[prop])) {
+      o = o[prop] as Record<string, unknown>;
+    } else {
+      return undefined;
+    }
+  }
+  return undefined;
 };
 
 /**
@@ -144,12 +154,12 @@ const resolve = (obj: any, path: string, val?: any): any => {
  */
 const config: IConfiguration = {
 
-  init: (data?: any): void => {
+  init: (data?: unknown): void => {
     writable = false;
     if (data && typeof data === 'object' && !Array.isArray(data)) {
       for (const key in data) {
         if (!(key in invalid_keys)) { // if key is invalid
-          config[key] = data[key];
+          config[key] = (data as Record<string, unknown>)[key];
         } else {
           throw new Error(`'${key}' cannot be specified as a key.`);
         }
@@ -157,15 +167,15 @@ const config: IConfiguration = {
     }
   },
 
-  set: (path: string, val: any): void => {
+  set: (path: string, val: unknown): void => {
     resolve(config, path, val);
   },
 
-  read: <T=any>(path: string, $default?: T): T => {
-    return resolve(config, path) ?? $default;
+  read: <T=undefined>(path: string, $default?: T): T => {
+    return (resolve(config, path) ?? $default) as T;
   },
 
-  write: <T=any>(path: string, val: T): void => {
+  write: <T=unknown>(path: string, val: T): void => {
     writable = true;
     resolve(config, path, val);
     writable = false;

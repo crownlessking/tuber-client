@@ -3,10 +3,10 @@ import InputLabel from '@mui/material/InputLabel';
 import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
 import { useSelector } from 'react-redux';
-import { NAME_NOT_SET } from '../../../../constants';
+import { NAME_NOT_SET } from '../../../../constants.client';
 import type StateFormItemSelect from '../../../../controllers/templates/StateFormItemSelect';
 import type { RootState } from '../../../../state';
-import { get_field_value } from '../_items.common.logic';
+import StateFormsData from '../../../../controllers/StateFormsData';
 
 interface IDialogSelectNative { def: StateFormItemSelect; }
 
@@ -15,8 +15,10 @@ export default function StateJsxSelectNative (
 ) {
   const { name, parent: { name: formName } } = select;
   select.configure('native');
-  const formsData = useSelector<RootState>(state => state.formsData);
-  const getValue = () => get_field_value(formsData, formName, name);
+  const formsData = new StateFormsData(
+    useSelector((state: RootState) => state.formsData)
+  );
+  const getValue = () => formsData.getValue(formName, name, '');
 
   return name ? (
     <FormControl {...select.formControlProps}>

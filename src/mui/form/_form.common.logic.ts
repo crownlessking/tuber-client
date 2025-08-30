@@ -1,7 +1,8 @@
 import { TBoolVal } from 'src/common.types';
-import * as C from 'src/constants';
+import * as C from 'src/constants.client';
 import IStateDialog from '../../interfaces/IStateDialog';
 import IStateFormItem from '../../interfaces/IStateFormItem';
+import { is_record } from 'src/business.logic';
 
 /** 
  * Regular expression identifying a `true` or `false` boolean value.
@@ -89,9 +90,8 @@ type TSwitchBool = 'number'
  *
  * @param value 
  */
-export function get_bool_type (value: any): TSwitchBool {
-  const type = typeof value;
-  if (typeof type === 'string') {
+export function get_bool_type (value: unknown): TSwitchBool {
+  if (typeof value === 'string') {
     if (BOOL_TF_R.test(value)) {
       return C.BOOL_TRUEFALSE;
     } else if (BOOL_OO_R.test(value)) {
@@ -129,10 +129,9 @@ export function to_bool_val(value: TBoolVal) {
  *      if 
  * @param value 
  */
-function get_field_type(value: any) {
+function get_field_type(value: unknown) {
   let customType: string;
-  const type = typeof value;
-  if (type === 'string') {
+  if (typeof value === 'string') {
     customType = str_is_45_or_less(value);
     if (customType === C.TEXTFIELD) {
       customType = str_is_number(value, customType);
@@ -142,7 +141,7 @@ function get_field_type(value: any) {
     }
     return customType;
   }
-  return type;
+  return typeof value;
 }
 
 /**
@@ -151,7 +150,10 @@ function get_field_type(value: any) {
  * @param rowData 
  * @param key 
  */
-function get_item_def(rowData: any, key: string) {
+function get_item_def(rowData: unknown, key: string) {
+  if (!is_record(rowData)) {
+    throw new Error('RowData is not a valid object.');
+  }
   const value = rowData[key];
   switch (get_field_type(value)) {
   case C.TEXTFIELD:
@@ -201,6 +203,8 @@ function get_item_def(rowData: any, key: string) {
   }
 }
 
+type TRowDataO<T=unknown> = { rowData: Record<string, T> };
+
 /**
  * Generates a form definition based on the values in the JSON document.
  * 
@@ -212,7 +216,7 @@ function get_item_def(rowData: any, key: string) {
  *
  * @param doc 
  */
-export function gen_state_form({ rowData }: any): IStateDialog {
+export function gen_state_form({ rowData }: TRowDataO): IStateDialog {
   if (rowData) {
     const initItems = Object.keys(rowData).map(key => get_item_def(rowData, key));
     const items = initItems as IStateFormItem[]; // breakFormItems(initItems)
@@ -224,7 +228,7 @@ export function gen_state_form({ rowData }: any): IStateDialog {
 /**
  * Gather item values as an array of incomplete form item definition object.
  */
-export function set_form_values(dialog: IStateDialog, { rowData }: any) {
+export function set_form_values(dialog: IStateDialog, { rowData }: TRowDataO<string>) {
   const items = dialog.items || [];
   for (let i = 0; i < items.length; i++) {
     const item = items[i];

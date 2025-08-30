@@ -14,9 +14,9 @@ export default class StateSession
     super();
   }
   get state(): IStateSession { return this._sessionState; }
-  get parent(): any { return this.die('Not implemented.', {}); }
-  get props(): any { return this.die('Not implemented.', {}); }
-  get theme(): any { return this.die('Method not implemented.', {}); }
+  get parent(): unknown { return this.die('Not implemented.', {}); }
+  get props(): unknown { return this.die('Not implemented.', {}); }
+  get theme(): unknown { return this.die('Method not implemented.', {}); }
   get token(): string { return this._sessionState.token ?? ''; }
   get jwt_version(): number { return this._sessionState.jwt_version ?? 0; }
   get name(): string { return this._sessionState.name ?? ''; }

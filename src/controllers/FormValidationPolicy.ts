@@ -11,11 +11,11 @@ interface IValidation<T> {
 /**
  * Helper class for validating form data and displaying error messages.
  */
-export default class FormValidationPolicy<T=any> {
+export default class FormValidationPolicy<T=Record<string, unknown>> {
   /** Short for formsDataErrorsState */
   private _state: IStateFormsDataErrors;
   private _e: StateFormsDataErrors<T>;
-  private _formData: any;
+  private _formData?: Record<string, unknown>;
 
   constructor (private _redux: IRedux, private _formName: string) {
     this._state = _redux.store.getState().formsDataErrors;
@@ -81,7 +81,7 @@ export default class FormValidationPolicy<T=any> {
    * @returns Cleaned form data.
    * @example const formData = formValidationPolicy.getFilteredData()
    */
-  private _filterData(value: any) {
+  private _filterData(value: unknown) {
     if (typeof value === 'string') {
       return value.trim();
              // TODO apply other fixes here
@@ -105,6 +105,7 @@ export default class FormValidationPolicy<T=any> {
     }
     const names = Object.keys(formData);
     Object.values(formData).forEach((value, i) => {
+      this._formData ??= {};
       this._formData[names[i]] = this._filterData(value);
     });
     return this._formData;
@@ -122,7 +123,7 @@ export default class FormValidationPolicy<T=any> {
     const vError: IValidation<T>[] = [];
     Object.entries(formErrorProfiles).forEach(key => {
       const [name, profile] = key;
-      const value = formsData[name];
+      const value = formsData[name] as string;
       if (typeof value === 'undefined'
         && !profile.required
       ) {

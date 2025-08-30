@@ -1,4 +1,4 @@
-import { Fragment, useMemo, useCallback } from 'react';
+import { Fragment, useMemo, useCallback, ReactNode } from 'react';
 import Container from '@mui/material/Container';
 import {
   LayoutCenteredNoScroll, LayoutCentered, VirtualizedTableLayout,
@@ -17,12 +17,12 @@ import {
   LAYOUT_TABLE_VIRTUALIZED,
   LAYOUT_NONE,
   LAYOUT_NONE_NO_APPBAR
-} from '../constants';
+} from '../constants.client';
 import { log } from '../business.logic/logging';
 
 interface ILayoutProps {
   def: StatePage;
-  children: any;
+  children: ReactNode;
   forceRefresh?: boolean; // Flag to bypass memoization when fresh rendering is needed
 }
 
@@ -147,9 +147,9 @@ export default function Layout({
         { children }
       </Fragment>
     );
-  } catch (e: any) {
+  } catch (e) {
     remember_exception(e);
-    log(e.message);
+    log((e as Error).message);
   }
   return (
     <Fragment>

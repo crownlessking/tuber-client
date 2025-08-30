@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import initialState from '../state/initial.state';
+import { TObj } from 'src/common.types';
 
 export interface ITmpArgs {
   id: string;
   name: string;
-  value: any;
+  value: unknown;
 }
 
 interface ITmpReducerArgs {
@@ -19,7 +20,7 @@ export const tmpSlice = createSlice({
     tmpAdd: (state, action: ITmpReducerArgs) => {
       const { id, name, value } = action.payload;
       state[id] = state[id] || {};
-      state[id][name] = value;
+      (state[id] as TObj)[name] = value;
     },
     tmpRemove: (state, action) => {
       delete state[action.payload];

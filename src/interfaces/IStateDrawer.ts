@@ -1,8 +1,10 @@
-import { IAbstractState } from '../common.types';
 import { type TWithOptional } from '.';
+import IAbstractState from './IAbstractState';
 import IStateLink from './IStateLink';
+import { DrawerProps } from '@mui/material';
 
-export default interface IStateDrawer extends IAbstractState {
+export default interface IStateDrawer extends Omit<IAbstractState, 'props'> {
+  props?: DrawerProps;
   /** drawer type. */
   anchor?: 'bottom' | 'left' | 'right' | 'top';
   _type?: 'mini' | 'persistent' | 'responsive' | 'temporary' | 'swipeable'

@@ -9,7 +9,7 @@ import {
   APP_REQUEST_SUCCESS,
   APP_SWITCHED_PAGE,
   APP_BROWSER_SWITCHED_PAGE
-} from 'src/constants';
+} from 'src/constants.client';
 
 export const appSlice = createSlice({
   name: 'app',
