@@ -10,7 +10,7 @@ import {
   dev_get_bookmarks_callback
 } from './dev.bookmarks.200';
 import { get_parsed_content } from 'src/controllers';
-import { remember_exception } from '../../../business.logic/errors';
+import { error_id } from '../../../business.logic/errors';
 import dev_get_video_thumbnail from './dev.get.video.thumbnail';
 import {
   FORM_RUMBLE_URL_REGEX_ID,
@@ -19,13 +19,13 @@ import {
   FORM_SAVE_CONFIG_VALUE_ID,
   PAGE_SAVE_CONFIG_VALUE_ID,
 } from '../tuber.config';
-import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
+import FormValidationPolicy from 'src/business.logic/FormValidationPolicy';
 import { YouTubePlayer } from 'react-youtube';
 import { get_state_form_name, safely_get_as } from '../../../business.logic';
 import Config from 'src/config';
 import { TPlatform } from '../tuber.interfaces';
 import { pre } from '../../../business.logic/logging';
-import JsonapiRequest from 'src/controllers/jsonapi.request';
+import JsonapiRequest from 'src/business.logic/jsonapi.request';
 import { get_registry_val } from './_callbacks.common.logic';
 
 /**
@@ -67,7 +67,7 @@ export function dev_dialog_new_youtube_bookmark_from_video(redux: IRedux) {
           value: Config.read<TPlatform>('platform')
         }
       });
-    } catch (e: unknown) { remember_exception(e); }
+    } catch (e) { error_id(1035).remember_exception(e); /* error 1035 */ }
     if (redux.store.getState().dialog._id !== dialogState._id) { // if the dialog was NOT mounted
       dispatch({ type: 'dialog/dialogMount', payload: dialogState });
     } else {
@@ -117,7 +117,8 @@ function dev_clipboard_test(redux: IRedux) {
       value = await navigator.clipboard.readText();
     } catch (e) {
       value = (e as Error).message;
-      remember_exception(e, `dev_clipboard_test: ${value}`);
+       // error 1036
+      error_id(1036).remember_exception(e, `dev_clipboard_test: ${value}`);
     }
     redux.store.dispatch({
       type: 'formsData/formsDataUpdate',
@@ -246,7 +247,7 @@ function dev_form_submit_twitch_client_id(redux: IRedux) {
       redux,
       formName
     );
-    const validation = policy.getValidationSchemes();
+    const validation = policy.applyValidationSchemes();
     if (validation && validation.length > 0) {
       validation.forEach(vError => {
         const message = vError.message ?? ''
@@ -279,7 +280,7 @@ function dev_form_submit_save_config_value(redux: IRedux) {
       redux,
       formName
     );
-    const validation = policy.getValidationSchemes();
+    const validation = policy.applyValidationSchemes();
     if (validation && validation.length > 0) {
       validation.forEach(vError => {
         const message = vError.message ?? '';

@@ -13,6 +13,9 @@
 # production
 /build
 
+# Source code files
+src/business.logic/error-tracking-example.ts
+
 # misc
 .DS_Store
 .env.local
@@ -27,4 +30,5 @@ yarn-error.log*
 # files
 /src/App.test.tsx.backup
 /src/designdoc.md
+src/business.logic/ERROR_TRACKING_README.md
 TESTING_TUTORIAL.md

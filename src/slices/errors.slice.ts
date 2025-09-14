@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IJsonapiError } from '../interfaces/IJsonapi';
 import initialState from '../state/initial.state';
 
@@ -12,17 +12,23 @@ export const errorsSlice = createSlice({
   initialState: initialState.errors,
   reducers: {
     errorsAdd: (state, { payload }: IErrorsSliceAction) => {
-      const error = payload;
-      error.id = ''+(state.length + 1);
+      // Create a copy to avoid mutating the original payload
+      const error = { ...payload };
+      
+      // Generate unique ID if not provided
+      error.id = error.id || Date.now().toString();
+      
       state.push(error);
     },
-    errorsRemove: (state, action) => {
-      // [TODO] Implement logic to remove an error element
+    errorsRemove: (state, action: PayloadAction<string>) => {
+      const errorId = action.payload;
+      const index = state.findIndex(error => error.id === errorId);
+      if (index !== -1) {
+        state.splice(index, 1);
+      }
     },
     errorsClear: (state) => {
-      while(state.length > 0) {
-        state.pop();
-      }
+      state.length = 0;
     },
   }
 });

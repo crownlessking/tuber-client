@@ -15,7 +15,7 @@ export const themeSlice = createSlice({
       for (const prop in action.payload) {
         try {
           (state as TThemeProps)[prop] = (action.payload as TThemeProps)[prop];
-        } catch (e: unknown) {
+        } catch (e) {
           delete (state as TThemeProps)[prop];
         }
       }
@@ -24,7 +24,7 @@ export const themeSlice = createSlice({
       for (const prop in initialState.theme) {
         try {
           (state as TThemeProps)[prop] = (initialState.theme as TThemeProps)[prop];
-        } catch (e: unknown) {
+        } catch (e) {
           delete (state as TThemeProps)[prop];
         }
       }

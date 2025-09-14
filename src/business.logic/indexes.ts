@@ -1,4 +1,4 @@
-import { remember_exception } from '../business.logic/errors';
+import { error_id } from './errors';
 import { IJsonapiResponseResource } from '../interfaces/IJsonapi';
 
 export interface IIndexes {
@@ -75,13 +75,13 @@ export function select(endpoint: string, id: string): unknown {
   try {
     return indexes?.[endpoint]?.[id];
   } catch (e) {
-    remember_exception({
-      'code': '404',
+    error_id(6).remember_error({
+      'code': 'MISSING_VALUE',
       'title': (e as Error).message,
       'detail': (e as Error).stack,
       'source': {
         parameter: `${endpoint}/${id}`
       }
-    });
+    }); // error 6
   }
 }

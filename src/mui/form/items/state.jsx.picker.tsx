@@ -7,7 +7,7 @@ import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useSelector } from 'react-redux';
 import StateFormItem from '../../../controllers/StateFormItem';
 import { RootState } from '../../../state';
-import { remember_exception } from '../../../business.logic/errors';
+import { error_id } from '../../../business.logic/errors';
 import {
   DATE_TIME_PICKER,
   DESKTOP_DATE_TIME_PICKER,
@@ -72,7 +72,7 @@ export default function StateJsxPicker({ def }: IJsonPickerProps) {
       )
       : <TextField value={`PICKER ${NAME_NOT_SET}`} disabled />;
   } catch (e) {
-    remember_exception(e);
+    error_id(26).remember_exception(e); // error 26
     log((e as Error).message);
   }
 

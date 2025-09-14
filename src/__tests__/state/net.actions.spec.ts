@@ -34,10 +34,10 @@ describe('src/state/net.actions.ts', () => {
 
   });
 
-  describe('put_req_state', () => {
+  describe('patch_req_state', () => {
 
-    it('put_req_state', () => {
-      expect(F.put_req_state).toEqual({});
+    it('patch_req_state', () => {
+      expect(F.patch_req_state).toEqual({});
     });
 
   });

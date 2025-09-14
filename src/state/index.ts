@@ -25,7 +25,8 @@ import topLevelLinksReducer, { topLevelLinksActions } from '../slices/topLevelLi
 import themeReducer, { themeActions } from '../slices/theme.slice';
 import netReducer, { netActions } from '../slices/net.slice';
 import pathnamesReducer, { pathnamesActions } from '../slices/pathnames.slice';
-import stateRegistryReducer from '../slices/stateRegistry.slice';
+import staticRegistryReducer, { staticRegistryActions } from '../slices/staticRegistry.slice';
+import dynamicRegistryReducer, { dynamicRegistryActions } from '../slices/dynamicRegistry.slice';
 import dialogsLightReducer, { dialogsLightActions } from '../slices/dialogsLight.slice';
 import dialogsDarkReducer, { dialogsDarkActions } from '../slices/dialogsDark.slice';
 import formsLightReducer, { formsLightActions } from '../slices/formsLight.slice';
@@ -43,9 +44,9 @@ import {
   TEventCallback
 } from '../constants.client';
 import Config from '../config';
-import { remember_exception } from '../business.logic/errors';
+import { error_id } from '../business.logic/errors';
 import initialState from './initial.state';
-import { clear_last_content_jsx } from '../business.logic';
+import { clear_last_content_jsx, set_val } from '../business.logic';
 import { err } from '../business.logic/logging';
 import IState, { INetState } from '../interfaces/IState';
 import { TObj } from '../common.types';
@@ -84,7 +85,8 @@ const appReducer = combineReducers({
   topLevelLinks: topLevelLinksReducer,
   typography: typographyReducer,
   pathnames: pathnamesReducer,
-  stateRegistry: stateRegistryReducer,
+  staticRegistry: staticRegistryReducer,
+  dynamicRegistry: dynamicRegistryReducer
 });
 
 /**
@@ -97,7 +99,7 @@ const appReducer = combineReducers({
  *
  * [TODO] Write a unit test for this function
  */
-const net_patch_state_reducer = ($oldState: unknown, $fragment: unknown): unknown => {
+const net_patch_state_reducer = <T=unknown>($oldState: unknown, $fragment: unknown): T => {
   const state = { ...($oldState as TObj) };
   const fragment = $fragment as TObj;
   try {
@@ -144,10 +146,10 @@ const net_patch_state_reducer = ($oldState: unknown, $fragment: unknown): unknow
       }
     }
   } catch (e) {
-    remember_exception(e);
+    error_id(27).remember_exception(e); // error 27
     err((e as Error).stack ?? '');
   }
-  return state as unknown;
+  return state as T;
 }
 
 interface IActionShell {
@@ -161,15 +163,15 @@ const rootReducer = ($state: unknown, $action?: unknown) => {
   const state = $state as IState;
 
   if (action.type === NET_STATE_PATCH) {
-    const newState = net_patch_state_reducer(state, action.payload);
-    if (!state.app.isBootstrapped) {
-      Config.set('DEBUG', action.payload.app?.inDebugMode ?? false);
-      Config.set('DEV', action.payload.app?.inDevelMode ?? false);
-    }
+    const newState = net_patch_state_reducer(state, action.payload) as IState;
+    Config.write('DEBUG', action.payload.app?.inDebugMode ?? false);
+    Config.write('DEV', action.payload.app?.inDevelMode ?? false);
+    set_val(window, 'webui.inDebugMode', Config.DEBUG);
+    set_val(window, 'webui.inDevelMode', Config.DEV);
 
     // TODO Set more server-side configuration here.
 
-    return appReducer(newState as IState, action);
+    return appReducer(newState, action);
   }
 
   // Reset of the state
@@ -234,6 +236,8 @@ export const actions = {
   ...formsDarkActions,
   ...pagesLightActions,
   ...pagesDarkActions,
+  ...staticRegistryActions,
+  ...dynamicRegistryActions
 };
 
 export type TAllActions = typeof actions;
@@ -409,9 +413,11 @@ export function on_net_load_run(
   ON_NET_LOAD_CALLBACK_LIST[_id] = ON_NET_LOAD_CALLBACK_LIST[_id] ?? [];
   ON_NET_LOAD_CALLBACK_LIST[_id].push(callback);
 }
-
+/** Reads the state tree managed by the store. */
 export const get_state = () => store.getState();
+/** Dispatches an action. It is the only way to trigger a state change. */
 export const dispatch: typeof store.dispatch = store.dispatch.bind(store);
+/** Adds a change listener. */
 export const subscribe: typeof store.subscribe = store.subscribe.bind(store);
 
 export default store;

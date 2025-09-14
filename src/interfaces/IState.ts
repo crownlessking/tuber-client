@@ -182,9 +182,20 @@ export default interface IState {
   net: IStateNet;
   /** Get the pathnames needed to retrieve missing states. */
   pathnames: IStatePathnames;
-  /** List of state keys */
-  stateRegistry: Record<string, unknown>;
+  /**
+   * List of keys representing state fragments that can be loaded from the
+   * server.
+   */
+  staticRegistry: Record<string, unknown>;
+  /** 
+   * List of keys representing state fragments that have already been loaded
+   * from server.
+   */
+  dynamicRegistry: Record<string, unknown>;
 }
+
+export type IStateKeys = keyof IState;
+export type TStatePathnames = { [K in IStateKeys]: string; }
 
 /**
  * Type for state retrieved remotely.

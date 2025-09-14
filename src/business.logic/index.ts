@@ -1,4 +1,5 @@
 // WARNING: Do not import anything here.
+//          If you have to import, it doesn't belong here.
 
 /**
  * Holds the last rendered content so that if a new one was not provided,
@@ -38,19 +39,29 @@ export function get_content_refresh_key(): number {
   return currentRefreshKey ?? -1;
 }
 
-/** Returns `true` if the argument is an object. */
+/** Checks the argument is an `object`. Returns `true` if it is. */
 export const is_object = (obj: unknown): obj is object => {
   return typeof obj === 'object' && obj !== null && !Array.isArray(obj);
 }
 
-/** Returns `true` if the argument is an object with `string` index. */
+/** Checks if the argument is an `object` with `string` indexes. Returns `true` if it is. */
 export const is_record = <T>(obj: unknown): obj is Record<string, T> => {
   return obj !==null && typeof obj === 'object' && !Array.isArray(obj);
 }
 
-/** Returns `true` if the argument is an object or an array. */
+/** Checks if the argument is an `object` or an `array`. Returns `true` if it is. */
 export const is_struct = <T=object>(obj: unknown): obj is T => {
   return obj !== null && typeof obj === 'object';
+}
+
+/** Checks if the argument is a `string`. Returns `true` if it is. */
+export const is_string = (arg: unknown): arg is string => {
+  return typeof arg === 'string';
+}
+
+/** Checks if the argument is a `string`. Returns `true` if it is. */
+export const is_number = (arg: unknown): arg is number => {
+  return typeof arg === 'number';
 }
 
 /**
@@ -198,7 +209,7 @@ export function get_val<T = unknown>(obj: unknown, path: string): T | undefined 
   if (obj === null || obj === undefined || typeof obj !== 'object') {
     return undefined;
   }
-  
+
   // Handle empty or whitespace-only path
   const trimmedPath = path.trim();
   if (!trimmedPath) {
@@ -247,6 +258,41 @@ export function get_val<T = unknown>(obj: unknown, path: string): T | undefined 
   
   // Return the final value (it can be any type, including falsy values)
   return current as T;
+} // END - get_val
+
+/**
+ * Set a value within an object.
+ *
+ * @param obj arbitrary object
+ * @param path dot-separated list of properties e.g. "pagination.users.limit"
+ * @param val value to be assigned
+ */
+export function set_val(obj: object, path: string, val: unknown): void {
+  if (!obj || typeof obj !== 'object') {
+    throw new Error('set_val: obj must be an object');
+  }
+  if (!path || typeof path !== 'string') {
+    throw new Error('set_val: path must be a non-empty string');
+  }
+
+  const propArray = path.split('.');
+  let current = obj as Record<string, unknown>;
+
+  // Navigate to the parent of the target property
+  for (let i = 0; i < propArray.length - 1; i++) {
+    const prop = propArray[i];
+    
+    // If property doesn't exist or isn't an object, create it
+    if (!current[prop] || typeof current[prop] !== 'object' || Array.isArray(current[prop])) {
+      current[prop] = {};
+    }
+    
+    current = current[prop] as Record<string, unknown>;
+  }
+
+  // Set the final property
+  const finalProp = propArray[propArray.length - 1];
+  current[finalProp] = val;
 }
 
 /**

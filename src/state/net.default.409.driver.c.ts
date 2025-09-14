@@ -6,10 +6,7 @@ import {
 } from 'src/interfaces/IJsonapi';
 import { appRequestFailed } from 'src/slices/app.slice';
 import { type RootState } from '.';
-import {
-  remember_error,
-  remember_jsonapi_errors
-} from '../business.logic/errors';
+import { error_id, remember_jsonapi_errors } from '../business.logic/errors';
 import execute_directives from './net.directives.c';
 import { net_patch_state } from './actions';
 import { ler } from '../business.logic/logging';
@@ -34,13 +31,13 @@ export default function net_default_409_driver (
   if (!doc.errors) {
     const title = 'net_default_409_driver: No errors were received.';
     ler(title);
-    remember_error({
+    error_id(46).remember_error({
       id: mongo_object_id(),
-      code: 'no_errors',
+      code: 'INVALID_FORMAT',
       title,
       detail: JSON.stringify(response, null, 4),
       source: { 'pointer': endpoint },
-    });
+    }); // error 46
     return;
   }
 

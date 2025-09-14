@@ -2,7 +2,7 @@ import { YouTubePlayer } from 'react-youtube';
 import Config from 'src/config';
 import { get_parsed_content } from 'src/controllers';
 import { type IRedux } from 'src/state';
-import { remember_exception } from 'src/business.logic/errors';
+import { error_id } from 'src/business.logic/errors';
 import { get_state_form_name } from '../../../business.logic';
 import { TPlatform } from '../tuber.interfaces';
 import { get_dialog_state } from 'src/state/net.actions';
@@ -47,7 +47,7 @@ export default function dialog_new_youtube_bookmark_from_video(redux: IRedux) {
           value: Config.read<TPlatform>('platform')
         }
       });
-    } catch (e) { remember_exception(e); }
+    } catch (e) { error_id(1048).remember_exception(e); /* error 1048 */ }
     pre();
     if (redux.store.getState().dialog._id !== dialogState._id) { // if the dialog was NOT mounted
       dispatch({ type: 'dialog/dialogMount', payload: dialogState });

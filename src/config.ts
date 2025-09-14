@@ -1,4 +1,4 @@
-import get_config, { IConfiguration } from './controllers/config.controller';
+import get_config, { IConfiguration } from './business.logic/configuration';
 import { TThemeMode } from './interfaces';
 
 const initConfObj = {

@@ -14,7 +14,7 @@ import IStateTypography from '../interfaces/IStateTypography';
 import IStateDrawer, { IStatePageDrawer } from '../interfaces/IStateDrawer';
 import { TStatePageLayout } from '../constants.client';
 import State from './State';
-import { remember_exception } from 'src/business.logic/errors';
+import { error_id } from '../business.logic/errors';
 import { mongo_object_id } from '../business.logic';
 import { ler } from '../business.logic/logging';
 import { IJsonapiPageLinks } from '../interfaces/IJsonapi';
@@ -328,7 +328,7 @@ export default class StatePage extends AbstractState implements IStatePage {
         const message = `Error while inheriting background from "${route}" page.`;
         ler(message);
         ler((e as Error).stack);
-        remember_exception(e, message);
+        error_id(14).remember_exception(e, message); // error 14
       }
     }
     // If explicitly set to not use the default background.

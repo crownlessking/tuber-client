@@ -2,6 +2,7 @@ import AbstractState from './AbstractState';
 import State from './State';
 import Config from '../config';
 import { TObj } from '../common.types';
+import { error_id } from 'src/business.logic/errors';
 
 export default class StateMeta extends AbstractState {
 
@@ -36,9 +37,17 @@ export default class StateMeta extends AbstractState {
           exist yet.`
         );
         console.error((e as Error).stack);
-
-        // [TODO] Implement logic to save error so it can be viewed later.
       }
+      error_id(13).remember_error({
+        code: 'MISSING_VALUE',
+        title: `Bad values passed to State.meta:
+          either endpoint: '${endpoint}' or key: '${key}' or the data does not
+          exist yet.`,
+        source: {
+          parameter: `${endpoint}/${key}`
+        },
+        detail: (e as Error).stack
+      }); // error 13
     }
     return $default;
   }

@@ -1,4 +1,4 @@
-import FormValidatationPolicy from '../../controllers/FormValidationPolicy';
+import FormValidatationPolicy from '../../business.logic/FormValidationPolicy';
 import IStateForm from '../../interfaces/IStateForm';
 import { formsAdd, formsRemove } from '../../slices/forms.slice';
 import { redux } from '../../state';

@@ -22,8 +22,8 @@ import {
   IFormsDataArgs
 } from '../../../slices/formsData.slice';
 import type StateFormItem from '../../../controllers/StateFormItem';
-import { remember_exception } from 'src/business.logic/errors';
-import { TObj } from 'src/common.types';
+import { error_id } from '../../../business.logic/errors';
+import { TObj } from '../../../common.types';
 
 /**
  * Insert form data to the Redux store.
@@ -51,7 +51,7 @@ function no_form_data_exist (formName: string, name?: string): boolean {
       const formData = store.getState().formsData[formName] as TObj;
       return formData[name] == null; // caches both undefined and null at the same time.
     }
-  } catch (e) { remember_exception(e); }
+  } catch (e) { error_id(24).remember_exception(e); /* error 24 */ }
 
   return true;
 }

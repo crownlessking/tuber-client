@@ -4,55 +4,6 @@ import {
 } from '../constants.client';
 import { IStatePageContent } from '../interfaces/IStatePage';
 import { ler } from '../business.logic/logging';
-import { TObj } from 'src/common.types';
-
-/**
- * Adds a new property and value to an object.
- *
- * @param data an object
- * @param prop new property name of object
- * @param val the value at that object property
- */
-const create_writable_property = (data: unknown, prop: string, val: unknown): void => {
-  Object.defineProperty(data, prop, {
-    value: val,
-    writable: true
-  });
-}
-
-/**
- * Set a value within an object.
- *
- * @param obj arbitrary object
- * @param path dot-separated list of properties e.g. "pagination.users.limit"
- * @param val value to be assigned
- *
- * @todo NOT TESTED, please test
- */
-export function set_val(obj: object, path: string, val: unknown): void {
-  const propArray = path.split('.');
-  let o = obj as TObj,
-      candidate: unknown,
-      j = 0;
-
-  do {
-    let prop = propArray[j];
-    candidate = o[prop];
-
-    // if this is the last property
-    if (j >= (propArray.length - 1)) {
-      create_writable_property(o, prop, val);
-      return;
-
-    // if the property does not exist but a value was provided
-    } else if (!candidate) {
-      create_writable_property(o, prop, {});
-    }
-
-    o = o[prop] as TObj;
-    j++;
-  } while (1);
-}
 
 /**
  * Parses the definition string found in `PageState.content` and

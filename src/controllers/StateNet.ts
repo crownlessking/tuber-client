@@ -1,7 +1,7 @@
 import { get_head_meta_content, get_val, safely_get_as } from '../business.logic';
 import AbstractState from './AbstractState';
 import IStateNet from '../interfaces/IStateNet';
-import { remember_possible_error } from 'src/business.logic/errors';
+import { error_id } from '../business.logic/errors';
 import { err } from '../business.logic/logging';
 
 export default class StateNet extends AbstractState implements IStateNet {
@@ -110,12 +110,15 @@ export default class StateNet extends AbstractState implements IStateNet {
     }
   }
   get sessionValid(): boolean {
-    if (this._netState.role
-      && this._netState.name
-    ) {
+    if (this._netState.role && this._netState.name) {
       return true;
     }
-    remember_possible_error(`Invalid session`, this._netState);
+    error_id(42).remember_possible_error({
+      'code': 'AUTHENTICATION_REQUIRED',
+      'title': 'Invalid session',
+      'detail': `User role and name are NOT defined.`,
+      'meta': { 'context': this._netState }
+    }); // error 42
     return false;
   }
 

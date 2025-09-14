@@ -68,6 +68,10 @@ describe('src/business.logic', () => {
       }
     };
 
+    it('should returned nested object from object literal', () => {
+      expect(bl.get_val({ state: { a: 1 }}, 'state')).toEqual({ a: 1});
+    });
+
     it('should return value for simple property path', () => {
       expect(bl.get_val(testObj, 'name')).toBe('John');
     });
@@ -280,6 +284,19 @@ describe('src/business.logic', () => {
     it('should handle path with only whitespace', () => {
       expect(bl.get_val(testObj, '   ')).toBeUndefined();
       expect(bl.get_val(testObj, '\t\n')).toBeUndefined();
+    });
+  });
+
+  describe('set_val', () => {
+    it('sets the value of the given key', () => {
+      const obj = { a: 1, b: 2 };
+      bl.set_val(obj, 'b', 3);
+      expect(obj.b).toEqual(3);
+    });
+    it('creates a key by setting its value', () => {
+      const obj = { a: 1, b: 2 };
+      bl.set_val(obj, 'c', 3);
+      expect(obj['c']).toEqual(3);
     });
   });
 

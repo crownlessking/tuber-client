@@ -1,7 +1,7 @@
 import { Fragment, useMemo, useCallback, ReactNode } from 'react';
 import { Box, Paper, Stack } from '@mui/material';
 import type StateForm from '../../controllers/StateForm';
-import { remember_exception } from '../../business.logic/errors';
+import { error_id } from '../../business.logic/errors';
 import { log } from '../../business.logic/logging';
 
 interface IJsonFormProps {
@@ -79,7 +79,7 @@ export default function StateJsxForm (
       // Fallback to box if type is not found
       return map['box']();
     } catch (e) {
-      remember_exception(e);
+      error_id(20).remember_exception(e); // error 20
       log((e as Error).message);
       // Return box component as fallback
       return map['box']();

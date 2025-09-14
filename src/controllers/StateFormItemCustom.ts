@@ -2,7 +2,8 @@ import { get_val } from '../business.logic';
 import { dummy_callback, type IRedux, type TReduxHandle } from '../state';
 import AbstractState from './AbstractState';
 import IStateFormItemCustom, {
-  THandleCallback,
+  IHandleDirective,
+  THandle,
   TStateFormITemCustomColor
 } from '../interfaces/IStateFormItemCustom';
 import { ler } from '../business.logic/logging';
@@ -18,6 +19,7 @@ import {
   SvgIconProps
 } from '@mui/material';
 import React from 'react';
+import StateHandleFactory from './StateHandleFactory';
 
 export default class StateFormItemCustom<P, T = unknown>
   extends AbstractState
@@ -107,6 +109,29 @@ export default class StateFormItemCustom<P, T = unknown>
   get key(): string { return this.hasState.key ?? ''; }
   /** Name of an internally defined callback to be executed. */
   get onclickHandle(): string { return this.hasState.onclickHandle ?? ''; }
+  get onfocusHandle(): string { return this.hasState.onfocusHandle ?? ''; }
+  get onchangeHandle(): string { return this.hasState.onchangeHandle ?? ''; }
+  get onkeydownHandle(): string { return this.hasState.onkeydownHandle ?? ''; }
+  get onblurHandle(): string { return this.hasState.onblurHandle ?? ''; }
+  get ondeleteHandle(): string { return this.hasState.ondeleteHandle ?? ''; }
+  get onclickHandleDirective(): IHandleDirective | undefined {
+    return this.hasState.onclickHandleDirective;
+  }
+  get onfocusHandleDirective(): IHandleDirective | undefined {
+    return this.hasState.onfocusHandleDirective;
+  }
+  get onchangeHandleDirective(): IHandleDirective | undefined {
+    return this.hasState.onchangeHandleDirective;
+  }
+  get onkeydownHandleDirective(): IHandleDirective | undefined {
+    return this.hasState.onkeydownHandleDirective;
+  }
+  get onblurHandleDirective(): IHandleDirective | undefined {
+    return this.hasState.onblurHandleDirective;
+  }
+  get ondeleteHandleDirective(): IHandleDirective | undefined {
+    return this.hasState.ondeleteHandleDirective;
+  }
   get load(): string { return this.hasState.load ?? ''; }
   get startAdornment(): IStateFormItemCustom<T>['startAdornment'] {
     return this.hasState.startAdornment;
@@ -176,9 +201,21 @@ export default class StateFormItemCustom<P, T = unknown>
     return !(new RegExp(this.regexStr).test(value));
   }
 
-  /** Set callback */
-  getHandleCallback = (
-    event: THandleCallback = 'onclick'
+  /**
+   * Set a callback.  
+   * If the callback is defined globally, e.g., on the `window` object, it can
+   * be acquired using a dot-seperated path string representing its property
+   * location.
+   * ```ts
+   * // For example, if "myCallbackLocation" is the location, then:
+   * const myCallback = window.myCallbackLocation;
+   * // Or, "handleSet.myOtherCallback", then:
+   * const myOtherCallback = window.handleSet.myOtherCallback;
+   * ```
+   * @param {THandle} event e.g., 'onclick', 'onfocus'... etc.
+   */
+  getHandle = (
+    event: THandle = 'onclick'
   ): TReduxHandle | undefined => {
     const callbackName = this.hasState[`${event}Handle`];
     if (!callbackName) {
@@ -186,11 +223,42 @@ export default class StateFormItemCustom<P, T = unknown>
     }
     const callback = get_val(window, callbackName);
     if (typeof callback !== 'function') {
-      ler(`Invalid handle: '${callbackName}' not a function`);
+      ler(`getHandle(): '${callbackName}' not a function`);
       return;
     }
     return callback as TReduxHandle;
   } // END of method
+
+  /** Generate callback */
+  getDirectiveHandle = (
+    event: THandle = 'onclick'
+  ): TReduxHandle | undefined => {
+    let handleDirective: IHandleDirective | undefined;
+    switch (event) {
+      case 'onclick':
+        handleDirective = this.hasState.onclickHandleDirective;
+        break;
+      case 'onfocus':
+        handleDirective = this.hasState.onfocusHandleDirective;
+        break;
+      case 'onchange':
+        handleDirective = this.hasState.onchangeHandleDirective;
+        break;
+      case 'onkeydown':
+        handleDirective = this.hasState.onkeydownHandleDirective;
+        break;
+      case 'onblur':
+        handleDirective = this.hasState.onblurHandleDirective;
+        break;
+      case 'ondelete':
+        handleDirective = this.hasState.ondeleteHandleDirective;
+        break;
+    }
+    if (!handleDirective) { return undefined; }
+    const handleFactory = new StateHandleFactory(handleDirective);
+    const callback = handleFactory.getDirectiveCallback();
+    return callback;
+  }
 
   /**
    * Evaluates the value of the input field. `maxLength` or `invalidChars` must

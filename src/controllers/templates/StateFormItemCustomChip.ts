@@ -37,7 +37,8 @@ export default class StateFormItemCustomChip<P=unknown> extends StateFormItemCus
     if (this.hasState.onClick) {
       return this._handleOnClick = this.hasState.onClick;
     }
-    const handleCallback = this.getHandleCallback();
+    const handleCallback = this.getDirectiveHandle()
+      || this.getHandle();
     if (handleCallback) {
       return this._handleOnClick = handleCallback;
     }
@@ -48,7 +49,8 @@ export default class StateFormItemCustomChip<P=unknown> extends StateFormItemCus
     if (this.hasState.onDelete) {
       return this._handleOnDelete = this.hasState.onDelete;
     }
-    const handleCallback = this.getHandleCallback('ondelete');
+    const handleCallback = this.getDirectiveHandle('ondelete')
+      || this.getHandle('ondelete');
     if (handleCallback) {
       return this._handleOnDelete = handleCallback;
     }

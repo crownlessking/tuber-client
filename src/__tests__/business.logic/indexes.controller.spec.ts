@@ -1,4 +1,4 @@
-import * as F from '../../controllers/indexes.controller';
+import * as F from '../../business.logic/indexes';
 import { IJsonapiResponseResource } from '../../interfaces/IJsonapi';
 
 describe('indexes.controller.ts', () => {

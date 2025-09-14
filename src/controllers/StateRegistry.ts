@@ -1,5 +1,5 @@
 import { ler } from '../business.logic/logging';
-import { remember_exception } from '../business.logic/errors';
+import { error_id } from '../business.logic/errors';
 
 export class StateRegistry {
   
@@ -14,7 +14,7 @@ export class StateRegistry {
       return defaultValue as T;
     } catch (e) {
       ler(`StateRegistry.get(): error for key "${key}"`);
-      remember_exception(e);
+      error_id(15).remember_exception(e); // error 15
       return defaultValue as T;
     }
   }

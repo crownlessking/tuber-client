@@ -1,5 +1,5 @@
 import { log } from '../../../business.logic/logging';
-import { remember_exception } from '../../../business.logic/errors';
+import { error_id } from '../../../business.logic/errors';
 import IStateFormItem from '../../../interfaces/IStateFormItem';
 import { is_record } from '../../../business.logic';
 
@@ -39,7 +39,7 @@ export function get_redux_store_val<T=unknown>(
       const val = formData[name] || $default;
       return val as T;
     }
-  } catch (e) { remember_exception(e); }
+  } catch (e) { error_id(21).remember_exception(e); /* error 21 */ }
   return $default;
 }
 
@@ -59,7 +59,7 @@ export function get_field_value(
 ) {
   try {
     return (is_record(formsData[formName]) && formsData[formName][name]) ?? '';
-  } catch (e) { remember_exception(e); }
+  } catch (e) { error_id(22).remember_exception(e);  /* error 22 */ }
   return '';
 }
 
@@ -133,7 +133,7 @@ export function get_meta<T=unknown>(
   } catch (e) {
     const message = `get_meta: meta['${endpoint}']['${key}'] does NOT exist.`;
     log(message);
-    remember_exception(e, message);
+    error_id(23).remember_exception(e, message); // error 23
   }
   return null;
 }

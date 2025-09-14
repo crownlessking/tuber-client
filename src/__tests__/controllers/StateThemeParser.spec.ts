@@ -1,4 +1,4 @@
-import ThemeParser from '../../controllers/ThemeParser';
+import ThemeParser from '../../controllers/StateThemeParser';
 
 describe('ThemeParser', () => {
   describe('constructor', () => {

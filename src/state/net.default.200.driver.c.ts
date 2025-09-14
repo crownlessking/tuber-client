@@ -12,7 +12,7 @@ import {
   IJsonapiResponse
 } from '../interfaces/IJsonapi';
 import StateDataPagesRange from '../controllers/StateDataPagesRange';
-import JsonapiPaginationLinks from '../controllers/Jsonapi.pagination.links';
+import JsonapiPaginationLinks from '../business.logic/Jsonapi.pagination.links';
 import { safely_get_as } from '../business.logic';
 import { remember_jsonapi_errors } from '../business.logic/errors';
 import { is_object } from '../business.logic';

@@ -9,7 +9,7 @@ import StateFormItem from '../controllers/StateFormItem';
 import StateFormItemRadio from '../controllers/templates/StateFormItemRadio';
 import StateFormItemSelect from '../controllers/templates/StateFormItemSelect';
 import StateLink from '../controllers/StateLink';
-import ThemeParser from '../controllers/ThemeParser';
+import StateThemeParser from '../controllers/StateThemeParser';
 import {
   BOOL_ONOFF,
   BOOL_TRUEFALSE,
@@ -54,7 +54,7 @@ import { post_req_state } from '../state/net.actions';
 import type { AppDispatch } from '../state';
 import { useDispatch } from 'react-redux';
 import store from '../state';
-import { remember_exception } from '../business.logic/errors';
+import { error_id } from '../business.logic/errors';
 import { formsDataClear } from '../slices/formsData.slice';
 import StateFormItemSwitch from '../controllers/templates/StateFormItemSwitch';
 import { get_bool_type } from 'src/mui/form/_form.common.logic';
@@ -85,7 +85,7 @@ function RecursiveComponents({
   def: allDefs,
   parent
 }: IComponentsBuilderProps): JSX.Element {
-  const parserFactory = new ThemeParser({ alpha });
+  const parserFactory = new StateThemeParser({ alpha });
   const parse   = parserFactory.getParser();
   const components: JSX.Element[] = [];
   const dispatch = useDispatch<AppDispatch>();
@@ -345,7 +345,7 @@ function RecursiveComponents({
         items
       });
     } catch (e) {
-      remember_exception(e);
+      error_id(1).remember_exception(e); // error 1
       log((e as Error).message);
     }
   }

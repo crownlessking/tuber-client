@@ -1,12 +1,12 @@
-import JsonapiRequest from 'src/controllers/jsonapi.request';
+import JsonapiRequest from 'src/business.logic/jsonapi.request';
 import { type IRedux } from 'src/state';
 import { post_req_state } from 'src/state/net.actions';
 import { get_state_form_name, get_val } from '../../../business.logic';
 import { FORM_FACEBOOK_NEW_ID } from '../tuber.config';
 import { facebook_parse_iframe } from '../_tuber.common.logic';
 import { IBookmark } from '../tuber.interfaces';
-import { remember_error } from 'src/business.logic/errors';
-import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
+import { error_id } from 'src/business.logic/errors';
+import FormValidationPolicy from 'src/business.logic/FormValidationPolicy';
 import { get_dialog_form_endpoint } from './_callbacks.common.logic';
 import { ler, log } from 'src/business.logic/logging';
 
@@ -22,15 +22,15 @@ export default function form_submit_new_facebook_bookmark(redux: IRedux) {
     const rootState = getState();
     const endpoint = get_dialog_form_endpoint(rootState, FORM_FACEBOOK_NEW_ID);
     if (!endpoint) { return; }
-    const formKey = get_val<string>(rootState, `stateRegistry.${FORM_FACEBOOK_NEW_ID}`);
+    const formKey = get_val<string>(rootState, `staticRegistry.${FORM_FACEBOOK_NEW_ID}`);
     if (!formKey) {
       const errorMsg = 'form_submit_new_facebook_bookmark: Form key not found.';
       ler(errorMsg);
-      remember_error({
-        code: 'value_not_found',
+      error_id(1074).remember_error({
+        code: 'MISSING_VALUE',
         title: errorMsg,
         source: { parameter: 'formKey' }
-      });
+      }); // error 1074
       return;
     }
     const formName = get_state_form_name(formKey);
@@ -38,15 +38,15 @@ export default function form_submit_new_facebook_bookmark(redux: IRedux) {
       const errorMsg = `form_submit_new_facebook_bookmark: '${formName}' `
         + `data does not exist.`;
       ler(errorMsg);
-      remember_error({
-        code: 'value_not_found',
+      error_id(1075).remember_error({
+        code: 'MISSING_STATE',
         title: errorMsg,
         source: { parameter: 'formData' }
-      });
+      }); // error 1075
       return;
     }
     const policy = new FormValidationPolicy<IBookmark>(redux, formName);
-    const validation = policy.getValidationSchemes();
+    const validation = policy.applyValidationSchemes();
     if (validation && validation.length > 0) {
       validation.forEach(vError => {
         const message = vError.message ?? ''

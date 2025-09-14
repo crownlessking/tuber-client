@@ -101,7 +101,7 @@ export const BAD_FORM_ITEM = '';
 
 // miscellanous
 
-export type TEventCallback = (e: unknown) => void;
+export type TEventCallback = (event: unknown) => void;
 export type TCallback = () => void;
 export const THEME_MODE = 'theme_mode';
 export const THEME_DEFAULT_MODE = 'dark';

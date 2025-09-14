@@ -1,4 +1,3 @@
-import Config from '../config';
 
 /** Helps to shorten error message */
 let _msgPrefix = '';
@@ -17,7 +16,7 @@ export const msg = (msg: string): string => {
  * @param prefix prefix message.
  */
 export const pre = (prefix?: string) => {
-  if (Config.DEBUG) {
+  if (window.webui?.inDebugMode) {
     _msgPrefix = prefix ?? '';
   }
 }
@@ -27,7 +26,7 @@ export const pre = (prefix?: string) => {
  * @param msg Message to log.
  */
 export const log = (...args: unknown[]) => {
-  if (Config.DEBUG) {
+  if (window.webui?.inDebugMode) {
     console.log(_msgPrefix, ...args);
   }
 }
@@ -37,7 +36,7 @@ export const log = (...args: unknown[]) => {
  * @param msg Message to log.
  */
 export const ler = (...args: unknown[]) => {
-  if (Config.DEBUG) {
+  if (window.webui?.inDebugMode) {
     console.error(_msgPrefix, ...args);
   }
 }
@@ -47,7 +46,7 @@ export const ler = (...args: unknown[]) => {
  * @param msg Message to log.
  */
 export const lwr = (...args: unknown[]) => {
-  if (Config.DEBUG) {
+  if (window.webui?.inDebugMode) {
     console.warn(_msgPrefix, ...args);
   }
 }
@@ -57,7 +56,7 @@ export const lwr = (...args: unknown[]) => {
  * @param msg Message to log.
  */
 export const err = (msg: string) => {
-  if (Config.DEBUG) {
+  if (window.webui?.inDebugMode) {
     throw new Error(`${_msgPrefix}${msg}`);
   }
 }

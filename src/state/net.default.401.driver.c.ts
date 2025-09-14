@@ -1,9 +1,6 @@
 import { Dispatch } from 'redux';
 import { is_object } from 'src/business.logic';
-import {
-  remember_error,
-  remember_jsonapi_errors
-} from 'src/business.logic/errors';
+import { error_id, remember_jsonapi_errors } from 'src/business.logic/errors';
 import { IJsonapiResponse } from 'src/interfaces/IJsonapi';
 import { appRequestFailed } from 'src/slices/app.slice';
 import { type RootState } from '.';
@@ -30,13 +27,13 @@ export default function net_default_401_driver (
   if (!response.errors) {
     const title = 'net_default_401_driver: No errors were received.';
     ler(title);
-    remember_error({
+    error_id(44).remember_error({
       id: 'net_default_401_driver: no_errors',
-      code: 'no_errors',
+      code: 'INVALID_FORMAT',
       title,
       detail: JSON.stringify(response, null, 4),
       source: { 'pointer': endpoint },
-    });
+    }); // error 44
     return;
   }
 

@@ -1,4 +1,4 @@
-import { remember_error } from 'src/business.logic/errors';
+import { error_id } from 'src/business.logic/errors';
 import {
   DIALOG_DAILY_NEW_ID,
   DIALOG_FACEBOOK_NEW_ID,
@@ -51,12 +51,12 @@ const NO_START_MSG = 'The video start time is missing.';
 export default function parse_platform_video_url(url: string): IVideoData {
   const { valid, message } = _check_url(url);
   if (!valid) {
-    remember_error({
-      code: 'invalid_url',
+    error_id(1052).remember_error({
+      code: 'BAD_VALUE',
       title: 'Invalid URL',
       detail: message,
       source: { pointer: url }
-    });
+    }); // error 1052
     return {
       ...DATA_SKELETON,
       urlCheck: { message, valid }
@@ -110,24 +110,24 @@ function _check_url(url: string): IUrlStatus {
 function _extract_data_from_youTube_url(url: string): IVideoData {
   const id = youtube_get_video_id(url);
   if (!id) {
-    remember_error({
-      code: 'value_not_found',
+    error_id(1053).remember_error({
+      code: 'MISSING_VALUE',
       title: 'youtube_get_video_id failed',
       detail: 'The youtube_get_video_id function failed to retrieve the video'
         + ' id from the video URL',
       source: { pointer: url }
-    });
+    }); // 1053
     return DATA_SKELETON;
   }
   const startStr = youtube_get_start_time(url);
   if (!startStr) {
-    remember_error({
-      code: 'value_not_found',
+    error_id(1054).remember_error({
+      code: 'MISSING_VALUE',
       title: 'youtube_get_video_start_time failed',
       detail: `The "youtube_get_video_start_time" function failed to retieve`
         + ` the video start time from the video URL.`,
       source: { pointer: url }
-    });
+    }); // error 1054
     return DATA_SKELETON;
   }
   const start = parseInt(startStr);
@@ -153,24 +153,24 @@ function _extract_data_from_youTube_url(url: string): IVideoData {
 function _extract_data_from_rumble_url(url: string): IVideoData {
   const slug  = get_rumble_slug(url);
   if (!slug) {
-    remember_error({
-      code: 'value_not_found',
+    error_id(1055).remember_error({
+      code: 'MISSING_VALUE',
       title: 'rumble_get_slug failed',
       detail: 'The "rumble_get_slug" function failed to extract the video slug '
         + 'from the URL.',
       source: { pointer: url }
-    });
+    }); // error 1055
     return DATA_SKELETON;
   }
   const start = rumble_get_start_time(url);
   if (!start) {
-    remember_error({
-      code: 'value_not_found',
+    error_id(1056).remember_error({
+      code: 'MISSING_VALUE',
       title: 'rumble_get_start_time failed',
       detail: 'The "rumble_get_start_time" function failed to extract the video '
         + 'start time from the URL.',
       source: { pointer: url }
-    });
+    }); // error 1056
     return {
       ...DATA_SKELETON,
       urlCheck: {
@@ -196,24 +196,24 @@ function _extract_data_from_rumble_url(url: string): IVideoData {
 function _extract_data_from_vimeo_url(url: string): IVideoData {
   const id = vimeo_get_video_id(url);
   if (!id) {
-    remember_error({
-      code: 'value_not_found',
+    error_id(1057).remember_error({
+      code: 'MISSING_VALUE',
       title: 'vimeo_get_video_id failed',
       detail: 'The "vimeo_get_video_id" function failed to extract the video '
         + 'ID from the URL.',
       source: { pointer: url }
-    });
+    }); // 1057
     return DATA_SKELETON;
   }
   const start = vimeo_get_start_time(url);
   if (!start) {
-    remember_error({
-      code: 'value_not_found',
+    error_id(1058).remember_error({
+      code: 'MISSING_VALUE',
       title: 'vimeo_get_start_time failed',
       detail: 'The "vimeo_get_start_time" function failed to extract the video '
         + 'start time from the URL.',
       source: { pointer: url }
-    });
+    }); // 1058
     return {
       ...DATA_SKELETON,
       urlCheck: {
@@ -239,24 +239,23 @@ function _extract_data_from_vimeo_url(url: string): IVideoData {
 function _extract_data_from_dailymotion_url(url: string): IVideoData {
   const id = daily_get_video_id(url);
   if (!id) {
-    remember_error({
-      code: 'value_not_found',
-      title: 'daily_get_video_id failed',
-      detail: 'The "daily_get_video_id" function failed to extract the video '
-        + 'ID from the URL.',
+    error_id(1059).remember_error({
+      code: 'MISSING_VALUE',
+      title: '[function] daily_get_video_id() failed',
+      detail: 'Failed to extract the video ID from the URL.',
       source: { pointer: url }
-    });
+    }); // error 1059
     return DATA_SKELETON;
   }
   const start = daily_get_start_time(url);
   // if (!start) {
-  //   remember_error({
-  //     code: 'value_not_found',
+  //   error_id(1060).remember_error({
+  //     code: 'not_found',
   //     title: 'daily_get_start_time failed',
   //     detail: 'The "daily_get_start_time" function failed to extract the video '
   //       + 'start time from the URL.',
   //     source: { pointer: url }
-  //   })
+  //   }); // error 1060
   //   return {
   //     ...DATA_SKELETON,
   //     urlCheck: {
@@ -284,13 +283,12 @@ function _extract_data_from_dailymotion_url(url: string): IVideoData {
 function _extract_data_from_odysee_url(url: string): IVideoData {
   const { author, id , start } = odysee_get_url_data(url);
   if (!start) {
-    remember_error({
-      code: 'value_not_found',
-      title: 'odysee_get_start_time failed',
-      detail: 'The odysee_get_start_time function failed to extract the video '
-        + 'start time from the URL.',
+    error_id(1061).remember_error({
+      code: 'MISSING_VALUE',
+      title: '[function] odysee_get_url_data() failed',
+      detail: 'Failed to extract the video start time from the URL.',
       source: { pointer: url }
-    });
+    }); // error 1061
     return {
       ...DATA_SKELETON,
       urlCheck: {
@@ -300,13 +298,12 @@ function _extract_data_from_odysee_url(url: string): IVideoData {
     };
   }
   if (!author || !id) {
-    remember_error({
-      code: 'value_not_found',
-      title: 'odysee_get_slug failed',
-      detail: 'The "odysee_get_slug" function failed to extract the video ID '
-        + 'or author from the URL.',
+    error_id(1062).remember_error({
+      code: 'MISSING_VALUE',
+      title: '[function] odysee_get_url_data() failed',
+      detail: 'Failed to extract the video ID or author from the URL.',
       source: { pointer: url }
-    });
+    }); // error 1062
     return DATA_SKELETON;
   }
   const slug = `${author}/${id}`
@@ -327,24 +324,23 @@ function _extract_data_from_odysee_url(url: string): IVideoData {
 function _extract_data_from_twitch_url(url: string): IVideoData {
   const id = twitch_get_video_id(url);
   if (!id) {
-    remember_error({
-      code: 'value_not_found',
-      title: 'twitch_get_video_id failed',
-      detail: 'The "twitch_get_video_id" function failed to extract the video '
-        + 'ID from the URL.',
+    error_id(1063).remember_error({
+      code: 'MISSING_VALUE',
+      title: '[FUNCTION] twitch_get_video_id() failed',
+      detail: 'The "twitch_get_video_id" function failed to extract the video ID from the URL.',
       source: { pointer: url }
-    });
+    }); // error 1063
     return DATA_SKELETON;
   }
   const start = twitch_get_start_time(url);
   if (!start) {
-    remember_error({
-      code: 'value_not_found',
+    error_id(1064).remember_error({
+      code: 'MISSING_VALUE',
       title: 'twitch_get_start_time failed',
       detail: 'The "twitch_get_start_time" function failed to extract the video '
         + 'start time from the URL.',
       source: { pointer: url }
-    });
+    }); // error 1064
     return DATA_SKELETON;
   }
   const data: IVideoData = {

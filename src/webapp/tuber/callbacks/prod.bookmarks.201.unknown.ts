@@ -1,4 +1,4 @@
-import JsonapiRequest from 'src/controllers/jsonapi.request';
+import JsonapiRequest from 'src/business.logic/jsonapi.request';
 import { type IRedux } from 'src/state';
 import { post_req_state } from 'src/state/net.actions';
 import { DIALOG_UNKNOWN_NEW_ID, FORM_UNKNOWN_NEW_ID } from '../tuber.config';

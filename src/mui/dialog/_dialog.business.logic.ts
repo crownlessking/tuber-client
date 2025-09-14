@@ -5,7 +5,7 @@ import IStateFormItem from '../../interfaces/IStateFormItem';
 import IStateForm from '../../interfaces/IStateForm';
 import IStateDialog from '../../interfaces/IStateDialog';
 import type StateFormItem from '../../controllers/StateFormItem';
-import { remember_exception } from 'src/business.logic/errors';
+import { error_id } from 'src/business.logic/errors';
 import { ler } from '../../business.logic/logging';
 
 export type THive = Record<string, unknown>
@@ -39,10 +39,10 @@ function get_dialog_json(dialogName: string, defaultDialog: IStateDialog) {
   try {
     const dialogPropertyName = get_dialog_property_name(dialogName);
     return store.getState().dialogs[dialogPropertyName];
-  } catch (e: unknown) {
+  } catch (e) {
     const message = `get_dialog_state: '${dialogName}' does not exist.`;
     ler(message);
-    remember_exception(e, message);
+    error_id(17).remember_exception(e, message); // error 17
   }
   return defaultDialog;
 }

@@ -1,6 +1,6 @@
 import { type IRedux } from '../state';
 import { IStateFormsDataErrors } from '../interfaces/IState';
-import StateFormsDataErrors from './StateFormsDataErrors';
+import StateFormsDataErrors from '../controllers/StateFormsDataErrors';
 
 interface IValidation<T> {
   name: keyof T;
@@ -112,11 +112,10 @@ export default class FormValidationPolicy<T=Record<string, unknown>> {
   }
 
   /**
-   * Get the validation schemes.
-   * @returns Validation schemes.
-   * @example const validationSchemes = formValidationPolicy.getValidationSchemes()
+   * Apply the validation schemes.
+   * @returns Validation errors.
    */
-  getValidationSchemes(): IValidation<T>[] | null {
+  applyValidationSchemes(): IValidation<T>[] | null {
     const formsData = this._getFormData();
     if (!formsData) { return null; }
     const formErrorProfiles = this._e.state[this._formName];

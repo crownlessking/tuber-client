@@ -1,6 +1,6 @@
-import getConfig, { IConfiguration } from '../../controllers/config.controller';
+import getConfig, { IConfiguration } from '../../business.logic/configuration';
 
-describe('config.controller.ts', () => {
+describe('configuration.ts', () => {
   const initConfObj = {
     /** App default theme mode. */
     DEFAULT_THEME_MODE: 'light',

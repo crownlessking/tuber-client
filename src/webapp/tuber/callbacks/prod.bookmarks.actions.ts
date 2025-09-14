@@ -2,7 +2,7 @@ import { get_parsed_content } from 'src/controllers';
 import { IJsonapiResponseResource } from 'src/interfaces/IJsonapi';
 import StateTmp from 'src/controllers/StateTmp';
 import { type IRedux } from 'src/state';
-import { remember_error, remember_exception } from 'src/business.logic/errors';
+import { error_id } from 'src/business.logic/errors';
 import { delete_req_state, get_dialog_state } from 'src/state/net.actions';
 import { get_state_form_name, get_val, safely_get_as } from '../../../business.logic';
 import { get_dialog_registry_key_for_edit } from '../_tuber.common.logic';
@@ -132,7 +132,8 @@ export function dialog_edit_bookmark (i: number) {
         }
       } catch (e) {
         ler((e as Error).message);
-        remember_exception(e, `dialog_edit_bookmark: ${(e as Error).message}`);
+         // error 1047
+        error_id(1047).remember_exception(e, `dialog_edit_bookmark: ${(e as Error).message}`);
       }
       pre();
       if (rootState.dialog._id !== dialogState._id) { // if the dialog was NOT mounted
@@ -219,7 +220,7 @@ export default function form_submit_delete_bookmark (redux: IRedux) {
       ler(`resourceList['${index}'] does not exist.`);
       return;
     }
-    const dialogKey = get_val<string>(rootState, `stateRegistry.${DIALOG_DELETE_BOOKMARK_ID}`);
+    const dialogKey = get_val<string>(rootState, `staticRegistry.${DIALOG_DELETE_BOOKMARK_ID}`);
     if (!dialogKey) {
       ler('dialogKey not found.');
       return;
@@ -227,11 +228,11 @@ export default function form_submit_delete_bookmark (redux: IRedux) {
     const dialogState = rootState.dialogs[dialogKey];
     if (!dialogState) {
       ler(`'${dialogKey}' does not exist.`);
-      remember_error({
-        code: 'value_not_found',
+      error_id(1100).remember_error({
+        code: 'MISSING_VALUE',
         title: `'${dialogKey}' does not exist.`,
         source: { parameter: 'dialogKey' }
-      });
+      }); // error 1100
       return;
     }
     pre();

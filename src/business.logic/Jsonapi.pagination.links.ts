@@ -1,10 +1,9 @@
-import { remember_exception } from '../business.logic/errors';
-import AbstractState from './AbstractState';
-import { type IJsonapiPaginationLinks } from '../interfaces/IJsonapi';
+import { error_id } from './errors';
+import { IJsonapiPaginationLinks } from '../interfaces/IJsonapi';
 
 type TLink = IJsonapiPaginationLinks[keyof IJsonapiPaginationLinks];
 
-export default class JsonapiPaginationLinks extends AbstractState {
+export default class JsonapiPaginationLinks {
   private _selfPageNumber?: number;
   private _pageSize?: number;
   private _firstPageNumber?: number;
@@ -13,16 +12,10 @@ export default class JsonapiPaginationLinks extends AbstractState {
   private _prevPageNumber?: number;
 
   constructor (private _links: IJsonapiPaginationLinks) {
-    super();
     if (!this._links) {
       this._lastPageNumber = 1; // [bugfix]
     }
   }
-
-  get parent (): unknown { return this.die('Not implemented yet.', {}); }
-  get state (): unknown { return this.die('Not implemented yet.', {}); }
-  get props (): unknown { return this.die('Not implemented yet.', {}); }
-  get theme (): unknown { return this.die('Not implemented yet.', {}); }
 
   /**
    * Get the query string value by key.
@@ -50,8 +43,9 @@ export default class JsonapiPaginationLinks extends AbstractState {
           'page[size]'
         ))
       );
-    } catch (err: unknown) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: pageSize defaulted to 25.');
+    } catch (err) {
+      // error 7
+      error_id(7).remember_exception(err, 'JsonapiPaginationLinks.get: pageSize defaulted to 25.');
       return this._pageSize = 25;
     }
   }
@@ -65,8 +59,9 @@ export default class JsonapiPaginationLinks extends AbstractState {
           'page[number]'
         ))
       );
-    } catch (err: unknown) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: selfPageNumber defaulted to 1.');
+    } catch (err) {
+      // error 8 
+      error_id(8).remember_exception(err, 'JsonapiPaginationLinks.get: selfPageNumber defaulted to 1.');
       return this._selfPageNumber = 1;
     }
   }
@@ -80,7 +75,8 @@ export default class JsonapiPaginationLinks extends AbstractState {
         ))
       );
     } catch (err) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: firstPageNumber defaulted to 1.');
+      // error 9
+      error_id(9).remember_exception(err, 'JsonapiPaginationLinks.get: firstPageNumber defaulted to 1.');
       return this._firstPageNumber = 1;
     }
   }
@@ -94,7 +90,8 @@ export default class JsonapiPaginationLinks extends AbstractState {
         ))
       );
     } catch (err) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: lastPageNumber defaulted to 1.');
+      // error 10
+      error_id(10).remember_exception(err, 'JsonapiPaginationLinks.get: lastPageNumber defaulted to 1.');
       return this._lastPageNumber = 1;
     }
   }
@@ -108,7 +105,8 @@ export default class JsonapiPaginationLinks extends AbstractState {
         ))
       );
     } catch (err) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: nextPageNumber defaulted to 1.');
+      // error 11
+      error_id(11).remember_exception(err, 'JsonapiPaginationLinks.get: nextPageNumber defaulted to 1.');
       return this._nextPageNumber = 1;
     }
   }
@@ -122,7 +120,8 @@ export default class JsonapiPaginationLinks extends AbstractState {
         ))
       );
     } catch (err) {
-      remember_exception(err, 'JsonapiPaginationLinks.get: prevPageNumber defaulted to 1.');
+      // error 12
+      error_id(12).remember_exception(err, 'JsonapiPaginationLinks.get: prevPageNumber defaulted to 1.');
       return this._prevPageNumber = 1;
     }
   }

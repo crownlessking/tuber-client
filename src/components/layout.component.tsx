@@ -5,7 +5,7 @@ import {
   DefaultLayoutToolbared
 } from '../mui/layouts';
 import StatePage from '../controllers/StatePage';
-import { remember_exception } from '../business.logic/errors';
+import { error_id } from '../business.logic/errors';
 import {
   LAYOUT_CENTERED_NO_SCROLL,
   LAYOUT_CENTERED,
@@ -148,7 +148,7 @@ export default function Layout({
       </Fragment>
     );
   } catch (e) {
-    remember_exception(e);
+    error_id(2).remember_exception(e); // error 2
     log((e as Error).message);
   }
   return (

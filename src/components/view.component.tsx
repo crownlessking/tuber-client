@@ -3,7 +3,7 @@ import PageNotFound from './pages/notfound.component';
 import StatePage from '../controllers/StatePage';
 import PageErrors from './pages/errors.component';
 import PageLanding from './pages/landing.component';
-import { remember_exception } from '../business.logic/errors';
+import { error_id } from '../business.logic/errors';
 import { Fragment } from 'react';
 import {
   DEFAULT_BLANK_PAGE_VIEW,
@@ -37,7 +37,7 @@ export default function View({ def: page }: { def: StatePage }): JSX.Element|nul
   try {
     return viewsTable[view]();
   } catch (e) {
-    remember_exception(e);
+    error_id(3).remember_exception(e); // error 3
     log((e as Error).message);
   }
   return ( null );

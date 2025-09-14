@@ -8,11 +8,7 @@ import {
   get_val,
   is_object
 } from '../business.logic';
-import {
-  remember_error,
-  remember_exception,
-  remember_jsonapi_errors
-} from '../business.logic/errors';
+import { error_id } from '../business.logic/errors';
 import net_default_200_driver from './net.default.200.driver.c';
 import net_default_201_driver from './net.default.201.driver.c';
 import net_default_400_driver from './net.default.400.driver.c';
@@ -33,42 +29,11 @@ import Config from '../config';
 import { THEME_DEFAULT_MODE, THEME_MODE } from '../constants.client';
 import { net_patch_state } from './actions';
 import { ler, pre } from '../business.logic/logging';
-import {
-  e_missingDialogDarkState,
-  e_MissingDialogKey,
-  e_missingDialogLightState,
-  e_missingDialogState
-} from '../business.logic/dev.errors.jsonapi';
 import { StateRegistry } from '../controllers/StateRegistry';
 
 const DEFAULT_HEADERS: RequestInit['headers'] = {
   'Accept': 'application/json',
   'Content-Type': 'application/json',
-};
-
-/**
- * @see https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#supplying_request_options
- */
-const DEFAULT_POST_PAYLOAD: RequestInit = {
-  method: 'post',
-  headers: DEFAULT_HEADERS,
-  body: {} as RequestInit['body']
-};
-
-const DEFAULT_PUT_PAYLOAD: RequestInit = {
-  method: 'put',
-  headers: DEFAULT_HEADERS,
-  body: {} as RequestInit['body']
-};
-
-const DEFAULT_GET_PAYLOAD: RequestInit = {
-  method: 'get',
-  headers: DEFAULT_HEADERS
-};
-
-const DEFAULT_DELETE_PAYLOAD: RequestInit = {
-  method: 'delete',
-  headers: DEFAULT_HEADERS
 };
 
 /**
@@ -115,7 +80,7 @@ const delegate_data_handling = (
         defaultDriver[status]();
     }
   } catch (e) {
-    remember_exception(e);
+    error_id(28).remember_exception(e); // error 28
   }
   cancel_spinner();
   dispatch(appHideSpinner());
@@ -183,10 +148,10 @@ export async function get_dialog_state <T=unknown>(
 ): Promise<IStateDialog<T>|null> {
   pre('get_dialog_state():');
   const rootState = redux.store.getState();
-  const stateRegistry = rootState.stateRegistry;
-  const dialogKey = new StateRegistry(stateRegistry).get(registryKey);
+  const staticRegistry = rootState.staticRegistry;
+  const dialogKey = new StateRegistry(staticRegistry).get(registryKey);
   if (typeof dialogKey !== 'string') {
-    e_MissingDialogKey(registryKey);
+    error_id(35).report_missing_dialog_key(registryKey); // error 35
     return null;
   }
   const mode = Config.read<TThemeMode>(THEME_MODE, THEME_DEFAULT_MODE);
@@ -195,12 +160,12 @@ export async function get_dialog_state <T=unknown>(
   const dialogDarkState = rootState.dialogsDark[dialogKey];
   if (!dialogLightState || !dialogDarkState) {
     ler(`get_dialog_state: ${dialogKey} missing light or/and dark theme(s).`);
-    remember_error({
-      code: 'not_found',
+    error_id(36).remember_error({
+      code: 'MISSING_STATE',
       title: `${dialogKey} Not Found`,
       detail: `${dialogKey} missing light or/and dark theme(s).`,
       source: { pointer: dialogKey }
-    });
+    }); // error 36
   }
   const dialogState = get_themed_state<IStateDialog<T>>(
     mode,
@@ -212,23 +177,23 @@ export async function get_dialog_state <T=unknown>(
   const origin = get_origin_ending_fixed(rootState.app.origin);
   const dialogPathname = rootState.pathnames.dialogs;
   const url = `${origin}${dialogPathname}`;
-  const { headers } = new StateNet(rootState.net);
+  const headersState = new StateNet(rootState.net).headers;
   const response = await post_fetch(url, {
     'key': dialogKey,
     'mode': mode
-  }, headers);
+  }, headersState);
   const errors = get_val<IJsonapiError[]>(response, 'errors');
   if (errors) {
     ler(`get_dialog_state: ${errors[0].title}`);
-    remember_jsonapi_errors(errors);
+    error_id(38).remember_jsonapi_errors(errors); // error 38
     return null;
   }
   const main = get_val(response, `state.dialogs.${dialogKey}`);
   const light = get_val(response, `state.dialogsLight.${dialogKey}`);
   const dark = get_val(response, `state.dialogsDark.${dialogKey}`);
-  !main && e_missingDialogState(dialogKey);
-  !light && e_missingDialogLightState(dialogKey);
-  !dark && e_missingDialogDarkState(dialogKey);
+  !main && error_id(39).report_missing_dialog_state(dialogKey); // error 39
+  !light && error_id(40).report_missing_dialog_light_state(dialogKey); // error 40
+  !dark && error_id(41).report_missing_dialog_dark_state(dialogKey); // error 41
   const themedDialogState = get_themed_state<IStateDialog<T>>(
     mode,
     main,
@@ -237,12 +202,12 @@ export async function get_dialog_state <T=unknown>(
   );
   if (themedDialogState._key !== dialogKey) {
     ler(`get_dialog_state: ${dialogKey} does not match ${themedDialogState._key}.`);
-    remember_error({
-      code: 'not_found',
+    error_id(37).remember_error({
+      code: 'BAD_VALUE',
       title: `${dialogKey} Not Found`,
       detail: `${dialogKey} does not match ${themedDialogState._key}.`,
       source: { pointer: dialogKey }
-    });
+    }); // error 37
     return null;
   }
 
@@ -259,15 +224,10 @@ export async function post_fetch<T=unknown>(
   body: T,
   customHeaders?: RequestInit['headers']
 ): Promise<unknown> {
-  const headers = {
-    ...DEFAULT_POST_PAYLOAD,
-    headers: {
-      ...DEFAULT_POST_PAYLOAD.headers,
-      ...customHeaders
-    }
-  };
+  const headers = { ...DEFAULT_HEADERS, ...customHeaders };
   const response = await fetch(url, {
-    ...headers,
+    method: 'post',
+    headers,
     body: JSON.stringify(body)
   });
   const json = await response.json();
@@ -275,7 +235,10 @@ export async function post_fetch<T=unknown>(
 }
 
 export async function get_fetch<T=unknown>(url: string): Promise<T> {
-  const response = await fetch(url, DEFAULT_GET_PAYLOAD);
+  const response = await fetch(url, {
+    method: 'get',
+    headers: DEFAULT_HEADERS
+  });
   const json = await response.json();
   return json as T;
 }
@@ -302,14 +265,11 @@ export const post_req_state = (
       const rootState = getState();
       const origin = get_origin_ending_fixed(rootState.app.origin);
       const url = `${origin}${endpoint}`;
-      const { headers: netHeaders } = new StateNet(rootState.net);
-      const headers = { ...netHeaders, ...customHeaders };
+      const headersState = new StateNet(rootState.net).headers;
+      const headers = { ...DEFAULT_HEADERS, ...headersState, ...customHeaders };
       const response = await fetch(url, {
-        ...DEFAULT_POST_PAYLOAD,
-        headers: {
-          ...DEFAULT_POST_PAYLOAD.headers,
-          ...headers
-        },
+        method: 'post',
+        headers,
         body: JSON.stringify(body)
       });
       const json = _resolve_unexpected_nesting<IJsonapiBaseResponse>(
@@ -320,14 +280,14 @@ export const post_req_state = (
       json.meta.statusText = response.statusText;
       json.meta.ok = response.ok
       delegate_data_handling(dispatch, getState, endpoint, json);
-    } catch (error: unknown) {
-      remember_exception(error);
+    } catch (e) {
+      error_id(29).remember_exception(e); // error 29
       delegate_error_handling(dispatch);
     }
   }
 };
 
-export const put_req_state = (
+export const patch_req_state = (
   endpoint: string,
   body?: unknown,
   customHeaders?: RequestInit['headers']
@@ -339,14 +299,11 @@ export const put_req_state = (
       const rootState = getState();
       const origin = get_origin_ending_fixed(rootState.app.origin);
       const url = `${origin}${endpoint}`;
-      const headersDef = new StateNet(rootState.net).headers;
-      const headers = { ...headersDef, ...customHeaders };
+      const headersState = new StateNet(rootState.net).headers;
+      const headers = { ...DEFAULT_HEADERS, ...headersState, ...customHeaders };
       const response = await fetch(url, {
-        ...DEFAULT_PUT_PAYLOAD,
-        headers: {
-          ...DEFAULT_PUT_PAYLOAD.headers,
-          ...headers
-        },
+        method: 'PATCH',
+        headers,
         body: JSON.stringify(body)
       });
       const json = await response.json();
@@ -355,8 +312,8 @@ export const put_req_state = (
       json.meta.statusText = response.statusText;
       json.meta.ok = response.ok;
       delegate_data_handling(dispatch, getState, endpoint, json);
-    } catch (error: unknown) {
-      remember_exception(error);
+    } catch (e) {
+      error_id(30).remember_exception(e); // error 30
       delegate_error_handling(dispatch);
     }
   }
@@ -395,23 +352,17 @@ export const get_req_state = (
       const origin = get_origin_ending_fixed(rootState.app.origin);
       const query  = get_query_starting_fixed(args);
       const uri = `${origin}${endpoint}${query}`;
-      const headersDef = new StateNet(rootState.net).headers;
-      const headers = { ...headersDef, ...customHeaders };
-      const response = await fetch(uri, {
-        ...DEFAULT_GET_PAYLOAD,
-        headers: {
-          ...DEFAULT_GET_PAYLOAD.headers,
-          ...headers
-        }
-      });
+      const headersState = new StateNet(rootState.net).headers;
+      const headers = { ...DEFAULT_HEADERS, ...headersState, ...customHeaders };
+      const response = await fetch(uri, { method: 'get', headers });
       const json = await response.json();
-      json.meta = json.meta || {};
+      json.meta = json.meta ?? {};
       json.meta.status = response.status;
       json.meta.statusText = response.statusText;
       json.meta.ok = response.ok;
       delegate_data_handling(dispatch, getState, endpoint, json);
-    } catch (error) {
-      remember_exception(error);
+    } catch (e) {
+      error_id(31).remember_exception(e); // error 31
       delegate_error_handling(dispatch);
     }
   }
@@ -430,23 +381,17 @@ export const delete_req_state = (
       const origin = get_origin_ending_fixed(rootState.app.origin);
       const query  = get_query_starting_fixed(args);
       const uri = `${origin}${endpoint}${query}`;
-      const headersDef = new StateNet(rootState.net).headers;
-      const headers = { ...headersDef, ...customHeaders };
-      const response = await fetch(uri, {
-        ...DEFAULT_DELETE_PAYLOAD,
-        headers: {
-          ...DEFAULT_DELETE_PAYLOAD.headers,
-          ...headers
-        }
-      });
+      const headersState = new StateNet(rootState.net).headers;
+      const headers = { ...DEFAULT_HEADERS, ...headersState, ...customHeaders };
+      const response = await fetch(uri, { method: 'delete', headers });
       const json = await response.json();
-      json.meta = json.meta || {};
+      json.meta = json.meta ?? {};
       json.meta.status = response.status;
       json.meta.statusText = response.statusText;
       json.meta.ok = response.ok;
       delegate_data_handling(dispatch, getState, endpoint, json);
-    } catch (error) {
-      remember_exception(error);
+    } catch (e) {
+      error_id(32).remember_exception(e); // error 32
       delegate_error_handling(dispatch);
     }
   }
@@ -475,21 +420,20 @@ export const post_req = async (
       const rootState = getState();
       const originEndingFixed = get_origin_ending_fixed(rootState.app.origin);
       const url = `${originEndingFixed}${pathname}`;
-      const response = await fetch( url,{
-        ...DEFAULT_POST_PAYLOAD,
-        headers: {
-          ...DEFAULT_POST_PAYLOAD.headers,
-          ...new StateNet(rootState.net).headers
-        },
+      const headersState = new StateNet(rootState.net).headers;
+      const headers = { ...DEFAULT_HEADERS, ...headersState };
+      const response = await fetch( url, {
+        method: 'post',
+        headers,
         body: JSON.stringify(body)
-      } as RequestInit);
+      });
       const json = await response.json();
       success
       ? success(json, endpoint)
       : delegate_data_handling(dispatch, getState, endpoint, json);
-    } catch (error) {
-      remember_exception(error);
-      failure ? failure(error) : delegate_error_handling(dispatch);
+    } catch (e) {
+      error_id(33).remember_exception(e); // error 33
+      failure ? failure(e) : delegate_error_handling(dispatch);
     }
   }
 };
@@ -516,20 +460,16 @@ export const get_req = (
       const rootState = getState();
       const originEndingFixed = get_origin_ending_fixed(rootState.app.origin);
       const url = `${originEndingFixed}${pathname}`;
-      const response = await fetch(url, {
-        ...DEFAULT_GET_PAYLOAD,
-        headers: {
-          ...DEFAULT_GET_PAYLOAD.headers,
-          ...new StateNet(rootState.net).headers
-        }
-      });
+      const headersState = new StateNet(rootState.net).headers;
+      const headers = { ...DEFAULT_HEADERS, ...headersState };
+      const response = await fetch(url, { method: 'get', headers });
       const json = await response.json();
       success
       ? success(endpoint, json)
       : delegate_data_handling(dispatch, getState, endpoint, json);
-    } catch (error) {
-      remember_exception(error);
-      failure ? failure(error) : delegate_error_handling(dispatch);
+    } catch (e) {
+      error_id(34).remember_exception(e); // error 34
+      failure ? failure(e) : delegate_error_handling(dispatch);
     }
   };
 };

@@ -26,7 +26,7 @@ export default function appbar_search_bookmarks (redux: IRedux) {
       log(`${route} route has no search query object.`);
       return;
     }
-    const pageKey = rootState.stateRegistry[PAGE_RESEARCH_APP_ID];
+    const pageKey = rootState.staticRegistry[PAGE_RESEARCH_APP_ID];
     const content = get_val<string>(rootState, `pages.${pageKey}.content`);
     const endpoint = get_parsed_content(content).endpoint;
     if (!endpoint) {

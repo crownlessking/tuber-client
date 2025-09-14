@@ -1,11 +1,11 @@
 import { get_parsed_content } from 'src/controllers';
 import StateTmp from 'src/controllers/StateTmp';
 import { type IRedux } from 'src/state';
-import { remember_error, remember_exception } from 'src/business.logic/errors';
-import { put_req_state } from 'src/state/net.actions';
+import { error_id } from 'src/business.logic/errors';
+import { patch_req_state } from 'src/state/net.actions';
 import { get_state_form_name } from '../../../business.logic';
 import { IBookmark } from '../tuber.interfaces';
-import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
+import FormValidationPolicy from 'src/business.logic/FormValidationPolicy';
 import { pre, msg, ler } from '../../../business.logic/logging';
 
 /**
@@ -25,10 +25,10 @@ export default function form_submit_edit_daily_bookmark(redux: IRedux) {
       pre('form_submit_edit_daily_bookmark:');
       if (index === -1) {
         ler('index not found.');
-        remember_error({
-          code: 'value_not_found',
+        error_id(1076).remember_error({
+          code: 'MISSING_STATE',
           title: 'Bookmark resource index not found',
-        });
+        }); // error 1076
         return;
       }
       // Careful, `rootState.dialog` is only valid if the right dialog state
@@ -38,26 +38,26 @@ export default function form_submit_edit_daily_bookmark(redux: IRedux) {
       if (!endpoint) {
         const errorMsg = `No endpoint defined for '${_key}'.`;
         ler(errorMsg);
-        remember_error({
-          code: 'value_not_found',
+        error_id(1077).remember_error({
+          code: 'MISSING_STATE',
           title: errorMsg,
           source: { parameter: 'endpoint' }
-        });
+        }); // error 1077
         return;
       }
       const formName = get_state_form_name(name);
       if (!rootState.formsData?.[formName]) {
         const errorMsg = msg(` '${formName}' data does not exist.`);
         ler(errorMsg);
-        remember_error({
-          code: 'value_not_found',
+        error_id(1078).remember_error({
+          code: 'MISSING_STATE',
           title: errorMsg,
           source: { parameter: 'formData' }
-        })
+        }); // error 1078
         return;
       }
       const policy = new FormValidationPolicy<IBookmark>(redux, formName);
-      const validation = policy.getValidationSchemes();
+      const validation = policy.applyValidationSchemes();
       if (validation && validation.length > 0) {
         validation.forEach(vError => {
           const message = vError.message ?? '';
@@ -87,7 +87,7 @@ export default function form_submit_edit_daily_bookmark(redux: IRedux) {
         index,
         resource: editedBookmarkResource
       }));
-      dispatch(put_req_state(
+      dispatch(patch_req_state(
         `${endpoint}/${editedBookmarkResource.id}`,
         { data: editedBookmarkResource }
       ));
@@ -95,7 +95,7 @@ export default function form_submit_edit_daily_bookmark(redux: IRedux) {
       dispatch(actions.dialogClose());
     } catch (e) {
       ler((e as Error).message);
-      remember_exception(e, msg((e as Error).message));
+      error_id(1039).remember_exception(e, msg((e as Error).message)); // error 1039
     }
   }
 }

@@ -1,13 +1,13 @@
-import { stateRegistryActions } from '../../slices/stateRegistry.slice';
+import { staticRegistryActions } from '../../slices/staticRegistryy.slice';
 import store from '../../state';
 
 const { dispatch } = store;
 
-describe('stateRegistrySlice', () => {
+describe('staticRegistryySlice', () => {
 
-  it('stateRegistryClear', () => {
-    dispatch(stateRegistryActions.stateRegistryClear());
-    expect(store.getState().stateRegistry).toEqual({});
+  it('staticRegistryClear', () => {
+    dispatch(staticRegistryActions.staticRegistryClear());
+    expect(store.getState().staticRegistry).toEqual({});
   });
 
 });

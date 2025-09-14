@@ -1,5 +1,5 @@
 import { log, pre } from 'src/business.logic/logging';
-import JsonapiRequest from 'src/controllers/jsonapi.request';
+import JsonapiRequest from 'src/business.logic/jsonapi.request';
 import { post_req_state } from 'src/state/net.actions';
 import { type IRedux } from 'src/state';
 import { DIALOG_DAILY_NEW_ID, FORM_DAILY_NEW_ID } from '../tuber.config';

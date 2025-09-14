@@ -25,7 +25,7 @@ export default class StateDialog<T = unknown> extends AbstractState implements I
   get label(): string { return this.dialogState.label ?? '' }
   get contentText(): string { return this.dialogState.contentText ?? '' }
   get content(): unknown { return this.dialogState.content }
-  get actions(): IStateFormItem[] { return this.dialogState.actions || [] }
+  get actions(): IStateFormItem<T>[] { return this.dialogState.actions || [] }
   get showActions(): Required<IStateDialog>['showActions'] {
     return this.dialogState.showActions ?? false
   }

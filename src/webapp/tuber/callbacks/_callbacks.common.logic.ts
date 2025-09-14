@@ -1,9 +1,8 @@
 import { get_state_form_name } from 'src/business.logic';
-import { e_missingRegistryValue } from 'src/business.logic/dev.errors.jsonapi';
-import { remember_error } from 'src/business.logic/errors';
+import { error_id } from 'src/business.logic/errors';
 import { ler, pre } from 'src/business.logic/logging';
 import { get_parsed_content } from 'src/controllers';
-import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
+import FormValidationPolicy from 'src/business.logic/FormValidationPolicy';
 import { StateRegistry } from 'src/controllers/StateRegistry';
 import { type IRedux, type RootState } from 'src/state';
 
@@ -17,9 +16,9 @@ export const get_registry_val = (
   rootState: RootState,
   registryKey: string
 ): string | undefined => {
-  const value = new StateRegistry(rootState.stateRegistry).get(registryKey);
+  const value = new StateRegistry(rootState.staticRegistry).get(registryKey);
   if (typeof value !== 'string' || value === '') {
-    e_missingRegistryValue(registryKey);
+    error_id(1056).report_missing_registry_value(registryKey); // error 1056
   }
   return value as string | undefined;
 }
@@ -41,22 +40,22 @@ export function get_dialog_form_endpoint(
   if (!dialogState) {
     const errorMsg = `'${dialogKey}' does not exist.`;
     ler(errorMsg);
-    remember_error({
-      code: 'value_not_found',
+    error_id(1065).remember_error({
+      code: 'MISSING_VALUE',
       title: errorMsg,
       source: { parameter: 'dialogKey' }
-    });
+    }); // error 1065
     return;
   }
   const endpoint = get_parsed_content(dialogState.content).endpoint;
   if (!endpoint) {
     const errorMsg = `No endpoint defined for '${dialogKey}'.`;
     ler(errorMsg);
-    remember_error({
-      code: 'value_not_found',
+    error_id(1066).remember_error({
+      code: 'MISSING_VALUE',
       title: errorMsg,
       source: { parameter: 'endpoint' }
-    });
+    }); // 1066
     return;
   }
   pre();
@@ -82,16 +81,16 @@ export function get_form_data<T=unknown>(
   if (!rootState.formsData[formName]) {
     const errorMsg = `'${formKey}' data not found.`;
     ler(errorMsg);
-    remember_error({
-      code: 'value_not_found',
+    error_id(1067).remember_error({
+      code: 'MISSING_VALUE',
       title: errorMsg,
       source: { parameter: 'formData' }
-    });
+    }); // error 1067
     return null;
   }
   pre();
   const policy = new FormValidationPolicy<T>(redux, formName);
-  const validation = policy.getValidationSchemes();
+  const validation = policy.applyValidationSchemes();
   if (validation && validation.length > 0) {
     validation.forEach(vError => {
       const message = vError.message ?? '';

@@ -1,4 +1,4 @@
-import { remember_error, remember_exception } from 'src/business.logic/errors';
+import { error_id, remember_exception } from 'src/business.logic/errors';
 import { ler, log } from 'src/business.logic/logging';
 import { get_query_values } from '../../business.logic';
 import {
@@ -288,7 +288,10 @@ export function odysee_get_start_time(url: string): number {
  */
 export function facebook_parse_iframe(iframe?: string): string[] {
   if (!iframe) {
-    remember_error({code: 'bad_argument', title: 'iframe is undefined or empty.'});
+    error_id(1049).remember_error({
+      code: 'MISSING_VALUE',
+      title: 'iframe is undefined or empty.'
+    }); // error 1049
     return [];
   }
   const match = iframe.match(/%2F([\d\w_-]+)%2Fvideos%2F(\d+).*t=(\d+)/);
@@ -399,13 +402,13 @@ export function gen_video_url(bookmark: IBookmark): string {
         ler(`gen_video_url: Bad platform: '${platform}'.`
           + `Try setting the bookmark's url`
         );
-        remember_error({
-          code: 'value_not_found',
+        error_id(1050).remember_error({
+          code: 'MISSING_VALUE',
           title: 'Failed to play a video from an unknown platform',
           detail: 'When playing a video from an unknown platform, the '
             + 'bookmark url must be set.',
           source: { 'pointer': `bookmark.url` }
-        });
+        }); // error 1050
       }
       return url;
     }
@@ -418,11 +421,11 @@ export function get_rumble_slug(url: string) {
   const match = filteredUrl.match(/https?:\/\/(w{3}\.)?rumble\.com\/([\d\w.-]+)\.html/);
   if (!match) {
     ler(`get_slug: Bad video URL: '${url}'`);
-    remember_error({
-      code: 'bad_input',
+    error_id(1051).remember_error({
+      code: 'BAD_VALUE',
       title: `get_slug: Bad video URL`,
       source: { parameter: url }
-    });
+    }); // error 1051
     return '';
   }
   return match[2];

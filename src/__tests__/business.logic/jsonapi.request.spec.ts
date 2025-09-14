@@ -1,4 +1,4 @@
-import JsonapiRequest from '../../controllers/jsonapi.request';
+import JsonapiRequest from '../../business.logic/jsonapi.request';
 
 describe('jsonapi.request.ts', () => {
 

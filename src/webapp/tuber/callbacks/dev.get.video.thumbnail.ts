@@ -1,11 +1,7 @@
 import { safely_get_as } from '../../../business.logic';
-import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
+import FormValidationPolicy from 'src/business.logic/FormValidationPolicy';
 import { type IRedux } from 'src/state';
-import {
-  remember_error,
-  remember_exception,
-  remember_jsonapi_errors
-} from 'src/business.logic/errors';
+import { error_id, remember_jsonapi_errors } from 'src/business.logic/errors';
 import {
   FORM_TEST_THUMBNAIL_ID,
   PAGE_TEST_THUMBNAIL_ID,
@@ -40,20 +36,22 @@ export default function dev_get_video_thumbnail(redux: IRedux) {
     const rootState = getState();
     const formName = get_val<string>(
       rootState,
-      `stateRegistry.${FORM_TEST_THUMBNAIL_ID}`
+      `staticRegistry.${FORM_TEST_THUMBNAIL_ID}`
     );
     if (!formName) {
       const errorMsg = `dev_get_video_thumbnail: form name not found.`;
       ler(errorMsg);
-      remember_error({
-        code: 'value_not_found',
+      error_id(1068).remember_error({
+        code: 'MISSING_VALUE',
         title: errorMsg,
-        meta: { FORM_TEST_THUMBNAIL_ID }
-      });
+        source: {
+          pointer: `rootState.staticRegistry.${FORM_TEST_THUMBNAIL_ID}`,
+        },
+      }); // error 1068
       return;
     }
     const errorPolicy = new FormValidationPolicy<IFormsData>(redux, formName);
-    const route = rootState.stateRegistry[PAGE_TEST_THUMBNAIL_ID];
+    const route = rootState.staticRegistry[PAGE_TEST_THUMBNAIL_ID];
     if (!route) {
       errorPolicy.emit('video_url', `Page route not found`);
       return;
@@ -155,7 +153,7 @@ export function dev_fix_missing_thumbnails(i: number) {
         });
       } catch (e) {
         ler(`dev_fix_missing_thumbnails: ${(e as Error).message}`);
-        remember_exception(e);
+        error_id(1037).remember_exception(e); // error 1037
       }
     }
   }

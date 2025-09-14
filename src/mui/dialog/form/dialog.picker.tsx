@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { THive } from '.';
 import type StateForm from '../../../controllers/StateForm';
 import type StateFormItem from '../../../controllers/StateFormItem';
-import { remember_exception } from '../../../business.logic/errors';
+import { error_id } from '../../../business.logic/errors';
 import { NAME_NOT_SET } from '../../../constants.client';
 import { log } from '../../../business.logic/logging';
 
@@ -74,7 +74,7 @@ export default function DialogPicker({ def, hive }: IJsonPickerProps) {
       )
       : <TextField value={`PICKER ${NAME_NOT_SET}`} disabled />;
   } catch (e) {
-    remember_exception(e);
+    error_id(18).remember_exception(e); // error 18
     log((e as Error).message);
   }
 

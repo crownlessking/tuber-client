@@ -9,7 +9,7 @@ import IStateAllForms from '../../interfaces/IStateAllForms';
 import IStatePage from '../../interfaces/IStatePage';
 import HtmlContent from './html.component';
 import { APP_CONTENT_VIEW } from '../../constants.client';
-import { remember_exception } from 'src/business.logic/errors';
+import { error_id } from 'src/business.logic/errors';
 import FormContent from './form.component';
 import WebApps from './webapp.content.component';
 import {
@@ -120,7 +120,7 @@ export default function Content (props: IContentProps) {
     } catch (e) {
       const message = `Bad page content.\n${(e as Error).message}`;
       ler(message);
-      remember_exception(e, message);
+      error_id(4).remember_exception(e, message); // error 4
       save_content_jsx(contentJsx = null);
     }
     return contentJsx;
@@ -181,7 +181,7 @@ export default function Content (props: IContentProps) {
     } catch (e) {
       const message = `Bad page content. ${(e as Error).message}`;
       ler(message);
-      remember_exception(e, message);
+      error_id(5).remember_exception(e, message); // error 5
       result = contentTable['$default']();
     }
 

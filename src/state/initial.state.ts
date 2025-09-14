@@ -20,7 +20,7 @@ import IState from '../interfaces/IState';
 const _get_global_var = <T=unknown>(varName: string): T => {
   try {
     return window[varName] as T;
-  } catch (e: unknown) {
+  } catch (e) {
     const message = `Global variable "${varName}" does not exist.`;
     console.error(message);
   }
@@ -476,8 +476,8 @@ export default {
     ..._get_global_var(`${GLOBAL_PREFIX}Pathnames`)
   },
 
-  /** Use to let the app know where to find your states. */
-  'stateRegistry': {},
+  'staticRegistry': {},
+  'dynamicRegistry': {},
 
   /** Bootstrap prefix/key for app initialization */
   'bootstrapPrefix': '',

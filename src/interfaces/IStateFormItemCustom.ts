@@ -15,8 +15,31 @@ import {
   RadioGroupProps,
   SvgIconProps
 } from '@mui/material';
+import { IStateKeys } from './IState';
 
-export type TStateFormITemCustomColor = 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
+export type TStateFormITemCustomColor = 'default'
+  | 'primary'
+  | 'secondary'
+  | 'error'
+  | 'info'
+  | 'success'
+  | 'warning';
+
+export type TDirectiveLoad = {
+  [K in IStateKeys]?: string[] | string; // Identifier(s) for the state to be loaded
+};
+
+export type THandleDirectiveType = '$form' | '$form_dialog' | '$none' | '$filter';
+
+export interface IHandleDirective {
+  type: THandleDirectiveType; // The directive type like '$form', '$view', etc.
+  formName?: string;          // Form name for form-related directives
+  endpoint?: string;          // API endpoint for data operations
+  route?: string;             // Route for navigation
+  id?: string;                // Optional ID for specific operations
+  params?: Record<string, string>; // Additional parameters
+  load?: TDirectiveLoad;
+}
 
 export default interface IStateFormItemCustom<T = unknown> {
   callback?: TReduxHandle;
@@ -92,18 +115,35 @@ export default interface IStateFormItemCustom<T = unknown> {
    * Then call with handle:
    * ```ts
    * const formItem = {
-   *   has: {
-   *     handle: 'onclick: callbackGroup.callback1'
+   *   'has': {
+   *     'onclickHandle': 'callbackGroup.callback1'
    *   }
    * };
    * ```
    */
   onclickHandle?: string;
+  /** Check `onclickHandle` documentation for more information. */
   onfocusHandle?: string;
+  /** Check `onclickHandle` documentation for more information. */
   onchangeHandle?: string;
+  /** Check `onclickHandle` documentation for more information. */
   onkeydownHandle?: string;
+  /** Check `onclickHandle` documentation for more information. */
   onblurHandle?: string;
+  /** Check `onclickHandle` documentation for more information. */
   ondeleteHandle?: string;
+  /** `onclick` callback defined using directives */
+  onclickHandleDirective?: IHandleDirective;
+  /** `onfocus` callback defined using directives */
+  onfocusHandleDirective?: IHandleDirective;
+  /** `onchange` callback defined using directives */
+  onchangeHandleDirective?: IHandleDirective;
+  /** `onkeydown` callback defined using directives */
+  onkeydownHandleDirective?: IHandleDirective;
+  /** `onblur` callback defined using directives */
+  onblurHandleDirective?: IHandleDirective;
+  /** `ondelete` callback defined using directives */
+  ondeleteHandleDirective?: IHandleDirective;
   /** Used by the Chip component */
   onClick?: TReduxHandle;
   /** Used by the Chip component */
@@ -141,8 +181,9 @@ export default interface IStateFormItemCustom<T = unknown> {
   /** Message to display if the value of the input field exceeds `maxLength` */
   maxLengthMessage?: string;
   /**
-   * Set to `true` to disable some fields on error.
+   * Set to `true` to disable some fields on error.  
    * [TODO] Does not work. Needs to be implemented.
+   * @deprecated
    */
   disableOnError?: boolean;
   /**
@@ -174,7 +215,7 @@ export default interface IStateFormItemCustom<T = unknown> {
   requiredMessage?: string;
 }
 
-export type THandleCallback = 'onclick'
+export type THandle = 'onclick'
   | 'onchange'
   | 'onkeydown'
   | 'onblur'

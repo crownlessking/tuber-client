@@ -14,7 +14,7 @@ type TParsingType = 'value' | 'property';
 type TThemeFuncArgs = string | number | (string | number)[];
 
 /** @deprecated */
-export default class ThemeParser {
+export default class StateThemeParser {
 
   private _theme?: Theme;
 

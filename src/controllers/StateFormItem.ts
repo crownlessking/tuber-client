@@ -100,16 +100,18 @@ export default class StateFormItem<P = StateForm, T = unknown>
   get onFocus(): Function {
     return this.itemOnFocus
       || (
-        this.itemOnFocus = this.has.getHandleCallback('onfocus')
+        this.itemOnFocus = this.has.getDirectiveHandle('onfocus')
+          || this.has.getHandle('onfocus')
           || this.itemState.onFocus
           || dummy_callback
       );
   }
-  /** Get form field `onClick` value. */
+  /** Get the form field `onClick` callback. */
   get onClick(): Function {
     return this.itemOnClick
       || (
-        this.itemOnClick = this.has.getHandleCallback()
+        this.itemOnClick = this.has.getDirectiveHandle('onclick')
+          || this.has.getHandle('onclick')
           || this.itemState.onClick
           || this.has.callback
           || dummy_callback
@@ -125,7 +127,8 @@ export default class StateFormItem<P = StateForm, T = unknown>
   get onChange(): Function {
     return this.itemOnChange
       || (
-        this.itemOnChange = this.has.getHandleCallback('onchange')
+        this.itemOnChange = this.has.getDirectiveHandle('onchange')
+          || this.has.getHandle('onchange')
           || this.itemState.onChange
           || dummy_callback
       );
@@ -134,7 +137,8 @@ export default class StateFormItem<P = StateForm, T = unknown>
   get onKeyDown(): Function {
     return this.itemOnKeydown
       || (
-        this.itemOnKeydown = this.has.getHandleCallback('onkeydown')
+        this.itemOnKeydown = this.has.getDirectiveHandle('onkeydown')
+          || this.has.getHandle('onkeydown')
           || this.itemState.onKeyDown
           || dummy_callback
       );
@@ -143,7 +147,8 @@ export default class StateFormItem<P = StateForm, T = unknown>
   get onBlur(): Function {
     return this.itemOnBlur
       || (
-        this.itemOnBlur = this.has.getHandleCallback('onblur')
+        this.itemOnBlur = this.has.getDirectiveHandle('onblur')
+          || this.has.getHandle('onblur')
           || this.itemState.onBlur
           || dummy_callback
       );

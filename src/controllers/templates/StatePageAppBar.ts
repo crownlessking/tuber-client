@@ -6,7 +6,7 @@ import type StateAppbarDefault from './StateAppbarDefault';
 import type StatePage from '../StatePage';
 import StatePageAppbarBackground from './StatePageAppbarBackground';
 import StatePageAppbarTypography from './StatePageAppbarTypography';
-import { remember_exception } from '../../business.logic/errors';
+import { error_id } from '../../business.logic/errors';
 import { CSSProperties, HTMLAttributes } from 'react';
 import { AppBarProps, SxProps } from '@mui/material';
 
@@ -250,7 +250,7 @@ export default class StatePageAppbar
             return inheritedTypography;
           }
         }
-      } catch (e: unknown) { remember_exception(e); }
+      } catch (e) { error_id(16).remember_exception(e); /* error 16 */ }
     }
     return {};
   }

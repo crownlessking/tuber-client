@@ -114,7 +114,7 @@ export default interface IStateDialog<T=unknown> extends Omit<IStateForm, 'props
   contentText?: string;
   content?: unknown;
   /** Button component */
-  actions?: IStateFormItem[]; // for defining the dialog actions
+  actions?: IStateFormItem<T>[]; // for defining the dialog actions
   /** [TODO] Check if this property is in use. If not, remove it. */
   showActions?: boolean;
   onSubmit?: () => void;

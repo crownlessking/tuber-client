@@ -8,7 +8,7 @@ import type StateFormItem from '../../../controllers/StateFormItem';
 import StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
 import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
 import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
-import { remember_exception } from '../../../business.logic/errors';
+import { error_id } from '../../../business.logic/errors';
 import {
   BOX,
   BREAK_LINE,
@@ -234,9 +234,9 @@ export default function RecursiveFormItems (props: IRecursiveFormBuilder) {
     return itemsToRender.map((item, i) => {
       try {
         return itemsTable[item.type.toLowerCase()](item, i);
-      } catch (e: unknown) {
+      } catch (e) {
         const message = `Form item type (${item.type}) does not exist.`;
-        remember_exception(e, message);
+        error_id(19).remember_exception(e, message); // error 19
         log(message);
         return (
           <div key={`bad-field${depth}-${i}`}>

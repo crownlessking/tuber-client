@@ -43,7 +43,13 @@ export default class StateSession
     ) {
       return true;
     }
-    remember_possible_error(`Invalid session`, this._sessionState);
+    remember_possible_error({
+      code: 'AUTHENTICATION_REQUIRED',
+      title: `Missing both user name and role`,
+      meta: {
+        context: this._sessionState
+      }
+    });
     return false;
   }
 }

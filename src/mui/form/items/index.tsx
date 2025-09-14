@@ -33,7 +33,7 @@ import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwi
 import StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
 import StateJsxPhoneInput from './state.jsx.phone.input';
 import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox';
-import { remember_exception } from '../../../business.logic/errors';
+import { error_id } from '../../../business.logic/errors';
 import {
   get_styled_div,
   StateJsxHtmlA,
@@ -445,9 +445,9 @@ const RecursiveFormItems = (props: IRecursiveFormBuilder) => {
       try {
         item.has.defaultValue && itemsWithDefaultValues.push(item)
         return itemsTable[item.type.toLowerCase()](item, i)
-      } catch (e: unknown) {
+      } catch (e) {
         const message = `Form item type (${item.type}) does not exist.`;
-        remember_exception(e);
+        error_id(25).remember_exception(e); // error 25
         log(message);
         return (
           <div key={`bad-field${depth}-${i}`}>

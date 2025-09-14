@@ -1,9 +1,9 @@
 import { get_parsed_content  } from '../../../controllers';
 import { type IRedux } from 'src/state';
-import { remember_error, remember_exception } from 'src/business.logic/errors';
+import { error_id } from 'src/business.logic/errors';
 import { URL_DIALOG_ID_NEW } from '../tuber.config';
 import parse_platform_video_url from '../tuber.platform.drivers';
-import FormValidationPolicy from 'src/controllers/FormValidationPolicy';
+import FormValidationPolicy from 'src/business.logic/FormValidationPolicy';
 import { get_dialog_state } from 'src/state/net.actions';
 import { get_state_form_name, safely_get_as } from '../../../business.logic';
 import { ler, pre } from '../../../business.logic/logging';
@@ -55,12 +55,12 @@ export default function dialog_new_bookmark_from_url(redux: IRedux) {
       const video = parse_platform_video_url(url);
       if (!video.urlCheck.valid) {
         ler(`dialog_new_bookmark_from_url: ${video.urlCheck.message}`);
-        remember_error({
-          code: 'bad_value',
+        error_id(1073).remember_error({
+          code: 'INTERNAL_ERROR',
           title: 'Invalid URL',
           detail: video.urlCheck.message,
           source: { pointer: url }
-        });
+        }); // error 1073
         errorMessage.emit('url', video.urlCheck.message);
         return;
       }
@@ -160,9 +160,9 @@ export default function dialog_new_bookmark_from_url(redux: IRedux) {
       } else {
         redux.store.dispatch({ type: 'dialog/dialogOpen' });
       }
-    } catch (e: unknown) {
+    } catch (e) {
       ler(`dialog_new_bookmark_from_url: ${(e as Error).message}`);
-      remember_exception(e);
+      error_id(1038).remember_exception(e); // error 1038
     }
   };
 }

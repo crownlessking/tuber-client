@@ -1,10 +1,18 @@
 import { Fragment, memo, useState, ChangeEvent } from 'react';
 import {
-  CardContent, Grid, IconButton, InputAdornment, Paper, Toolbar, 
-  Typography
+  CardContent,
+  Grid,
+  IconButton,
+  InputAdornment,
+  Paper,
+  SxProps,
+  Theme,
+  Toolbar, 
+  Typography,
+  useTheme
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import JsonapiError from '../../controllers/jsonapi.error';
+import JsonapiError from '../../business.logic/jsonapi.error';
 import StatePage from '../../controllers/StatePage';
 import { IJsonapiError } from '../../interfaces/IJsonapi';
 import {
@@ -15,50 +23,50 @@ import {
 import InputBase from '@mui/material/InputBase';
 import { StateJsxIcon } from '../../mui/icon';
 
-interface IPageErrorsProps {
-  def: StatePage;
-}
-
 type TSetLastSelected = <T>($class: T) => void;
+type TClasses = 'errorCardHover' | 'errorCardClicked';
+type TStyles = {[key in TClasses]: SxProps };
+type TGetErrorCardStyles = (theme: Theme) => TStyles;
+
+interface IPageErrorsProps { def: StatePage; }
 
 interface IHive {
-  selected_id?: string;
+  selected_i?: number;
   filter?: string;
   setSelected?: TSetLastSelected;
   setState?: (state: string) => void;
 }
 
 interface IErrorListItemProp {
+  i: number;
   errorState: IJsonapiError;
   /** data shared between detail & error components */
   hive: IHive;
 }
 
-const styles = {
+const getErrorCardStyles: TGetErrorCardStyles = (theme: Theme) => ({
   errorCardHover: {
     '&:hover': {
-      backgroundColor: '#f0f8ff',
+      backgroundColor: theme.palette.action.hover,
       cursor: 'pointer'
     },
   },
   errorCardClicked: {
     '&:hover': {
-      backgroundColor: '#f0f8ff',
+      backgroundColor: theme.palette.action.hover,
       cursor: 'pointer'
     },
-    backgroundColor: '#d7ecff !important'
+    backgroundColor: `${theme.palette.action.selected} !important`
   }
-};
-
-type TClasses = keyof typeof styles;
+});
 
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: 20,
-  border: `2px solid ${theme.palette.grey[300]}`,
-  backgroundColor: theme.palette.grey[300],
+  border: `2px solid ${theme.palette.divider}`,
+  backgroundColor: theme.palette.background.paper,
   '&:hover': {
-    backgroundColor: theme.palette.grey[200],
+    backgroundColor: theme.palette.action.hover,
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
@@ -109,41 +117,51 @@ const ClearOutlinedIcon = memo(() => (
   />
 ));
 
+/** Original color: '#9e9e9e' */
 const SearchIcon = memo(() => (
   <StateJsxIcon
     name='search'
-    config={{ sx: {'color': '#9e9e9e'} }}
+    config={{ sx: {'color': 'text.secondary'} }}
   />
 ));
 
 /** Highlight all occurence of a substring into a value */
-const highlight = (str: string, regex: string) => {
+const highlight = (str: string, regex: string, theme: Theme) => {
+  const style = [
+    `background-color:${theme.palette.warning.light}`,
+    `color:${theme.palette.warning.contrastText}`
+  ].join(';');
   const regularExp = new RegExp(regex, 'g');
   return str.replace(
     regularExp,
-    match => `<span style="background-color: yellow">${match}</span>`
+    match => `<span style="${style}">${match}</span>`
   );
 };
 
 /** Same as the highlight function but returns a JSX.Element. */
 const Highlight = ({
   value,
-  regex
-}: { value: string, regex: string }): JSX.Element => {
+  regex,
+  theme
+}: { value: string, regex: string, theme: Theme }): JSX.Element => {
+  const style = [
+    `background-color:${theme.palette.warning.light}`,
+    `color:${theme.palette.warning.contrastText}`
+  ].join(';');
   const regularExp = new RegExp(regex, 'g');
   return <span dangerouslySetInnerHTML={{
     __html: value.replace(
       regularExp,
-      match => `<span style="background-color: yellow">${match}</span>`
+      match => `<span style="${style}">${match}</span>`
     )
   }} />;
 };
 
 /** Highlight all matches found as substring into json. */
-const jsonWithMatches = (state: string, filters: string[]): string => {
+const jsonWithMatches = (state: string, filters: string[], theme: Theme): string => {
   let highlightedState = state;
   filters.forEach(filter => {
-    highlightedState = highlight(highlightedState, filter);
+    highlightedState = highlight(highlightedState, filter, theme);
   })
   return highlightedState;
 };
@@ -151,48 +169,52 @@ const jsonWithMatches = (state: string, filters: string[]): string => {
 /** Highlight all matches found as substring in code. */
 const CodeWithMatches = ({
   code,
-  matches
-}: { code: string, matches: string[] }): JSX.Element => {
-  return <Highlight value={code} regex={matches.join('|')} />;
+  matches,
+  theme
+}: { code: string, matches: string[], theme: Theme }): JSX.Element => {
+  return <Highlight value={code} regex={matches.join('|')} theme={theme} />;
 };
 
 const IdWithMatches = ({
   id,
-  matches
-}: { id: string, matches: string[] }) => {
-  return <Highlight value={id} regex={matches.join('|')} />;
+  matches,
+  theme
+}: { id: string, matches: string[], theme: Theme }) => {
+  return <Highlight value={id} regex={matches.join('|')} theme={theme} />;
 };
 
 const TitleWithMatches = ({
   title,
-  matches
-}: { title: string, matches: string[] }) => {
+  matches,
+  theme
+}: { title: string, matches: string[], theme: Theme }) => {
   return (
     <Typography variant='subtitle2' component='div'>
-      <Highlight value={title} regex={matches.join('|')} />
+      <Highlight value={title} regex={matches.join('|')} theme={theme} />
     </Typography>
   );
 };
 
 /** List of errors in the left column. */
-function ErrorListItem({ errorState: errorJson, hive }: IErrorListItemProp): JSX.Element | null {
+function ErrorListItem({ i, errorState: errorJson, hive }: IErrorListItemProp): JSX.Element | null {
+  const theme = useTheme();
+  const styles = getErrorCardStyles(theme);
   const error = new JsonapiError(errorJson);
   const [ $class, setClass ] = useState<TClasses>('errorCardHover');
 
   const onPaperClick = () => {
-    if (error.id !== hive.selected_id) {
+    if (i !== hive.selected_i) {
       hive.setSelected && hive.setSelected<TClasses>('errorCardHover');
       setClass('errorCardClicked');
       if (hive.filter) {
-        // const highlightedJson = color_json_code(error.json)
         const jsonStr = format_json_code(error.json);
-        const json = jsonWithMatches(jsonStr, hive.filter.split(/\s+/));
+        const json = jsonWithMatches(jsonStr, hive.filter.split(/\s+/), theme);
         hive.setState && hive.setState(json);
       } else {
-        const json = color_json_code(error.json);
+        const json = color_json_code(error.json, theme);
         hive.setState && hive.setState(json);
       }
-      hive.selected_id = error.id;
+      hive.selected_i = i;
       hive.setSelected = setClass as TSetLastSelected;
     }
   };
@@ -212,11 +234,11 @@ function ErrorListItem({ errorState: errorJson, hive }: IErrorListItemProp): JSX
       <Paper square sx={styles[$class]} onClick={onPaperClick}>
         <CardContent>
           <Typography sx={{ fontSize: 14 }} color='text.secondary' gutterBottom>
-            <IdWithMatches id={error.id} matches={idMatches} />
+            <IdWithMatches id={error.id} matches={idMatches} theme={theme} />
             :
-            <CodeWithMatches code={error.code} matches={codeMatches} />
+            <CodeWithMatches code={error.code} matches={codeMatches} theme={theme} />
           </Typography>
-          <TitleWithMatches title={error.title} matches={titleMatches} />
+          <TitleWithMatches title={error.title} matches={titleMatches} theme={theme} />
         </CardContent>
       </Paper>
     );
@@ -241,7 +263,7 @@ function ErrorBody({ hive }: { hive: IHive }): JSX.Element | null {
     <Grid
       xs={true}
       sx={{
-        height: '100vh', // 'calc(100vh - 64px)'
+        height: '100vh',
         p: 2,
       }}
       item
@@ -260,12 +282,6 @@ function ErrorBody({ hive }: { hive: IHive }): JSX.Element | null {
 export default function PageErrors({ def: page }: IPageErrorsProps) {
   const errors = get_errors_list();
   const [ filter, setFilter ] = useState<string>('');
-
-  let i = 0;
-  while (i < errors.length) {
-    errors[i].id = ''+i;
-    i++;
-  }
 
   const handleSearchChange = (e: unknown) => {
     setFilter((e as ChangeEvent<HTMLInputElement>).target.value);
@@ -314,7 +330,7 @@ export default function PageErrors({ def: page }: IPageErrorsProps) {
           </Search>
           <ErrorList>
             {errors.slice(0).reverse().map((e, i) => (
-              <ErrorListItem key={`e-${i}`} errorState={e} hive={hive} />
+              <ErrorListItem i={i} key={`e-${i}`} errorState={e} hive={hive} />
             ))}
           </ErrorList>
         </Grid>
