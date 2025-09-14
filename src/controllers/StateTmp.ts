@@ -14,16 +14,18 @@ function error_msg(msg: string) {
 }
 
 export default class StateTmp extends AbstractState {
-  private _parentDef?: State;
   private _dispatch?: Function;
 
-  constructor(private _tmpState: Record<string, unknown>, parent?: State) {
+  constructor(private _tmpState: Record<string, unknown>,
+    private _parentDef?: State
+  ) {
     super();
-    this._parentDef = parent;
   }
 
   get state(): Record<string, unknown> { return this._tmpState; }
-  get parent(): State { return this._parentDef || new State(); }
+  get parent(): State {
+    return this._parentDef ?? (this._parentDef = new State());
+  }
   get props(): Record<string, unknown> { return this.die('Not implemented yet.', {}); }
   get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
 

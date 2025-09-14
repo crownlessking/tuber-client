@@ -14,22 +14,22 @@ const EMPTY_PAGES_RANGE: ILoadedPagesRange = {
 };
 
 export default class StateDataPagesRange extends AbstractState {
-  private _pagesRangeState: IStateDataPagesRange;
-  private _parentDef?: State;
   private _maxLoadedPages?: number;
   private _endpoint?: string;
   private _pageSize?: number;
   private _pageToBeDropped?: string;
   private _newPageRange?: ILoadedPagesRange;
 
-  constructor(pagesRangeState: IStateDataPagesRange, parent?: State) {
+  constructor(private _pagesRangeState: IStateDataPagesRange,
+    private _parentDef?: State
+  ) {
     super();
-    this._pagesRangeState = pagesRangeState || {};
-    this._parentDef = parent;
   }
 
   get state(): unknown { return this._pagesRangeState; }
-  get parent(): unknown { return this._parentDef || new State(); }
+  get parent(): State {
+    return this._parentDef ?? (this._parentDef = new State());
+  }
   get props(): unknown { return this.die('Method not implemented.', {}); }
   get theme(): unknown { return this.die('Method not implemented.', {}); }
 

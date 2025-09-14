@@ -20,23 +20,22 @@ interface IConfigure {
  * It is also used to fetch data from the server.
  */
 export default class StateData extends AbstractState {
-
-  private _dataState: IStateData;
-  private _parentDef?: State;
   private _reduxDispatch?: AppDispatch;
   private _endpoint?: string;
   private _flattenedCollection?: IJsonapiDataAttributes[];
   private _includedProps: { id: boolean, types: boolean };
 
-  constructor(dataState: IStateData, parent?: State) {
+  constructor(private _dataState: IStateData,
+    private _parentDef?: State
+  ) {
     super();
-    this._dataState = dataState;
-    this._parentDef = parent;
     this._includedProps = { id: false, types: false};
   }
 
   get state(): IStateData { return this._dataState; }
-  get parent(): State { return this._parentDef || new State(); }
+  get parent(): State {
+    return this._parentDef ?? (this._parentDef = new State());
+  }
   get props(): TObj { return this.die('Not implemented yet.', {}); }
   get theme(): TObj { return this.die('Not implemented yet.', {}); }
 

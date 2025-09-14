@@ -4,17 +4,16 @@ import State from './State';
 
 export default class StateTopLevelLinks extends AbstractState {
 
-  private _parentDef?: State;
-  private topLevelLinksState: IStateTopLevelLinks;
-
-  constructor(topLevelLinksState: IStateTopLevelLinks, parent?: State) {
+  constructor(private _topLevelLinksState: IStateTopLevelLinks,
+    private _parentDef?: State
+  ) {
     super();
-    this._parentDef = parent;
-    this.topLevelLinksState = topLevelLinksState;
   }
 
-  get state(): IStateTopLevelLinks { return this.topLevelLinksState; }
-  get parent(): State { return this._parentDef || new State(); }
+  get state(): IStateTopLevelLinks { return this._topLevelLinksState; }
+  get parent(): State {
+    return this._parentDef ?? (this._parentDef = new State());
+  }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }
 }

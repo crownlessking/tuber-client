@@ -9,19 +9,19 @@ import { no_path_vars, route_match_template } from '.';
 import { log } from '../business.logic/logging';
 
 export default class StateAllPages extends AbstractState {
-  private _allPagesState: IStateAllPages;
-  private _parentDef?: State;
 
-  constructor(allPagesState: IStateAllPages, parent?: State) {
+  constructor(private _allPagesState: IStateAllPages,
+    private _parentDef?: State
+  ) {
     super();
-    this._allPagesState = allPagesState;
-    this._parentDef = parent;
   }
 
   /** Get a copy of all pages json. */
   get state(): IStateAllPages { return this._allPagesState; }
   /** Chain-access root definition. */
-  get parent(): State { return this._parentDef || new State(); }
+  get parent(): State {
+    return this._parentDef ?? (this._parentDef = new State());
+  }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }
 

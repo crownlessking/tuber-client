@@ -1,23 +1,23 @@
-import AbstractState from './AbstractState'
-import State from './State'
-import IStateDialog from '../interfaces/IStateDialog'
-import type StateDialogSelectionItem from './templates/StateDialogSelectionItem'
-import IStateFormItem from '../interfaces/IStateFormItem'
-import { CSSProperties } from 'react'
-import { DialogContentTextProps } from '@mui/material'
+import AbstractState from './AbstractState';
+import State from './State';
+import IStateDialog from '../interfaces/IStateDialog';
+import type StateDialogSelectionItem from './templates/StateDialogSelectionItem';
+import IStateFormItem from '../interfaces/IStateFormItem';
+import { CSSProperties } from 'react';
+import { DialogContentTextProps } from '@mui/material';
 
 export default class StateDialog<T = unknown> extends AbstractState implements IStateDialog<T> {
-  protected parentDef?: State
-  protected dialogState: IStateDialog<T>
 
-  constructor(dialogState: IStateDialog<T>, parent?: State) {
-    super()
-    this.parentDef = parent
-    this.dialogState = dialogState
+  constructor(protected dialogState: IStateDialog<T>,
+    protected parentDef?: State
+  ) {
+    super();
   }
 
   get state(): IStateDialog<T> { return this.dialogState; }
-  get parent(): State { return this.parentDef || new State() }
+  get parent(): State {
+    return this.parentDef ?? (this.parentDef = new State());
+  }
   get props() { return this.dialogState.props }
   get theme(): CSSProperties { return this.die('Not implemented yet.', {}) }
   get _type() { return this.dialogState._type || 'any' }

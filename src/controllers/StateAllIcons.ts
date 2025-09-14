@@ -5,13 +5,11 @@ import State from './State';
 import StateIcon from './StateIcon';
 
 export default class StateAllIcons extends AbstractState {
-  private _allIconsState: IStateAllIcons;
-  private _parentDef?: State;
 
-  constructor(allIconsState: IStateAllIcons, parent?: State) {
+  constructor(private _allIconsState: IStateAllIcons,
+    private _parentDef?: State
+  ) {
     super();
-    this._allIconsState = allIconsState;
-    this._parentDef = parent;
   }
 
   /** Get a copy of all icons definition. */
@@ -20,8 +18,8 @@ export default class StateAllIcons extends AbstractState {
   }
 
   /** Chain-access to root definition. */
-  get parent(): State { 
-    return this._parentDef || new State(); 
+  get parent(): State {
+    return this._parentDef ?? (this._parentDef = new State());
   }
 
   get props(): unknown { 

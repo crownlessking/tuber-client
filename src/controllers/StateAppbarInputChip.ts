@@ -12,15 +12,16 @@ export default class StateAppbarInputChip extends AbstractState {
   private _route?: string;
   private _template?: string;
 
-  constructor(
-    private _allChipState: TStateAllChips,
+  constructor(private _allChipState: TStateAllChips,
     private _parentDef?: State
   ) {
     super();
   }
 
   get state(): TStateAllChips { return this._allChipState; }
-  get parent(): State { return this._parentDef ?? new State(); }
+  get parent(): State {
+    return this._parentDef ?? (this._parentDef = new State());
+  }
   get props(): unknown { return this.die('\'props\' not implemented yet.', {}); }
   get theme(): unknown { return this.die('\'theme\' not implemented yet.', {}); }
 

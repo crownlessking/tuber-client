@@ -8,15 +8,16 @@ import { TWithRequired } from '../interfaces';
 
 export default class StateAppbarQueries extends AbstractState {
 
-  constructor(
-    protected _searchesState: TStateAppbarQueries,
+  constructor(protected _searchesState: TStateAppbarQueries,
     protected _parentDef?: State
   ) {
     super();
   }
 
   get state(): TStateAppbarQueries { return this._searchesState; }
-  get parent(): State { return this._parentDef || new State(); }
+  get parent(): State {
+    return this._parentDef ?? (this._parentDef = new State());
+  }
   get props(): unknown { return this.die('\'props\' not implemented yet.', {}); }
   get theme(): unknown { return this.die('\'theme\' not implemented yet.', {}); }
 

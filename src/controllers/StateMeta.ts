@@ -6,17 +6,14 @@ import { error_id } from 'src/business.logic/errors';
 
 export default class StateMeta extends AbstractState {
 
-  private _metaState: TObj;
-  private _parentDef?: State;
-
-  constructor (metaState: TObj, parent?: State) {
+  constructor (private _metaState: TObj, private _parentDef?: State) {
     super();
-    this._metaState = metaState;
-    this._parentDef = parent;
   }
 
   get state(): TObj { return this._metaState; }
-  get parent (): State { return this._parentDef || new State(); }
+  get parent (): State {
+    return this._parentDef ?? (this._parentDef = new State());
+  }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }
 

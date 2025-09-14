@@ -5,22 +5,21 @@ import IStateAllForms from '../interfaces/IStateAllForms';
 import { log } from '../business.logic/logging';
 
 export default class StateAllForms extends Controller {
-
-  private _allFormsState: IStateAllForms;
-  private _parentDef?: State;
   private _lastFormName: string;
 
-  constructor (allFormsState: IStateAllForms, parent?: State) {
+  constructor (private _allFormsState: IStateAllForms,
+    private _parentDef?: State
+  ) {
     super();
-    this._parentDef = parent;
-    this._allFormsState = allFormsState;
     this._lastFormName = '';
   }
 
   /** Get all forms json. */
   get state(): IStateAllForms { return this._allFormsState; }
   /** Chain-access to root definition. */
-  get parent(): State { return this._parentDef || new State(); }
+  get parent(): State {
+    return this._parentDef ?? (this._parentDef = new State());
+  }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }
 

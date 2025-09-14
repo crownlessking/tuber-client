@@ -5,20 +5,21 @@ import State from './State';
 import StateAnchorOrigin from './StateAnchorOrigin';
 
 export default class StateSnackbar
-    extends AbstractState implements IStateSnackbar {
-
-  private _parentDef?: State;
-  private _snackbarState:  IStateSnackbar;
+  extends AbstractState
+  implements IStateSnackbar
+{
   private _snackbarAnchorOrigin?: StateAnchorOrigin;
 
-  constructor(snackbarState: IStateSnackbar, parent?: State) {
+  constructor(private _snackbarState: IStateSnackbar,
+    private _parentDef?: State
+  ) {
     super();
-    this._parentDef = parent;
-    this._snackbarState = snackbarState;
   }
 
   get state(): IStateSnackbar { return this._snackbarState; }
-  get parent(): State { return this._parentDef || new State(); }
+  get parent(): State {
+    return this._parentDef ?? (this._parentDef = new State());
+  }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }
   get anchorOrigin(): StateAnchorOrigin {

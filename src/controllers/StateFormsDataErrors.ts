@@ -7,14 +7,15 @@ const EXCEPTION_MESSAGE = 'StateFormsDataErrors: configure instance with \'formN
 export default class StateFormsDataErrors<T=unknown> extends AbstractState {
   private _formName?: string;
 
-  constructor (
-    private formsDataErrorsState: IStateFormsDataErrors,
+  constructor (private formsDataErrorsState: IStateFormsDataErrors,
     private parentDef?: State
   ) {
     super();
   }
 
-  get parent(): unknown { return this.parentDef || new State(); }
+  get parent(): State {
+    return this.parentDef ?? (this.parentDef = new State());
+  }
   get state(): IStateFormsDataErrors { return this.formsDataErrorsState; }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }

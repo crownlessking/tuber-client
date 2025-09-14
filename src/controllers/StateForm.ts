@@ -12,7 +12,9 @@ export default class StateForm extends AbstractState implements IStateForm {
   private _ePoint?: string;
   private _fname: string;
 
-  constructor (private _formState: IStateForm, private _parentDef?: StateAllForms) {
+  constructor (private _formState: IStateForm,
+    private _parentDef?: StateAllForms
+  ) {
     super();
     this._formState = _formState;
     if (this._parentDef instanceof StateAllForms) {
@@ -25,7 +27,7 @@ export default class StateForm extends AbstractState implements IStateForm {
   get state(): IStateForm { return this._formState; }
   /** Chain-access to all forms definition. */
   get parent(): StateAllForms {
-    return this._parentDef ?? new State().allForms;
+    return this._parentDef ?? (this._parentDef = new State().allForms);
   }
   get props(): Record<string, unknown> {
     return {

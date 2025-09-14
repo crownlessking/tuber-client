@@ -21,15 +21,12 @@ import { IJsonapiPageLinks } from '../interfaces/IJsonapi';
 import { CSSProperties } from 'react';
 
 export default class StatePage extends AbstractState implements IStatePage {
-
   static EMPTY_APPBAR: IStateAppbar = { items: [] };
   static EMPTY_DRAWER: IStateDrawer = {
     items: [],
     open: false,
     width: 300
   };
-  private _parentDef?: StateAllPages;
-  private _pageState: IStatePage;
   private _pageId?: string;
   private _pageAppbarState?: IStateAppbar;
   private _pageAppbar?: StatePageAppbar;
@@ -50,10 +47,10 @@ export default class StatePage extends AbstractState implements IStatePage {
    *
    * @param pageState 
    */
-  constructor(pageState: IStatePage, parent?: StateAllPages) {
+  constructor(private _pageState: IStatePage,
+    private _parentDef?: StateAllPages
+  ) {
     super();
-    this._parentDef = parent;
-    this._pageState = pageState;
     this._pageId = this._pageState._id;
     this._noPageAppbar = !this._pageState.appbar;
     this._noPageDrawer = !this._pageState.drawer;
@@ -63,7 +60,9 @@ export default class StatePage extends AbstractState implements IStatePage {
   /** Get the page json. */
   get state(): IStatePage { return this._pageState; }
   /** Chain-access to all pages definition. */
-  get parent(): StateAllPages { return this._parentDef || new State().allPages; }
+  get parent(): StateAllPages {
+    return this._parentDef ?? (this._parentDef = new State().allPages);
+  }
   get props(): Record<string, unknown> { return this.die('Not implemented yet.', {}); }
   get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
   /**

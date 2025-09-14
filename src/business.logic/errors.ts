@@ -297,7 +297,7 @@ export const report_missing_registry_value = (registryKey: unknown): void => {
  * ```ts
  * error_id(1).remember_exception(error);
  * ```
- * Error cound: **34**
+ * Error handling count: **47**
  */
 export function error_id(id: number) {
   set_error_id(id);
