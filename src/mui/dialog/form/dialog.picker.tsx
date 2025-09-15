@@ -11,8 +11,10 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useState } from 'react';
 import { THive } from '.';
-import type StateForm from '../../../controllers/StateForm';
-import type StateFormItem from '../../../controllers/StateFormItem';
+import type {
+  StateForm,
+  StateFormItem
+} from '../../../controllers';
 import { error_id } from '../../../business.logic/errors';
 import { NAME_NOT_SET } from '../../../constants.client';
 import { log } from '../../../business.logic/logging';

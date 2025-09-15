@@ -23,13 +23,12 @@ import { IRedux, RootState } from '.';
 import { IJsonapiBaseResponse, IJsonapiError } from '../interfaces/IJsonapi';
 import { cancel_spinner, schedule_spinner } from './spinner';
 import IStateDialog from '../interfaces/IStateDialog';
-import StateNet from '../controllers/StateNet';
+import { StateNet, StateRegistry } from '../controllers';
 import { TThemeMode } from '../interfaces';
 import Config from '../config';
 import { THEME_DEFAULT_MODE, THEME_MODE } from '../constants.client';
 import { net_patch_state } from './actions';
 import { ler, pre } from '../business.logic/logging';
-import { StateRegistry } from '../controllers/StateRegistry';
 
 const DEFAULT_HEADERS: RequestInit['headers'] = {
   'Accept': 'application/json',

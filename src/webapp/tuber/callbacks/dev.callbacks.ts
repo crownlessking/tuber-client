@@ -9,7 +9,7 @@ import {
   dev_create_bookmark_search_index,
   dev_get_bookmarks_callback
 } from './dev.bookmarks.200';
-import { get_parsed_content } from 'src/controllers';
+import { get_parsed_content } from 'src/business.logic/parsing';
 import { error_id } from '../../../business.logic/errors';
 import dev_get_video_thumbnail from './dev.get.video.thumbnail';
 import {
@@ -25,7 +25,7 @@ import { get_state_form_name, safely_get_as } from '../../../business.logic';
 import Config from 'src/config';
 import { TPlatform } from '../tuber.interfaces';
 import { pre } from '../../../business.logic/logging';
-import JsonapiRequest from 'src/business.logic/jsonapi.request';
+import JsonapiRequest from 'src/business.logic/JsonapiRequest';
 import { get_registry_val } from './_callbacks.common.logic';
 
 /**

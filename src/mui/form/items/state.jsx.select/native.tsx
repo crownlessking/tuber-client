@@ -4,9 +4,11 @@ import NativeSelect from '@mui/material/NativeSelect';
 import TextField from '@mui/material/TextField';
 import { useSelector } from 'react-redux';
 import { NAME_NOT_SET } from '../../../../constants.client';
-import type StateFormItemSelect from '../../../../controllers/templates/StateFormItemSelect';
+import {
+  type StateFormItemSelect,
+  StateFormsData
+} from '../../../../controllers';
 import type { RootState } from '../../../../state';
-import StateFormsData from '../../../../controllers/StateFormsData';
 
 interface IDialogSelectNative { def: StateFormItemSelect; }
 

@@ -1,7 +1,7 @@
 import { ler } from '../business.logic/logging';
 import { error_id } from '../business.logic/errors';
 
-export class StateRegistry {
+export default class StateRegistry {
   
   constructor(private _registryState: Record<string, unknown>) {}
 

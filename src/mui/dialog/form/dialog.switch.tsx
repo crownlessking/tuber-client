@@ -4,7 +4,7 @@ import FormGroup from '@mui/material/FormGroup';
 import Switch from '@mui/material/Switch';
 import { useState } from 'react';
 import { THive } from '.';
-import type StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import { type StateFormItemSwitch } from '../../../controllers';
 import {
   ICheckboxesData,
   update_checkboxes,

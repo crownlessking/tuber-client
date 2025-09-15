@@ -1,17 +1,21 @@
 import {
-  Divider, Drawer, List, ListItem, ListItemIcon, ListItemText, Toolbar
+  Divider,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Toolbar
 } from '@mui/material';
 import { Fragment } from 'react';
 import { useSelector } from 'react-redux';
-import type StateDrawerResponsive from 'src/controllers/templates/StateDrawerResponsive';
+import { type StateDrawerResponsive } from '../../controllers';
+import { get_formatted_route } from '../../controllers/StateLink';
 import store, { type RootState, actions } from 'src/state';
 import { Link as RouterLink } from 'react-router-dom';
-import { get_formatted_route } from 'src/controllers/StateLink';
 import { StateJsxUnifiedIconProvider } from '../icon';
 
-interface IResDrawerProps {
-  def: StateDrawerResponsive;
-}
+interface IResDrawerProps { def: StateDrawerResponsive; }
 
 export default function ResponsiveDrawer({ def: drawer }: IResDrawerProps) {
   const open = useSelector((state: RootState) => state.drawer.open);

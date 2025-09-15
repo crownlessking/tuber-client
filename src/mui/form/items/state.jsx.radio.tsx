@@ -3,10 +3,9 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-import type StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
+import { type StateFormItemRadio, StateFormsData } from '../../../controllers';
 import { type RootState } from '../../../state';
 import { useSelector } from 'react-redux';
-import StateFormsData from 'src/controllers/StateFormsData';
 
 interface IDialogRadio { def: StateFormItemRadio; }
 

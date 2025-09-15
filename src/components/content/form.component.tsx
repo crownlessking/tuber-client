@@ -10,8 +10,7 @@ import {
   THEME_MODE
 } from '../../constants.client';
 import { post_req_state } from '../../state/net.actions';
-import StateForm from '../../controllers/StateForm';
-import StateAllForms from 'src/controllers/StateAllForms';
+import { StateForm, StateAllForms } from '../../controllers';
 import { get_state_form_name } from '../../business.logic';
 import { TThemeMode } from 'src/interfaces';
 

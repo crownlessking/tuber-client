@@ -1,7 +1,9 @@
-import StateForm from 'src/controllers/StateForm';
 import { THive } from '..';
-import type StateFormItem from '../../../../controllers/StateFormItem';
-import StateFormItemSelect from '../../../../controllers/templates/StateFormItemSelect';
+import {
+  StateForm,
+  type StateFormItem,
+  StateFormItemSelect
+} from '../../../../controllers';
 import DialogSelectDefault from './default.select';
 import DialogSelectNative from './native.select';
 import IStateFormItemSelectOption from 'src/interfaces/IStateFormItemSelectOption';

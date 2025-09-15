@@ -1,12 +1,12 @@
-import { get_parsed_content  } from '../../../controllers';
+import { get_parsed_content } from 'src/business.logic/parsing';
 import { type IRedux } from 'src/state';
 import { error_id } from 'src/business.logic/errors';
 import { URL_DIALOG_ID_NEW } from '../tuber.config';
 import parse_platform_video_url from '../tuber.platform.drivers';
 import FormValidationPolicy from 'src/business.logic/FormValidationPolicy';
 import { get_dialog_state } from 'src/state/net.actions';
-import { get_state_form_name, safely_get_as } from '../../../business.logic';
-import { ler, pre } from '../../../business.logic/logging';
+import { get_state_form_name, safely_get_as } from 'src/business.logic';
+import { ler, pre } from 'src/business.logic/logging';
 
 /**
  * Shows the dialog to insert a new video url from which the video bookmark

@@ -1,5 +1,5 @@
 import { DialogContentProps } from '@mui/material';
-import { get_parsed_content } from '..';
+import { get_parsed_content } from '../../business.logic/parsing';
 import { IStatePageContent } from '../../interfaces/IStatePage';
 import StateDialog from '../StateDialog';
 import type StateForm from '../StateForm';

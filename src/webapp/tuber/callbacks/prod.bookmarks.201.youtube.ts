@@ -1,4 +1,4 @@
-import JsonapiRequest from '../../../business.logic/jsonapi.request';
+import JsonapiRequest from '../../../business.logic/JsonapiRequest';
 import { post_req_state } from '../../../state/net.actions';
 import { type IRedux } from '../../../state';
 import { DIALOG_YOUTUBE_NEW_ID, FORM_YOUTUBE_NEW_ID } from '../tuber.config';

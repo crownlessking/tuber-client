@@ -12,7 +12,7 @@ import {
   useTheme
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import JsonapiError from '../../business.logic/jsonapi.error';
+import JsonapiError from '../../business.logic/JsonapiError';
 import StatePage from '../../controllers/StatePage';
 import { IJsonapiError } from '../../interfaces/IJsonapi';
 import {

@@ -5,10 +5,9 @@ import TextField from '@mui/material/TextField';
 import { useSelector } from 'react-redux';
 import { TBoolVal } from '../../../common.types';
 import { NAME_NOT_SET } from '../../../constants.client';
-import type StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import { type StateFormItemSwitch, StateFormsData } from '../../../controllers';
 import { type RootState } from '../../../state';
 import { to_bool_val } from '../_form.common.logic';
-import StateFormsData from 'src/controllers/StateFormsData';
 
 interface IJsonSingleSwitch {
   def: StateFormItemSwitch;

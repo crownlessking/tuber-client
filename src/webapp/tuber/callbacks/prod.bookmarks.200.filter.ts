@@ -1,6 +1,8 @@
-import StateApp from 'src/controllers/StateApp';
-import StateAppbarQueries from 'src/controllers/StateAppbarQueries';
-import StateData from 'src/controllers/StateData';
+import {
+  StateApp,
+  StateAppbarQueries,
+  StateData
+} from 'src/controllers';
 import { type IRedux } from 'src/state';
 import { IBookmark } from '../tuber.interfaces';
 

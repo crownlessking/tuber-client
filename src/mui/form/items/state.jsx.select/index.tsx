@@ -1,6 +1,8 @@
-import type StateForm from 'src/controllers/StateForm';
-import type StateFormItem from '../../../../controllers/StateFormItem';
-import StateFormItemSelect from '../../../../controllers/templates/StateFormItemSelect';
+import {
+  type StateForm,
+  type StateFormItem,
+  StateFormItemSelect
+} from '../../../../controllers';
 import StateJsxSelectDefault from './default';
 import StateJsxSelectNative from './native';
 import IStateFormItemSelectOption from 'src/interfaces/IStateFormItemSelectOption';

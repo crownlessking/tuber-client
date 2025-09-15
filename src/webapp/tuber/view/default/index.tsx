@@ -1,6 +1,10 @@
 import '../tuber.css';
 import { Fragment, useLayoutEffect, useMemo } from 'react';
-import StatePage from '../../../../controllers/StatePage';
+import {
+  StatePage,
+  StateNet,
+  StatePagesData
+} from 'src/controllers';
 import { IBookmark } from '../../tuber.interfaces';
 import TuberBookmarkList from './list';
 import TuberPlayer from './player';
@@ -13,10 +17,8 @@ import TuberBookmarkSearchWithThumbnails from './list.no.player';
 import { useMediaQuery } from '@mui/material';
 import TuberThumbnailedBookmarkList from './list.with.thumbnail';
 import { AppDispatch, on_bootstrap_run, RootState } from 'src/state';
-import StateNet from 'src/controllers/StateNet';
 import { IJsonapiStateResponse } from 'src/interfaces/IJsonapi';
 import { useDispatch, useSelector } from 'react-redux';
-import StatePagesData from 'src/controllers/StatePagesData';
 import {
   ENDPOINT,
   PLAYER_OPEN,

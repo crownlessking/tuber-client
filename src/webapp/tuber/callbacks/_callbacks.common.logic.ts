@@ -1,9 +1,9 @@
 import { get_state_form_name } from 'src/business.logic';
 import { error_id } from 'src/business.logic/errors';
 import { ler, pre } from 'src/business.logic/logging';
-import { get_parsed_content } from 'src/controllers';
+import { get_parsed_content } from 'src/business.logic/parsing';
 import FormValidationPolicy from 'src/business.logic/FormValidationPolicy';
-import { StateRegistry } from 'src/controllers/StateRegistry';
+import StateRegistry from 'src/controllers/StateRegistry';
 import { type IRedux, type RootState } from 'src/state';
 
 interface IFormData<T=unknown> {

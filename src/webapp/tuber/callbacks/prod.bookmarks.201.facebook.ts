@@ -1,4 +1,4 @@
-import JsonapiRequest from 'src/business.logic/jsonapi.request';
+import JsonapiRequest from 'src/business.logic/JsonapiRequest';
 import { type IRedux } from 'src/state';
 import { post_req_state } from 'src/state/net.actions';
 import { get_state_form_name, get_val } from '../../../business.logic';

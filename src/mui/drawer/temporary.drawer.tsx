@@ -1,17 +1,18 @@
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import SwipeableDrawer, { SwipeableDrawerProps } from '@mui/material/SwipeableDrawer';
+import SwipeableDrawer, {
+  SwipeableDrawerProps
+} from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useDispatch, useSelector } from 'react-redux';
 import store, { actions, type AppDispatch, type RootState } from 'src/state';
 import { Link as RouterLink } from 'react-router-dom';
-import type StatePageDrawer from 'src/controllers/templates/StatePageDrawer';
+import { type StatePageDrawer } from '../../controllers';
+import { get_formatted_route } from '../../controllers/StateLink';
 import { StateJsxUnifiedIconProvider } from '../icon';
-import { get_formatted_route } from 'src/controllers/StateLink';
 
 interface ITempDrawerProps {
   def: StatePageDrawer;

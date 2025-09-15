@@ -1,4 +1,4 @@
-import { get_parsed_content } from 'src/controllers';
+import { get_parsed_content } from 'src/business.logic/parsing';
 import { IJsonapiResponseResource } from 'src/interfaces/IJsonapi';
 import StateTmp from 'src/controllers/StateTmp';
 import { type IRedux } from 'src/state';

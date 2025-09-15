@@ -4,9 +4,11 @@ import InputLabel from '@mui/material/InputLabel';
 import { forwardRef, ElementType } from 'react';
 import { IMaskInput } from 'react-imask';
 import { useSelector } from 'react-redux';
-import type StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
+import {
+  type StateFormItemInput,
+  StateFormsData
+} from '../../../controllers';
 import { type RootState } from '../../../state';
-import StateFormsData from 'src/controllers/StateFormsData';
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;

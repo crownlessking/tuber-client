@@ -5,7 +5,7 @@ import { error_id } from 'src/business.logic/errors';
 import { get_state_form_name, get_val } from 'src/business.logic';
 import StateNet from 'src/controllers/StateNet';
 import { post_req_state } from 'src/state/net.actions';
-import { get_parsed_content } from 'src/controllers';
+import { get_parsed_content } from 'src/business.logic/parsing';
 import Config from 'src/config';
 import { TThemeMode } from 'src/interfaces';
 import { THEME_DEFAULT_MODE, THEME_MODE } from 'src/constants.client';

@@ -1,6 +1,9 @@
 import { type RootState } from '../../../state';
 import { useSelector } from 'react-redux';
-import type StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect';
+import {
+  type StateFormItemSelect,
+  StateFormsData
+} from '../../../controllers';
 import { set_default_value } from './_items.default.values.common.logic';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
@@ -9,7 +12,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormHelperText from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
 import { NAME_NOT_SET } from '../../../constants.client';
-import StateFormsData from '../../../controllers/StateFormsData';
 
 interface IJsonSelectProps {
   def: StateFormItemSelect;

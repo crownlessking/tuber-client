@@ -1,9 +1,11 @@
 import { Input } from '@mui/material';
 import { useSelector } from 'react-redux';
-import type StateFormItem from '../../../controllers/StateFormItem';
+import {
+  type StateFormItem,
+  StateFormsData
+} from '../../../controllers';
 import { type RootState } from '../../../state';
 import { StateJsxAdornment } from './state.jsx.input.adornment';
-import StateFormsData from '../../../controllers/StateFormsData';
 
 export default function StateJsxInput ({ def: input }: { def: StateFormItem }) {
   const formsData = new StateFormsData(

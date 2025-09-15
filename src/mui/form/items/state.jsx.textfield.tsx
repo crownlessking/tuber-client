@@ -1,17 +1,14 @@
 import { TextField } from '@mui/material';
 import { type AppDispatch, redux, type RootState } from '../../../state';
 import { StateJsxAdornment } from './state.jsx.input.adornment';
-import type StateFormItem from '../../../controllers/StateFormItem';
+import {type StateFormItem, StateFormsData } from '../../../controllers';
 import { useDispatch, useSelector } from 'react-redux';
 import { NAME_NOT_SET } from '../../../constants.client';
 import StateJsxTextfieldInputProps from './state.jsx.textfield.input.props';
 import { useEffect } from 'react';
 import { ISliceFormsDataErrorsArgs } from 'src/slices/formsDataErrors.slice';
-import StateFormsData from 'src/controllers/StateFormsData';
 
-interface IJsonTextfieldProps {
-  def: StateFormItem;
-}
+interface IJsonTextfieldProps { def: StateFormItem; }
 
 export const typeMap: { [constant: string]: string } = {
   text: 'text',

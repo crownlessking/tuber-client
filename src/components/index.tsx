@@ -4,12 +4,18 @@ import {
   alpha,
   InputLabel
 } from '@mui/material';
-import StateComponent from '../controllers/StateComponent';
-import StateFormItem from '../controllers/StateFormItem';
-import StateFormItemRadio from '../controllers/templates/StateFormItemRadio';
-import StateFormItemSelect from '../controllers/templates/StateFormItemSelect';
-import StateLink from '../controllers/StateLink';
-import StateThemeParser from '../controllers/StateThemeParser';
+import {
+  StateAllForms,
+  StateForm,
+  StateComponent,
+  StateFormItem,
+  StateLink,
+  StateThemeParser,
+  StateFormItemRadio,
+  StateFormItemSelect,
+  StateFormItemSwitch,
+  StateFormItemCheckbox
+} from '../controllers';
 import {
   BOOL_ONOFF,
   BOOL_TRUEFALSE,
@@ -48,7 +54,6 @@ import StateJsxSwitch from '../mui/form/items/state.jsx.switch';
 import StateJsxLink from '../mui/link';
 import JsonPicker from '../mui/form/items/state.jsx.picker';
 import StateJsxForm from '../mui/form';
-import StateForm from '../controllers/StateForm';
 import StateJsxTextfield from '../mui/form/items/state.jsx.textfield';
 import { post_req_state } from '../state/net.actions';
 import type { AppDispatch } from '../state';
@@ -56,11 +61,8 @@ import { useDispatch } from 'react-redux';
 import store from '../state';
 import { error_id } from '../business.logic/errors';
 import { formsDataClear } from '../slices/formsData.slice';
-import StateFormItemSwitch from '../controllers/templates/StateFormItemSwitch';
 import { get_bool_type } from 'src/mui/form/_form.common.logic';
 import { log } from '../business.logic/logging';
-import StateFormItemCheckbox from '../controllers/templates/StateFormItemCheckbox';
-import StateAllForms from '../controllers/StateAllForms';
 import IStateFormItem from '../interfaces/IStateFormItem';
 
 interface IComponentsBuilderProps {

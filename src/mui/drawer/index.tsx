@@ -2,16 +2,13 @@ import { Fragment, useMemo, useCallback } from 'react';
 import Config from '../../config';
 import { LAST_DRAWER_STATE } from '../../constants.client';
 import IStateDrawer from '../../interfaces/IStateDrawer';
-import type StatePage from '../../controllers/StatePage';
-import StateDrawerResponsive from '../../controllers/templates/StateDrawerResponsive';
+import { type StatePage, StateDrawerResponsive } from '../../controllers';
 import MiniDrawer from './mini-variant.drawer';
 import PersistentDrawer from './persistent.drawer';
 import ResponsiveDrawer from './responsive.drawer';
 import TempDrawer from './temporary.drawer';
 
-interface IJsonDrawerProps {
-  def: StatePage;
-}
+interface IJsonDrawerProps { def: StatePage; }
 
 export default function StateJsxDrawer({ def: page }: IJsonDrawerProps) {
   // Memoize the last drawer state reading to avoid unnecessary Config.read calls

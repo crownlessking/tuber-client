@@ -1,11 +1,18 @@
 import {
-  Avatar, Dialog, DialogTitle, List, ListItemAvatar, ListItemButton, 
+  Avatar,
+  Dialog,
+  DialogTitle,
+  List,
+  ListItemAvatar,
+  ListItemButton, 
   ListItemText
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import type { AppDispatch, RootState } from '../../state';
-import type StateDialogSelection from '../../controllers/templates/StateDialogSelection';
-import type StateDialogSelectionItem from '../../controllers/templates/StateDialogSelectionItem';
+import type {
+  StateDialogSelection,
+  StateDialogSelectionItem
+} from '../../controllers';
 import { StateJsxUnifiedIconProvider } from '../icon';
 
 /*

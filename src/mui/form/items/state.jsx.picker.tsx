@@ -5,7 +5,7 @@ import { MobileDateTimePicker } from '@mui/x-date-pickers/MobileDateTimePicker';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import TextField, { TextFieldProps } from '@mui/material/TextField';
 import { useSelector } from 'react-redux';
-import StateFormItem from '../../../controllers/StateFormItem';
+import { StateFormItem, StateFormsData } from '../../../controllers';
 import { RootState } from '../../../state';
 import { error_id } from '../../../business.logic/errors';
 import {
@@ -15,11 +15,8 @@ import {
   NAME_NOT_SET
 } from '../../../constants.client';
 import { log } from '../../../business.logic/logging';
-import StateFormsData from '../../../controllers/StateFormsData';
 
-interface IJsonPickerProps {
-  def: StateFormItem;
-}
+interface IJsonPickerProps { def: StateFormItem; }
 
 interface IPickerTable {
   [constant: string]: () => JSX.Element;

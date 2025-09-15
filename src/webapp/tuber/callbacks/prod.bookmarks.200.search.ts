@@ -2,11 +2,13 @@ import { type IRedux } from 'src/state';
 import { get_val, mongo_object_id } from 'src/business.logic';
 import { get_req_state } from 'src/state/net.actions';
 import { APP_IS_FETCHING_BOOKMARKS, PAGE_RESEARCH_APP_ID } from '../tuber.config';
-import { get_parsed_content } from 'src/controllers';
+import { get_parsed_content } from 'src/business.logic/parsing';
 import { pre, log } from 'src/business.logic/logging';
-import StateAppbarQueries from 'src/controllers/StateAppbarQueries';
-import StateApp from 'src/controllers/StateApp';
-import StateNet from 'src/controllers/StateNet';
+import {
+  StateAppbarQueries,
+  StateApp,
+  StateNet
+} from 'src/controllers';
 
 /**
  * Callback to handle the search field in the appbar when the user submits a

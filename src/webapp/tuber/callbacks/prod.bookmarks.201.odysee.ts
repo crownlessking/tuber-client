@@ -1,5 +1,5 @@
 import { log } from 'src/business.logic/logging';
-import JsonapiRequest from 'src/business.logic/jsonapi.request';
+import JsonapiRequest from 'src/business.logic/JsonapiRequest';
 import { type IRedux } from 'src/state';
 import { post_req_state } from 'src/state/net.actions';
 import { DIALOG_ODYSEE_NEW_ID, FORM_ODYSEE_NEW_ID } from '../tuber.config';

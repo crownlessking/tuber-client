@@ -1,6 +1,6 @@
 import { YouTubePlayer } from 'react-youtube';
 import Config from 'src/config';
-import { get_parsed_content } from 'src/controllers';
+import { get_parsed_content } from 'src/business.logic/parsing';
 import { type IRedux } from 'src/state';
 import { error_id } from 'src/business.logic/errors';
 import { get_state_form_name } from '../../../business.logic';

@@ -6,14 +6,11 @@ import TextField from '@mui/material/TextField';
 import { type RootState } from '../../../state';
 import { ICheckboxesData } from './_items.common.logic';
 import { useSelector } from 'react-redux';
-import type StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import { type StateFormItemSwitch, StateFormsData } from '../../../controllers';
 import FormLabel from '@mui/material/FormLabel';
 import { NAME_NOT_SET } from '../../../constants.client';
-import StateFormsData from 'src/controllers/StateFormsData';
 
-interface IJsonSwitchProps {
-  def: StateFormItemSwitch;
-}
+interface IJsonSwitchProps { def: StateFormItemSwitch; }
 
 /**
  * Switch use example:

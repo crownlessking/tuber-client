@@ -1,5 +1,5 @@
 import { SvgIcon } from '@mui/material';
-import type StateIcon from 'src/controllers/StateIcon';
+import type StateIcon from '../../controllers/StateIcon';
 import {
   IStateIconPolygon,
   IStateIconPath,

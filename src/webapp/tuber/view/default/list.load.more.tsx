@@ -1,9 +1,8 @@
 import { Button, CircularProgress, styled } from '@mui/material';
 import React, { useCallback, useMemo, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import JsonapiPaginationLinks from 'src/business.logic/Jsonapi.pagination.links';
-import type StateData from 'src/controllers/StateData';
-import StateDataPagesRange from 'src/controllers/StateDataPagesRange';
+import JsonapiPaginationLinks from 'src/business.logic/JsonapiPaginationLinks';
+import { type StateData, StateDataPagesRange } from 'src/controllers';
 import { type AppDispatch, type RootState } from 'src/state';
 import { get_req_state } from 'src/state/net.actions';
 import { APP_IS_FETCHING_BOOKMARKS } from '../../tuber.config';

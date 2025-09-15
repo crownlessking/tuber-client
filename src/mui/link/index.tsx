@@ -3,11 +3,11 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
-import StateLink, { get_formatted_route } from '../../controllers/StateLink';
+import { StateFormItemCustomChip, StateLink } from '../../controllers';
+import { get_formatted_route } from '../../controllers/StateLink';
 import store, { type IRedux, actions } from '../../state';
 import { Link as RouterLink } from 'react-router-dom';
 import Chip from '@mui/material/Chip';
-import StateFormItemCustomChip from '../../controllers/templates/StateFormItemCustomChip';
 import StateJsxBadgedIcon from '../icon';
 import { get_val } from '../../business.logic';
 

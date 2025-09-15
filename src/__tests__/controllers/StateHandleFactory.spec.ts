@@ -1,8 +1,8 @@
 import StateHandleFactory, { parseStringDirective } from '../../controllers/StateHandleFactory';
 import { post_fetch, post_req_state } from '../../state/net.actions';
 import store, { actions } from '../../state';
-import JsonapiRequest from '../../controllers/jsonapi.request';
-import FormValidationPolicy from '../../controllers/FormValidationPolicy';
+import JsonapiRequest from '../../business.logic/JsonapiRequest';
+import FormValidationPolicy from '../../business.logic/FormValidationPolicy';
 import StateNet from '../../controllers/StateNet';
 import Config from '../../config';
 

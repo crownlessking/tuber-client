@@ -1,6 +1,5 @@
 import { useMemo, memo, ReactNode } from 'react';
-import type StateBackground from '../../controllers/StateBackground';
-import type StatePage from '../../controllers/StatePage';
+import type { StateBackground, StatePage } from '../../controllers';
 import Fade from '@mui/material/Fade';
 import { Box, styled } from '@mui/material';
 

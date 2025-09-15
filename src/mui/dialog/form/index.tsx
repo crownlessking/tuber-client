@@ -2,12 +2,18 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
 import { Fragment, useMemo, useCallback } from 'react';
 import IStateFormItemGroup from '../../../interfaces/IStateFormItemGroup';
-import type StateForm from '../../../controllers/StateForm';
-import StateFormItemGroup from '../../../controllers/StateFormItemGroup';
-import type StateFormItem from '../../../controllers/StateFormItem';
-import StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
-import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
-import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import IStateFormItemSelectOption from '../../../interfaces/IStateFormItemSelectOption';
+import {
+  type StateForm,
+  type StateFormItem,
+  StateFormItemGroup,
+  StateFormItemInput,
+  StateFormItemRadio,
+  StateFormItemSwitch,
+  type StateFormItemCheckboxBox,
+  type StateFormItemRadioButton,
+  type StateFormItemSwitchToggle
+} from '../../../controllers';
 import { error_id } from '../../../business.logic/errors';
 import {
   BOX,
@@ -44,10 +50,6 @@ import DialogSwitch from './dialog.switch';
 import DialogTextField from './dialog.textfield';
 import DialogSelect from './select';
 import { log } from '../../../business.logic/logging';
-import type StateFormItemCheckboxBox from 'src/controllers/StateFormItemCheckboxBox';
-import type IStateFormItemSelectOption from 'src/interfaces/IStateFormItemSelectOption';
-import type StateFormItemRadioButton from 'src/controllers/StateFormItemRadioButton';
-import type StateFormItemSwitchToggle from 'src/controllers/StateFormItemSwitchToggle';
 
 interface IRecursiveFormBuilder {
   form: StateForm;

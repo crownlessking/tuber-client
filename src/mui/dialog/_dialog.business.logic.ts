@@ -1,10 +1,12 @@
-import StatePage from '../../controllers/StatePage';
-import type StateAllPages from '../../controllers/StateAllPages';
+import {
+  StatePage,
+  type StateAllPages,
+  type StateFormItem
+} from '../../controllers';
 import store from '../../state';
 import IStateFormItem from '../../interfaces/IStateFormItem';
 import IStateForm from '../../interfaces/IStateForm';
 import IStateDialog from '../../interfaces/IStateDialog';
-import type StateFormItem from '../../controllers/StateFormItem';
 import { error_id } from 'src/business.logic/errors';
 import { ler } from '../../business.logic/logging';
 

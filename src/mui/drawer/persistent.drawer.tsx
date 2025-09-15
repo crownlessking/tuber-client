@@ -1,14 +1,21 @@
 import {
-  Divider, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText,
-  styled, useTheme
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  styled,
+  useTheme
 } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import type StateDrawerPersistent from 'src/controllers/templates/StateDrawerPersistent';
-import store, { type AppDispatch, type RootState, actions } from 'src/state';
+import { type StateDrawerPersistent } from '../../controllers';
+import { get_formatted_route } from '../../controllers/StateLink';
+import store, { type AppDispatch, type RootState, actions } from '../../state';
 import { Link as RouterLink } from 'react-router-dom';
 import { StateJsxIcon, StateJsxUnifiedIconProvider } from '../icon';
 import { Fragment, memo } from 'react';
-import { get_formatted_route } from 'src/controllers/StateLink';
 
 /*
   [TODO] Duplicate this code so the drawer can appear on the right

@@ -3,7 +3,7 @@ import InputLabel from '@mui/material/InputLabel';
 import NativeSelect from '@mui/material/NativeSelect';
 import { useState } from 'react';
 import { THive } from '..';
-import type StateFormItemSelect from '../../../../controllers/templates/StateFormItemSelect';
+import { type StateFormItemSelect } from '../../../../controllers';
 
 interface IDialogSelectNative {
   def: StateFormItemSelect;

@@ -1,6 +1,6 @@
 import { post_fetch, post_req_state } from '../state/net.actions';
 import store, { actions, TReduxHandle } from '../state';
-import JsonapiRequest from '../business.logic/jsonapi.request';
+import JsonapiRequest from '../business.logic/JsonapiRequest';
 import FormValidationPolicy from '../business.logic/FormValidationPolicy';
 import { ler, pre } from '../business.logic/logging';
 import { THEME_DEFAULT_MODE, THEME_MODE } from '../constants.client';

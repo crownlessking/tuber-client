@@ -16,23 +16,27 @@ import {
   BOOL_ONOFF,
   BOOL_YESNO,
 } from '../../../constants.client';
-import type StateForm from '../../../controllers/StateForm';
-import type StateFormItem from '../../../controllers/StateFormItem';
+import { IStateFormItemCheckboxBox } from 'src/controllers/StateFormItemCheckboxBox';
+import {
+  type StateForm,
+  type StateFormItem,
+  StateFormItemSelect,
+  StateFormItemRadio,
+  StateFormItemGroup,
+  StateFormItemSwitch,
+  StateFormItemInput,
+  StateFormItemCheckbox,
+  StateFormItemSwitchToggle
+} from '../../../controllers';
 import StateJsxFormItemGroup from '../state.jsx.form.item.group';
-import StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect';
-import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
 import { StateJsxUnifiedIconProvider } from '../../icon';
 import { AppDispatch, default_callback } from '../../../state';
-import StateFormItemGroup from '../../../controllers/StateFormItemGroup';
 import IStateFormItemGroup from '../../../interfaces/IStateFormItemGroup';
 import FormLabel from '@mui/material/FormLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import InputLabel from '@mui/material/InputLabel';
 import set_all_default_values from './_items.default.values.common.logic';
-import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
-import StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
 import StateJsxPhoneInput from './state.jsx.phone.input';
-import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox';
 import { error_id } from '../../../business.logic/errors';
 import {
   get_styled_div,
@@ -46,8 +50,6 @@ import { log } from '../../../business.logic/logging';
 import { IDummyEvent } from 'src/common.types';
 import IStateFormItemSelectOption from 'src/interfaces/IStateFormItemSelectOption';
 import { IStateFormItemRadioButton } from 'src/interfaces/IFormChoices';
-import { IStateFormItemCheckboxBox } from 'src/controllers/StateFormItemCheckboxBox';
-import StateFormItemSwitchToggle from 'src/controllers/StateFormItemSwitchToggle';
 
 interface IRecursiveFormBuilder {
   form: StateForm;

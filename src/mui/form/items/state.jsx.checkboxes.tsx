@@ -5,14 +5,11 @@ import FormGroup from '@mui/material/FormGroup';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
 import { useSelector } from 'react-redux';
-import type StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox';
+import { StateFormsData, type StateFormItemCheckbox } from '../../../controllers';
 import { type RootState } from '../../../state';
 import { get_statuses, ICheckboxesData } from './_items.common.logic';
-import StateFormsData from 'src/controllers/StateFormsData';
 
-interface IJsonCheckboxes {
-  def: StateFormItemCheckbox;
-}
+interface IJsonCheckboxes { def: StateFormItemCheckbox; }
 
 export default function StateJsxCheckboxes ({ def: checkboxes }: IJsonCheckboxes) {
   const { name, parent: { name: formName }} = checkboxes;

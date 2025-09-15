@@ -6,19 +6,21 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputBase from '@mui/material/InputBase';
-import StatePage from '../../controllers/StatePage';
+import {
+  StatePage,
+  StatePageAppbarMidSearch,
+  StateLink,
+  StateAppbarQueries
+} from '../../controllers';
 import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState, redux } from '../../state';
-import StatePageAppbarMidSearch from '../../controllers/templates/StatePageAppbarMidSearch';
 import StateJsxLogo from './state.jsx.logo';
 import AppbarButton from '../link';
 import InputAdornment from '@mui/material/InputAdornment';
 import { StateJsxIcon, StateJsxUnifiedIconProvider } from '../icon';
 import Menu from '@mui/material/Menu';
-import StateLink from '../../controllers/StateLink';
 import StateJsxChip from './state.jsx.chip';
 import { appbarQueriesSet } from 'src/slices/appbarQueries.slice';
-import StateAppbarQueries from 'src/controllers/StateAppbarQueries';
 import { drawerOpen } from '../../slices/drawer.slice';
 
 const Search = styled('div')(({ theme }) => ({

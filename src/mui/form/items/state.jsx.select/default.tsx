@@ -3,16 +3,16 @@ import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
-import type StateFormItemSelect from '../../../../controllers/templates/StateFormItemSelect';
+import {
+  type StateFormItemSelect,
+  StateFormsData
+} from '../../../../controllers';
 import TextField from '@mui/material/TextField';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../../../state';
 import { NAME_NOT_SET } from '../../../../constants.client';
-import StateFormsData from '../../../../controllers/StateFormsData';
 
-interface IDialogSelectDefault {
-  def: StateFormItemSelect;
-}
+interface IDialogSelectDefault { def: StateFormItemSelect; }
 
 export default function StateJsxSelectDefault (
   { def: select }: IDialogSelectDefault

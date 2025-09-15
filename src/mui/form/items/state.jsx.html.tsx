@@ -1,13 +1,15 @@
 import Box from '@mui/material/Box';
 import { styled } from '@mui/material/styles';
 import { useSelector } from 'react-redux';
-import type StateForm from '../../../controllers/StateForm';
-import type StateFormItem from '../../../controllers/StateFormItem';
+import {
+  type StateForm,
+  type StateFormItem
+} from '../../../controllers';
+import { get_formatted_route } from '../../../controllers/StateLink';
 import { type RootState } from '../../../state';
 import parse from 'html-react-parser';
 import { Fragment } from 'react';
 import store, { actions } from '../../../state';
-import { get_formatted_route } from '../../../controllers/StateLink';
 import Link from '@mui/material/Link';
 import {
   Link as RouterLink,

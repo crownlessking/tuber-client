@@ -5,12 +5,13 @@ import {
   Avatar, CardActionArea, CardActions, CardHeader, Collapse, IconButton,
   IconButtonProps, styled
 } from '@mui/material';
-import type StateCard from '../../controllers/StateCard';
+import {
+  StateCard,
+  StateCardMultiActionArea,
+  StateCardBasic,
+  StateCardComplex
+} from '../../controllers';
 import StateJsxCardActionButton from './state.jsx.card.action.button';
-import StateCardMultiActionArea
-  from '../../controllers/templates/StateCardMultiActionArea';
-import StateCardBasic from '../../controllers/templates/StateCardBasic';
-import StateCardComplex from 'src/controllers/templates/StateCardComplex';
 import React, { memo } from 'react';
 import { StateJsxIcon } from '../icon';
 

@@ -4,9 +4,7 @@ import { AppDispatch, RootState, get_bootstrap_key, initialize } from './state';
 import { post_req_state } from './state/net.actions';
 import Config from './config';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
-import StateAllPages from './controllers/StateAllPages';
-import StateApp from './controllers/StateApp';
-import StateNet from './controllers/StateNet';
+import { StateAllPages, StateApp, StateNet } from './controllers';
 import AppPage from './components/app.component';
 import {
   ALLOWED_ATTEMPTS,

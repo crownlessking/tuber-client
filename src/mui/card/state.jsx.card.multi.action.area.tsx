@@ -1,9 +1,8 @@
-import Card from '@mui/material/Card'
-import CardContent from '@mui/material/CardContent'
-import CardMedia from '@mui/material/CardMedia'
-import { Button, CardActionArea, CardActions } from '@mui/material'
-import type StateCardMultiActionArea
-  from 'src/controllers/templates/StateCardMultiActionArea'
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import { Button, CardActionArea, CardActions } from '@mui/material';
+import { type StateCardMultiActionArea } from '../../controllers';
 
 interface ICardProps {
   def: StateCardMultiActionArea

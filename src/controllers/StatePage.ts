@@ -1,4 +1,4 @@
-import { get_parsed_content } from '.';
+import { get_parsed_content } from '../business.logic/parsing';
 import StatePageAppbar from './templates/StatePageAppbar';
 import StatePageBackground from './templates/StatePageBackground';
 import type StateAllPages from './StateAllPages';
