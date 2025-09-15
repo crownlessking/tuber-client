@@ -1,5 +1,5 @@
 import get_config, { IConfiguration } from './business.logic/configuration';
-import { TThemeMode } from './interfaces';
+import { TThemeMode } from './common.types';
 
 const initConfObj = {
   /** App default theme mode. */

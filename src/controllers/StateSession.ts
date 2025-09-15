@@ -1,5 +1,5 @@
 import { remember_possible_error } from '../business.logic/errors';
-import { IStateSession } from '../interfaces/IStateSession';
+import IStateSession from '../interfaces/IStateSession';
 import AbstractState from './AbstractState';
 
 /**

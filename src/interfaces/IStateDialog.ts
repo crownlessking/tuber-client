@@ -13,7 +13,7 @@ import IStateForm from './IStateForm';
 import IStateFormItem from './IStateFormItem';
 import { ReactNode } from 'react';
 import { TransitionProps } from '@mui/material/transitions';
-import { TWithOptional } from '.';
+import { TWithOptional } from '../common.types';
 
 /** @deprecated */
 export interface IDialogProps {

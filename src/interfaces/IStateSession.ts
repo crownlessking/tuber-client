@@ -1,6 +1,6 @@
 
 /** @see https://www.npmjs.com/package/jsonwebtoken */
-export interface IStateSession {
+export default interface IStateSession {
   /** Username */
   name?: string;
   role?: string;

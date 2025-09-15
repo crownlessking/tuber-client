@@ -3,7 +3,7 @@ import AbstractState from './AbstractState';
 import IStateApp from '../interfaces/IStateApp';
 import State from './State';
 import Config from '../config';
-import { TThemeMode } from '../interfaces';
+import { TThemeMode } from '../common.types';
 
 export default class StateApp extends AbstractState implements IStateApp {
   private _appOrigin?: string;

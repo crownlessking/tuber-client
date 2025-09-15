@@ -12,7 +12,7 @@ import {
 import { get_origin_ending_fixed, get_val } from '../business.logic';
 import StateNet from './StateNet';
 import Config from '../config';
-import { TThemeMode } from '../interfaces';
+import { TThemeMode } from '../common.types';
 import { IJsonapiError } from '../interfaces/IJsonapi';
 import { net_patch_state } from '../state/actions';
 import { remember_jsonapi_errors } from '../business.logic/errors';

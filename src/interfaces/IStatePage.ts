@@ -4,8 +4,19 @@ import IStateComponent from './IStateComponent';
 import IStateTypography from './IStateTypography';
 import IStateAppbar from './IStateAppbar';
 import IAbstractState from './IAbstractState';
-import { TStatePageLayout } from '.';
 import { IJsonapiPageLinks } from './IJsonapi';
+
+/** Type for page layout. */
+export type TStatePageLayout = 'layout_centered_no_scroll'
+  | 'layout_centered'
+  | 'layout_default'
+  | 'layout_md'
+  | 'layout_none'
+  | 'layout_none_no_appbar'
+  | 'layout_sm'
+  | 'layout_table_virtualized'
+  | 'layout_xl'
+  | 'layout_xs';
 
 /**
  * Page with content, an appbar, background, drawer... etc.

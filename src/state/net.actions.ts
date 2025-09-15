@@ -24,7 +24,7 @@ import { IJsonapiBaseResponse, IJsonapiError } from '../interfaces/IJsonapi';
 import { cancel_spinner, schedule_spinner } from './spinner';
 import IStateDialog from '../interfaces/IStateDialog';
 import { StateNet, StateRegistry } from '../controllers';
-import { TThemeMode } from '../interfaces';
+import { TThemeMode } from '../common.types';
 import Config from '../config';
 import { THEME_DEFAULT_MODE, THEME_MODE } from '../constants.client';
 import { net_patch_state } from './actions';

@@ -1,5 +1,4 @@
 import { CSSProperties } from 'react';
-import { IAdornment } from '.';
 import { TReduxHandle } from '../state';
 import { IStateFormItemInputProps } from './IStateFormItem';
 import {
@@ -16,6 +15,9 @@ import {
   SvgIconProps
 } from '@mui/material';
 import { IStateKeys } from './IState';
+
+// Import IAdornment from the shared types file to avoid duplication
+import { IAdornment } from '../common.types';
 
 export type TStateFormITemCustomColor = 'default'
   | 'primary'

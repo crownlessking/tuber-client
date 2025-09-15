@@ -9,7 +9,7 @@ import {
   THEME_DEFAULT_MODE,
   THEME_MODE
 } from '../../constants.client';
-import { TThemeMode } from 'src/interfaces';
+import { TThemeMode } from '../../common.types';
 
 export default function PageBlank ({ def: page }:{ def: StatePage }) {
   const dispatch = useDispatch<AppDispatch>();

@@ -19,6 +19,8 @@ export type TReadonly<K extends string | number | symbol, T> = {
   readonly [P in K]: T;
 }
 
+export type TThemeMode = 'light' | 'dark';
+
 export interface IAbstractState {
   /** Abstract `id`. */
   _id?: string;

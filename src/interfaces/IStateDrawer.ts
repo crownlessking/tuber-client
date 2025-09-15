@@ -1,4 +1,4 @@
-import { type TWithOptional } from '.';
+import { TWithOptional } from '../common.types';
 import IAbstractState from './IAbstractState';
 import IStateLink from './IStateLink';
 import { DrawerProps } from '@mui/material';

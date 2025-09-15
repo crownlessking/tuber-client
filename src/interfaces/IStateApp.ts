@@ -1,4 +1,4 @@
-import { TThemeMode } from '.';
+import { TThemeMode } from '../common.types';
 
 /**
  * App information state.

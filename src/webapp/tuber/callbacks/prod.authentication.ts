@@ -7,7 +7,7 @@ import StateNet from 'src/controllers/StateNet';
 import { post_req_state } from 'src/state/net.actions';
 import { get_parsed_content } from 'src/business.logic/parsing';
 import Config from 'src/config';
-import { TThemeMode } from 'src/interfaces';
+import { TThemeMode } from 'src/common.types';
 import { THEME_DEFAULT_MODE, THEME_MODE } from 'src/constants.client';
 import { state_reset } from 'src/state/actions';
 import { ler, pre } from 'src/business.logic/logging';

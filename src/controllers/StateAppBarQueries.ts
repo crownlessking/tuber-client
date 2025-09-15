@@ -4,7 +4,7 @@ import {
   IStateAppbarQuery
 } from '../interfaces/IStateAppbarQueries';
 import State from './State';
-import { TWithRequired } from '../interfaces';
+import { TWithRequired } from '../common.types';
 
 export default class StateAppbarQueries extends AbstractState {
 

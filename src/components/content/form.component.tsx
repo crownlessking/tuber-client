@@ -12,7 +12,7 @@ import {
 import { post_req_state } from '../../state/net.actions';
 import { StateForm, StateAllForms } from '../../controllers';
 import { get_state_form_name } from '../../business.logic';
-import { TThemeMode } from 'src/interfaces';
+import { TThemeMode } from '../../common.types';
 
 interface IFormContent {
   def: StateForm | null;

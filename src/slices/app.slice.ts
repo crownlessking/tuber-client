@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { TThemeMode } from 'src/interfaces';
+import { TThemeMode } from '../common.types';
 import initialState from '../state/initial.state';
 import {
   APP_IS_BOOTSTRAPPED,

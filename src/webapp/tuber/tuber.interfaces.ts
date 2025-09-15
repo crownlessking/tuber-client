@@ -1,6 +1,6 @@
 // Tuber app types and interfaces gathered in one spot
 import type StatePageAppbar from '../../controllers/templates/StatePageAppbar';
-import { TWithRequired } from 'src/interfaces';
+import { TWithRequired } from 'src/common.types';
 
 /**
  * Online video platform.
