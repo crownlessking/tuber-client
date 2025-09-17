@@ -1,4 +1,4 @@
-import { set_val } from '../../business.logic';
+import { set_val } from '../../business.logic/parsing';
 import IStatePage from '../../interfaces/IStatePage';
 import StateTypography from '../StateTypography';
 import type StateAppbar from '../StateAppbar';

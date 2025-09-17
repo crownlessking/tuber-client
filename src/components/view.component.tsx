@@ -3,7 +3,7 @@ import PageNotFound from './pages/notfound.component';
 import StatePage from '../controllers/StatePage';
 import PageErrors from './pages/errors.component';
 import PageLanding from './pages/landing.component';
-import { error_id } from '../business.logic/errors';
+import { error_id, err, log } from '../business.logic';
 import { Fragment } from 'react';
 import {
   DEFAULT_BLANK_PAGE_VIEW,
@@ -13,7 +13,6 @@ import {
   DEFAULT_SUCCESS_PAGE_VIEW
 } from '../constants.client';
 import PageBlank from './pages/blank.component';
-import { err, log } from '../business.logic/logging';
 
 interface IViewTable {
   [constant: string]: ()=>JSX.Element;

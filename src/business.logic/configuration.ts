@@ -1,4 +1,4 @@
-import { is_record } from '.';
+import { is_record } from './utility';
 
 // Interface for the old IConfiguration usage
 export interface IConfiguration {

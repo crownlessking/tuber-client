@@ -13,9 +13,8 @@ import {
 } from '../interfaces/IJsonapi';
 import StateDataPagesRange from '../controllers/StateDataPagesRange';
 import JsonapiPaginationLinks from '../business.logic/JsonapiPaginationLinks';
-import { safely_get_as } from '../business.logic';
 import { remember_jsonapi_errors } from '../business.logic/errors';
-import { is_object } from '../business.logic';
+import { is_object, safely_get_as } from '../business.logic/utility';
 import Config from '../config';
 import { BOOTSTRAP_ATTEMPTS } from 'src/constants.client';
 import { dataUpdateRange } from 'src/slices/dataLoadedPages.slice';

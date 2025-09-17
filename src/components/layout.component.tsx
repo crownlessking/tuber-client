@@ -1,11 +1,13 @@
 import { Fragment, useMemo, useCallback, ReactNode } from 'react';
 import Container from '@mui/material/Container';
 import {
-  LayoutCenteredNoScroll, LayoutCentered, VirtualizedTableLayout,
+  LayoutCenteredNoScroll,
+  LayoutCentered,
+  VirtualizedTableLayout,
   DefaultLayoutToolbared
 } from '../mui/layouts';
 import StatePage from '../controllers/StatePage';
-import { error_id } from '../business.logic/errors';
+import { error_id, log } from '../business.logic';
 import {
   LAYOUT_CENTERED_NO_SCROLL,
   LAYOUT_CENTERED,
@@ -18,7 +20,6 @@ import {
   LAYOUT_NONE,
   LAYOUT_NONE_NO_APPBAR
 } from '../constants.client';
-import { log } from '../business.logic/logging';
 
 interface ILayoutProps {
   def: StatePage;

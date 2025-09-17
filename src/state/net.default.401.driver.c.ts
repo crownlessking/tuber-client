@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { is_object } from 'src/business.logic';
+import { is_object } from 'src/business.logic/utility';
 import { error_id, remember_jsonapi_errors } from 'src/business.logic/errors';
 import { IJsonapiResponse } from 'src/interfaces/IJsonapi';
 import { appRequestFailed } from 'src/slices/app.slice';

@@ -3,7 +3,7 @@ import { IJsonapiError, TJsonapiMeta } from '../interfaces/IJsonapi';
 import { dispatch, get_state } from '../state';
 import { errorsActions } from '../slices/errors.slice';
 import { ler } from './logging';
-import { get_val } from '.';
+import { get_val } from './utility';
 
 // WARNING: Redux integration requires importing dispatch and actions.
 

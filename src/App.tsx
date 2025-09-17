@@ -12,7 +12,7 @@ import {
   THEME_DEFAULT_MODE,
   THEME_MODE
 } from './constants.client';
-import { get_cookie } from './business.logic';
+import { get_cookie } from './business.logic/parsing';
 
 Config.write(THEME_MODE, get_cookie('mode') || THEME_DEFAULT_MODE);
 

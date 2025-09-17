@@ -1,6 +1,6 @@
-import * as bl from '../../business.logic';
+import * as bl from '../../business.logic/utility';
 
-describe('src/business.logic', () => {
+describe('src/business.logic/utility', () => {
 
   describe('get_appbar_input_val', () => {
       it('should return empty string when route is not in queries', () => {

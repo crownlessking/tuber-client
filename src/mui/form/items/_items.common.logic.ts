@@ -1,7 +1,7 @@
 import { log } from '../../../business.logic/logging';
 import { error_id } from '../../../business.logic/errors';
 import IStateFormItem from '../../../interfaces/IStateFormItem';
-import { is_record } from '../../../business.logic';
+import { is_record } from '../../../business.logic/utility';
 
 /**
  * To be used with a multiple checkboxes component.

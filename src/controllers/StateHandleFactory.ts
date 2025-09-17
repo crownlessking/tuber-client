@@ -1,21 +1,25 @@
 import { post_fetch, post_req_state } from '../state/net.actions';
 import store, { actions, TReduxHandle } from '../state';
-import JsonapiRequest from '../business.logic/JsonapiRequest';
-import FormValidationPolicy from '../business.logic/FormValidationPolicy';
-import { ler, pre } from '../business.logic/logging';
+import {
+  JsonapiRequest,
+  get_val,
+  get_origin_ending_fixed,
+  remember_jsonapi_errors,
+  FormValidationPolicy,
+  ler,
+  pre
+} from '../business.logic';
 import { THEME_DEFAULT_MODE, THEME_MODE } from '../constants.client';
 import {
   INetState,
   IStateKeys,
   TStatePathnames
 } from '../interfaces/IState';
-import { get_origin_ending_fixed, get_val } from '../business.logic';
 import StateNet from './StateNet';
 import Config from '../config';
 import { TThemeMode } from '../common.types';
 import { IJsonapiError } from '../interfaces/IJsonapi';
 import { net_patch_state } from '../state/actions';
-import { remember_jsonapi_errors } from '../business.logic/errors';
 import {
   IHandleDirective,
   THandleDirectiveType

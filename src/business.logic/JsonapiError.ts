@@ -1,4 +1,4 @@
-import { mongo_object_id } from '.';
+import { mongo_object_id } from './utility';
 import {
   IJsonapiError,
   IJsonapiErrorLinks,

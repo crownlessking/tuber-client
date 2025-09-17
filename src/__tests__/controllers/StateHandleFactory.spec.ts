@@ -32,7 +32,7 @@ jest.mock('../../business.logic/logging', () => ({
 jest.mock('../../business.logic/errors', () => ({
   remember_jsonapi_errors: jest.fn(),
 }));
-jest.mock('../../business.logic', () => ({
+jest.mock('../../business.logic/utility', () => ({
   get_origin_ending_fixed: jest.fn(() => 'http://origin/'),
   get_val: jest.fn((obj, key) => obj[key]),
   get_head_meta_content: jest.fn(() => 'mocked-content'),

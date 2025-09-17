@@ -23,7 +23,8 @@ export type TJsonapiErrorCode = 'EXCEPTION'
 | 'SERVICE_UNAVAILABLE'
 | 'RATE_LIMITED'
 | 'NOT_IMPLEMENTED'
-| 'NO_RESPONSE';
+| 'NO_RESPONSE'
+| 'POSSIBLE_ERROR';
 
 export type TJsonapiErrorStatus = '100' | '101' | '102'
 | '200' | '201' | '202' | '203' | '204' | '205' | '206' | '207' | '208' | '226'

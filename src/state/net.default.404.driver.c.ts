@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { is_object, mongo_object_id } from '../business.logic';
+import { is_object, mongo_object_id } from '../business.logic/utility';
 import { IJsonapiResponse } from 'src/interfaces/IJsonapi';
 import { appRequestFailed } from 'src/slices/app.slice';
 import { type RootState } from '.';

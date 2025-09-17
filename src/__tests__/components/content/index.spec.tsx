@@ -38,7 +38,7 @@ jest.mock('../../../state/net.actions', () => ({
   post_req_state: jest.fn().mockReturnValue({ type: 'POST_REQ_STATE' }),
 }));
 
-jest.mock('../../../business.logic', () => ({
+jest.mock('../../../business.logic/cache', () => ({
   get_last_content_jsx: jest.fn(() => <div data-testid="default-content">Default Content</div>),
   get_state_form_name: jest.fn((name) => `state_${name}`),
   save_content_jsx: jest.fn(),
@@ -223,7 +223,7 @@ describe('Content Component Performance & Memoization', () => {
       const page = new MockStatePage('$form', 'test-form');
       page.parent.parent.allForms.getForm.mockReturnValue(mockForm);
       
-      const { save_content_jsx } = require('../../../business.logic');
+      const { save_content_jsx } = require('../../../business.logic/cache');
 
       renderWithProvider(<Content def={page as any} />);
 
@@ -233,7 +233,7 @@ describe('Content Component Performance & Memoization', () => {
 
     it('should memoize view content handler', () => {
       const page = new MockStatePage('$view', 'test-view');
-      const { save_content_jsx } = require('../../../business.logic');
+      const { save_content_jsx } = require('../../../business.logic/cache');
 
       renderWithProvider(<Content def={page as any} />);
 
@@ -243,7 +243,7 @@ describe('Content Component Performance & Memoization', () => {
 
     it('should memoize webapp content handler with error handling', () => {
       const page = new MockStatePage('$webapp', 'test-webapp');
-      const { save_content_jsx } = require('../../../business.logic');
+      const { save_content_jsx } = require('../../../business.logic/cache');
 
       renderWithProvider(<Content def={page as any} />);
 
@@ -253,7 +253,7 @@ describe('Content Component Performance & Memoization', () => {
 
     it('should memoize html content handler', () => {
       const page = new MockStatePage('$html', 'test-html');
-      const { save_content_jsx } = require('../../../business.logic');
+      const { save_content_jsx } = require('../../../business.logic/cache');
 
       renderWithProvider(<Content def={page as any} />);
 
@@ -263,7 +263,7 @@ describe('Content Component Performance & Memoization', () => {
 
     it('should memoize form load handler', () => {
       const page = new MockStatePage('$form_load', 'test-form-load', '/api/test', true);
-      const { save_content_jsx } = require('../../../business.logic');
+      const { save_content_jsx } = require('../../../business.logic/cache');
 
       renderWithProvider(<Content def={page as any} />);
 
@@ -273,7 +273,7 @@ describe('Content Component Performance & Memoization', () => {
 
     it('should memoize html load handler', () => {
       const page = new MockStatePage('$html_load', 'test-html-load');
-      const { save_content_jsx } = require('../../../business.logic');
+      const { save_content_jsx } = require('../../../business.logic/cache');
 
       renderWithProvider(<Content def={page as any} />);
 
@@ -282,7 +282,7 @@ describe('Content Component Performance & Memoization', () => {
 
     it('should memoize default handler', () => {
       const page = new MockStatePage('unknown_type', 'test-default');
-      const { get_last_content_jsx } = require('../../../business.logic');
+      const { get_last_content_jsx } = require('../../../business.logic/cache');
 
       renderWithProvider(<Content def={page as any} />);
 
@@ -440,7 +440,7 @@ describe('Content Component Performance & Memoization', () => {
 
   describe('Integration with business logic', () => {
     it('should properly integrate save_content_jsx with memoization', () => {
-      const { save_content_jsx } = require('../../../business.logic');
+      const { save_content_jsx } = require('../../../business.logic/cache');
       const page = new MockStatePage('$view', 'integration-test') as unknown;
 
       renderWithProvider(<Content def={page as StatePage} />);
@@ -453,7 +453,7 @@ describe('Content Component Performance & Memoization', () => {
     });
 
     it('should properly integrate with form state management', () => {
-      const { get_state_form_name } = require('../../../business.logic');
+      const { get_state_form_name } = require('../../../business.logic/cache');
       const page = new MockStatePage('$form_load', 'state-integration') as unknown;
 
       renderWithProvider(<Content def={page as StatePage} />);

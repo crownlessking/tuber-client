@@ -1,4 +1,4 @@
-import { get_state_form_name } from 'src/business.logic';
+import { get_state_form_name } from 'src/business.logic/parsing';
 import { error_id } from 'src/business.logic/errors';
 import { ler, pre } from 'src/business.logic/logging';
 import { get_parsed_content } from 'src/business.logic/parsing';

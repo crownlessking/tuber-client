@@ -75,13 +75,13 @@ export function select(endpoint: string, id: string): unknown {
   try {
     return indexes?.[endpoint]?.[id];
   } catch (e) {
-    error_id(6).remember_error({
+    error_id(6).remember_error({ // error 6
       'code': 'MISSING_VALUE',
       'title': (e as Error).message,
       'detail': (e as Error).stack,
       'source': {
-        parameter: `${endpoint}/${id}`
+        'parameter': `${endpoint}/${id}`
       }
-    }); // error 6
+    });
   }
 }

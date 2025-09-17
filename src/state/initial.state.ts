@@ -1,4 +1,4 @@
-import { get_head_meta_content } from '../business.logic';
+import { get_head_meta_content } from '../business.logic/parsing';
 import { orange } from '@mui/material/colors';
 import IState from '../interfaces/IState';
 

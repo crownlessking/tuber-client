@@ -3,7 +3,7 @@ import State from './State';
 import { ler } from '../business.logic/logging';
 import { tmpRemove } from 'src/slices/tmp.slice';
 import { CSSProperties } from 'react';
-import { is_record } from '../business.logic';
+import { is_record } from '../business.logic/utility';
 
 interface IConfiguration {
   dispatch?: Function;

@@ -1,4 +1,4 @@
-import { get_origin_ending_fixed } from '../business.logic';
+import { get_origin_ending_fixed } from '../business.logic/parsing';
 import AbstractState from './AbstractState';
 import IStateApp from '../interfaces/IStateApp';
 import State from './State';

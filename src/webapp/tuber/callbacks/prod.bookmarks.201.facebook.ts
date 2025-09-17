@@ -1,7 +1,8 @@
 import JsonapiRequest from 'src/business.logic/JsonapiRequest';
 import { type IRedux } from 'src/state';
 import { post_req_state } from 'src/state/net.actions';
-import { get_state_form_name, get_val } from '../../../business.logic';
+import { get_val } from '../../../business.logic/utility';
+import { get_state_form_name } from '../../../business.logic/parsing';
 import { FORM_FACEBOOK_NEW_ID } from '../tuber.config';
 import { facebook_parse_iframe } from '../_tuber.common.logic';
 import { IBookmark } from '../tuber.interfaces';

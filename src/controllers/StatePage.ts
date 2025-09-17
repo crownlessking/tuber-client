@@ -1,23 +1,29 @@
-import { get_parsed_content } from '../business.logic/parsing';
-import StatePageAppbar from './templates/StatePageAppbar';
-import StatePageBackground from './templates/StatePageBackground';
-import type StateAllPages from './StateAllPages';
-import StatePageDrawer from './templates/StatePageDrawer';
-import StatePageTypography from './templates/StatePageTypography';
-import AbstractState from './AbstractState';
-import IStateAppbar from '../interfaces/IStateAppbar';
-import StateComponent from './StateComponent';
+import {
+  get_parsed_content,
+  error_id,
+  mongo_object_id,
+  ler
+} from '../business.logic';
+import  {
+  State,
+  StatePageAppbar,
+  StatePageBackground,
+  type StateAllPages,
+  StatePageDrawer,
+  StatePageTypography,
+  AbstractState,
+  StateComponent,
+} from '.';
+import {
+  IStateAppbar,
+  IStateBackground,
+  IStateComponent,
+  IStateTypography,
+  IJsonapiPageLinks
+} from '../interfaces';
 import IStatePage, { IStatePageContent } from '../interfaces/IStatePage';
-import IStateBackground from '../interfaces/IStateBackground';
-import IStateComponent from '../interfaces/IStateComponent';
-import IStateTypography from '../interfaces/IStateTypography';
 import IStateDrawer, { IStatePageDrawer } from '../interfaces/IStateDrawer';
 import { TStatePageLayout } from '../constants.client';
-import State from './State';
-import { error_id } from '../business.logic/errors';
-import { mongo_object_id } from '../business.logic';
-import { ler } from '../business.logic/logging';
-import { IJsonapiPageLinks } from '../interfaces/IJsonapi';
 import { CSSProperties } from 'react';
 
 export default class StatePage extends AbstractState implements IStatePage {

@@ -9,15 +9,15 @@ import IStateAllForms from '../../interfaces/IStateAllForms';
 import IStatePage from '../../interfaces/IStatePage';
 import HtmlContent from './html.component';
 import { APP_CONTENT_VIEW } from '../../constants.client';
-import { error_id } from 'src/business.logic/errors';
+import {
+  error_id,
+  get_state_form_name,
+  get_last_content_jsx,
+  save_content_jsx,
+  ler
+} from '../../business.logic';
 import FormContent from './form.component';
 import WebApps from './webapp.content.component';
-import {
-  get_last_content_jsx,
-  get_state_form_name,
-  save_content_jsx,
-} from '../../business.logic';
-import { ler } from '../../business.logic/logging';
 
 export interface IContentState {
   stateApp: IStateApp;

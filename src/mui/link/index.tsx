@@ -9,7 +9,7 @@ import store, { type IRedux, actions } from '../../state';
 import { Link as RouterLink } from 'react-router-dom';
 import Chip from '@mui/material/Chip';
 import StateJsxBadgedIcon from '../icon';
-import { get_val } from '../../business.logic';
+import { get_val } from '../../business.logic/utility';
 
 interface IJsonLinkProps {
   def: StateLink;

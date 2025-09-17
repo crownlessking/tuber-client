@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { is_object, clean_endpoint_ending } from '../business.logic';
+import { is_object } from '../business.logic/utility';
 import {
   IJsonapiAbstractResponse,
   IJsonapiDataAttributes,
@@ -15,6 +15,7 @@ import { dataStackCol, dataStack } from '../slices/data.slice';
 import { metaAdd } from '../slices/meta.slice';
 import { net_patch_state } from './actions';
 import { pre, log, ler } from '../business.logic/logging';
+import { clean_endpoint_ending } from 'src/business.logic/parsing';
 
 export default function net_default_201_driver (
   dispatch: Dispatch,

@@ -1,5 +1,4 @@
-import { ler } from '../business.logic/logging';
-import { error_id } from '../business.logic/errors';
+import { error_id, ler } from '../business.logic';
 
 export default class StateRegistry {
   

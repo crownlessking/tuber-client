@@ -1,10 +1,13 @@
-import { get_parsed_content } from 'src/business.logic/parsing';
+import {
+  get_parsed_content,
+  get_state_form_name
+} from 'src/business.logic/parsing';
 import { IJsonapiResponseResource } from 'src/interfaces/IJsonapi';
 import StateTmp from 'src/controllers/StateTmp';
 import { type IRedux } from 'src/state';
 import { error_id } from 'src/business.logic/errors';
 import { delete_req_state, get_dialog_state } from 'src/state/net.actions';
-import { get_state_form_name, get_val, safely_get_as } from '../../../business.logic';
+import { get_val, safely_get_as } from 'src/business.logic/utility';
 import { get_dialog_registry_key_for_edit } from '../_tuber.common.logic';
 import { IBookmark } from '../tuber.interfaces';
 import { DIALOG_DELETE_BOOKMARK_ID } from '../tuber.config';

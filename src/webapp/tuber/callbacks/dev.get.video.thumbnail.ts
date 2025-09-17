@@ -1,4 +1,5 @@
-import { safely_get_as } from '../../../business.logic';
+import { get_origin_ending_fixed } from '../../../business.logic/parsing';
+import { get_val, safely_get_as } from 'src/business.logic/utility';
 import FormValidationPolicy from 'src/business.logic/FormValidationPolicy';
 import { type IRedux } from 'src/state';
 import { error_id, remember_jsonapi_errors } from 'src/business.logic/errors';
@@ -21,7 +22,6 @@ import { get_fetch } from 'src/state/net.actions';
 import { IBookmark } from '../tuber.interfaces';
 import React from 'react';
 import Config from 'src/config';
-import { get_origin_ending_fixed, get_val } from '../../../business.logic';
 import { ler } from '../../../business.logic/logging';
 import StateData from 'src/controllers/StateData';
 import { IJsonapiResponse } from 'src/interfaces/IJsonapi';

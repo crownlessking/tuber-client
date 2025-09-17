@@ -1,6 +1,6 @@
 import { Theme } from '@mui/material';
 import { err } from '../business.logic/logging';
-import { get_val, safely_get_as } from '../business.logic';
+import { get_val, safely_get_as } from '../business.logic/utility';
 import { TObj } from 'src/common.types';
 
 interface IEval {

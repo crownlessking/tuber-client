@@ -12,14 +12,14 @@ import {
   useTheme
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import JsonapiError from '../../business.logic/JsonapiError';
 import StatePage from '../../controllers/StatePage';
 import { IJsonapiError } from '../../interfaces/IJsonapi';
 import {
+  JsonapiError,
   color_json_code,
   format_json_code,
   get_errors_list
-} from '../../business.logic/errors';
+} from '../../business.logic';
 import InputBase from '@mui/material/InputBase';
 import { StateJsxIcon } from '../../mui/icon';
 

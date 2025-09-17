@@ -1,6 +1,6 @@
 import { error_id, remember_exception } from 'src/business.logic/errors';
 import { ler, log } from 'src/business.logic/logging';
-import { get_query_values } from '../../business.logic';
+import { get_query_values } from '../../business.logic/parsing';
 import {
   DIALOG_DAILY_EDIT_ID,
   DIALOG_FACEBOOK_EDIT_ID,

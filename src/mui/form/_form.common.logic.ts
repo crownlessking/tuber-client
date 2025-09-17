@@ -2,7 +2,7 @@ import { TBoolVal } from 'src/common.types';
 import * as C from 'src/constants.client';
 import IStateDialog from '../../interfaces/IStateDialog';
 import IStateFormItem from '../../interfaces/IStateFormItem';
-import { is_record } from 'src/business.logic';
+import { is_record } from 'src/business.logic/utility';
 
 /** 
  * Regular expression identifying a `true` or `false` boolean value.

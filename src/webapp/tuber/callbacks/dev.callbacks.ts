@@ -9,7 +9,7 @@ import {
   dev_create_bookmark_search_index,
   dev_get_bookmarks_callback
 } from './dev.bookmarks.200';
-import { get_parsed_content } from 'src/business.logic/parsing';
+import { get_parsed_content, get_state_form_name } from 'src/business.logic/parsing';
 import { error_id } from '../../../business.logic/errors';
 import dev_get_video_thumbnail from './dev.get.video.thumbnail';
 import {
@@ -21,7 +21,7 @@ import {
 } from '../tuber.config';
 import FormValidationPolicy from 'src/business.logic/FormValidationPolicy';
 import { YouTubePlayer } from 'react-youtube';
-import { get_state_form_name, safely_get_as } from '../../../business.logic';
+import { safely_get_as } from '../../../business.logic/utility';
 import Config from 'src/config';
 import { TPlatform } from '../tuber.interfaces';
 import { pre } from '../../../business.logic/logging';

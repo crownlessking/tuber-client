@@ -1,8 +1,12 @@
-import { get_head_meta_content, get_val, safely_get_as } from '../business.logic';
+import {
+  get_val,
+  safely_get_as,
+  get_head_meta_content,
+  error_id,
+  err
+} from '../business.logic';
 import AbstractState from './AbstractState';
 import IStateNet from '../interfaces/IStateNet';
-import { error_id } from '../business.logic/errors';
-import { err } from '../business.logic/logging';
 
 export default class StateNet extends AbstractState implements IStateNet {
 

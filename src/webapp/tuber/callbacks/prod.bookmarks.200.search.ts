@@ -1,5 +1,5 @@
 import { type IRedux } from 'src/state';
-import { get_val, mongo_object_id } from 'src/business.logic';
+import { mongo_object_id, get_val } from 'src/business.logic/utility';
 import { get_req_state } from 'src/state/net.actions';
 import { APP_IS_FETCHING_BOOKMARKS, PAGE_RESEARCH_APP_ID } from '../tuber.config';
 import { get_parsed_content } from 'src/business.logic/parsing';

@@ -1,9 +1,11 @@
 import { YouTubePlayer } from 'react-youtube';
 import Config from 'src/config';
-import { get_parsed_content } from 'src/business.logic/parsing';
+import {
+  get_parsed_content,
+  get_state_form_name
+} from 'src/business.logic/parsing';
 import { type IRedux } from 'src/state';
 import { error_id } from 'src/business.logic/errors';
-import { get_state_form_name } from '../../../business.logic';
 import { TPlatform } from '../tuber.interfaces';
 import { get_dialog_state } from 'src/state/net.actions';
 import { pre } from '../../../business.logic/logging';

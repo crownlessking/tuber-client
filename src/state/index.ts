@@ -46,10 +46,11 @@ import {
 import Config from '../config';
 import { error_id } from '../business.logic/errors';
 import initialState from './initial.state';
-import { clear_last_content_jsx, set_val } from '../business.logic';
+import { clear_last_content_jsx } from 'src/business.logic/cache';
 import { err } from '../business.logic/logging';
 import IState, { INetState } from '../interfaces/IState';
 import { TObj } from '../common.types';
+import { set_val } from 'src/business.logic/parsing';
 
 const appReducer = combineReducers({
   app: infoReducer,

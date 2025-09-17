@@ -1,13 +1,15 @@
 import fetch from 'cross-fetch';
 import { Dispatch } from 'redux';
 import {
-  get_endpoint,
+  get_themed_state,
+  is_object,
+  get_val
+} from '../business.logic/utility';
+import {
   get_origin_ending_fixed,
   get_query_starting_fixed,
-  get_themed_state,
-  get_val,
-  is_object
-} from '../business.logic';
+  get_endpoint
+} from '../business.logic/parsing';
 import { error_id } from '../business.logic/errors';
 import net_default_200_driver from './net.default.200.driver.c';
 import net_default_201_driver from './net.default.201.driver.c';
@@ -17,7 +19,9 @@ import net_default_404_driver from './net.default.404.driver.c';
 import net_default_409_driver from './net.default.409.driver.c';
 import net_default_500_driver from './net.default.500.driver.c';
 import {
-  appHideSpinner, appRequestFailed, appRequestStart
+  appHideSpinner,
+  appRequestFailed,
+  appRequestStart
 } from '../slices/app.slice';
 import { IRedux, RootState } from '.';
 import { IJsonapiBaseResponse, IJsonapiError } from '../interfaces/IJsonapi';
