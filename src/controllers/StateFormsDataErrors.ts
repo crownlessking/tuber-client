@@ -1,6 +1,7 @@
 import AbstractState from './AbstractState';
 import { IStateFormsDataErrors } from '../interfaces/IState';
 import State from './State';
+import { get_state } from '../state';
 
 const EXCEPTION_MESSAGE = 'StateFormsDataErrors: configure instance with \'formName\'';
 
@@ -8,13 +9,13 @@ export default class StateFormsDataErrors<T=unknown> extends AbstractState {
   private _formName?: string;
 
   constructor (private formsDataErrorsState: IStateFormsDataErrors,
-    private parentDef?: State
+    private _parent?: State
   ) {
     super();
   }
 
   get parent(): State {
-    return this.parentDef ?? (this.parentDef = new State());
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
   }
   get state(): IStateFormsDataErrors { return this.formsDataErrorsState; }
   get props(): unknown { return this.die('Not implemented yet.', {}); }

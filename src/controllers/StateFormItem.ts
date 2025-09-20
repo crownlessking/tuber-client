@@ -36,8 +36,6 @@ export default class StateFormItem<P = StateForm, T = unknown>
   extends AbstractState
   implements IStateFormItem
 {
-  protected itemState: IStateFormItem<T>;
-  protected parentDef: P;
   protected itemHasState: IStateFormItemCustom<T>;
   protected itemHas?: StateFormItemCustom<StateFormItem<P, T>, T>;
   protected itemDisabled: boolean;
@@ -49,10 +47,10 @@ export default class StateFormItem<P = StateForm, T = unknown>
   protected recursiveItems?: StateFormItem<P, T>[];
   protected itemInputProps?: StateFormItemInputProps<StateFormItem<P, T>>;
 
-  constructor(itemState: IStateFormItem<T>, parent: P) {
+  constructor(protected itemState: IStateFormItem<T>,
+    protected parentDef: P
+  ) {
     super();
-    this.itemState = itemState;
-    this.parentDef = parent;
     this.itemDisabled = !!this.itemState.disabled;
     this.itemHasState = itemState.has || {};
   }

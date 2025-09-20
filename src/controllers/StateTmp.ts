@@ -1,9 +1,10 @@
 import AbstractState from './AbstractState';
 import State from './State';
 import { ler } from '../business.logic/logging';
-import { tmpRemove } from 'src/slices/tmp.slice';
+import { tmpRemove } from '../slices/tmp.slice';
 import { CSSProperties } from 'react';
 import { is_record } from '../business.logic/utility';
+import { get_state } from '../state';
 
 interface IConfiguration {
   dispatch?: Function;
@@ -17,14 +18,14 @@ export default class StateTmp extends AbstractState {
   private _dispatch?: Function;
 
   constructor(private _tmpState: Record<string, unknown>,
-    private _parentDef?: State
+    private _parent?: State
   ) {
     super();
   }
 
   get state(): Record<string, unknown> { return this._tmpState; }
   get parent(): State {
-    return this._parentDef ?? (this._parentDef = new State());
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
   }
   get props(): Record<string, unknown> { return this.die('Not implemented yet.', {}); }
   get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
@@ -33,7 +34,7 @@ export default class StateTmp extends AbstractState {
     this._dispatch = dispatch;
   }
 
-  private removeTemporaryValue(id: string): void {
+  private _removeTemporaryValue(id: string): void {
     if (this._dispatch) {
       this._dispatch(tmpRemove(id));
       return;
@@ -45,7 +46,7 @@ export default class StateTmp extends AbstractState {
     const obj = this._tmpState[key];
     if (is_record(obj)) {
       const val = obj[name] ?? $default;
-      this.removeTemporaryValue(key);
+      this._removeTemporaryValue(key);
       return val as T;
     }
     return $default;

@@ -17,17 +17,15 @@ import {
   BOOL_YESNO,
 } from '../../../constants.client';
 import { IStateFormItemCheckboxBox } from 'src/controllers/StateFormItemCheckboxBox';
-import {
-  type StateForm,
-  type StateFormItem,
-  StateFormItemSelect,
-  StateFormItemRadio,
-  StateFormItemGroup,
-  StateFormItemSwitch,
-  StateFormItemInput,
-  StateFormItemCheckbox,
-  StateFormItemSwitchToggle
-} from '../../../controllers';
+import type StateForm from '../../../controllers/StateForm';
+import type StateFormItem from '../../../controllers/StateFormItem';
+import StateFormItemSelect from '../../../controllers/templates/StateFormItemSelect';
+import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
+import StateFormItemGroup from '../../../controllers/StateFormItemGroup';
+import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
+import StateFormItemCheckbox from '../../../controllers/templates/StateFormItemCheckbox';
+import StateFormItemSwitchToggle from '../../../controllers/StateFormItemSwitchToggle';
 import StateJsxFormItemGroup from '../state.jsx.form.item.group';
 import { StateJsxUnifiedIconProvider } from '../../icon';
 import { AppDispatch, default_callback } from '../../../state';

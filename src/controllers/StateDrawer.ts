@@ -12,15 +12,10 @@ export default class StateDrawer<P = State>
 {
   /** Default drawer width */
   static DEFAULT_WIDTH: number = 300;
-
-  protected drawerState: IStateDrawer;
-  protected parentDef: P;
   protected drawerItems?: StateLink<StateDrawer<P>>[];
 
-  constructor (drawerState: IStateDrawer, parent: P) {
+  constructor (protected drawerState: IStateDrawer, protected parentDef: P) {
     super();
-    this.drawerState = drawerState;
-    this.parentDef = parent;
   }
 
   get state(): IStateDrawer { return this.drawerState; }
@@ -31,12 +26,8 @@ export default class StateDrawer<P = State>
       anchor: this.drawerState.anchor ?? 'left'
     };
   }
-  get theme(): CSSProperties {
-    return this.die('Not implemented yet.', {});
-  }
-  get _type() {
-    return this.drawerState._type || 'none';
-  }
+  get theme(): CSSProperties { return this.die('Not implemented.', {}); }
+  get _type() { return this.drawerState._type || 'none'; }
   /** Get the drawer's list of icon links. */
   get items(): StateLink[] {
     return this.drawerItems

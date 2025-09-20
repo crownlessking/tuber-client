@@ -9,13 +9,10 @@ export default class StateFormItemInputProps<P=StateFormItem>
   extends AbstractState
   implements IStateFormItemInputProps
 {
-  private _inputPropsState: IStateFormItemInputProps;
-  private _parentDef: P;
-
-  constructor (inputPropsState: IStateFormItemInputProps, parent: P) {
+  constructor (private _inputPropsState: IStateFormItemInputProps,
+    private _parentDef: P
+  ) {
     super();
-    this._inputPropsState = inputPropsState;
-    this._parentDef = parent;
   }
 
   get state(): IStateFormItemInputProps { return this._inputPropsState; }

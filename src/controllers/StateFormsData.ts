@@ -1,18 +1,20 @@
+import { get_state } from '../state';
 import { TObj } from '../common.types';
 import AbstractState from './AbstractState';
-import type State from './State';
+import State from './State';
 
 export default class StateFormsData extends AbstractState {
-  private _parentDef?: State;
 
-  constructor (private _formsDataState: TObj) {
+  constructor (private _formsDataState: TObj, private _parent?: State) {
     super();
   }
 
   get state(): TObj { return this._formsDataState; }
-  get parent(): State | undefined { return this._parentDef; }
-  get props(): TObj { return this.die<TObj>('Not implemented yet.', {}); }
-  get theme(): TObj { return this.die<TObj>('Not implemented yet.', {}); }
+  get parent(): State {
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
+  }
+  get props(): TObj { return this.die<TObj>('Not implemented.', {}); }
+  get theme(): TObj { return this.die<TObj>('Not implemented.', {}); }
 
   /**
    * Get form field value from redux store.

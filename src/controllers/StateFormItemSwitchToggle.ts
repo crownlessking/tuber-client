@@ -8,21 +8,14 @@ export default class StateFormItemSwitchToggle
   extends AbstractState
   implements IStateFormItemSwitchToggle
 {
-
-  private _switchToggleState: IStateFormItemSwitchToggle;
-  private _parentDef: StateFormItemSwitch;
-
-  constructor (
-    switchToggleState: IStateFormItemSwitchToggle,
-    parent: StateFormItemSwitch) 
-  {
+  constructor (private _switchToggleState: IStateFormItemSwitchToggle,
+    private _parent: StateFormItemSwitch
+  ) {
     super();
-    this._switchToggleState = switchToggleState;
-    this._parentDef = parent;
   }
 
   get state(): IStateFormItemSwitchToggle { return this._switchToggleState; }
-  get parent(): StateFormItemSwitch { return this._parentDef; }
+  get parent(): StateFormItemSwitch { return this._parent; }
   get props(): Record<string, unknown> { return this._switchToggleState.props ?? {}; }
   get theme(): CSSProperties { return this._switchToggleState.theme ?? {}; }
 

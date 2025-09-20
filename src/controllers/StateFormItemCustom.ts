@@ -25,14 +25,14 @@ export default class StateFormItemCustom<P, T = unknown>
   implements IStateFormItemCustom<T>
 {
   protected hasItemsState: T[];
-  protected parentDef: P;
   protected hasCallback?: TReduxHandle;
   protected hasClasses: unknown;
   private _fieldOk = true;
 
-  constructor (protected hasState: IStateFormItemCustom<T>, parent: P) {
+  constructor (protected hasState: IStateFormItemCustom<T>,
+    protected parentDef: P
+  ) {
     super();
-    this.parentDef = parent;
     this.hasItemsState = this.hasState.items || [];
     this.hasCallback = this.hasState.callback;
     this.hasClasses = this.hasState.classes || {};

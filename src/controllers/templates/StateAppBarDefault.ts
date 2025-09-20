@@ -11,17 +11,13 @@ import StateAppbar from '../StateAppbar';
 import StateAppbarBackground from './StateAppbarBackground';
 import StateAppbarTypography from './StateAppbarTypography';
 import { HTMLAttributes } from 'react';
-import { TObj } from 'src/common.types';
+import { TObj } from '../../common.types';
 
 export default class StateAppbarDefault
-  extends StateAppbar<State> implements IStateAppbar
+  extends StateAppbar<State>
+  implements IStateAppbar
 {
-  get props(): AppBarProps {
-    return {
-      ...this.appbarState.props
-    };
-  }
-
+  get props(): AppBarProps { return { ...this.appbarState.props }; }
   get logoTag(): Required<IStateAppbar>['logoTag'] {
     return this.appbarState.logoTag || 'div';
   }
@@ -29,7 +25,6 @@ export default class StateAppbarDefault
     return this.appbarState.toolbarProps || {};
   }
   get logoProps(): TObj { return this.appbarState.logoProps ?? {}; }
-
   get menuIconProps(): IconButtonProps {
     return {
       size: 'large',
@@ -40,49 +35,41 @@ export default class StateAppbarDefault
       ...this.appbarState.menuIconProps
     };
   }
-
   get searchContainerProps(): HTMLAttributes<HTMLDivElement> & { sx?: SxProps } {
     return {
       ...this.appbarState.searchContainerProps
     };
   }
-
   get desktopMenuItemsProps(): Required<IStateAppbar>['desktopMenuItemsProps'] {
     return {
       sx : { display: { xs: 'none', md: 'flex' } },
       ...this.appbarState.desktopMenuItemsProps
     };
   }
-
   get desktopMenuItems2Props(): Required<IStateAppbar>['desktopMenuItems2Props'] {
     return {
       ...this.desktopMenuItemsProps,
       ...this.appbarState.desktopMenuItems2Props
     };
   }
-
   get mobileMenuItemsProps(): Required<IStateAppbar>['mobileMenuItemsProps'] {
     return {
       sx : { display: { xs: 'flex', md: 'none' } },
       ...this.appbarState.mobileMenuItemsProps
     };
   }
-
   get mobileMenuItems2Props(): Required<IStateAppbar>['mobileMenuItems2Props'] {
     return {
       ...this.mobileMenuItemsProps,
       ...this.appbarState.mobileMenuItems2Props
     };
   }
-
   get mobileMenuIconProps(): Required<IStateAppbar>['mobileMenuIconProps'] {
     return this.appbarState.mobileMenuIconProps || {};
   }
-
   get mobileMenuIcon2Props(): Required<IStateAppbar>['mobileMenuIcon2Props'] {
     return this.appbarState.mobileMenuIcon2Props || {};
   }
-
   get mobileMenuProps(): MenuProps {
     return {
       anchorOrigin: {
@@ -98,7 +85,6 @@ export default class StateAppbarDefault
       ...this.appbarState.mobileMenuProps
     };
   }
-
   get mobileMenu2Props(): MenuProps {
     return {
       anchorOrigin: {
@@ -114,21 +100,16 @@ export default class StateAppbarDefault
       ...this.appbarState.mobileMenu2Props
     };
   }
-
   get menuId(): string {
     return this.appbarState.menuId || 'primary-search-account-menu';
   }
-
   get mobileMenuId(): string {
     return this.appbarState.mobileMenuId || 'primary-menu-mobile';
   }
-
   get mobileMenu2Id(): string {
     return this.appbarState.mobileMenu2Id || 'primary-menu2-mobile';
   }
-
   get menuItemsSx(): SxProps { return this.appbarState.menuItemsSx ?? {}; }
-
   get textLogoProps(): TypographyProps {
     return {
       variant: 'h6',
@@ -141,7 +122,6 @@ export default class StateAppbarDefault
       ...this.appbarState.textLogoProps
     };
   }
-
   get logoContainerProps(): HTMLAttributes<HTMLDivElement> & { sx?: SxProps } {
     return {
       ...this.appbarState.logoContainerProps,

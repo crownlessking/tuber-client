@@ -11,11 +11,11 @@ export default class StateFormItemRadioCustom extends StateFormItemCustom<
   StateFormItemRadio,
   IStateFormItemRadioButton
 > {
-  private radioButtons?: StateFormItemRadioButton[];
+  private _radioButtons?: StateFormItemRadioButton[];
 
   get items(): StateFormItemRadioButton[] {
-    return this.radioButtons || (
-      this.radioButtons = this.hasItemsState.map(
+    return this._radioButtons || (
+      this._radioButtons = this.hasItemsState.map(
         button => new StateFormItemRadioButton(button, this)
       )
     );

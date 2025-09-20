@@ -1,6 +1,5 @@
 import { TStateAllChips, TStateChips } from '../interfaces/IState';
 import AbstractState from './AbstractState';
-import State from './State';
 import StateFormItemCustomChip from './templates/StateFormItemCustomChip';
 
 interface IConfigure {
@@ -12,16 +11,12 @@ export default class StateAppbarInputChip extends AbstractState {
   private _route?: string;
   private _template?: string;
 
-  constructor(private _allChipState: TStateAllChips,
-    private _parentDef?: State
-  ) {
+  constructor(private _allChipState: TStateAllChips) {
     super();
   }
 
   get state(): TStateAllChips { return this._allChipState; }
-  get parent(): State {
-    return this._parentDef ?? (this._parentDef = new State());
-  }
+  get parent(): unknown { return this.die('\'parent\' not implemented yet.', {}); }
   get props(): unknown { return this.die('\'props\' not implemented yet.', {}); }
   get theme(): unknown { return this.die('\'theme\' not implemented yet.', {}); }
 

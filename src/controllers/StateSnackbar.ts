@@ -2,6 +2,7 @@ import AbstractState from './AbstractState';
 import IStateAnchorOrigin from '../interfaces/IStateAnchorOrigin';
 import IStateSnackbar from '../interfaces/IStateSnackbar';
 import State from './State';
+import { get_state } from '../state';
 import StateAnchorOrigin from './StateAnchorOrigin';
 
 export default class StateSnackbar
@@ -11,14 +12,14 @@ export default class StateSnackbar
   private _snackbarAnchorOrigin?: StateAnchorOrigin;
 
   constructor(private _snackbarState: IStateSnackbar,
-    private _parentDef?: State
+    private _parent?: State
   ) {
     super();
   }
 
   get state(): IStateSnackbar { return this._snackbarState; }
   get parent(): State {
-    return this._parentDef ?? (this._parentDef = new State());
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
   }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }

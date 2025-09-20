@@ -5,18 +5,21 @@ import {
 } from '../interfaces/IStateAppbarQueries';
 import State from './State';
 import { TWithRequired } from '../common.types';
+import { get_state } from 'src/state';
 
 export default class StateAppbarQueries extends AbstractState {
 
   constructor(protected _searchesState: TStateAppbarQueries,
-    protected _parentDef?: State
+    protected parentDef?: State
   ) {
     super();
   }
 
   get state(): TStateAppbarQueries { return this._searchesState; }
   get parent(): State {
-    return this._parentDef ?? (this._parentDef = new State());
+    return this.parentDef ?? (
+      this.parentDef = State.fromRootState(get_state())
+    );
   }
   get props(): unknown { return this.die('\'props\' not implemented yet.', {}); }
   get theme(): unknown { return this.die('\'theme\' not implemented yet.', {}); }

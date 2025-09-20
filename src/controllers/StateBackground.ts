@@ -5,25 +5,16 @@ import IStateBackground from '../interfaces/IStateBackground';
 import type State from './State';
 
 export default class StateBackground<P = State>
-  extends AbstractState implements IStateBackground {
-
-  private _backgroundState: IStateBackground;
-  private _parentDef: P;
-
-  /**
-  * Background
-  *
-  * @param backgroundState 
-  */
-  constructor(backgroundState: IStateBackground, parent: P) {
+  extends AbstractState
+  implements IStateBackground
+{
+  constructor(private _backgroundState: IStateBackground, private _parent: P) {
     super();
-    this._backgroundState = backgroundState;
-    this._parentDef = parent;
   }
 
   /** Get the background json. */
   get state(): IStateBackground { return this._backgroundState; }
-  get parent(): P { return this._parentDef; }
+  get parent(): P { return this._parent; }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }
   get color(): CSSProperties['backgroundColor'] { return this._backgroundState.color; }

@@ -4,18 +4,16 @@ import {
   alpha,
   InputLabel
 } from '@mui/material';
-import {
-  StateAllForms,
-  StateForm,
-  StateComponent,
-  StateFormItem,
-  StateLink,
-  StateThemeParser,
-  StateFormItemRadio,
-  StateFormItemSelect,
-  StateFormItemSwitch,
-  StateFormItemCheckbox
-} from '../controllers';
+import StateAllForms from '../controllers/StateAllForms';
+import StateForm from '../controllers/StateForm';
+import StateComponent from '../controllers/StateComponent';
+import StateFormItem from '../controllers/StateFormItem';
+import StateLink from '../controllers/StateLink';
+import StateThemeParser from '../controllers/StateThemeParser';
+import StateFormItemRadio from '../controllers/templates/StateFormItemRadio';
+import StateFormItemSelect from '../controllers/templates/StateFormItemSelect';
+import StateFormItemSwitch from '../controllers/templates/StateFormItemSwitch';
+import StateFormItemCheckbox from '../controllers/templates/StateFormItemCheckbox';
 import {
   BOOL_ONOFF,
   BOOL_TRUEFALSE,

@@ -1,5 +1,6 @@
 import AbstractState from './AbstractState';
 import State from './State';
+import { get_state } from '../state';
 import IStateDialog from '../interfaces/IStateDialog';
 import type StateDialogSelectionItem from './templates/StateDialogSelectionItem';
 import IStateFormItem from '../interfaces/IStateFormItem';
@@ -16,7 +17,9 @@ export default class StateDialog<T = unknown> extends AbstractState implements I
 
   get state(): IStateDialog<T> { return this.dialogState; }
   get parent(): State {
-    return this.parentDef ?? (this.parentDef = new State());
+    return this.parentDef ?? (
+      this.parentDef = State.fromRootState(get_state())
+    );
   }
   get props() { return this.dialogState.props }
   get theme(): CSSProperties { return this.die('Not implemented yet.', {}) }

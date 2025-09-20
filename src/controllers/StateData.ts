@@ -8,6 +8,7 @@ import {
 import { IStateData } from '../interfaces/IState';
 import State from './State';
 import { TObj } from 'src/common.types';
+import { get_state } from '../state';
 
 interface IConfigure {
   dispatch?: AppDispatch;
@@ -26,15 +27,15 @@ export default class StateData extends AbstractState {
   private _includedProps: { id: boolean, types: boolean };
 
   constructor(private _dataState: IStateData,
-    private _parentDef?: State
+    private _parent?: State
   ) {
     super();
-    this._includedProps = { id: false, types: false};
+    this._includedProps = { id: false, types: false };
   }
 
   get state(): IStateData { return this._dataState; }
   get parent(): State {
-    return this._parentDef ?? (this._parentDef = new State());
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
   }
   get props(): TObj { return this.die('Not implemented yet.', {}); }
   get theme(): TObj { return this.die('Not implemented yet.', {}); }

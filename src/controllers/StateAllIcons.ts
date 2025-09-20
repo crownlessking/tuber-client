@@ -3,33 +3,28 @@ import IStateAllIcons from '../interfaces/IStateAllIcons';
 import IStateIcon from '../interfaces/IStateIcon';
 import State from './State';
 import StateIcon from './StateIcon';
+import { get_state } from 'src/state';
 
 export default class StateAllIcons extends AbstractState {
 
   constructor(private _allIconsState: IStateAllIcons,
-    private _parentDef?: State
+    private _parent?: State
   ) {
     super();
   }
 
   /** Get a copy of all icons definition. */
-  get state(): IStateAllIcons { 
-    return this._allIconsState; 
-  }
-
+  get state(): IStateAllIcons {  return this._allIconsState; }
   /** Chain-access to root definition. */
   get parent(): State {
-    return this._parentDef ?? (this._parentDef = new State());
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
   }
-
   get props(): unknown { 
     return this.die('Not implemented yet.', {}); 
   }
-
-  get theme(): unknown { 
+  get theme(): unknown {
     return this.die('Not implemented yet.', {}); 
   }
-
   /**
    * Get an icon state by name.
    *
@@ -39,7 +34,6 @@ export default class StateAllIcons extends AbstractState {
   getIconState = (iconName: string): IStateIcon => {
     return this._allIconsState[iconName] || this._allIconsState['no_icon'];
   };
-
   /**
    * Get an icon controller instance.
    *
@@ -50,7 +44,6 @@ export default class StateAllIcons extends AbstractState {
     const iconState = this.getIconState(iconName);
     return new StateIcon(iconState, this);
   };
-
   /**
    * Get an icon controller instance by name.
    * Alias for iconAt method.
@@ -61,7 +54,6 @@ export default class StateAllIcons extends AbstractState {
   getIcon = (iconName: string): StateIcon => {
     return this.iconAt(iconName);
   };
-
   /**
    * Check if an icon exists in the collection.
    *
@@ -71,7 +63,6 @@ export default class StateAllIcons extends AbstractState {
   hasIcon = (iconName: string): boolean => {
     return iconName in this._allIconsState;
   };
-
   /**
    * Get all available icon names.
    *
@@ -80,7 +71,6 @@ export default class StateAllIcons extends AbstractState {
   getIconNames = (): string[] => {
     return Object.keys(this._allIconsState);
   };
-
   /**
    * Get the count of available icons.
    *
@@ -89,7 +79,6 @@ export default class StateAllIcons extends AbstractState {
   get iconCount(): number {
     return Object.keys(this._allIconsState).length;
   };
-
   /**
    * Add or update an icon in the collection.
    *
@@ -99,7 +88,6 @@ export default class StateAllIcons extends AbstractState {
   setIcon = (iconName: string, iconData: IStateIcon): void => {
     this._allIconsState[iconName] = iconData;
   };
-
   /**
    * Remove an icon from the collection.
    *
@@ -113,7 +101,6 @@ export default class StateAllIcons extends AbstractState {
     }
     return false;
   };
-
   /**
    * Get all icons as an array of [name, StateIcon] pairs.
    *
@@ -125,7 +112,6 @@ export default class StateAllIcons extends AbstractState {
       new StateIcon(iconState, this)
     ]);
   };
-
   /**
    * Search for icons by name pattern.
    *

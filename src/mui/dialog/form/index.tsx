@@ -3,17 +3,15 @@ import FormLabel from '@mui/material/FormLabel';
 import { Fragment, useMemo, useCallback } from 'react';
 import IStateFormItemGroup from '../../../interfaces/IStateFormItemGroup';
 import IStateFormItemSelectOption from '../../../interfaces/IStateFormItemSelectOption';
-import {
-  type StateForm,
-  type StateFormItem,
-  StateFormItemGroup,
-  StateFormItemInput,
-  StateFormItemRadio,
-  StateFormItemSwitch,
-  type StateFormItemCheckboxBox,
-  type StateFormItemRadioButton,
-  type StateFormItemSwitchToggle
-} from '../../../controllers';
+import type StateForm from '../../../controllers/StateForm';
+import type StateFormItem from '../../../controllers/StateFormItem';
+import StateFormItemGroup from '../../../controllers/StateFormItemGroup';
+import StateFormItemInput from '../../../controllers/templates/StateFormItemInput';
+import StateFormItemRadio from '../../../controllers/templates/StateFormItemRadio';
+import StateFormItemSwitch from '../../../controllers/templates/StateFormItemSwitch';
+import type StateFormItemCheckboxBox from '../../../controllers/StateFormItemCheckboxBox';
+import type StateFormItemRadioButton from '../../../controllers/StateFormItemRadioButton';
+import type StateFormItemSwitchToggle from '../../../controllers/StateFormItemSwitchToggle';
 import { error_id } from '../../../business.logic/errors';
 import {
   BOX,

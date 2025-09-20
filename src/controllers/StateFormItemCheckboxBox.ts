@@ -11,18 +11,16 @@ export interface IStateFormItemCheckboxBox extends IFormChoices { }
 export default class StateFormItemCheckboxBox
   extends AbstractState implements IStateFormItemCheckboxBox
 {
-  private _checkboxState: IStateFormItemCheckboxBox;
-  private _parentDef: StateFormItemCheckboxCustom;
   private _checkboxHas?: StateFormItemCustom<this>;
 
-  constructor(checkboxState: IStateFormItemCheckboxBox, parent: StateFormItemCheckboxCustom) {
-    super()
-    this._checkboxState = checkboxState;
-    this._parentDef = parent;
+  constructor(private _checkboxState: IStateFormItemCheckboxBox,
+    private _parent: StateFormItemCheckboxCustom
+  ) {
+    super();
   }
 
   get state(): IStateFormItemCheckboxBox { return this._checkboxState; }
-  get parent(): StateFormItemCheckboxCustom { return this._parentDef; }
+  get parent(): StateFormItemCheckboxCustom { return this._parent; }
   get name(): string { return this._checkboxState.name ?? ''; }
   get label(): string { return this._checkboxState.label ?? ''; }
   get color(): Required<IStateFormItemCheckboxBox>['color'] {

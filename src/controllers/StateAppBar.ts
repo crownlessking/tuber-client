@@ -46,8 +46,8 @@ export default class StateAppbar<P = State>
   /** Get a copy of the `appbar` json. */
   get state(): IStateAppbar { return this.appbarState; }
   get parent(): P { return this.parentDef; }
-  get theme(): CSSProperties { return this.appbarState.theme || {}; }
-  get props(): AppBarProps { return this.appbarState.props || {}; }
+  get theme(): CSSProperties { return this.appbarState.theme ?? {}; }
+  get props(): AppBarProps { return this.appbarState.props ?? {}; }
   get _type(): TAppbarStyle { return this.appbarState._type ?? 'none'; }
   get appbarStyle(): TAppbarStyle { return this.appbarState.appbarStyle || 'basic'; }
 

@@ -3,17 +3,15 @@ import IStateCard from '../interfaces/IStateCard';
 import StateFormItem from './StateFormItem';
 
 export default class StateCard<P=unknown> extends AbstractState implements IStateCard {
-  protected parentDef?: P;
   protected cardActions?: StateFormItem<this>[];
-  constructor(protected cardState: IStateCard, parent?: P) {
+
+  constructor(protected cardState: IStateCard, protected parentDef?: P) {
     super();
-    this.parentDef = parent;
   }
+
   get _id(): string { return this.cardState._id ?? ''; }
   get _key(): string { return this.cardState._key ?? ''; }
-  get state(): IStateCard {
-    return this.cardState;
-  }
+  get state(): IStateCard { return this.cardState; }
   get parent(): P | {} { return this.parentDef ?? {}; }
   get props(): Required<IStateCard>['props'] {
     return this.cardState.props || {};

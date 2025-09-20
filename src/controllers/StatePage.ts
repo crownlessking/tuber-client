@@ -1,29 +1,22 @@
-import {
-  get_parsed_content,
-  error_id,
-  mongo_object_id,
-  ler
-} from '../business.logic';
-import  {
-  State,
-  StatePageAppbar,
-  StatePageBackground,
-  type StateAllPages,
-  StatePageDrawer,
-  StatePageTypography,
-  AbstractState,
-  StateComponent,
-} from '.';
-import {
-  IStateAppbar,
-  IStateBackground,
-  IStateComponent,
-  IStateTypography,
-  IJsonapiPageLinks
-} from '../interfaces';
+import { get_parsed_content } from '../business.logic/parsing';
+import { error_id } from '../business.logic/errors';
+import { mongo_object_id } from '../business.logic/utility';
+import { ler } from '../business.logic/logging';
+import StatePageAppbar from './templates/StatePageAppbar';
+import StatePageBackground from './templates/StatePageBackground';
+import type StateAllPages from './StateAllPages';
+import StatePageDrawer from './templates/StatePageDrawer';
+import StatePageTypography from './templates/StatePageTypography';
+import AbstractState from './AbstractState';
+import IStateAppbar from '../interfaces/IStateAppbar';
+import StateComponent from './StateComponent';
 import IStatePage, { IStatePageContent } from '../interfaces/IStatePage';
+import IStateBackground from '../interfaces/IStateBackground';
+import IStateComponent from '../interfaces/IStateComponent';
+import IStateTypography from '../interfaces/IStateTypography';
 import IStateDrawer, { IStatePageDrawer } from '../interfaces/IStateDrawer';
 import { TStatePageLayout } from '../constants.client';
+import { IJsonapiPageLinks } from '../interfaces/IJsonapi';
 import { CSSProperties } from 'react';
 
 export default class StatePage extends AbstractState implements IStatePage {
@@ -54,7 +47,7 @@ export default class StatePage extends AbstractState implements IStatePage {
    * @param pageState 
    */
   constructor(private _pageState: IStatePage,
-    private _parentDef?: StateAllPages
+    private _parentDef: StateAllPages
   ) {
     super();
     this._pageId = this._pageState._id;
@@ -66,9 +59,7 @@ export default class StatePage extends AbstractState implements IStatePage {
   /** Get the page json. */
   get state(): IStatePage { return this._pageState; }
   /** Chain-access to all pages definition. */
-  get parent(): StateAllPages {
-    return this._parentDef ?? (this._parentDef = new State().allPages);
-  }
+  get parent(): StateAllPages { return this._parentDef; }
   get props(): Record<string, unknown> { return this.die('Not implemented yet.', {}); }
   get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
   /**

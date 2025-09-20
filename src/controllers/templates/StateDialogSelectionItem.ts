@@ -6,22 +6,18 @@ import StateAvatar from '../StateAvatar';
 import { blue } from '@mui/material/colors';
 
 export default class StateDialogSelectionItem<T = unknown>
-  extends AbstractState implements IStateDialogSelectionItem<T>
+  extends AbstractState
+  implements IStateDialogSelectionItem<T>
 {
-  private _itemState: IStateDialogSelectionItem<T>;
-  private parentDef: StateDialogSelection<T>;
   private avatarState?: StateAvatar;
 
-  constructor(
-    itemState: IStateDialogSelectionItem<T>,
-    parent: StateDialogSelection<T>
+  constructor(private _itemState: IStateDialogSelectionItem<T>,
+    private _parent: StateDialogSelection<T>
   ) {
     super();
-    this._itemState = itemState;
-    this.parentDef = parent;
   }
 
-  get parent(): StateDialogSelection<T> { return this.parentDef; }
+  get parent(): StateDialogSelection<T> { return this._parent; }
   get state(): IStateDialogSelectionItem<T> { return this._itemState; }
   get props(): unknown {
     err('`StateDialogSelectionItem.props` not implemented yet.');

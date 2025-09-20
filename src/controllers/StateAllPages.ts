@@ -6,11 +6,12 @@ import State from './State';
 import type StateApp from './StateApp';
 import StatePage from './StatePage';
 import { log } from '../business.logic/logging';
+import { get_state } from '../state';
 
 export default class StateAllPages extends AbstractState {
 
   constructor(private _allPagesState: IStateAllPages,
-    private _parentDef?: State
+    private _parent?: State
   ) {
     super();
   }
@@ -19,10 +20,10 @@ export default class StateAllPages extends AbstractState {
   get state(): IStateAllPages { return this._allPagesState; }
   /** Chain-access root definition. */
   get parent(): State {
-    return this._parentDef ?? (this._parentDef = new State());
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
   }
-  get props(): unknown { return this.die('Not implemented yet.', {}); }
-  get theme(): unknown { return this.die('Not implemented yet.', {}); }
+  get props(): unknown { return this.die('Not implemented.', {}); }
+  get theme(): unknown { return this.die('Not implemented.', {}); }
 
   /** Check to see if the route has path variables. */
   private _has_path_vars(rawRoute: string): boolean {

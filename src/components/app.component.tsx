@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
 import IStatePage from 'src/interfaces/IStatePage';
-import { StateApp, StateAllPages } from '../controllers';
+import StateApp from '../controllers/StateApp';
+import StateAllPages from '../controllers/StateAllPages';
 import ComplexApp from './complex.app.component';
 import GenericApp from './generic.app.component';
 

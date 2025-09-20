@@ -4,12 +4,13 @@ import IStateApp from '../interfaces/IStateApp';
 import State from './State';
 import Config from '../config';
 import { TThemeMode } from '../common.types';
+import { get_state } from '../state';
 
 export default class StateApp extends AbstractState implements IStateApp {
   private _appOrigin?: string;
 
   constructor(private _appState: IStateApp,
-    private _parentDef?: State
+    private _parent?: State
   ) {
     super();
   }
@@ -18,7 +19,7 @@ export default class StateApp extends AbstractState implements IStateApp {
   get state(): IStateApp { return this._appState; }
   /** Chain-access to root definition. */
   get parent(): State {
-    return this._parentDef ?? (this._parentDef = new State());
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
   }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }

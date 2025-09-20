@@ -7,26 +7,28 @@ import {
 } from '../business.logic';
 import AbstractState from './AbstractState';
 import IStateNet from '../interfaces/IStateNet';
+import State from './State';
+import { get_state } from '../state';
 
 export default class StateNet extends AbstractState implements IStateNet {
-
   private _netCsrfToken?: string;
   private _netHeaders?: Record<string, string>;
   private _token?: string;
 
-  constructor(private _netState: IStateNet) {
+  constructor(private _netState: IStateNet, private _parent?: State) {
     super();
   }
 
   get state(): IStateNet { return this._netState; }
-  get parent(): unknown { return this.die('Not implemented yet.', {}); }
+  get parent(): State {
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
+  }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }
   get csrfTokenName(): string { return this._netState.csrfTokenName ?? ''; }
   get csrfTokenMethod(): Required<IStateNet>['csrfTokenMethod'] {
     return this._netState.csrfTokenMethod || 'meta';
   }
-
   /** Attempts to locate the CSRF token. */
   private locateCsrfToken = (): string => {
     let token = '';
@@ -42,7 +44,6 @@ export default class StateNet extends AbstractState implements IStateNet {
     }
     return token;
   };
-
   private _getTokenFromCookie(): string {
     const cookies = document.cookie.split(';');
     for (const cookie of cookies) {
@@ -53,20 +54,17 @@ export default class StateNet extends AbstractState implements IStateNet {
     }
     return this._netState.token ?? '';
   }
-
   get token(): string {
     return this._token 
       ?? (this._token = this._netState.token
         ?? this._getTokenFromCookie()
       );
   }
-
   get csrfToken(): string {
     return this._netCsrfToken = this._netCsrfToken || (
       this._netCsrfToken = this.locateCsrfToken()
     );
   }
-
   /** Helper function for `get headers()`.  */
   private parseHeadersConeExp(): IStateNet['headers'] {
     if (this._netState.headers) {
@@ -78,7 +76,6 @@ export default class StateNet extends AbstractState implements IStateNet {
     }
     return {};
   }
-
   get headers(): IStateNet['headers'] {
     return this._netHeaders || (
       this._netHeaders = {
@@ -87,13 +84,11 @@ export default class StateNet extends AbstractState implements IStateNet {
       }
     );
   }
-
   setHeader(prop: string, value: string): void {
     const parsedValue = parse_cone_exp(this, value);
     this._netHeaders = this._netHeaders || {};
     this._netHeaders[prop] = parsedValue;
   }
-
   get jwt_version(): number { return this._netState.jwt_version ?? 0; }
   get name(): string { return this._netState.name ?? ''; }
   get role(): string { return this._netState.role ?? ''; }
@@ -125,7 +120,6 @@ export default class StateNet extends AbstractState implements IStateNet {
     }); // error 42
     return false;
   }
-
   /**
    * Prevents some bugs by checking if the user is logged in.
    */

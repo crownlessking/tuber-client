@@ -466,8 +466,8 @@ export default {
   'net': {},
 
   /** 
-   * Use for making request to a server if a dialog, form, or page state was
-   * not found. The app will attempt to load it from the server.
+   * Used for making request to a server if a dialog, form, or page state are 
+   * not available. The app will attempt to load it from the server.
    */
   'pathnames': {
     'dialogs': 'state/dialogs',

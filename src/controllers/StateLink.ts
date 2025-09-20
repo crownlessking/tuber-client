@@ -10,16 +10,14 @@ export default class StateLink<P = unknown>
   extends AbstractState
   implements IStateLink
 {
-  private _linkState: IStateLink;
-  private _parentDef: P;
+  private _parent: P;
   private _linkHasState: IStateFormItemCustom;
   private _linkHas?: StateFormItemCustom<this>;
   private _handleOnClick?: TReduxHandle;
 
-  constructor (linkState: IStateLink, parent?: P) {
+  constructor (private _linkState: IStateLink, parent?: P) {
     super();
-    this._linkState = linkState;
-    this._parentDef = parent || ({
+    this._parent = parent || ({
       menuItemsProps: {},
       menuItemsSx: {},
       typography: {}
@@ -28,7 +26,7 @@ export default class StateLink<P = unknown>
   }
 
   get state(): IStateLink { return this._linkState; }
-  get parent(): P { return (this._parentDef ?? {}) as P; }
+  get parent(): P { return (this._parent ?? {}) as P; }
   get props(): TObj { return this._linkState.props ?? {}; }
   get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
   get type(): Required<IStateLink>['type'] { return this._linkState.type || 'text'; }
@@ -51,13 +49,11 @@ export default class StateLink<P = unknown>
     }
     return this._handleOnClick = default_callback;
   }
-
   get onClick(): TReduxHandle {
     return this._handleOnClick || this.setHandleOnClick();
   }
   get href(): string { return this._linkState.href ?? ''; }
   get color(): TStateFormITemCustomColor { return this._linkHasState.color || 'default'; }
-
   /** Set form field `onClick` attribute */
   set onClick(cb: TReduxHandle) {
     this._handleOnClick = cb;

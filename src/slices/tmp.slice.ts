@@ -26,7 +26,7 @@ export const tmpSlice = createSlice({
       delete state[action.payload];
     },
   }
-})
+});
 
 export const tmpActions = tmpSlice.actions;
 export const { tmpAdd, tmpRemove } = tmpSlice.actions;

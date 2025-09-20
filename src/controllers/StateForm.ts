@@ -2,7 +2,6 @@ import StateAllForms from './StateAllForms';
 import AbstractState from './AbstractState';
 import StateFormItem from './StateFormItem';
 import IStateForm from '../interfaces/IStateForm';
-import State from './State';
 import { CSSProperties } from 'react';
 import { IDummyEvent } from 'src/common.types';
 import { PaperProps } from '@mui/material';
@@ -13,11 +12,11 @@ export default class StateForm extends AbstractState implements IStateForm {
   private _fname: string;
 
   constructor (private _formState: IStateForm,
-    private _parentDef?: StateAllForms
+    private _parent: StateAllForms
   ) {
     super();
     this._formState = _formState;
-    if (this._parentDef instanceof StateAllForms) {
+    if (this._parent instanceof StateAllForms) {
       this._fname = this.parent.getLastFormName();
     } else {
       this._fname = '';
@@ -26,9 +25,7 @@ export default class StateForm extends AbstractState implements IStateForm {
 
   get state(): IStateForm { return this._formState; }
   /** Chain-access to all forms definition. */
-  get parent(): StateAllForms {
-    return this._parentDef ?? (this._parentDef = new State().allForms);
-  }
+  get parent(): StateAllForms { return this._parent; }
   get props(): Record<string, unknown> {
     return {
       autoComplete: 'off',

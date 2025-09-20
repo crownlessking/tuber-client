@@ -6,7 +6,8 @@ import StateDialog from '../StateDialog';
 import StateDialogSelectionItem from './StateDialogSelectionItem';
 
 export default class StateDialogSelection<T = unknown>
-  extends StateDialog<T> implements IStateDialog<T>
+  extends StateDialog<T>
+  implements IStateDialog<T>
 {
   private _dialogSelectionState: IStateDialog<T>;
   private _dialogItems?: StateDialogSelectionItem<T>[];
@@ -23,7 +24,6 @@ export default class StateDialogSelection<T = unknown>
       )
     );
   }
-
   get callback(): (item: IStateDialogSelectionItem<T>) => void {
     return this._dialogSelectionState.callback || (() => {});
   }

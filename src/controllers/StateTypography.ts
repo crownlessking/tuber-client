@@ -1,6 +1,6 @@
 import AbstractState from './AbstractState';
 import IStateTypography from '../interfaces/IStateTypography';
-import State from './State';
+import type State from './State';
 
 export default class StateTypography<P = State>
   extends AbstractState implements IStateTypography
@@ -9,16 +9,13 @@ export default class StateTypography<P = State>
   protected parentDef: P;
 
   /**
-  * Constructor
-  *
-  * @param typographyState 
-  */
-  constructor(
-    typographyState: IStateTypography,
-    parent: P
-  ) {
+   * Constructor
+   *
+   * @param typographyState 
+   */
+  constructor(typographyState: IStateTypography, parent: P) {
     super();
-    this.typographyState = typographyState; //  || { color: 'inherit' }
+    this.typographyState = typographyState;
     this.parentDef = parent;
   }
 

@@ -1,4 +1,5 @@
 import Controller from './AbstractState';
+import { get_state } from '../state';
 import State from './State';
 import StateForm from './StateForm';
 import IStateAllForms from '../interfaces/IStateAllForms';
@@ -8,7 +9,7 @@ export default class StateAllForms extends Controller {
   private _lastFormName: string;
 
   constructor (private _allFormsState: IStateAllForms,
-    private _parentDef?: State
+    private _parent?: State
   ) {
     super();
     this._lastFormName = '';
@@ -18,7 +19,7 @@ export default class StateAllForms extends Controller {
   get state(): IStateAllForms { return this._allFormsState; }
   /** Chain-access to root definition. */
   get parent(): State {
-    return this._parentDef ?? (this._parentDef = new State());
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
   }
   get props(): unknown { return this.die('Not implemented yet.', {}); }
   get theme(): unknown { return this.die('Not implemented yet.', {}); }

@@ -2,20 +2,21 @@ import AbstractState from './AbstractState';
 import State from './State';
 import Config from '../config';
 import { TObj } from '../common.types';
-import { error_id } from 'src/business.logic/errors';
+import { error_id } from '../business.logic/errors';
+import { get_state } from '../state';
 
 export default class StateMeta extends AbstractState {
 
-  constructor (private _metaState: TObj, private _parentDef?: State) {
+  constructor (private _metaState: TObj, private _parent?: State) {
     super();
   }
 
   get state(): TObj { return this._metaState; }
   get parent (): State {
-    return this._parentDef ?? (this._parentDef = new State());
+    return this._parent ?? (this._parent = State.fromRootState(get_state()));
   }
-  get props(): unknown { return this.die('Not implemented yet.', {}); }
-  get theme(): unknown { return this.die('Not implemented yet.', {}); }
+  get props(): unknown { return this.die('Not implemented.', {}); }
+  get theme(): unknown { return this.die('Not implemented.', {}); }
 
   /**
    * Get the metadata retrieved form the server.

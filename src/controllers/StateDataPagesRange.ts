@@ -1,6 +1,7 @@
 import AbstractState from './AbstractState';
 import { ILoadedPagesRange, IStateDataPagesRange } from '../interfaces/IState';
 import State from './State';
+import { get_state } from '../state';
 
 interface IConfigure {
   maxLoadedPages?: number;
@@ -21,15 +22,13 @@ export default class StateDataPagesRange extends AbstractState {
   private _newPageRange?: ILoadedPagesRange;
 
   constructor(private _pagesRangeState: IStateDataPagesRange,
-    private _parentDef?: State
+    private _parent?: State
   ) {
     super();
   }
 
   get state(): unknown { return this._pagesRangeState; }
-  get parent(): State {
-    return this._parentDef ?? (this._parentDef = new State());
-  }
+  get parent(): State { return this._parent ?? (this._parent = new State(get_state())); }
   get props(): unknown { return this.die('Method not implemented.', {}); }
   get theme(): unknown { return this.die('Method not implemented.', {}); }
 

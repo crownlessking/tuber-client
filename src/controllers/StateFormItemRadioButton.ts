@@ -14,19 +14,17 @@ export default class StateFormItemRadioButton
   extends AbstractState
   implements IStateFormItemRadioButton
 {
-  private _radioButtonState: IStateFormItemRadioButton;
-  private _parentDef: StateFormItemRadioCustom;
   private _radioButtonHasState: IStateFormItemCustom;
 
-  constructor(radioButtonState: IStateFormItemRadioButton, parent: StateFormItemRadioCustom) {
+  constructor(private _radioButtonState: IStateFormItemRadioButton,
+    private _parent: StateFormItemRadioCustom
+  ) {
     super();
-    this._radioButtonState = radioButtonState;
-    this._parentDef = parent;
-    this._radioButtonHasState = radioButtonState.has || {};
+    this._radioButtonHasState = this._radioButtonState.has || {};
   }
 
   get state(): IStateFormItemRadioButton { return this._radioButtonState; }
-  get parent(): StateFormItemRadioCustom { return this._parentDef; }
+  get parent(): StateFormItemRadioCustom { return this._parent; }
   get props(): Record<string, unknown> { return this._radioButtonState.props ?? {}; }
   get theme(): CSSProperties { return this.die('Not implemented yet.', {}); }
   get name(): string { return this._radioButtonState.name ?? ''; }

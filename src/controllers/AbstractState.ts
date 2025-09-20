@@ -79,7 +79,7 @@ export default abstract class AbstractState {
    * method will provide a dummy one.
    */
   protected get_dud_event_callback (): TEventCallback {
-    return (e: unknown) => {
+    return () => {
       this.ler('No callback was assigned.', undefined);
     }
   }

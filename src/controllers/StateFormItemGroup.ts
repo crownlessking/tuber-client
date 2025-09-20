@@ -7,14 +7,12 @@ import { CSSProperties } from 'react';
 export default class StateFormItemGroup
   extends AbstractState implements IStateFormItemGroup
 {
-  protected parentDef: StateForm;
-  private _itemGroupState: IStateFormItemGroup;
   private _itemGroupItems?: StateFormItem[];
 
-  constructor (itemGroupState: IStateFormItemGroup, parent: StateForm) {
+  constructor (private _itemGroupState: IStateFormItemGroup,
+    protected parentDef: StateForm
+  ) {
     super();
-    this._itemGroupState = itemGroupState;
-    this.parentDef = parent;
   }
 
   get state(): IStateFormItemGroup { return this._itemGroupState; }
