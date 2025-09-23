@@ -1,40 +1,38 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import IStateDialog from '../interfaces/IStateDialog';
 import initialState from '../state/initial.state';
+import { IStateFormItem } from '../interfaces';
 
 export const dialogSlice = createSlice({
   name: 'dialog',
   initialState: initialState.dialog,
   reducers: {
-    dialogActionUpdate: (state, action) => {
+    dialogActionUpdate: (state, action: PayloadAction<IStateFormItem[]>) => {
+      // @ts-ignore The CSSProperties property type in IStateFormItem is causing issues.
       state.actions = action.payload;
     },
-    dialogTitleUpdate: (state, action) => {
+    dialogTitleUpdate: (state, action: PayloadAction<string>) => {
       state.title = action.payload;
     },
-    dialogLabelUpdate: (state, action) => {
+    dialogLabelUpdate: (state, action: PayloadAction<string>) => {
       state.label = action.payload;
     },
-    dialogContentTextUpdate: (state, action) => {
+    dialogContentTextUpdate: (state, action: PayloadAction<string>) => {
       state.contentText = action.payload;
     },
-    dialogContentUpdate: (state, action) => {
+    dialogContentUpdate: (state, action: PayloadAction<unknown>) => {
       state.content = action.payload;
     },
-    dialogShowActionsUpdate: (state, action) => {
+    dialogShowActionsUpdate: (state, action: PayloadAction<boolean>) => {
       state.showActions = action.payload;
     },
-    dialogOnSubmitUpdate: (state, action) => {
+    dialogOnSubmitUpdate: (state, action: PayloadAction<(() => void)>) => {
       state.onSubmit = action.payload;
     },
-    dialogClose: (state) => {
-      state.open = false;
-    },
-    dialogOpen: (state) => {
-      state.open = true;
-    },
-    dialogMount: (state, action) => {
-      const payload = action.payload as IStateDialog;
+    dialogClose: (state) => { state.open = false; },
+    dialogOpen: (state) => { state.open = true; },
+    dialogMount: (state, action: PayloadAction<IStateDialog>) => {
+      const payload = action.payload;
       state._id = payload._id;
       state.open  = payload.open;
       state._type = payload._type;

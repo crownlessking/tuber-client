@@ -43,7 +43,7 @@ export default function App() {
         }, net.headers));
         Config.write(BOOTSTRAP_ATTEMPTS, bootstrapAttempts + 1);
       }
-    }
+    };
     // Get bootstrap state from server if none was provided.
     // Setting `fetchingStateAllowed` to `false` will prevent it.
     if (app.fetchingStateAllowed && !app.isBootstrapped) {

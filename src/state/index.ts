@@ -50,7 +50,7 @@ import { clear_last_content_jsx } from 'src/business.logic/cache';
 import { err } from '../business.logic/logging';
 import IState, { INetState } from '../interfaces/IState';
 import { TObj } from '../common.types';
-import { set_val } from 'src/business.logic/parsing';
+import { set_val } from '../business.logic/parsing';
 
 const appReducer = combineReducers({
   app: infoReducer,
@@ -415,7 +415,7 @@ export function on_net_load_run(
   ON_NET_LOAD_CALLBACK_LIST[_id].push(callback);
 }
 /** Reads the state tree managed by the store. */
-export const get_state = () => store.getState();
+export const get_state = (): RootState => store.getState();
 /** Dispatches an action. It is the only way to trigger a state change. */
 export const dispatch: typeof store.dispatch = store.dispatch.bind(store);
 /** Adds a change listener. */

@@ -1,14 +1,17 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import initialState from '../state/initial.state';
+import { IStateBackground } from 'src/interfaces';
+import { AppBarProps as AppbarProps } from '@mui/material';
 
 export const appbarSlice = createSlice({
   name: 'appbar',
   initialState: initialState.appbar,
   reducers: {
-    appbarBackgroundUpdate: (state, action) => {
+    appbarBackgroundUpdate: (state, action: PayloadAction<IStateBackground>) => {
       state.background = action.payload;
     },
-    appbarPropsUpdate: (state, action) => {
+    appbarPropsUpdate: (state, action: PayloadAction<AppbarProps>) => {
+      // @ts-ignore - Material-UI AppBarProps type incompatibility with Redux state
       state.props = action.payload;
     },
     appbarToolbarPropsUpdate: (state, action) => {

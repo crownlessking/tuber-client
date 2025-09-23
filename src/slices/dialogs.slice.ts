@@ -1,11 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import IStateAllDialogs from 'src/interfaces/IStateAllDialogs';
 import initialState from '../state/initial.state';
-
-interface IAddMultipleAction {
-  type: string;
-  payload: IStateAllDialogs;
-}
 
 /**
  * Ensures that the dialog name ends with 'Dialog'.
@@ -21,7 +16,7 @@ export const dialogsSlice = createSlice({
   name: 'dialogs',
   initialState: initialState.dialogs,
   reducers: {
-    dialogsAddMultiple: (state, action: IAddMultipleAction) => {
+    dialogsAddMultiple: (state, action: PayloadAction<IStateAllDialogs>) => {
       const dialogs = action.payload;
       Object.keys(dialogs).forEach(key => {
         /* @ts-ignore */

@@ -15,10 +15,6 @@ export default class StateAllDialogs extends AbstractState {
   get parent(): State {
     return this._parent ?? (this._parent = State.fromRootState(get_state()));
   }
-  get props(): unknown {
-    return this.die('Not implemented yet.', {});
-  }
-  get theme(): unknown {
-    return this.die('Not implemented yet.', {});
-  }
+  get props(): unknown { return this.die('Not implemented yet.', {}); }
+  get theme(): unknown { return this.die('Not implemented yet.', {}); }
 }

@@ -27,12 +27,12 @@ import { TPlatform } from '../tuber.interfaces';
 import { pre } from '../../../business.logic/logging';
 import JsonapiRequest from 'src/business.logic/JsonapiRequest';
 import { get_registry_val } from './_callbacks.common.logic';
+import { ReportError } from '../../../business.logic';
 
 /**
  * [ __YouTube__ ] Shows a dialog containing a form to create a new bookmark.
  *
  * @id 6
- * @deprecated
  */
 export function dev_dialog_new_youtube_bookmark_from_video(redux: IRedux) {
   return async () => {
@@ -76,6 +76,7 @@ export function dev_dialog_new_youtube_bookmark_from_video(redux: IRedux) {
   }
 }
 
+/** @deprecated */
 function dev_create_user(redux: IRedux) {
   return () => {
     const { store: { dispatch } } = redux;
@@ -85,6 +86,7 @@ function dev_create_user(redux: IRedux) {
   };
 }
 
+/** @deprecated */
 function dev_reset_database(redux: IRedux) {
   return () => {
     const { store: { dispatch } } = redux;
@@ -94,6 +96,7 @@ function dev_reset_database(redux: IRedux) {
   };
 }
 
+/** @deprecated */
 function dev_load_drawer(redux: IRedux) {
   return () => {
     const { store: { dispatch } } = redux;
@@ -103,6 +106,7 @@ function dev_load_drawer(redux: IRedux) {
   };
 }
 
+/** @deprecated */
 function dev_unload_drawer(redux: IRedux) {
   return () => {
     const { store: { dispatch } } = redux;
@@ -118,7 +122,7 @@ function dev_clipboard_test(redux: IRedux) {
     } catch (e) {
       value = (e as Error).message;
        // error 1036
-      error_id(1036).remember_exception(e, `dev_clipboard_test: ${value}`);
+      ReportError.withId(1036).as.exception(e, `dev_clipboard_test: ${value}`);
     }
     redux.store.dispatch({
       type: 'formsData/formsDataUpdate',

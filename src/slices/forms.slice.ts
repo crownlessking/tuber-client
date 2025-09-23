@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import IStateAllForms from 'src/interfaces/IStateAllForms';
+import IStateAllForms from '../interfaces/IStateAllForms';
 import IStateForm from '../interfaces/IStateForm';
 import initialState from '../state/initial.state';
 

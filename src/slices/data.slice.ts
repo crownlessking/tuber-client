@@ -1,15 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IJsonapiResource } from '../interfaces/IJsonapi';
 import initialState from '../state/initial.state';
 
 export interface IDataAdd {
-  type: string;
-  payload: {
-    /** Collection of resources retrieved from server. */
-    data: IJsonapiResource;
-    /** The endpoint at which the collection was retrieved. */
-    endpoint: string;
-  };
+  /** Collection of resources retrieved from server. */
+  data: IJsonapiResource;
+  /** The endpoint at which the collection was retrieved. */
+  endpoint: string;
 }
 
 export interface ICollectionRemove {
@@ -18,27 +15,21 @@ export interface ICollectionRemove {
 }
 
 export interface ICollectionStore {
-  type: string;
-  payload: {
-    /** Collection of resources retrieved from server. */
-    collection: IJsonapiResource[];
-    /** The endpoint at which the collection was retrieved. */
-    endpoint: string;
-  };
+  /** Collection of resources retrieved from server. */
+  collection: IJsonapiResource[];
+  /** The endpoint at which the collection was retrieved. */
+  endpoint: string;
 }
 
 export interface ICollectionLimitedStore {
-  type: string;
-  payload: {
-    /** Collection of resources retrieved from server. */
-    collection: IJsonapiResource[];
-    /** The endpoint at which the collection was retrieved. */
-    endpoint: string;
-    /** Maximum number of resources per page. */
-    pageSize: number;
-        /** The maximum number of pages to be loaded. */
-    limit: number;
-  };
+  /** Collection of resources retrieved from server. */
+  collection: IJsonapiResource[];
+  /** The endpoint at which the collection was retrieved. */
+  endpoint: string;
+  /** Maximum number of resources per page. */
+  pageSize: number;
+      /** The maximum number of pages to be loaded. */
+  limit: number;
 }
 
 export interface IMemberEditActionPayload {
@@ -48,26 +39,15 @@ export interface IMemberEditActionPayload {
   val: unknown;
 }
 
-export interface IMemberEditAction {
-  type: string;
-  payload: IMemberEditActionPayload;
+export interface IUpdateByIndex {
+  endpoint: string;
+  index: number;
+  resource: IJsonapiResource;
 }
 
-export interface IDataResourceUpdate {
-  type: string;
-  payload: {
-    endpoint: string;
-    index: number;
-    resource: IJsonapiResource;
-  }
-}
-
-export interface IDataDeleteByIndex {
-  type: string;
-  payload: {
-    endpoint: string;
-    index: number;
-  }
+export interface IDeleteByIndex {
+  endpoint: string;
+  index: number;
 }
 
 export const dataSlice = createSlice({
@@ -75,7 +55,7 @@ export const dataSlice = createSlice({
   initialState: initialState.data,
   reducers: {
     /** Insert array element at the beginning */
-    dataStack: (state, action: IDataAdd) => {
+    dataStack: (state, action: PayloadAction<IDataAdd>) => {
       const { endpoint, data } = action.payload;
       const newArray = state[endpoint] || [];
       newArray.unshift(data);
@@ -83,20 +63,20 @@ export const dataSlice = createSlice({
     },
 
     /** Stores a collection but replaces existing */
-    dataStoreCol: (state, action: ICollectionStore) => {
+    dataStoreCol: (state, action: PayloadAction<ICollectionStore>) => {
       const { endpoint, collection } = action.payload;
       state[endpoint] = collection;
     },
     /** Store a collection by accumulation */
-    dataQueueCol: (state, action: ICollectionStore) => {
+    dataQueueCol: (state, action: PayloadAction<ICollectionStore>) => {
       const { endpoint, collection } = action.payload;
       state[endpoint] = (state[endpoint] || []).concat(collection);
     },
-    dataStackCol: (state, action: ICollectionStore) => {
+    dataStackCol: (state, action: PayloadAction<ICollectionStore>) => {
       const { endpoint, collection } = action.payload;
       state[endpoint] = collection.concat(state[endpoint] || []);
     },
-    dataLimitQueueCol: (state, action: ICollectionLimitedStore) => {
+    dataLimitQueueCol: (state, action: PayloadAction<ICollectionLimitedStore>) => {
       const { endpoint, collection, pageSize, limit } = action.payload;
       let arr = state[endpoint] || [];
       const totalPage = Math.ceil(arr.length / pageSize);
@@ -105,36 +85,36 @@ export const dataSlice = createSlice({
       }
       state[endpoint] = arr.concat(collection);
     },
-    dataLimitStackCol: (state, action: ICollectionLimitedStore) => {
+    dataLimitStackCol: (state, action: PayloadAction<ICollectionLimitedStore>) => {
       const { endpoint, collection, pageSize, limit } = action.payload;
       let arr = state[endpoint] ?? [];
       const totalPage = Math.ceil(arr.length / pageSize);
       if (totalPage > limit) {
-        const dropSize = limit * pageSize - arr.length;
-        arr = arr.slice(0, dropSize);
+        const maxItems = limit * pageSize;
+        arr = arr.slice(-maxItems); // Keep the last maxItems elements
       }
       state[endpoint] = collection.concat(arr);
     },
     /** Deletes a collection. */
-    dataRemoveCol: (state, action: ICollectionRemove) => {
+    dataRemoveCol: (state, action: PayloadAction<string>) => {
       state[action.payload] = [];
     },
     /** Save changes to a single resouce. */
-    dataUpdateByIndex: (state, action: IDataResourceUpdate) => {
+    dataUpdateByIndex: (state, action: PayloadAction<IUpdateByIndex>) => {
       const { endpoint, index, resource } = action.payload;
       state[endpoint] = state[endpoint] || [];
       state[endpoint][index] = resource;
     },
     /** Delete resource by index. */
-    dataDeleteByIndex: (state, action: IDataDeleteByIndex) => {
+    dataDeleteByIndex: (state, action: PayloadAction<IDeleteByIndex>) => {
       const { endpoint, index } = action.payload;
       state[endpoint] = state[endpoint] || [];
       state[endpoint].splice(index, 1);
     },
     /** Modifies a single data member. */
-    dataSetAttrByIndex: (state, action: IMemberEditAction) => {
+    dataSetAttrByIndex: (state, action: PayloadAction<IMemberEditActionPayload>) => {
       const { endpoint, index, prop, val } = action.payload;
-      if (index
+      if (index !== undefined
         && state[endpoint]
         && state[endpoint][index]
         && state[endpoint][index].attributes
@@ -172,13 +152,17 @@ export const dataSlice = createSlice({
       const { collectionName, id, resource } = action.payload;
       const collection = state[collectionName]
         ?? [] as IJsonapiResource[];
+      let found = false;
       for (let i = 0; i < collection.length; i++) {
         if (collection[i].id === id) {
           collection[i] = resource;
+          found = true;
           break;
         }
       }
-      collection.push(resource);
+      if (!found) {
+        collection.push(resource);
+      }
       state[collectionName] = collection;
     }
   }
@@ -196,7 +180,8 @@ export const {
   dataUpdateByIndex,
   dataDeleteByIndex,
   dataSetAttrByIndex,
-  dataUpdateByName
+  dataUpdateByName,
+  dataUpdateById
 } = dataSlice.actions;
 
 export default dataSlice.reducer;

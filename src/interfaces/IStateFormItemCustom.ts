@@ -31,7 +31,11 @@ export type TDirectiveLoad = {
   [K in IStateKeys]?: string[] | string; // Identifier(s) for the state to be loaded
 };
 
-export type THandleDirectiveType = '$form' | '$form_dialog' | '$none' | '$filter';
+export type THandleDirectiveType = '$form'
+| '$form_dialog'
+| '$form_none'
+| '$filter'
+| '$none';
 
 export interface IHandleDirective {
   type: THandleDirectiveType; // The directive type like '$form', '$view', etc.

@@ -1,36 +1,30 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IStateChip } from 'src/interfaces/IState';
-import initialState from 'src/state/initial.state';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { IStateChip } from '../interfaces/IState';
+import initialState from '../state/initial.state';
 
 interface IAdd {
-  type: string;
-  payload: {
-    route: string;
-    id: string;
-    chipState: IStateChip;
-  };
+  route: string;
+  id: string;
+  chipState: IStateChip;
 }
 
 interface IRemove {
-  type: string;
-  payload: {
-    route: string;
-    id: string;
-  };
+  route: string;
+  id: string;
 }
 
 export const chipsSlice = createSlice({
   name: 'chips',
   initialState: initialState.chips,
   reducers: {
-    chipAdd: (state, action: IAdd) => {
+    chipAdd: (state, action: PayloadAction<IAdd>) => {
       const { route, id, chipState } = action.payload;
       const pageChipsState = state[route] ?? {};
       // @ts-ignore
       pageChipsState[id] = chipState;
       state[route] = pageChipsState;
     },
-    chipRemove: (state, action: IRemove) => {
+    chipRemove: (state, action: PayloadAction<IRemove>) => {
       const { route, id } = action.payload;
       const pageChipsState = state[route] ?? {};
       delete pageChipsState[id];
@@ -40,7 +34,7 @@ export const chipsSlice = createSlice({
         state[route] = pageChipsState;
       }
     },
-    chipUpdate: (state, action: IAdd) => {
+    chipUpdate: (state, action: PayloadAction<IAdd>) => {
       const { route, id, chipState } = action.payload;
       const pageChipsState = state[route] ?? {};
       // @ts-ignore

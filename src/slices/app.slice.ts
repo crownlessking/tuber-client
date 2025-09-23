@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TThemeMode } from '../common.types';
 import initialState from '../state/initial.state';
 import {
@@ -9,7 +9,7 @@ import {
   APP_REQUEST_SUCCESS,
   APP_SWITCHED_PAGE,
   APP_BROWSER_SWITCHED_PAGE
-} from 'src/constants.client';
+} from '../constants.client';
 
 export const appSlice = createSlice({
   name: 'app',
@@ -20,7 +20,7 @@ export const appSlice = createSlice({
       state.route = action.payload;
       state.status = APP_SWITCHED_PAGE;
     },
-    appBrowserSwitchPage: (state, action) => {
+    appBrowserSwitchPage: (state, action: PayloadAction<string>) => {
       state.lastRoute = state.route;
       state.route = action.payload;
       state.status = APP_BROWSER_SWITCHED_PAGE;
@@ -65,10 +65,10 @@ export const appSlice = createSlice({
     appRequestProcessEnd: (state) => {
       state.status = APP_IS_BOOTSTRAPPED;
     },
-    appSetFetchMessage: (state, actions) => {
+    appSetFetchMessage: (state, actions: PayloadAction<string>) => {
       state.fetchMessage = actions.payload;
     },
-    appThemeModeUpdate: (state, actions:{type:string;payload:TThemeMode}) => {
+    appThemeModeUpdate: (state, actions: PayloadAction<TThemeMode>) => {
       state.themeMode = actions.payload;
     },
   },

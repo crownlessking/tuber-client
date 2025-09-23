@@ -8,13 +8,13 @@ import {
 } from '../interfaces/IJsonapi';
 
 export default class JsonapiError implements IJsonapiError {
-  private _idJson?: string;
+  private _id?: string;
 
   constructor(private _e: IJsonapiError) {}
 
   get json(): IJsonapiError { return this._e; }
   get id(): string {
-    return this._idJson || (this._idJson = this._e.id || mongo_object_id());
+    return this._id || (this._id = this._e.id || mongo_object_id());
   }
   get links(): IJsonapiErrorLinks { return this._e.links ?? {}; }
   get status(): TJsonapiErrorStatus { return this._e.status ?? '200'; }

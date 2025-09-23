@@ -70,6 +70,7 @@ export type TStateFormItemType = typeof C.BREAK_LINE
   | typeof C.HIGHLIGHT
   | typeof C.HORIZONTAL_LINE
   | typeof C.HTML
+  | typeof C.HTML_TAG
   | typeof C.INDETERMINATE
   | typeof C.STATE_INPUT
   | typeof C.INPUT_LABEL

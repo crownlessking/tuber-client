@@ -3,6 +3,32 @@ import { dispatch, get_state } from '../state';
 import { errorsActions } from '../slices/errors.slice';
 import { ler } from './logging';
 
+/**
+ * Interface defining various error reporting methods accessible through the `as` property.
+ * 
+ * This interface provides a fluent API for reporting different types of errors
+ * that can occur in the application. Each method handles a specific error scenario
+ * and automatically dispatches the error to the Redux store for centralized error management.
+ * 
+ * @example
+ * ```typescript
+ * // Report an exception with optional title
+ * ReportError.withId(1).as.exception(error, "Database connection failed");
+ * 
+ * // Report a JSON API error
+ * ReportError.create().as.jsonapiError({
+ *   id: "1",
+ *   code: "VALIDATION_ERROR",
+ *   title: "Invalid input data"
+ * });
+ * 
+ * // Report multiple errors from server response
+ * ReportError.create().as.jsonapiErrorList(serverErrors);
+ * 
+ * // Report potential debugging issues
+ * ReportError.withId(2).as.possibleError("Suspicious data detected");
+ * ```
+ */
 export interface IAs {
   exception: (e: unknown, title?: string | undefined) => ReportError;
   jsonapiError: (error: IJsonapiError) => ReportError;
@@ -31,7 +57,7 @@ export interface IReportChain {
 /**
  * Report errors.
  * 
- * Example use:
+ * @example
  * ```ts
  * // Fluent interface with method chaining
  * ReportError.withId(1)
@@ -410,3 +436,7 @@ export default class ReportError {
   }
 
 }
+
+// Alias for the ReportError class
+export { ReportError as ErrorReport };
+

@@ -55,16 +55,14 @@ const delegate_error_handling = (dispatch: Dispatch) => {
   dispatch(appRequestFailed());
 };
 
-/**
- * Handles (arguebly) successful responses.
- */
+/** Handles (arguebly) successful responses. */
 const delegate_data_handling = (
   dispatch: Dispatch,
   getState: () => RootState,
   endpoint: string,
   json: IJsonapiBaseResponse
 ) => {
-  const status = json.meta?.status as number || 500;
+  const status = json.meta?.status as number ?? 500;
   const defaultDriver: { [key: number]: () => void } = {
     200: () => net_default_200_driver(dispatch, getState, endpoint, json),
     201: () => net_default_201_driver(dispatch, getState, endpoint, json),
@@ -74,8 +72,8 @@ const delegate_data_handling = (
     409: () => net_default_409_driver(dispatch, getState, endpoint, json),
     500: () => net_default_500_driver(dispatch, getState, endpoint, json),
   }
-  // Handle the JSON response here.
   try {
+    // Handle the JSON response here.
     switch (json.driver) {
 
       // TODO Define custom ways of handling the response here.
@@ -248,7 +246,7 @@ export async function get_fetch<T=unknown>(url: string): Promise<T> {
 }
 
 /**
- * Use this function make a POST request.
+ * Makes a POST request to update the redux store.
  *
  * [TODO] Implement the PUT request version of this function. Or just fully
  *        implement all HTTP verbs. PATCH, DELETE, OPTIONS, HEAD.
@@ -291,6 +289,7 @@ export const post_req_state = (
   }
 };
 
+/** Makes a PATCH request to update the Redux store. */
 export const patch_req_state = (
   endpoint: string,
   body?: unknown,
@@ -372,6 +371,7 @@ export const get_req_state = (
   }
 };
 
+/** Makes a DELETE request to update the Redux store. */
 export const delete_req_state = (
   endpoint: string,
   args = '',
@@ -389,7 +389,7 @@ export const delete_req_state = (
       const headers = { ...DEFAULT_HEADERS, ...headersState, ...customHeaders };
       const response = await fetch(uri, { method: 'delete', headers });
       const json = await response.json();
-      json.meta = json.meta ?? {};
+      json.meta ??= {};
       json.meta.status = response.status;
       json.meta.statusText = response.statusText;
       json.meta.ok = response.ok;
